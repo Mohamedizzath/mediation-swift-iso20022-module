@@ -39,5 +39,4 @@ public class ValidatorUtils {
         errorModel.setErrorMessage(errorMessage);
         return errorModel;
     }
-
 }

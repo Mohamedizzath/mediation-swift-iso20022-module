@@ -92,14 +92,14 @@ public class ConnectorUtils {
     }
 
     /**
-     * Method to append response to the message context.
+     * Method to append JSON response to the message context.
      *
      * @param messageContext   Message Context
      * @param payload          Response Payload
      * @throws AxisFault
      * @throws XMLStreamException
      */
-    public static void appendResponseToMessageContext(org.apache.synapse.MessageContext messageContext, String payload)
+    public static void appendJsonResponseToMessageContext(org.apache.synapse.MessageContext messageContext, String payload)
             throws AxisFault, XMLStreamException {
         MessageContext axis2MessageContext = ((Axis2MessageContext) messageContext).getAxis2MessageContext();
         axis2MessageContext.setProperty(Constants.Configuration.MESSAGE_TYPE, ConnectorConstants.APPLICATION_JSON);
