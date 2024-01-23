@@ -32,6 +32,14 @@ public class ErrorModel {
         this.errorMessage = errorMessage;
     }
 
+    public ErrorModel(String errorCode, String errorMessage) {
+        this(true, errorCode, errorMessage);
+    }
+
+    public ErrorModel() {
+       this(false, null, null);
+    }
+
     public void setIsError(boolean isError) {
         this.isError = isError;
     }

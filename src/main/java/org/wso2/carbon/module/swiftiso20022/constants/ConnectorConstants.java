@@ -23,6 +23,10 @@ package org.wso2.carbon.module.swiftiso20022.constants;
  */
 public class ConnectorConstants {
 
+    private ConnectorConstants() {
+        // Private constructor to prevent instantiation.
+    }
+
     public static final String APPLICATION_JSON = "application/json";
     public static final String ERROR_CODE = "ERROR_CODE";
     public static final String ERROR_MESSAGE = "ERROR_MESSAGE";
