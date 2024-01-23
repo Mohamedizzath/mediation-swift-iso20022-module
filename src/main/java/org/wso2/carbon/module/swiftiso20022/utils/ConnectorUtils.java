@@ -48,17 +48,16 @@ public class ConnectorUtils {
      * Build Message and extract payload.
      *
      * @param axis2MC message context
-     * @return optional json message
+     * @return optional string message
      * @throws ConnectException thrown if unable to build
      */
     public static Optional<String> buildMessagePayloadFromMessageContext(MessageContext axis2MC)
             throws ConnectException {
-        String requestPayload = null;
-        boolean isMessageContextBuilt = isMessageContextBuilt(axis2MC);
-        if (!isMessageContextBuilt) {
+        if (!isMessageContextBuilt(axis2MC)) {
             try {
                 RelayUtils.buildMessage(axis2MC);
             } catch (XMLStreamException | IOException e) {
+                log.error("Unable to build axis2 message", e);
                 throw new ConnectException(e, "Unable to build axis2 message");
             }
         }
@@ -66,13 +65,14 @@ public class ConnectorUtils {
         try {
             InputStream jsonPayload = JsonUtil.getJsonPayload(axis2MC);
             if (jsonPayload != null) {
-                requestPayload = IOUtils.toString(JsonUtil.getJsonPayload(axis2MC), StandardCharsets.UTF_8.name());
+                return Optional.ofNullable(IOUtils.toString(JsonUtil.getJsonPayload(axis2MC),
+                        StandardCharsets.UTF_8.name()));
             }
         } catch (IOException e) {
+            log.error("Unable to read payload stream", e);
             throw new ConnectException(e, "Unable to read payload stream");
         }
-
-        return Optional.ofNullable(requestPayload);
+        return Optional.empty();
     }
 
     /**
@@ -82,13 +82,11 @@ public class ConnectorUtils {
      * @return true if message context is already built
      */
     public static boolean isMessageContextBuilt(MessageContext axis2MC) {
-        boolean isMessageContextBuilt = false;
         Object messageContextBuilt = axis2MC.getProperty(PassThroughConstants.MESSAGE_BUILDER_INVOKED);
         if (messageContextBuilt != null) {
-            isMessageContextBuilt = (Boolean) messageContextBuilt;
+            return (Boolean) messageContextBuilt;
         }
-
-        return isMessageContextBuilt;
+        return false;
     }
 
     /**

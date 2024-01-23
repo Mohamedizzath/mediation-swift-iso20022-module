@@ -33,10 +33,6 @@ public class ValidatorUtils {
      * @return            Constructed Error model
      */
     public static ErrorModel constructErrorModel(String errorCode, String errorMessage) {
-        ErrorModel errorModel = new ErrorModel();
-        errorModel.setIsError(true);
-        errorModel.setErrorCode(errorCode);
-        errorModel.setErrorMessage(errorMessage);
-        return errorModel;
+        return new ErrorModel(true, errorCode, errorMessage);
     }
 }

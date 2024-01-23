@@ -171,14 +171,9 @@
             <version>${carbon.kernel.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpmime</artifactId>
-            <version>4.3.6</version>
-        </dependency>
-        <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
-            <version>20231013</version>
+            <version>${org.json.version}</version>
         </dependency>
     </dependencies>
 
@@ -187,24 +182,11 @@
         <maven.compiler.plugin.version>3.7.0</maven.compiler.plugin.version>
         <maven.surefire.plugin.version>3.0.0-M1</maven.surefire.plugin.version>
         <maven.assembly.version>2.4</maven.assembly.version>
-        <integration.base.version>1.0.2</integration.base.version>
-        <product.ei.version>6.1.1</product.ei.version>
         <carbon.kernel.version>4.4.17</carbon.kernel.version>
-        <automation.framework.utils.version>4.4.2</automation.framework.utils.version>
-        <automation.framework.version>4.4.3</automation.framework.version>
-        <emma.version>2.1.5320</emma.version>
+        <module.core.version>1.0.2</module.core.version>
         <synapse.version>2.1.7-wso2v147</synapse.version>
         <carbon.mediation.version>4.6.19</carbon.mediation.version>
-        <json.version>2.0.0.wso2v1</json.version>
-        <org.testng.version>6.1.1</org.testng.version>
-        <jets3t.version>0.9.4</jets3t.version>
-        <bouncycastle.version>1.55</bouncycastle.version>
-        <rampart.apache.version>1.6.1-wso2v18</rampart.apache.version>
-        <rampart.wso2.version>1.6.1.wso2v18</rampart.wso2.version>
-        <module.core.version>1.0.2</module.core.version>
-        <mockito.version>2.21.0</mockito.version>
-        <hamcrest.version>2.1</hamcrest.version>
+        <org.json.version>20231013</org.json.version>
         <maven.checkstyleplugin.version>3.1.0</maven.checkstyleplugin.version>
-        <powermock.version>1.7.1</powermock.version>
     </properties>
 </project>

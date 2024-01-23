@@ -31,7 +31,6 @@
             <directory>target/classes</directory>
             <outputDirectory></outputDirectory>
             <excludes>
-                <exclude>**/metrics_module.xml</exclude>
                 <exclude>**/META-INF/*</exclude>
             </excludes>
         </fileSet>

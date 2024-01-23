@@ -22,9 +22,15 @@ package org.wso2.carbon.module.swiftiso20022.model;
  * Class to hold the error details.
  */
 public class ErrorModel {
-    boolean isError;
-    String errorCode;
-    String errorMessage;
+    private boolean isError;
+    private String errorCode;
+    private String errorMessage;
+
+    public ErrorModel(boolean isError, String errorCode, String errorMessage) {
+        this.isError = isError;
+        this.errorCode = errorCode;
+        this.errorMessage = errorMessage;
+    }
 
     public void setIsError(boolean isError) {
         this.isError = isError;

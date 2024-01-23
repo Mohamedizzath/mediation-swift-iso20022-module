@@ -9,5 +9,5 @@ For more details about all the features of the SWIFT ISO20022 Mediation Module.
 Follow the steps given below to build the SWIFT ISO20022 Mediation Module from the source code.
 
 1. Get a clone or download the source from [Github](https://github.com/wso2-extensions/mediation-swift-iso20022-module).
-2. Run the following Maven command from the `mediation-swift-iso20022-module` directory: `mvn clean install`.
+2. Run the following Maven command from the `mediation-swift-iso20022-module` directory: `mvn clean package`.
 3. The ZIP file of the connector is created in the `mediation-swift-iso20022-module/target` directory.
