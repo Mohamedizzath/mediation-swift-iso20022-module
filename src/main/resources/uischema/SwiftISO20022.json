@@ -1,0 +1,7 @@
+{
+  "connectorName": "swiftISO20022",
+  "connectionName": "SwiftISO20022",
+  "title": "SwiftISO20022 Connection",
+  "help": "<h1>WSO2 SWIFT ISO 20022 Mediation library</h1> <b>This library will provide functions to validate and convert Swift and ISO 20022 Message formats</b>",
+  "elements": []
+}
