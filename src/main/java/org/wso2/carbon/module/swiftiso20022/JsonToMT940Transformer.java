@@ -20,6 +20,7 @@ package org.wso2.carbon.module.swiftiso20022;
 
 import com.google.gson.Gson;
 import org.apache.axis2.AxisFault;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.synapse.MessageContext;
 import org.apache.synapse.core.axis2.Axis2MessageContext;
 import org.json.JSONException;
@@ -44,7 +45,6 @@ import javax.xml.stream.XMLStreamException;
  */
 public class JsonToMT940Transformer extends AbstractConnector {
 
-    // TODO:
     public void connect(MessageContext messageContext) throws ConnectException {
         try {
             this.log.debug("Executing JsonToMT940Convertor to convert the JSON payload to MT940 format");
@@ -89,11 +89,11 @@ public class JsonToMT940Transformer extends AbstractConnector {
      */
     private ErrorModel validateRequestPayload(RequestPayloadModel requestPayload) {
 
-        if (requestPayload.getBlock1() == null || requestPayload.getBlock1().isBlank()) {
+        if (StringUtils.isBlank(requestPayload.getBlock1())) {
             return new ErrorModel(ConnectorConstants.ERROR_T13, ConnectorConstants.ERROR_BLOCK1_INVALID);
         }
 
-        if (requestPayload.getBlock2() == null || requestPayload.getBlock2().isBlank()) {
+        if (StringUtils.isBlank(requestPayload.getBlock2())) {
             return new ErrorModel(ConnectorConstants.ERROR_T13, ConnectorConstants.ERROR_BLOCK2_INVALID);
         }
 

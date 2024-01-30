@@ -36,16 +36,19 @@ public class ConnectorConstants {
     public static final String CREDIT = "C";
 
     //MT940 Related Constants
-    public static final String MT940_TRANSACTION_REF = ":20:";
-    public static final String MT940_RELATED_REF = ":21:";
-    public static final String MT940_ACCOUNT_NO = ":25:";
-    public static final String MT940_STATEMENT_NO = ":28C:";
-    public static final String MT940_INFORMATION = ":86:";;
-    public static final String MT940_STATEMENT_LINE = ":61:";
+    public static final String MT940_TRANSACTION_REF = ":20";
+    public static final String MT940_RELATED_REF = ":21";
+    public static final String MT940_ACCOUNT_NO = ":25";
+    public static final String MT940_STATEMENT_NO = ":28";
+    public static final String MT940_INFORMATION = ":86";;
+    public static final String MT940_STATEMENT_LINE = ":61";
     public static final String MT940_OPENING_BAL = ":60";
     public static final String MT940_CLOSING_BAL = ":62";
-    public static final String MT940_CLOSING_AVAIL_BAL = ":64:";
-    public static final String MT940_FORWARD_AVAIL_BAL = ":65:";
+    public static final String MT940_CLOSING_AVAIL_BAL = ":64";
+    public static final String MT940_FORWARD_AVAIL_BAL = ":65";
+    public static final String SWIFT_TRANSFER = "S";
+    public static final String NON_SWIFT_TRANSFER = "N";
+    public static final String FIRST_ADVICE = "F";
     public static final String COLON = ":";
     public static final String SLASH = "/";
     public static final String DOUBLE_SLASH = "//";

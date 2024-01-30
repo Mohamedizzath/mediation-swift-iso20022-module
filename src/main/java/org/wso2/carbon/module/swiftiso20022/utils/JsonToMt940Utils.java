@@ -18,6 +18,7 @@
 
 package org.wso2.carbon.module.swiftiso20022.utils;
 
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.wso2.carbon.connector.core.ConnectException;
@@ -48,7 +49,7 @@ public class JsonToMt940Utils {
      * @return  Whether the request payload is valid or not
      */
     public static boolean validateAccountNumber(RequestPayloadModel requestPayload) {
-        return (requestPayload.getAccountNumber() != null && !requestPayload.getAccountNumber().isBlank() &&
+        return (StringUtils.isNotBlank(requestPayload.getAccountNumber()) &&
                 requestPayload.getAccountNumber().length() < 36);
     }
 
@@ -58,7 +59,7 @@ public class JsonToMt940Utils {
      * @return  Whether the reference is valid or not
      */
     public static boolean validateReference(String reference) {
-        return (reference != null && !reference.isBlank() && reference.length() < 17);
+        return (StringUtils.isNotBlank(reference) && reference.length() < 17);
     }
 
     /**
@@ -67,7 +68,7 @@ public class JsonToMt940Utils {
      * @return  Whether the sequence number is valid or not
      */
     public static boolean validateSequenceNumber(RequestPayloadModel requestPayload) {
-        return (requestPayload.getSequenceNumber() != null && !requestPayload.getSequenceNumber().isBlank() &&
+        return (StringUtils.isNotBlank(requestPayload.getSequenceNumber()) &&
                 requestPayload.getSequenceNumber().length() < 4);
     }
 
@@ -97,13 +98,13 @@ public class JsonToMt940Utils {
             return error;
         }
 
-        if (balanceDetails.getIndicator() == null || balanceDetails.getIndicator().isBlank() ||
+        if (StringUtils.isBlank(balanceDetails.getIndicator()) ||
                 !(ConnectorConstants.DEBIT.equals(balanceDetails.getIndicator()) ||
                 ConnectorConstants.CREDIT.equals(balanceDetails.getIndicator()))) {
             return new ErrorModel(ConnectorConstants.ERROR_T51, ConnectorConstants.ERROR_BAL_IND_INVALID);
         }
 
-        if (balanceDetails.getStatementType() != null && !balanceDetails.getStatementType().isBlank()) {
+        if (StringUtils.isNotBlank(balanceDetails.getStatementType())) {
             if (!(ConnectorConstants.CURRENT_STATEMENT_TYPE.equals(balanceDetails.getStatementType()) ||
                     ConnectorConstants.LAST_STATEMENT_TYPE.equals(balanceDetails.getStatementType()))) {
                 return new ErrorModel(ConnectorConstants.ERROR_T51, ConnectorConstants.ERROR_INVALID_STATEMENT_TYPE);
@@ -121,7 +122,7 @@ public class JsonToMt940Utils {
      */
     public static boolean isValidDateFormat(String dateTime) {
 
-        if (dateTime == null || dateTime.isBlank()) {
+        if (StringUtils.isBlank(dateTime)) {
             return false;
         }
         DateFormat formatter = new SimpleDateFormat(ConnectorConstants.DATE_TIME_FORMAT);
@@ -142,13 +143,14 @@ public class JsonToMt940Utils {
      */
     public static ErrorModel isValidTransactionType(String transactionType) {
         ErrorModel errorModel = new ErrorModel();
-        if (!transactionType.startsWith("S") && !transactionType.startsWith("N") &&
-                !transactionType.startsWith("F")) {
+        if (!transactionType.startsWith(ConnectorConstants.SWIFT_TRANSFER) &&
+                !transactionType.startsWith(ConnectorConstants.NON_SWIFT_TRANSFER) &&
+                !transactionType.startsWith(ConnectorConstants.FIRST_ADVICE)) {
             return new ErrorModel(ConnectorConstants.ERROR_T53,
                     ConnectorConstants.ERROR_TRANS_TYPE_INVALID);
         }
 
-        if (transactionType.startsWith("S")) {
+        if (transactionType.startsWith(ConnectorConstants.SWIFT_TRANSFER)) {
             String identificationCode = transactionType.substring(1);
             if (!ValidatorUtils.isNumber(identificationCode)) {
                 return new ErrorModel(ConnectorConstants.ERROR_T53,

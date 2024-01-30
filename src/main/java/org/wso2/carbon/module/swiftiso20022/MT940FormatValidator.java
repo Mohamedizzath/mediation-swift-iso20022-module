@@ -108,26 +108,62 @@ public class MT940FormatValidator extends AbstractConnector {
         List<String> statementLine = new ArrayList<>();
 
         for (String line : lines) {
-            if (line.startsWith(ConnectorConstants.MT940_TRANSACTION_REF)) {
-                fields.put(ConnectorConstants.TRANSACTION_REF, line);
-            } else if (line.startsWith(ConnectorConstants.MT940_RELATED_REF)) {
-                fields.put(ConnectorConstants.RELATED_REF, line);
-            } else if (line.startsWith(ConnectorConstants.MT940_ACCOUNT_NO)) {
-                fields.put(ConnectorConstants.ACC_IDENTIFICATION, line);
-            } else if (line.startsWith(ConnectorConstants.MT940_STATEMENT_NO)) {
-                fields.put(ConnectorConstants.STATEMENT_NUMBER, line);
-            } else if (line.startsWith(ConnectorConstants.MT940_OPENING_BAL)) {
-                fields.put(ConnectorConstants.OPENING_BALANCE, line);
-            } else if (line.startsWith(ConnectorConstants.MT940_STATEMENT_LINE)) {
-                statementLine.add(line);
-                fields.put(ConnectorConstants.STATEMENT_LINE, statementLine);
-            } else if (line.startsWith(ConnectorConstants.MT940_CLOSING_BAL)) {
-                fields.put(ConnectorConstants.CLOSING_BALANCE, line);
-            } else if (line.startsWith(ConnectorConstants.MT940_CLOSING_AVAIL_BAL)) {
-                fields.put(ConnectorConstants.CLOSING_AVAIL_BALANCE, line);
-            } else if (line.startsWith(ConnectorConstants.MT940_FORWARD_AVAIL_BAL)) {
-                fields.put(ConnectorConstants.FORWARD_CLOSING_AVAIL_BALANCE, line);
+            if (line.startsWith("{") || line.startsWith("-")) {
+                continue;
             }
+            switch (line.substring(0, 3)) {
+                case ConnectorConstants.MT940_TRANSACTION_REF :
+                    fields.put(ConnectorConstants.TRANSACTION_REF, line);
+                    break;
+                case ConnectorConstants.MT940_RELATED_REF :
+                    fields.put(ConnectorConstants.RELATED_REF, line);
+                    break;
+                case ConnectorConstants.MT940_ACCOUNT_NO :
+                    fields.put(ConnectorConstants.ACC_IDENTIFICATION, line);
+                    break;
+                case ConnectorConstants.MT940_STATEMENT_NO :
+                    fields.put(ConnectorConstants.STATEMENT_NUMBER, line);
+                    break;
+                case ConnectorConstants.MT940_OPENING_BAL :
+                    fields.put(ConnectorConstants.OPENING_BALANCE, line);
+                    break;
+                case ConnectorConstants.MT940_STATEMENT_LINE :
+                    statementLine.add(line);
+                    fields.put(ConnectorConstants.STATEMENT_LINE, statementLine);
+                    break;
+                case ConnectorConstants.MT940_CLOSING_BAL :
+                    fields.put(ConnectorConstants.CLOSING_BALANCE, line);
+                    break;
+                case ConnectorConstants.MT940_CLOSING_AVAIL_BAL :
+                    fields.put(ConnectorConstants.CLOSING_AVAIL_BALANCE, line);
+                    break;
+                case ConnectorConstants.MT940_FORWARD_AVAIL_BAL :
+                    fields.put(ConnectorConstants.FORWARD_CLOSING_AVAIL_BALANCE, line);
+                    break;
+                default:
+                    break;
+
+            }
+//            if (line.startsWith(ConnectorConstants.MT940_TRANSACTION_REF)) {
+//                fields.put(ConnectorConstants.TRANSACTION_REF, line);
+//            } else if (line.startsWith(ConnectorConstants.MT940_RELATED_REF)) {
+//                fields.put(ConnectorConstants.RELATED_REF, line);
+//            } else if (line.startsWith(ConnectorConstants.MT940_ACCOUNT_NO)) {
+//                fields.put(ConnectorConstants.ACC_IDENTIFICATION, line);
+//            } else if (line.startsWith(ConnectorConstants.MT940_STATEMENT_NO)) {
+//                fields.put(ConnectorConstants.STATEMENT_NUMBER, line);
+//            } else if (line.startsWith(ConnectorConstants.MT940_OPENING_BAL)) {
+//                fields.put(ConnectorConstants.OPENING_BALANCE, line);
+//            } else if (line.startsWith(ConnectorConstants.MT940_STATEMENT_LINE)) {
+//                statementLine.add(line);
+//                fields.put(ConnectorConstants.STATEMENT_LINE, statementLine);
+//            } else if (line.startsWith(ConnectorConstants.MT940_CLOSING_BAL)) {
+//                fields.put(ConnectorConstants.CLOSING_BALANCE, line);
+//            } else if (line.startsWith(ConnectorConstants.MT940_CLOSING_AVAIL_BAL)) {
+//                fields.put(ConnectorConstants.CLOSING_AVAIL_BALANCE, line);
+//            } else if (line.startsWith(ConnectorConstants.MT940_FORWARD_AVAIL_BAL)) {
+//                fields.put(ConnectorConstants.FORWARD_CLOSING_AVAIL_BALANCE, line);
+//            }
         }
         return fields;
     }

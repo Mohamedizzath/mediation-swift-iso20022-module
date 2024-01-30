@@ -18,6 +18,7 @@
 
 package org.wso2.carbon.module.swiftiso20022.utils;
 
+import org.apache.commons.lang3.StringUtils;
 import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
 import org.wso2.carbon.module.swiftiso20022.model.ErrorModel;
 
@@ -145,7 +146,7 @@ public class MT940ValidationUtils {
         ErrorModel errorModel = new ErrorModel();
         String reference = transactionRef.split(ConnectorConstants.COLON)[2];
 
-        if (reference == null || reference.isBlank()) {
+        if (StringUtils.isBlank(reference)) {
             return new ErrorModel(ConnectorConstants.INVALID_REQUEST_PAYLOAD,
                     String.format(ConnectorConstants.ERROR_PARAMETER_MISSING,
                             ConnectorConstants.TRANSACTION_REF));
@@ -183,7 +184,7 @@ public class MT940ValidationUtils {
         if (relatedRef != null) {
             String reference = relatedRef.split(ConnectorConstants.COLON)[2];
 
-            if (reference != null) {
+            if (StringUtils.isNotBlank(reference)) {
                 if (relatedRef.length() > 16) {
                     return new ErrorModel(ConnectorConstants.ERROR_M50,
                             String.format(ConnectorConstants.ERROR_PARAMETER_LENGTH,
@@ -202,6 +203,10 @@ public class MT940ValidationUtils {
                             String.format(ConnectorConstants.ERROR_PARAMETER_INVALID,
                                     ConnectorConstants.RELATED_REF));
                 }
+            } else {
+                return new ErrorModel(ConnectorConstants.INVALID_REQUEST_PAYLOAD,
+                        String.format(ConnectorConstants.ERROR_PARAMETER_INVALID,
+                                ConnectorConstants.RELATED_REF));
             }
         }
         return errorModel;
@@ -217,7 +222,7 @@ public class MT940ValidationUtils {
         ErrorModel errorModel = new ErrorModel();
         String account = accIdentifier.split(ConnectorConstants.COLON)[2];
 
-        if (account == null || account.isBlank()) {
+        if (StringUtils.isBlank(account)) {
             return new ErrorModel(ConnectorConstants.INVALID_REQUEST_PAYLOAD,
                     String.format(ConnectorConstants.ERROR_PARAMETER_MISSING,
                             ConnectorConstants.ACC_IDENTIFICATION));
@@ -247,7 +252,7 @@ public class MT940ValidationUtils {
         ErrorModel errorModel = new ErrorModel();
         String  number = statementNumber.split(ConnectorConstants.COLON)[2];
 
-        if (number == null || number.isBlank()) {
+        if (StringUtils.isBlank(number)) {
             return new ErrorModel(ConnectorConstants.INVALID_REQUEST_PAYLOAD,
                     String.format(ConnectorConstants.ERROR_PARAMETER_MISSING,
                             ConnectorConstants.STATEMENT_NUMBER));
@@ -283,7 +288,7 @@ public class MT940ValidationUtils {
         ErrorModel errorModel = new ErrorModel();
         String  balance = openingBalance.split(ConnectorConstants.COLON)[2];
 
-        if (balance == null || balance.isBlank()) {
+        if (StringUtils.isBlank(balance)) {
             return new ErrorModel(ConnectorConstants.INVALID_REQUEST_PAYLOAD,
                     String.format(ConnectorConstants.ERROR_PARAMETER_MISSING,
                             ConnectorConstants.OPENING_BALANCE));
@@ -306,7 +311,7 @@ public class MT940ValidationUtils {
         ErrorModel errorModel = new ErrorModel();
         String  balance = closingBalance.split(ConnectorConstants.COLON)[2];
 
-        if (balance == null || balance.isBlank()) {
+        if (StringUtils.isBlank(balance)) {
             return new ErrorModel(ConnectorConstants.ERROR_C24,
                     String.format(ConnectorConstants.ERROR_PARAMETER_MISSING,
                             ConnectorConstants.CLOSING_BALANCE));
