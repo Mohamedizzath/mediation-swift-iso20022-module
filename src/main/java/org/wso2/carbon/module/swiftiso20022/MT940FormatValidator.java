@@ -33,7 +33,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-
 /**
  * Class to validate the MT940 format.
  */
@@ -46,7 +45,7 @@ public class MT940FormatValidator extends AbstractConnector {
                 .getAxis2MessageContext();
         Optional<String> payload = ConnectorUtils.buildMessagePayloadFromMessageContext(axis2MessageContext);
         if (payload.isPresent()) {
-            String[] lines = payload.get().split("\n");
+            String[] lines = payload.get().split(ConnectorConstants.LINE_BREAK);
             ErrorModel validationResponse = validateMT940(messageContext, lines);
 
             if (validationResponse.isError()) {
@@ -55,7 +54,6 @@ public class MT940FormatValidator extends AbstractConnector {
                         validationResponse.getErrorMessage());
                 this.handleException(ConnectorConstants.ERROR_VALIDATION_FAILED, messageContext);
             }
-
         } else {
             this.log.error(ConnectorConstants.ERROR_MISSING_PAYLOAD);
             ConnectorUtils.appendErrorToMessageContext(messageContext, ConnectorConstants.MISSING_REQUEST_PAYLOAD,
@@ -72,29 +70,26 @@ public class MT940FormatValidator extends AbstractConnector {
      * @return                Error model
      */
     private ErrorModel validateMT940(MessageContext messageContext, String[] lines) {
-        ErrorModel errorModel = new ErrorModel();
         Map<String, Object> extractFields = extractFields(lines);
 
-        if (!MT940ValidationUtils.validateC1Rule(lines)) {
+        if (!MT940ValidationUtils.isValidC1Rule(lines)) {
             return new ErrorModel(ConnectorConstants.ERROR_C24,
                     ConnectorConstants.ERROR_FIELD_86);
         }
 
-        if (!MT940ValidationUtils.validateC2Rule(lines)) {
-            return new ErrorModel(ConnectorConstants.ERROR_C277,
+        if (!MT940ValidationUtils.isValidC2Rule(lines)) {
+            return new ErrorModel(ConnectorConstants.ERROR_C27,
                     ConnectorConstants.ERROR_BALANCES);
         }
 
-        errorModel = MT940ValidationUtils.validateMT940Format(extractFields);
+        ErrorModel errorModel = MT940ValidationUtils.validateMT940Format(extractFields);
         if (errorModel.isError()) {
             this.log.error(errorModel.getErrorMessage());
             ConnectorUtils.appendErrorToMessageContext(messageContext, errorModel.getErrorCode(),
                     errorModel.getErrorMessage());
             this.handleException(errorModel.getErrorMessage(), messageContext);
         }
-
-        errorModel.setIsError(false);
-        return errorModel;
+        return new ErrorModel();
     }
 
     /**
@@ -144,26 +139,6 @@ public class MT940FormatValidator extends AbstractConnector {
                     break;
 
             }
-//            if (line.startsWith(ConnectorConstants.MT940_TRANSACTION_REF)) {
-//                fields.put(ConnectorConstants.TRANSACTION_REF, line);
-//            } else if (line.startsWith(ConnectorConstants.MT940_RELATED_REF)) {
-//                fields.put(ConnectorConstants.RELATED_REF, line);
-//            } else if (line.startsWith(ConnectorConstants.MT940_ACCOUNT_NO)) {
-//                fields.put(ConnectorConstants.ACC_IDENTIFICATION, line);
-//            } else if (line.startsWith(ConnectorConstants.MT940_STATEMENT_NO)) {
-//                fields.put(ConnectorConstants.STATEMENT_NUMBER, line);
-//            } else if (line.startsWith(ConnectorConstants.MT940_OPENING_BAL)) {
-//                fields.put(ConnectorConstants.OPENING_BALANCE, line);
-//            } else if (line.startsWith(ConnectorConstants.MT940_STATEMENT_LINE)) {
-//                statementLine.add(line);
-//                fields.put(ConnectorConstants.STATEMENT_LINE, statementLine);
-//            } else if (line.startsWith(ConnectorConstants.MT940_CLOSING_BAL)) {
-//                fields.put(ConnectorConstants.CLOSING_BALANCE, line);
-//            } else if (line.startsWith(ConnectorConstants.MT940_CLOSING_AVAIL_BAL)) {
-//                fields.put(ConnectorConstants.CLOSING_AVAIL_BALANCE, line);
-//            } else if (line.startsWith(ConnectorConstants.MT940_FORWARD_AVAIL_BAL)) {
-//                fields.put(ConnectorConstants.FORWARD_CLOSING_AVAIL_BALANCE, line);
-//            }
         }
         return fields;
     }

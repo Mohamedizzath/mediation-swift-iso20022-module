@@ -19,6 +19,8 @@
 package org.wso2.carbon.module.swiftiso20022.utils;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.wso2.carbon.connector.core.ConnectException;
@@ -42,6 +44,8 @@ import java.util.List;
  * Class to hold the JSON to MT940 Converting utility methods.
  */
 public class JsonToMt940Utils {
+
+    private static final Log log = LogFactory.getLog(JsonToMt940Utils.class);
 
     /**
      * Method to validate the request payload.
@@ -131,6 +135,7 @@ public class JsonToMt940Utils {
             formatter.parse(dateTime);
             return true;
         } catch (ParseException e) {
+            log.error("Error while parsing the date time", e);
             return false;
         }
     }
@@ -142,7 +147,6 @@ public class JsonToMt940Utils {
      * @return                 True if the transaction type is valid, else false
      */
     public static ErrorModel isValidTransactionType(String transactionType) {
-        ErrorModel errorModel = new ErrorModel();
         if (!transactionType.startsWith(ConnectorConstants.SWIFT_TRANSFER) &&
                 !transactionType.startsWith(ConnectorConstants.NON_SWIFT_TRANSFER) &&
                 !transactionType.startsWith(ConnectorConstants.FIRST_ADVICE)) {
@@ -162,9 +166,7 @@ public class JsonToMt940Utils {
                         ConnectorConstants.ERROR_TRANS_TYPE_INVALID);
             }
         }
-
-        errorModel.setIsError(false);
-        return errorModel;
+        return new ErrorModel();
     }
 
     /**
@@ -174,8 +176,10 @@ public class JsonToMt940Utils {
      * @return                 True if the debitCreditMark is valid, else false
      */
     public static boolean isValidDebitCreditMark(String debitCreditMark) {
-        return debitCreditMark.startsWith("D") || debitCreditMark.startsWith("C") ||
-                debitCreditMark.startsWith("RD") || debitCreditMark.startsWith("RC");
+        return debitCreditMark.startsWith(ConnectorConstants.DEBIT) ||
+                debitCreditMark.startsWith(ConnectorConstants.CREDIT) ||
+                debitCreditMark.startsWith(ConnectorConstants.REV_DEBIT) ||
+                debitCreditMark.startsWith(ConnectorConstants.REV_CREDIT);
     }
 
     /**

@@ -45,23 +45,25 @@ import javax.xml.stream.XMLStreamException;
  */
 public class JsonToMT940Transformer extends AbstractConnector {
 
+    private static final Gson gson = new Gson();
+
     public void connect(MessageContext messageContext) throws ConnectException {
         try {
-            this.log.debug("Executing JsonToMT940Convertor to convert the JSON payload to MT940 format");
+            this.log.debug("Executing JsonToMT940Transformer to convert the JSON payload to MT940 format");
 
             org.apache.axis2.context.MessageContext axis2MessageContext = ((Axis2MessageContext) messageContext)
                     .getAxis2MessageContext();
             Optional<String> payload = ConnectorUtils.buildMessagePayloadFromMessageContext(axis2MessageContext);
 
             if (payload.isPresent()) {
-                RequestPayloadModel requestPayload = (new Gson()).fromJson(payload.get(), RequestPayloadModel.class);
+                RequestPayloadModel requestPayload = gson.fromJson(payload.get(), RequestPayloadModel.class);
 
                 ErrorModel validationResponse = validateRequestPayload(requestPayload);
                 if (validationResponse.isError()) {
                     this.log.error(validationResponse.getErrorMessage());
                     ConnectorUtils.appendErrorToMessageContext(messageContext, validationResponse.getErrorCode(),
                             validationResponse.getErrorMessage());
-                    this.handleException(ConnectorConstants.ERROR_VALIDATION_FAILED, messageContext);
+                    super.handleException(ConnectorConstants.ERROR_VALIDATION_FAILED, messageContext);
                 }
 
                 JSONObject mt940FormatJson = JsonToMt940Utils.appendConstructedFields(payload.get(), requestPayload);
@@ -70,7 +72,7 @@ public class JsonToMT940Transformer extends AbstractConnector {
                 this.log.error(ConnectorConstants.ERROR_MISSING_PAYLOAD);
                 ConnectorUtils.appendErrorToMessageContext(messageContext, ConnectorConstants.MISSING_REQUEST_PAYLOAD,
                         ConnectorConstants.ERROR_MISSING_PAYLOAD);
-                this.handleException(ConnectorConstants.ERROR_MISSING_PAYLOAD, messageContext);
+                super.handleException(ConnectorConstants.ERROR_MISSING_PAYLOAD, messageContext);
             }
 
         } catch (JSONException | AxisFault | XMLStreamException | ConnectException e) {

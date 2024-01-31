@@ -22,16 +22,16 @@ package org.wso2.carbon.module.swiftiso20022.mt940models;
  * Class to hold the Statement Line details.
  */
 public class StatementLineModel {
-    String valueDate;
-    String entryDate;
-    String transactionIndicator;
-    String fundCode;
-    String amount;
-    String transactionType;
-    String customerReference;
-    String bankReference;
-    String supplementaryData;
-    String information;
+    private String valueDate;
+    private String entryDate;
+    private String transactionIndicator;
+    private String fundCode;
+    private String amount;
+    private String transactionType;
+    private String customerReference;
+    private String bankReference;
+    private String supplementaryData;
+    private String information;
 
     public void setValueDate(String valueDate) {
         this.valueDate = valueDate;

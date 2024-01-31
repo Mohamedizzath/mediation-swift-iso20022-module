@@ -23,11 +23,11 @@ package org.wso2.carbon.module.swiftiso20022.mt940models;
  */
 public class BalanceModel {
 
-    String date;
-    String balanceAmount;
-    String indicator;
-    String currency;
-    String statementType;
+    private String date;
+    private String balanceAmount;
+    private String indicator;
+    private String currency;
+    private String statementType;
 
     public void setDate(String date) {
         this.date = date;

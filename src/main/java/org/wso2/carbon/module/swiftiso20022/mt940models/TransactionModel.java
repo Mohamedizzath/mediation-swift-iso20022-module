@@ -22,15 +22,15 @@ package org.wso2.carbon.module.swiftiso20022.mt940models;
  * Class to hold the transaction details.
  */
 public class TransactionModel {
-    String dateTime;
-    String amount;
-    String currency;
-    String transactionReference;
-    String transactionIndicator;
-    String customerReference;
-    String transactionType;
-    String supplementaryData;
-    String information;
+    private String dateTime;
+    private String amount;
+    private String currency;
+    private String transactionReference;
+    private String transactionIndicator;
+    private String customerReference;
+    private String transactionType;
+    private String supplementaryData;
+    private String information;
 
 
     public void setDateTime(String dateTime) {

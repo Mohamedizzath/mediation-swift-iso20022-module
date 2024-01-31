@@ -18,6 +18,7 @@
 
 package org.wso2.carbon.module.swiftiso20022.utils;
 
+import org.apache.commons.lang3.StringUtils;
 import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
 import org.wso2.carbon.module.swiftiso20022.model.ErrorModel;
 
@@ -36,13 +37,11 @@ public class ValidatorUtils {
      * @return     Whether currency is valid
      */
     public static boolean isValidCurrency(String currency) {
-        if (currency == null || currency.isBlank()) {
+        if (StringUtils.isBlank(currency)) {
             return false;
         }
         Set<Currency> availableCurrencies = Currency.getAvailableCurrencies();
-        long matchingCurrencyCount = availableCurrencies.stream()
-                .filter(c -> c.getCurrencyCode().equals(currency)).count();
-        return matchingCurrencyCount > 0;
+        return availableCurrencies.stream().anyMatch(c -> c.getCurrencyCode().equals(currency));
     }
 
     /** Method to validate whether amount is valid

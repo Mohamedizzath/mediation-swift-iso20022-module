@@ -24,18 +24,18 @@ import java.util.List;
  * Class to hold the request payload.
  */
 public class RequestPayloadModel {
-    String block1;
-    String block2;
-    String block3;
-    String accountNumber;
-    String accountNumberIdentifier;
-    BalanceModel openingBalanceDetails;
-    BalanceModel closingBalanceDetails;
-    BalanceModel closingAvailableBalanceDetails;
-    BalanceModel forwardAvailableBalanceDetails;
-    String reference;
-    String sequenceNumber;
-    List<TransactionModel> transactions;
+    private String block1;
+    private String block2;
+    private String block3;
+    private String accountNumber;
+    private String accountNumberIdentifier;
+    private BalanceModel openingBalanceDetails;
+    private BalanceModel closingBalanceDetails;
+    private BalanceModel closingAvailableBalanceDetails;
+    private BalanceModel forwardAvailableBalanceDetails;
+    private String reference;
+    private String sequenceNumber;
+    private List<TransactionModel> transactions;
 
     public void setBlock1(String block1) {
         this.block1 = block1;

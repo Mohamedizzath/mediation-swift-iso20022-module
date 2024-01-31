@@ -34,6 +34,9 @@ public class ConnectorConstants {
     public static final String NUMBER_REGEX_PATTERN = "[0-9]+";
     public static final String DEBIT = "D";
     public static final String CREDIT = "C";
+    public static final String REV_DEBIT = "D";
+    public static final String REV_CREDIT = "RC";
+    public static final String LINE_BREAK = "\n";
 
     //MT940 Related Constants
     public static final String MT940_TRANSACTION_REF = ":20";
@@ -91,7 +94,7 @@ public class ConnectorConstants {
 
     // MT940 Error Constants
     public static final String ERROR_C24 = "C24";
-    public static final String ERROR_C277 = "C27";
+    public static final String ERROR_C27 = "C27";
     public static final String ERROR_T18 = "T18";
     public static final String ERROR_T13 = "T13";
     public static final String ERROR_T26 = "T26";
