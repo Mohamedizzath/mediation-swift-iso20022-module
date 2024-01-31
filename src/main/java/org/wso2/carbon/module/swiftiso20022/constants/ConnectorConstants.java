@@ -84,7 +84,7 @@ public class ConnectorConstants {
     public static final String ERROR_MISSING_PAYLOAD = "Missing Request Payload";
     public static final String PROCESSING_ERROR = "Error while processing the request";
     public static final String ERROR_PARAMETER_MISSING = "Missing mandatory parameter %s";
-    public static final String ERROR_PARAMETER_LENGTH = "%s should not contains more than %s characters";
+    public static final String ERROR_PARAMETER_LENGTH = "%s should not contain more than %s characters";
     public static final String ERROR_PARAMETER_CONTAINS_SLASH = "%s should not contain slashes";
     public static final String ERROR_PARAMETER_INVALID = "Field %s is invalid";
     public static final String ERROR_CURRENCY_CODE_INVALID = "Currency code in the field %s is not in ISO 4217" +

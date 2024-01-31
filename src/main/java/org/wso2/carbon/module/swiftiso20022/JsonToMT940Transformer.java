@@ -153,9 +153,7 @@ public class JsonToMT940Transformer extends AbstractConnector {
         if (error.isError()) {
             return error;
         }
-
-        error.setIsError(false);
-        return error;
+        return new ErrorModel();
     }
 
     /**
@@ -165,7 +163,6 @@ public class JsonToMT940Transformer extends AbstractConnector {
      * @return              Error model if there is an error, else empty error model
      */
     private static ErrorModel validateTransactionDetails(List<TransactionModel> transactions) {
-        ErrorModel error = new ErrorModel();
 
         for (TransactionModel transaction : transactions) {
             if (!JsonToMt940Utils.isValidDateFormat(transaction.getDateTime())) {
@@ -173,7 +170,7 @@ public class JsonToMT940Transformer extends AbstractConnector {
                         ConnectorConstants.ERROR_DATE_TIME_INVALID);
             }
 
-            error = JsonToMt940Utils.isValidTransactionType(transaction.getTransactionType());
+            ErrorModel error = JsonToMt940Utils.isValidTransactionType(transaction.getTransactionType());
             if (error.isError()) {
                 return error;
             }
@@ -203,8 +200,6 @@ public class JsonToMT940Transformer extends AbstractConnector {
                 return new ErrorModel(ConnectorConstants.ERROR_M50, ConnectorConstants.ERROR_TRANS_REF_INVALID);
             }
         }
-
-        error.setIsError(false);
-        return error;
+        return new ErrorModel();
     }
 }

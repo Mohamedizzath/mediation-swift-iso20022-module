@@ -62,13 +62,13 @@ public class MT940ValidationUtils {
 
         for (String line : lines) {
             if (line.startsWith(ConnectorConstants.MT940_OPENING_BAL)) {
-                openBalanceCurrency =  line.length() > 18 ? line.substring(14, 17) : null;
+                openBalanceCurrency = line.length() > 18 ? line.substring(14, 17) : null;
             } else if (line.startsWith(ConnectorConstants.MT940_CLOSING_BAL)) {
-                closeBalanceCurrency =  line.length() > 18 ? line.substring(14, 17) : null;
+                closeBalanceCurrency = line.length() > 18 ? line.substring(14, 17) : null;
             } else if (line.startsWith(ConnectorConstants.MT940_CLOSING_AVAIL_BAL)) {
-                closeAvailBalanceCurrency =  line.length() > 18 ? line.substring(13, 16) : null;
+                closeAvailBalanceCurrency = line.length() > 18 ? line.substring(13, 16) : null;
             } else if (line.startsWith(ConnectorConstants.MT940_FORWARD_AVAIL_BAL)) {
-                forwardAvailBalanceCurrency =  line.length() > 18 ? line.substring(13, 16) : null;
+                forwardAvailBalanceCurrency = line.length() > 18 ? line.substring(13, 16) : null;
             }
         }
 
