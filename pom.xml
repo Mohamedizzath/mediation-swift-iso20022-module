@@ -267,7 +267,7 @@
     <properties>
         <connector.name>swiftISO20022</connector.name>
         <maven.compiler.plugin.version>3.7.0</maven.compiler.plugin.version>
-        <maven.surefire.plugin.version>2.22.2</maven.surefire.plugin.version>
+        <maven.surefire.plugin.version>3.0.0-M1</maven.surefire.plugin.version>
         <maven.assembly.version>2.4</maven.assembly.version>
         <carbon.kernel.version>4.4.17</carbon.kernel.version>
         <module.core.version>1.0.2</module.core.version>
