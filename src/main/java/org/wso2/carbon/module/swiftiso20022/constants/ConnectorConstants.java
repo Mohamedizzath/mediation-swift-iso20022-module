@@ -104,7 +104,6 @@ public class ConnectorConstants {
     public static final String ERROR_T53 = "T53";
     public static final String ERROR_C03 = "C03";
     public static final String ERROR_T40 = "T40";
-    public static final String ERROR_T43 = "T43";
     public static final String ERROR_M50 = "M50";
 
     public static final String ERROR_BLOCK1_INVALID = "Header block 1 is a mandatory parameter for MT940";
@@ -122,8 +121,6 @@ public class ConnectorConstants {
             " either current or last";
     public static final String ERROR_DATE_TIME_INVALID = "Transaction Date Time is not in the correct format";
     public static final String ERROR_TRANS_TYPE_INVALID = "Transaction Type is not in the correct format";
-    public static final String ERROR_CURRENCY_INVALID = "Currency supported by the account and currency in the " +
-            "transactions does not match";
     public static final String ERROR_FIELD_86 = "Information to Account Owner field should be preceded by " +
             "Statement Line field";
     public static final String ERROR_BALANCES = "The first two characters of the three character currency code in" +

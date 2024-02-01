@@ -38,8 +38,6 @@ import org.wso2.carbon.module.swiftiso20022.utils.ValidatorUtils;
 import java.util.List;
 import java.util.Optional;
 
-import javax.xml.stream.XMLStreamException;
-
 /**
  * Class to convert the JSON payload to MT940 format.
  */
@@ -75,7 +73,7 @@ public class JsonToMT940Transformer extends AbstractConnector {
                 super.handleException(ConnectorConstants.ERROR_MISSING_PAYLOAD, messageContext);
             }
 
-        } catch (JSONException | AxisFault | XMLStreamException | ConnectException e) {
+        } catch (JSONException | AxisFault | ConnectException e) {
             this.log.error(ConnectorConstants.PROCESSING_ERROR, e);
             ConnectorUtils.appendErrorToMessageContext(messageContext, ConnectorConstants.SERVER_ERROR,
                     ConnectorConstants.PROCESSING_ERROR);

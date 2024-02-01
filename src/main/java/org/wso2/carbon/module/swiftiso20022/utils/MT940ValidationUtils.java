@@ -61,14 +61,17 @@ public class MT940ValidationUtils {
         String forwardAvailBalanceCurrency = null;
 
         for (String line : lines) {
+            String mandatoryCurrencyField = line.length() > 18 ? line.substring(14, 17) : null;
+            String optionalCurrencyField = line.length() > 17 ? line.substring(13, 16) : null;
+
             if (line.startsWith(ConnectorConstants.MT940_OPENING_BAL)) {
-                openBalanceCurrency = line.length() > 18 ? line.substring(14, 17) : null;
+                openBalanceCurrency = mandatoryCurrencyField;
             } else if (line.startsWith(ConnectorConstants.MT940_CLOSING_BAL)) {
-                closeBalanceCurrency = line.length() > 18 ? line.substring(14, 17) : null;
+                closeBalanceCurrency = mandatoryCurrencyField;
             } else if (line.startsWith(ConnectorConstants.MT940_CLOSING_AVAIL_BAL)) {
-                closeAvailBalanceCurrency = line.length() > 18 ? line.substring(13, 16) : null;
+                closeAvailBalanceCurrency = optionalCurrencyField;
             } else if (line.startsWith(ConnectorConstants.MT940_FORWARD_AVAIL_BAL)) {
-                forwardAvailBalanceCurrency = line.length() > 18 ? line.substring(13, 16) : null;
+                forwardAvailBalanceCurrency = optionalCurrencyField;
             }
         }
 
