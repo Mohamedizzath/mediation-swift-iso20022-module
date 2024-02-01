@@ -90,11 +90,11 @@ public class JsonToMT940Transformer extends AbstractConnector {
     private ErrorModel validateRequestPayload(RequestPayloadModel requestPayload) {
 
         if (StringUtils.isBlank(requestPayload.getBlock1())) {
-            return new ErrorModel(ConnectorConstants.ERROR_T13, ConnectorConstants.ERROR_BLOCK1_INVALID);
+            return new ErrorModel(ConnectorConstants.ERROR_H01, ConnectorConstants.ERROR_BLOCK1_INVALID);
         }
 
         if (StringUtils.isBlank(requestPayload.getBlock2())) {
-            return new ErrorModel(ConnectorConstants.ERROR_T13, ConnectorConstants.ERROR_BLOCK2_INVALID);
+            return new ErrorModel(ConnectorConstants.ERROR_H25, ConnectorConstants.ERROR_BLOCK2_INVALID);
         }
 
         if (!JsonToMt940Utils.validateAccountNumber(requestPayload)) {

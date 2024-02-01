@@ -93,17 +93,19 @@ public class ConnectorConstants {
     public static final String ERROR_AMOUNT_SIZE_INVALID = "Amount should not be empty";
 
     // MT940 Error Constants
+    public static final String ERROR_C03 = "C03";
     public static final String ERROR_C24 = "C24";
     public static final String ERROR_C27 = "C27";
+    public static final String ERROR_H01 = "H01";
+    public static final String ERROR_H25 = "H25";
     public static final String ERROR_T18 = "T18";
     public static final String ERROR_T13 = "T13";
     public static final String ERROR_T26 = "T26";
+    public static final String ERROR_T40 = "T40";
     public static final String ERROR_T50 = "T50";
     public static final String ERROR_T51 = "T51";
     public static final String ERROR_T52 = "T52";
     public static final String ERROR_T53 = "T53";
-    public static final String ERROR_C03 = "C03";
-    public static final String ERROR_T40 = "T40";
     public static final String ERROR_M50 = "M50";
 
     public static final String ERROR_BLOCK1_INVALID = "Header block 1 is a mandatory parameter for MT940";
