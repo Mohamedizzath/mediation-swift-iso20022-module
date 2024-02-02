@@ -18,6 +18,7 @@
 
 package org.wso2.carbon.module.swiftiso20022.mt103models.transformer.blocks;
 
+import org.apache.commons.lang.StringUtils;
 import org.wso2.carbon.module.swiftiso20022.model.ErrorModel;
 
 /**
@@ -38,7 +39,68 @@ public class Block02 implements RequestPayloadBlock {
 
     @Override
     public ErrorModel validate() {
-        // TODO: Implement validation logic
+        if (!StringUtils.isBlank(messageType) && !StringUtils.equals(messageType, "103")) {
+            // TODO: replace with constants
+            return new ErrorModel("H98", "Message Type is invalid");
+        }
+        // TODO: add validator to check message priority
+        if (!StringUtils.isBlank(priority) && StringUtils.length(priority) != 1) {
+            return new ErrorModel("H98", "Priority length is invalid");
+        }
+        if (StringUtils.isBlank(inputOutputIdentifier)) {
+            // TODO: replace with constants
+            return new ErrorModel("H98", "Input Output Identifier is required");
+        } else {
+            switch (inputOutputIdentifier) {
+                case "I":
+                    return validateInputMessagePayload();
+                case "O":
+                    return validateOutputMessagePayload();
+                default:
+                    return new ErrorModel("H98", "Input Output Identifier is invalid");
+            }
+        }
+    }
+
+    private ErrorModel validateInputMessagePayload() {
+        if (StringUtils.isBlank(destinationLogicalTerminalAddress)) {
+            // TODO: replace with constants
+            return new ErrorModel("H25", "Destination Logical Address is required for Input Messages");
+        } else if (StringUtils.length(destinationLogicalTerminalAddress) > 12) {
+            return new ErrorModel("H50", "Destination Logical Address is invalid");
+        }
+        if (!StringUtils.isBlank(deliveryMonitoringCode) && StringUtils.length(deliveryMonitoringCode) != 1) {
+            return new ErrorModel("H80", "Delivery Monitory Code length is invalid");
+        }
+        if (!StringUtils.isBlank(obsolescencePeriodCode) && StringUtils.length(obsolescencePeriodCode) != 3) {
+            return new ErrorModel("H81", "Obsolescence Period Code length is invalid");
+        }
+        return new ErrorModel();
+    }
+
+    private ErrorModel validateOutputMessagePayload() {
+        // TODO: replace with constants
+        if (StringUtils.isBlank(inputTime)) {
+            return new ErrorModel("H25", "Input Time is required for Output message");
+        } else if (StringUtils.length(inputTime) != 4) {
+            // TODO: replace with constants
+            return new ErrorModel("T38", "Input time length is invalid");
+        }
+        if (StringUtils.isBlank(messageInputReference)) {
+            return new ErrorModel("H25", "Message Input Reference is required for Output message");
+        } else if (StringUtils.length(messageInputReference) != 28) {
+            return new ErrorModel("H98", "Message Input Reference length is invalid");
+        }
+        if (StringUtils.isBlank(outputDate)) {
+            return new ErrorModel("H25", "Output Date is required for Output message");
+        } else if (StringUtils.length(outputDate) != 6) {
+            return new ErrorModel("T50", "Output Date length is invalid");
+        }
+        if (StringUtils.isBlank(outputTime)) {
+            return new ErrorModel("H25", "Output Time is required for Output message");
+        } else if (StringUtils.length(outputTime) != 4) {
+            return new ErrorModel("T38", "Output Time length is invalid");
+        }
         return new ErrorModel();
     }
 

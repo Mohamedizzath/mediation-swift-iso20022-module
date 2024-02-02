@@ -25,6 +25,8 @@ import org.wso2.carbon.module.swiftiso20022.mt103models.transformer.blocks.Block
 import org.wso2.carbon.module.swiftiso20022.mt103models.transformer.blocks.Block04;
 import org.wso2.carbon.module.swiftiso20022.mt103models.transformer.blocks.Block05;
 
+import java.util.Objects;
+
 /**
  * Class that models the request payload.
  */
@@ -36,7 +38,7 @@ public class RequestPayload {
     Block05 block05;
 
     public ErrorModel validate() {
-        if (block01 == null) {
+        if (Objects.isNull(block01)) {
             // TODO: replace with constants
             return new ErrorModel("H01", "Basic Header block is mandatory for MT103");
         } else {
@@ -45,17 +47,17 @@ public class RequestPayload {
                 return block01ValidationResponse;
             }
         }
-        if (block02 != null) {
+        if (!Objects.isNull(block02)) {
             ErrorModel block02ValidationResponse = block02.validate();
             if (block02ValidationResponse.isError()) {
                 return block02ValidationResponse;
             }
         }
-        if (block03 == null) {
+        if (Objects.isNull(block03)) {
             // TODO: replace with constants
             return new ErrorModel("H01", "User Header block is mandatory for MT103");
         }
-        if (block04 == null) {
+        if (Objects.isNull(block04)) {
             // TODO: replace with constants
             return new ErrorModel("H01", "Text block is mandatory for MT103");
         }

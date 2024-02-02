@@ -18,6 +18,7 @@
 
 package org.wso2.carbon.module.swiftiso20022.mt103models.transformer.blocks;
 
+import org.apache.commons.lang.StringUtils;
 import org.wso2.carbon.module.swiftiso20022.model.ErrorModel;
 
 /**
@@ -32,31 +33,31 @@ public class Block01 implements RequestPayloadBlock {
     String sequenceNumber;
     @Override
     public ErrorModel validate() {
-        if (applicationIdentifier != null && !applicationIdentifier.equals("F")) {
+        if (!StringUtils.isBlank(applicationIdentifier) && !StringUtils.equals(applicationIdentifier, "F")) {
             // TODO: replace with constants
             return new ErrorModel("H02", "Application Identifier is invalid");
         }
-        if (serviceIdentifier != null && !serviceIdentifier.equals("01")) {
+        if (!StringUtils.isBlank(serviceIdentifier) && !StringUtils.equals(serviceIdentifier, "01")) {
             return new ErrorModel("H03", "Service Identifier should be a valid value");
         }
-        if (logicalTerminalAddress == null) {
+        if (StringUtils.isBlank(logicalTerminalAddress)) {
             // TODO: replace with constants
             return new ErrorModel("H98", "Logical Terminal Address should be present");
-        } else if (logicalTerminalAddress.length() != 12) {
+        } else if (StringUtils.length(logicalTerminalAddress) != 12) {
             // TODO: replace with constants
             return new ErrorModel("H10", "Logical Terminal Address length is invalid");
         }
-        if (sessionNumber == null) {
+        if (StringUtils.isBlank(sessionNumber)) {
             // TODO: replace with constants
             return new ErrorModel("H98", "Session Number should be present");
-        } else if (sessionNumber.length() != 4) {
+        } else if (StringUtils.length(sessionNumber) != 4) {
             // TODO: replace with constants
             return new ErrorModel("H15", "Session Number length is invalid");
         }
-        if (sequenceNumber == null) {
+        if (StringUtils.isBlank(sequenceNumber)) {
             // TODO: replace with constants
             return new ErrorModel("H98", "Sequence Number should be present");
-        } else if (sequenceNumber.length() != 6) {
+        } else if (StringUtils.length(sequenceNumber) != 6) {
             // TODO: replace with constants
             return new ErrorModel("H20", "Sequence Number length is invalid");
         }
