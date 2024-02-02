@@ -32,16 +32,11 @@ public class Block01 implements RequestPayloadBlock {
     String sequenceNumber;
     @Override
     public ErrorModel validate() {
-        if (applicationIdentifier == null) {
+        if (applicationIdentifier != null && !applicationIdentifier.equals("F")) {
             // TODO: replace with constants
-            return new ErrorModel("H98", "Application Identifier should be present");
-        } else if (!applicationIdentifier.equals("F")) {
-            return new ErrorModel("H02", "value should be F");
+            return new ErrorModel("H02", "Application Identifier is invalid");
         }
-        if (serviceIdentifier == null) {
-            // TODO: replace with constants
-            return new ErrorModel("H98", "Service Identifier should be present");
-        } else if (!serviceIdentifier.equals("01")) {
+        if (serviceIdentifier != null && !serviceIdentifier.equals("01")) {
             return new ErrorModel("H03", "Service Identifier should be a valid value");
         }
         if (logicalTerminalAddress == null) {
