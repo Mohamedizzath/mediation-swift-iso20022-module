@@ -18,6 +18,9 @@ import org.wso2.carbon.module.swiftiso20022.utils.MT940ValidationUtils;
 
 import java.util.Optional;
 
+/**
+ * Test class for MT940FormatValidator.
+ */
 @PowerMockIgnore("jdk.internal.reflect.*")
 @PrepareForTest({ConnectorUtils.class})
 public class MT940FormatValidatorTests extends PowerMockTestCase {

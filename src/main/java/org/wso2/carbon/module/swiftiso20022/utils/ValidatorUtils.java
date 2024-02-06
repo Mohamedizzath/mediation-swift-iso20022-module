@@ -30,7 +30,7 @@ import java.util.regex.Pattern;
  */
 public class ValidatorUtils {
 
-    /** Method to validate whether currency is in ISO 4217 format
+    /** Method to validate whether currency is in ISO 4217 format.
      *
      * @param currency  Currency to be validated
      * @return     Whether currency is valid
@@ -42,7 +42,7 @@ public class ValidatorUtils {
         return Currency.getAvailableCurrencies().stream().anyMatch(c -> c.getCurrencyCode().equals(currency));
     }
 
-    /** Method to validate whether amount is valid
+    /** Method to validate whether amount is valid.
      *
      * @param amount  Amount to be validated
      * @return     Whether amount is valid
@@ -66,7 +66,7 @@ public class ValidatorUtils {
         return new ErrorModel();
     }
 
-    /** Method to validate whether a values is a number
+    /** Method to validate whether a values is a number.
      *
      * @param number  Number to be validated
      * @return     Whether the value is a number

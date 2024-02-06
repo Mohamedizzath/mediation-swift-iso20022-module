@@ -4,6 +4,9 @@ import org.testng.annotations.DataProvider;
 
 import java.util.Map;
 
+/**
+ * Test constants for JsonToMT940Test.
+ */
 public class JsonToMT940TestConstants {
 
     public static final String PAYLOAD = "{\n" +
