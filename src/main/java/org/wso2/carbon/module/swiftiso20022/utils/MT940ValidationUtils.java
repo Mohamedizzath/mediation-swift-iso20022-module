@@ -32,7 +32,7 @@ public class MT940ValidationUtils {
 
     /**
      * Method to validate the C1 rule MT940 format.
-     * C1 rule - :86: should be preceded by :61:
+     * C1 rule - :86: should be preceded by :61:.
      *
      * @param lines  Lines in MT940 format
      * @return    Result of C1 rule validation
@@ -49,7 +49,7 @@ public class MT940ValidationUtils {
 
     /**
      * Method to validate the C2 rule MT940 format.
-     * C2 rule - :60:, :62:, :64: and :65: should have same currency code
+     * C2 rule - :60:, :62:, :64: and :65: should have same currency code.
      *
      * @param lines  Lines in MT940 format
      * @return    Result of C2 rule validation
@@ -87,7 +87,7 @@ public class MT940ValidationUtils {
     }
 
     /**
-     * Method to validate the MT940 format
+     * Method to validate the MT940 format.
      *
      * @param fields  Fields in MT940 format
      * @return    ErrorModel MT940 format is invalid
@@ -310,7 +310,7 @@ public class MT940ValidationUtils {
         return new ErrorModel();
     }
 
-    /** Method to validate whether Closing available balance is valid
+    /** Method to validate whether Closing available balance is valid.
      *
      * @param closingBalance  Balance to be validated
      * @return     Whether balance is valid
@@ -333,7 +333,7 @@ public class MT940ValidationUtils {
         return new ErrorModel();
     }
 
-    /** Method to validate whether Forward available balance is valid
+    /** Method to validate whether Forward available balance is valid.
      *
      * @param closingBalance  Balance to be validated
      * @return     Whether balance is valid
@@ -356,7 +356,7 @@ public class MT940ValidationUtils {
         return new ErrorModel();
     }
 
-    /** Method to validate whether Opening/closing balance is valid
+    /** Method to validate whether Opening/closing balance is valid.
      *
      * @param balance  Balance to be validated
      * @return     Whether balance is valid
@@ -387,7 +387,7 @@ public class MT940ValidationUtils {
         return new ErrorModel();
     }
 
-    /** Method to validate whether amount is valid
+    /** Method to validate whether amount is valid.
      *
      * @param amount  Amount to be validated
      * @return     Whether amount is valid

@@ -34,6 +34,9 @@ import org.wso2.carbon.module.swiftiso20022.utils.JsonToMT940TestConstants;
 
 import java.util.Optional;
 
+/**
+ * Test class for JsonToMT940Transformer.
+ */
 @PowerMockIgnore("jdk.internal.reflect.*")
 @PrepareForTest({ConnectorUtils.class})
 public class JsonToMT940TransformerTests extends PowerMockTestCase {

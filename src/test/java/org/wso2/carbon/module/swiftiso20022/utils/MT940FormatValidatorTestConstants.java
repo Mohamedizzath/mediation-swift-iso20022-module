@@ -2,7 +2,9 @@ package org.wso2.carbon.module.swiftiso20022.utils;
 
 import org.testng.annotations.DataProvider;
 
-
+/**
+ * Constants for the MT940FormatValidator test class.
+ */
 public class MT940FormatValidatorTestConstants {
 
     public static final String PAYLOAD = "{1:F01CBORETAAXXXX22061ZFPHG}{2:I940XXXXXXXXXXXXN}" +
