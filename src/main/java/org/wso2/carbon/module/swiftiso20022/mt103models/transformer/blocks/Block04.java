@@ -18,9 +18,11 @@
 
 package org.wso2.carbon.module.swiftiso20022.mt103models.transformer.blocks;
 
+import org.apache.commons.lang.StringUtils;
 import org.wso2.carbon.module.swiftiso20022.model.ErrorModel;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Class that models request payload block04.
@@ -44,7 +46,63 @@ public class Block04 implements RequestPayloadBlock {
     List<String> regulatoryReporting;
     @Override
     public ErrorModel validate() {
-        // TODO: Implement validation logic
-        return null;
+        if (StringUtils.isBlank(sendersReference)) {
+            return new ErrorModel("T13", "Sender's Reference is required");
+        }
+        if (sendersReference.length() > 16) {
+            return new ErrorModel("T33", "Sender's Reference length is invalid");
+        }
+        if (!Objects.isNull(timeIndication)) {
+            // TODO: implement array checking
+        }
+        if (StringUtils.isBlank(bankOperationCode)) {
+            return new ErrorModel("T13", "Bank Operation Code is required");
+        }
+        if (bankOperationCode.length() != 4) {
+            return new ErrorModel("T33", "Bank Operation Code length is invalid");
+        }
+        if (!Objects.isNull(instructionCodes)) {
+            // TODO: implement array checking
+        }
+        if (!StringUtils.isBlank(transactionTypeCode) && transactionTypeCode.length() != 3) {
+            return new ErrorModel("T33", "Transaction Type Code length is invalid");
+        }
+        if (StringUtils.isBlank(value)) {
+            return new ErrorModel("T13", "Value is required");
+        }
+        if (value.length() > 24) {
+            return new ErrorModel("T33", "Value length is invalid");
+        }
+        if (!StringUtils.isBlank(instructedAmount) && instructedAmount.length() > 18) {
+            return new ErrorModel("T33", "Instructed Amount length is invalid");
+        }
+        if (!StringUtils.isBlank(exchangeRate) && exchangeRate.length() > 12) {
+            return new ErrorModel("T33", "Exchange Rate length is invalid");
+        }
+
+        // TODO: implement validation logic for entities
+
+        if (!Objects.isNull(remittanceInformation)) {
+            // TODO: implement validation for arrays
+        }
+        if (StringUtils.isBlank(detailsOfCharges)) {
+            return new ErrorModel("T13", "Details of Charge is required");
+        }
+        if (detailsOfCharges.length() != 3) {
+            return new ErrorModel("T33", "Details of Charge length is invalid");
+        }
+        if (!Objects.isNull(sendersCharges)) {
+            // TODO: implement validation for arrays
+        }
+        if (!StringUtils.isBlank(receiversCharges) && receiversCharges.length() > 18) {
+            return new ErrorModel("T33", "Receiver's charges length is invalid");
+        }
+        if (!Objects.isNull(senderToReceiverInformation)) {
+            // TODO: implement validation for arrays
+        }
+        if (!Objects.isNull(regulatoryReporting)) {
+            // TODO: implement validation for arrays
+        }
+        return new ErrorModel();
     }
 }

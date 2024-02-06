@@ -65,6 +65,11 @@ public class RequestPayload {
         if (Objects.isNull(block04)) {
             // TODO: replace with constants
             return new ErrorModel("H01", "Text block is mandatory for MT103");
+        } else {
+            ErrorModel block04ValidationResponse = block04.validate();
+            if (block04ValidationResponse.isError()) {
+                return block04ValidationResponse;
+            }
         }
         if (!Objects.isNull(block05)) {
             ErrorModel block05ValidationResponse = block05.validate();
