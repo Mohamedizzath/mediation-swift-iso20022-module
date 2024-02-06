@@ -18,6 +18,7 @@
 
 package org.wso2.carbon.module.swiftiso20022.mt103models.transformer.blocks;
 
+import org.apache.commons.lang.StringUtils;
 import org.wso2.carbon.module.swiftiso20022.model.ErrorModel;
 
 /**
@@ -27,7 +28,7 @@ public class Block05 implements RequestPayloadBlock {
     static final String BLOCK_NAME = "block05";
     String checksum;
     String testNTrainingMessage;
-    String possibleDuplicationEmission;
+    String possibleDuplicateEmission;
     String delayedMessage;
     String messageReference;
     String possibleDuplicateMessage;
@@ -35,8 +36,26 @@ public class Block05 implements RequestPayloadBlock {
 
     @Override
     public ErrorModel validate() {
-        // TODO: Implement validation logic
-        return null;
+        // TODO: replace with constants
+        if (StringUtils.isBlank(checksum)) {
+            return new ErrorModel("Z04", "Checksum is required");
+        }
+        if (checksum.length() != 12) {
+            return new ErrorModel("Z04", "Checksum length is invalid");
+        }
+        if (!StringUtils.isBlank(possibleDuplicateEmission) && possibleDuplicateEmission.length() != 32) {
+            return new ErrorModel("Z05", "Possible Duplicate Emission length is invalid");
+        }
+        if (!StringUtils.isBlank(messageReference) && messageReference.length() != 38) {
+            return new ErrorModel("Z00", "Message Reference length is invalid");
+        }
+        if (!StringUtils.isBlank(possibleDuplicateMessage) && possibleDuplicateMessage.length() != 32) {
+            return new ErrorModel("Z00", "Possible Duplicate Message length is invalid");
+        }
+        if (!StringUtils.isBlank(systemOriginatedMessage) && systemOriginatedMessage.length() != 32) {
+            return new ErrorModel("Z00", "System Originated Message length is invalid");
+        }
+        return new ErrorModel();
     }
 
     public void setChecksum(String checksum) {
@@ -55,12 +74,12 @@ public class Block05 implements RequestPayloadBlock {
         return testNTrainingMessage;
     }
 
-    public void setPossibleDuplicationEmission(String possibleDuplicationEmission) {
-        this.possibleDuplicationEmission = possibleDuplicationEmission;
+    public void setPossibleDuplicateEmission(String possibleDuplicateEmission) {
+        this.possibleDuplicateEmission = possibleDuplicateEmission;
     }
 
-    public String getPossibleDuplicationEmission() {
-        return possibleDuplicationEmission;
+    public String getPossibleDuplicateEmission() {
+        return possibleDuplicateEmission;
     }
 
     public void setDelayedMessage(String delayedMessage) {

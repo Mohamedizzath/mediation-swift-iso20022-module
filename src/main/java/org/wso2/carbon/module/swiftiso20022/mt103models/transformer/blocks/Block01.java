@@ -33,31 +33,34 @@ public class Block01 implements RequestPayloadBlock {
     String sequenceNumber;
     @Override
     public ErrorModel validate() {
-        if (!StringUtils.isBlank(applicationIdentifier) && !StringUtils.equals(applicationIdentifier, "F")) {
+        if (!StringUtils.isBlank(applicationIdentifier) && !applicationIdentifier.equals("F")) {
             // TODO: replace with constants
             return new ErrorModel("H02", "Application Identifier is invalid");
         }
-        if (!StringUtils.isBlank(serviceIdentifier) && !StringUtils.equals(serviceIdentifier, "01")) {
+        if (!StringUtils.isBlank(serviceIdentifier) && !serviceIdentifier.equals("01")) {
             return new ErrorModel("H03", "Service Identifier should be a valid value");
         }
         if (StringUtils.isBlank(logicalTerminalAddress)) {
             // TODO: replace with constants
             return new ErrorModel("H98", "Logical Terminal Address should be present");
-        } else if (StringUtils.length(logicalTerminalAddress) != 12) {
+        }
+        if (logicalTerminalAddress.length() != 12) {
             // TODO: replace with constants
             return new ErrorModel("H10", "Logical Terminal Address length is invalid");
         }
         if (StringUtils.isBlank(sessionNumber)) {
             // TODO: replace with constants
             return new ErrorModel("H98", "Session Number should be present");
-        } else if (StringUtils.length(sessionNumber) != 4) {
+        }
+        if (sessionNumber.length() != 4) {
             // TODO: replace with constants
             return new ErrorModel("H15", "Session Number length is invalid");
         }
         if (StringUtils.isBlank(sequenceNumber)) {
             // TODO: replace with constants
             return new ErrorModel("H98", "Sequence Number should be present");
-        } else if (StringUtils.length(sequenceNumber) != 6) {
+        }
+        if (sequenceNumber.length() != 6) {
             // TODO: replace with constants
             return new ErrorModel("H20", "Sequence Number length is invalid");
         }

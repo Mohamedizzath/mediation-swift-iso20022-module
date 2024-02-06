@@ -18,6 +18,7 @@
 
 package org.wso2.carbon.module.swiftiso20022.mt103models.transformer.blocks;
 
+import org.apache.commons.lang.StringUtils;
 import org.wso2.carbon.module.swiftiso20022.model.ErrorModel;
 
 /**
@@ -34,8 +35,45 @@ public class Block03 implements RequestPayloadBlock {
 
     @Override
     public ErrorModel validate() {
+        // TODO: replace with constants
+        if (StringUtils.isBlank(serviceIdentifier)) {
+            return new ErrorModel("U03", "Service Identifier is required");
+        }
+        if (serviceIdentifier.length() != 3) {
+            return new ErrorModel("U03", "Service Identifier length is invalid");
+        }
+        // TODO: replace with constants
+        if (!StringUtils.isBlank(bankingPriority) && bankingPriority.length() != 4) {
+            return new ErrorModel("U01", "Banking priority length is invalid");
+        }
+        // TODO: replace with constants
+        if (!StringUtils.isBlank(messageUserReference) && messageUserReference.length() != 16) {
+            return new ErrorModel("U02", "Message User Reference length is invalid");
+        }
+        // TODO: replace with constants
+        if (!StringUtils.isBlank(validationFlag) && !StringUtils.equals(validationFlag, "STP")
+                && !StringUtils.equals(validationFlag, "REMIT")) {
+            return new ErrorModel("U08", "Validation Flag is invalid");
+        }
+        // TODO: replace with constants
+        if (StringUtils.isBlank(endToEndReference)) {
+            return new ErrorModel("U13", "End to End Reference is required");
+        }
+        if (endToEndReference.length() != 36) {
+            return new ErrorModel("U13", "End to End Reference length is invalid");
+        }
+        // TODO: replace with constants
+        if (!StringUtils.isBlank(serviceTypeIdentifier)) {
+            if (StringUtils.isBlank(endToEndReference)) {
+                return new ErrorModel("U12",
+                        "Service Type Identifier cannot be present without End to End Reference");
+            }
+            if (serviceTypeIdentifier.length() != 3) {
+                return new ErrorModel("U14", "Service Type Identifier length is invalid");
+            }
+        }
         // TODO: Implement validation logic
-        return null;
+        return new ErrorModel();
     }
 
     public void setServiceIdentifier(String serviceIdentifier) {

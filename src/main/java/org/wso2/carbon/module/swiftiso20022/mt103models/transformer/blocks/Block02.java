@@ -39,12 +39,12 @@ public class Block02 implements RequestPayloadBlock {
 
     @Override
     public ErrorModel validate() {
-        if (!StringUtils.isBlank(messageType) && !StringUtils.equals(messageType, "103")) {
+        if (!StringUtils.isBlank(messageType) && !messageType.equals("103")) {
             // TODO: replace with constants
             return new ErrorModel("H98", "Message Type is invalid");
         }
         // TODO: add validator to check message priority
-        if (!StringUtils.isBlank(priority) && StringUtils.length(priority) != 1) {
+        if (!StringUtils.isBlank(priority) && priority.length() != 1) {
             return new ErrorModel("H98", "Priority length is invalid");
         }
         if (StringUtils.isBlank(inputOutputIdentifier)) {
@@ -65,14 +65,16 @@ public class Block02 implements RequestPayloadBlock {
     private ErrorModel validateInputMessagePayload() {
         if (StringUtils.isBlank(destinationLogicalTerminalAddress)) {
             // TODO: replace with constants
-            return new ErrorModel("H25", "Destination Logical Address is required for Input Messages");
-        } else if (StringUtils.length(destinationLogicalTerminalAddress) > 12) {
+            return new ErrorModel("H25",
+                    "Destination Logical Address is required for Input Messages");
+        }
+        if (destinationLogicalTerminalAddress.length() != 12) {
             return new ErrorModel("H50", "Destination Logical Address is invalid");
         }
-        if (!StringUtils.isBlank(deliveryMonitoringCode) && StringUtils.length(deliveryMonitoringCode) != 1) {
+        if (!StringUtils.isBlank(deliveryMonitoringCode) && deliveryMonitoringCode.length() != 1) {
             return new ErrorModel("H80", "Delivery Monitory Code length is invalid");
         }
-        if (!StringUtils.isBlank(obsolescencePeriodCode) && StringUtils.length(obsolescencePeriodCode) != 3) {
+        if (!StringUtils.isBlank(obsolescencePeriodCode) && obsolescencePeriodCode.length() != 3) {
             return new ErrorModel("H81", "Obsolescence Period Code length is invalid");
         }
         return new ErrorModel();
@@ -82,23 +84,28 @@ public class Block02 implements RequestPayloadBlock {
         // TODO: replace with constants
         if (StringUtils.isBlank(inputTime)) {
             return new ErrorModel("H25", "Input Time is required for Output message");
-        } else if (StringUtils.length(inputTime) != 4) {
+        }
+        if (inputTime.length() != 4) {
             // TODO: replace with constants
             return new ErrorModel("T38", "Input time length is invalid");
         }
         if (StringUtils.isBlank(messageInputReference)) {
-            return new ErrorModel("H25", "Message Input Reference is required for Output message");
-        } else if (StringUtils.length(messageInputReference) != 28) {
+            return new ErrorModel("H25",
+                    "Message Input Reference is required for Output message");
+        }
+        if (messageInputReference.length() != 28) {
             return new ErrorModel("H98", "Message Input Reference length is invalid");
         }
         if (StringUtils.isBlank(outputDate)) {
             return new ErrorModel("H25", "Output Date is required for Output message");
-        } else if (StringUtils.length(outputDate) != 6) {
+        }
+        if (outputDate.length() != 6) {
             return new ErrorModel("T50", "Output Date length is invalid");
         }
         if (StringUtils.isBlank(outputTime)) {
             return new ErrorModel("H25", "Output Time is required for Output message");
-        } else if (StringUtils.length(outputTime) != 4) {
+        }
+        if (outputTime.length() != 4) {
             return new ErrorModel("T38", "Output Time length is invalid");
         }
         return new ErrorModel();

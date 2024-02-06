@@ -56,10 +56,21 @@ public class RequestPayload {
         if (Objects.isNull(block03)) {
             // TODO: replace with constants
             return new ErrorModel("H01", "User Header block is mandatory for MT103");
+        } else {
+            ErrorModel block03ValidationResponse = block03.validate();
+            if (block03ValidationResponse.isError()) {
+                return block03ValidationResponse;
+            }
         }
         if (Objects.isNull(block04)) {
             // TODO: replace with constants
             return new ErrorModel("H01", "Text block is mandatory for MT103");
+        }
+        if (!Objects.isNull(block05)) {
+            ErrorModel block05ValidationResponse = block05.validate();
+            if (block05ValidationResponse.isError()) {
+                return block05ValidationResponse;
+            }
         }
         return new ErrorModel();
     }
