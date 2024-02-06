@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ ~ Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ ~
+ ~ WSO2 LLC. licenses this file to you under the Apache License,
+ ~ Version 2.0 (the "License"); you may not use this file except
+ ~ in compliance with the License.
+ ~ You may obtain a copy of the License at
+ ~
+ ~     http://www.apache.org/licenses/LICENSE-2.0
+ ~
+ ~ Unless required by applicable law or agreed to in writing,
+ ~ software distributed under the License is distributed on an
+ ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ ~ KIND, either express or implied. See the License for the
+ ~ specific language governing permissions and limitations
+ ~ under the License.
+ -->
+<template xmlns="http://ws.apache.org/ns/synapse" name="jsonToMT940">
+    <sequence>
+        <class name="org.wso2.carbon.module.swiftiso20022.JsonToMT940Transformer"/>
+        <payloadFactory media-type="text" template-type="freemarker">
+            <format><![CDATA[{1:${payload.block1}}{2:${payload.block2}}{3:${payload.block3}}{4:
+:20:${payload.reference}
+<#if payload.accountNumberIdentifier?has_content>
+:25P:${payload.accountNumber}
+${payload.accountNumberIdentifier}
+<#else>
+:25:${payload.accountNumber}
+</#if>
+:28C:${payload.statementNumber}
+<#if payload.openingBalanceDetails.statementType == "current">
+:60M:${payload.openingBalance}
+<#else>
+:60F:${payload.openingBalance}
+</#if>
+<#list payload.statementLines as statementLine>
+:61:${statementLine}
+</#list>
+<#if payload.closingBalanceDetails.statementType == "current">
+:62M:${payload.closingBalance}
+<#else>
+:62F:${payload.closingBalance}
+</#if>
+:64:${payload.closingAvailableBalance}
+:65:${payload.forwardAvailableBalance}
+ -}
+	            ]]></format>
+            <args/>
+        </payloadFactory>
+        <respond/>
+    </sequence>
+</template>

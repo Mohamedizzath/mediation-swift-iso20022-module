@@ -94,11 +94,10 @@ public class ConnectorUtils {
      *
      * @param messageContext   Message Context
      * @param payload          Response Payload
-     * @throws AxisFault
-     * @throws XMLStreamException
+     * @throws AxisFault      Throw an Axis Fault if there is an error during setting the payload
      */
     public static void appendJsonResponseToMessageContext(org.apache.synapse.MessageContext messageContext,
-                                                          String payload) throws AxisFault, XMLStreamException {
+                                                          String payload) throws AxisFault {
         MessageContext axis2MessageContext = ((Axis2MessageContext) messageContext).getAxis2MessageContext();
         axis2MessageContext.setProperty(Constants.Configuration.MESSAGE_TYPE, ConnectorConstants.APPLICATION_JSON);
         axis2MessageContext.setProperty(Constants.Configuration.CONTENT_TYPE, ConnectorConstants.APPLICATION_JSON);
