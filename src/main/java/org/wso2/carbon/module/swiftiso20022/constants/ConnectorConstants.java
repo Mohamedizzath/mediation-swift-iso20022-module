@@ -43,7 +43,7 @@ public class ConnectorConstants {
     public static final String MT940_RELATED_REF = ":21";
     public static final String MT940_ACCOUNT_NO = ":25";
     public static final String MT940_STATEMENT_NO = ":28";
-    public static final String MT940_INFORMATION = ":86";;
+    public static final String MT940_INFORMATION = ":86:";;
     public static final String MT940_STATEMENT_LINE = ":61";
     public static final String MT940_OPENING_BAL = ":60";
     public static final String MT940_CLOSING_BAL = ":62";
@@ -115,8 +115,8 @@ public class ConnectorConstants {
     public static final String ERROR_SEQ_NO_INVALID = "Sequence Number is not in the correct format";
     public static final String ERROR_CUS_REF_INVALID = "Customer Reference is not in the correct format";
     public static final String ERROR_TRANS_REF_INVALID = "Transaction Reference is not in the correct format";
-    public static final String ERROR_BALANCE_MISSING = "%s is a mandatory parameter for MT940";
-    public static final String ERROR_BAL_DATE_INVALID = "%s is not in the correct format";
+    public static final String ERROR_MANDATORY_PARAM_MISSING = "%s is a mandatory parameter for MT940";
+    public static final String ERROR_INCORRECT_FORMAT = "%s is not in the correct format";
 
     public static final String ERROR_BAL_IND_INVALID = "Balance Indicator should be either D or C";
     public static final String ERROR_INVALID_STATEMENT_TYPE = "Invalid statement type found. Accepted values are" +

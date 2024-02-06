@@ -97,21 +97,22 @@ public class JsonToMT940Transformer extends AbstractConnector {
             return new ErrorModel(ConnectorConstants.ERROR_H25, ConnectorConstants.ERROR_BLOCK2_INVALID);
         }
 
-        if (!JsonToMt940Utils.validateAccountNumber(requestPayload)) {
+        if (!JsonToMt940Utils.isValidAccountNumber(requestPayload.getAccountNumber())) {
             return new ErrorModel(ConnectorConstants.ERROR_M50, ConnectorConstants.ERROR_ACC_NO_INVALID);
         }
 
-        if (!JsonToMt940Utils.validateReference(requestPayload.getReference())) {
+        if (!JsonToMt940Utils.isValidateReference(requestPayload.getReference())) {
             return new ErrorModel(ConnectorConstants.ERROR_M50, ConnectorConstants.ERROR_REF_INVALID);
         }
 
-        if (!JsonToMt940Utils.validateSequenceNumber(requestPayload)) {
+        if (!JsonToMt940Utils.isValidateSequenceNumber(requestPayload.getSequenceNumber())) {
             return new ErrorModel(ConnectorConstants.ERROR_M50, ConnectorConstants.ERROR_SEQ_NO_INVALID);
         }
 
         if (requestPayload.getOpeningBalanceDetails() == null) {
             return new ErrorModel(ConnectorConstants.ERROR_T13,
-                    String.format(ConnectorConstants.ERROR_BALANCE_MISSING, ConnectorConstants.OPENING_BALANCE));
+                    String.format(ConnectorConstants.ERROR_MANDATORY_PARAM_MISSING,
+                            ConnectorConstants.OPENING_BALANCE));
         }
 
         ErrorModel errorModel = JsonToMt940Utils.validateBalanceDetails(requestPayload.getOpeningBalanceDetails(),
@@ -122,7 +123,8 @@ public class JsonToMT940Transformer extends AbstractConnector {
 
         if (requestPayload.getClosingBalanceDetails() == null) {
             return new ErrorModel(ConnectorConstants.ERROR_T13,
-                    String.format(ConnectorConstants.ERROR_BALANCE_MISSING, ConnectorConstants.CLOSING_BALANCE));
+                    String.format(ConnectorConstants.ERROR_MANDATORY_PARAM_MISSING,
+                            ConnectorConstants.CLOSING_BALANCE));
         }
 
         errorModel = JsonToMt940Utils.validateBalanceDetails(requestPayload.getClosingBalanceDetails(),
@@ -168,7 +170,7 @@ public class JsonToMT940Transformer extends AbstractConnector {
                         ConnectorConstants.ERROR_DATE_TIME_INVALID);
             }
 
-            ErrorModel error = JsonToMt940Utils.isValidTransactionType(transaction.getTransactionType());
+            ErrorModel error = JsonToMt940Utils.validTransactionType(transaction.getTransactionType());
             if (error.isError()) {
                 return error;
             }
@@ -190,11 +192,11 @@ public class JsonToMT940Transformer extends AbstractConnector {
                 return error;
             }
 
-            if (!JsonToMt940Utils.validateReference(transaction.getCustomerReference())) {
+            if (!JsonToMt940Utils.isValidateReference(transaction.getCustomerReference())) {
                 return new ErrorModel(ConnectorConstants.ERROR_M50, ConnectorConstants.ERROR_CUS_REF_INVALID);
             }
 
-            if (!JsonToMt940Utils.validateReference(transaction.getTransactionReference())) {
+            if (!JsonToMt940Utils.isValidateReference(transaction.getTransactionReference())) {
                 return new ErrorModel(ConnectorConstants.ERROR_M50, ConnectorConstants.ERROR_TRANS_REF_INVALID);
             }
         }

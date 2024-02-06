@@ -24,6 +24,7 @@ import java.util.List;
  * Class to hold the request payload.
  */
 public class RequestPayloadModel {
+
     private String block1;
     private String block2;
     private String block3;

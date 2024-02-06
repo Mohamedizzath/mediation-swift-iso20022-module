@@ -23,7 +23,6 @@ import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
 import org.wso2.carbon.module.swiftiso20022.model.ErrorModel;
 
 import java.util.Currency;
-import java.util.Set;
 import java.util.regex.Pattern;
 
 /**
@@ -40,8 +39,7 @@ public class ValidatorUtils {
         if (StringUtils.isBlank(currency)) {
             return false;
         }
-        Set<Currency> availableCurrencies = Currency.getAvailableCurrencies();
-        return availableCurrencies.stream().anyMatch(c -> c.getCurrencyCode().equals(currency));
+        return Currency.getAvailableCurrencies().stream().anyMatch(c -> c.getCurrencyCode().equals(currency));
     }
 
     /** Method to validate whether amount is valid
@@ -50,7 +48,6 @@ public class ValidatorUtils {
      * @return     Whether amount is valid
      */
     public static ErrorModel validateAmountLength(String amount, String fieldName) {
-        ErrorModel errorModel = new ErrorModel();
 
         if (amount == null) {
             return new ErrorModel(ConnectorConstants.ERROR_T13,
@@ -66,8 +63,7 @@ public class ValidatorUtils {
                     String.format(ConnectorConstants.ERROR_PARAMETER_LENGTH,
                             fieldName + ConnectorConstants.AMOUNT, 15));
         }
-        errorModel.setIsError(false);
-        return errorModel;
+        return new ErrorModel();
     }
 
     /** Method to validate whether a values is a number

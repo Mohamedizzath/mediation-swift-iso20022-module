@@ -10,6 +10,7 @@ import org.powermock.modules.testng.PowerMockTestCase;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
 import org.wso2.carbon.module.swiftiso20022.model.ErrorModel;
 import org.wso2.carbon.module.swiftiso20022.utils.ConnectorUtils;
 import org.wso2.carbon.module.swiftiso20022.utils.MT940FormatValidatorTestConstants;
@@ -49,7 +50,8 @@ public class MT940FormatValidatorTests extends PowerMockTestCase {
     @Test(dataProvider = "invalidReferenceDataProvider",
             dataProviderClass = MT940FormatValidatorTestConstants.class)
     public void testValidateTransactionReference(String reference) {
-        ErrorModel error = MT940ValidationUtils.validateTransactionReference(reference);
+        ErrorModel error = MT940ValidationUtils.validateReference(reference,
+                ConnectorConstants.TRANSACTION_REF);
 
         Assert.assertTrue(error.isError());
     }
@@ -57,7 +59,7 @@ public class MT940FormatValidatorTests extends PowerMockTestCase {
     @Test(dataProvider = "invalidReferenceDataProvider",
             dataProviderClass = MT940FormatValidatorTestConstants.class)
     public void testValidateRelatedReference(String reference) {
-        ErrorModel error = MT940ValidationUtils.validateRelatedReference(reference);
+        ErrorModel error = MT940ValidationUtils.validateReference(reference, ConnectorConstants.RELATED_REF);
 
         Assert.assertTrue(error.isError());
     }

@@ -95,14 +95,18 @@ public class MT940ValidationUtils {
     public static ErrorModel validateMT940Format(Map<String, Object> fields) {
         ErrorModel errorModel;
 
-        errorModel = validateTransactionReference((String) fields.get(ConnectorConstants.TRANSACTION_REF));
+        errorModel = validateReference((String) fields.get(ConnectorConstants.TRANSACTION_REF),
+                ConnectorConstants.TRANSACTION_REF);
         if (errorModel.isError()) {
             return errorModel;
         }
 
-        errorModel = validateRelatedReference((String) fields.get(ConnectorConstants.RELATED_REF));
-        if (errorModel.isError()) {
-            return errorModel;
+        if (fields.containsKey(ConnectorConstants.RELATED_REF)) {
+            errorModel = validateReference((String) fields.get(ConnectorConstants.RELATED_REF),
+                    ConnectorConstants.RELATED_REF);
+            if (errorModel.isError()) {
+                return errorModel;
+            }
         }
 
         errorModel = validateAccountIdentifier((String) fields.get(ConnectorConstants.ACC_IDENTIFICATION));
@@ -140,93 +144,38 @@ public class MT940ValidationUtils {
     }
 
     /**
-     * Method to validate whether Transaction reference is valid.
+     * Method to validate whether reference is valid.
      *
-     * @param transactionRef  Transaction reference to be validated
-     * @return    Whether transaction reference is valid
+     * @param referenceValue  Reference to be validated
+     * @return    Whether reference is valid
      */
-    public static ErrorModel validateTransactionReference(String transactionRef) {
-        String[] referenceDetails = transactionRef.split(ConnectorConstants.COLON);
-        String reference = null;
-
-        if (referenceDetails.length == 3) {
-            reference = referenceDetails[2];
-        } else {
+    public static ErrorModel validateReference(String referenceValue, String fieldName) {
+        String[] referenceDetails = referenceValue.split(ConnectorConstants.COLON);
+        if (!isListLengthValid(referenceDetails)) {
             return new ErrorModel(ConnectorConstants.INVALID_REQUEST_PAYLOAD,
-                    String.format(ConnectorConstants.ERROR_PARAMETER_INVALID,
-                            ConnectorConstants.TRANSACTION_REF));
+                    String.format(ConnectorConstants.ERROR_PARAMETER_INVALID, fieldName));
         }
 
+        String reference = referenceDetails[2];
         if (StringUtils.isBlank(reference)) {
             return new ErrorModel(ConnectorConstants.INVALID_REQUEST_PAYLOAD,
-                    String.format(ConnectorConstants.ERROR_PARAMETER_MISSING,
-                            ConnectorConstants.TRANSACTION_REF));
+                    String.format(ConnectorConstants.ERROR_PARAMETER_MISSING, fieldName));
         }
 
         if (reference.length() > 16) {
             return new ErrorModel(ConnectorConstants.ERROR_M50,
-                    String.format(ConnectorConstants.ERROR_PARAMETER_LENGTH,
-                            ConnectorConstants.TRANSACTION_REF, 16));
+                    String.format(ConnectorConstants.ERROR_PARAMETER_LENGTH, fieldName, 16));
         }
 
         if (reference.startsWith(ConnectorConstants.SLASH) || reference.endsWith(ConnectorConstants.SLASH) ||
                 reference.contains(ConnectorConstants.DOUBLE_SLASH)) {
             return new ErrorModel(ConnectorConstants.ERROR_T26,
-                    String.format(ConnectorConstants.ERROR_PARAMETER_CONTAINS_SLASH,
-                            ConnectorConstants.TRANSACTION_REF));
+                    String.format(ConnectorConstants.ERROR_PARAMETER_CONTAINS_SLASH, fieldName));
         }
 
         if (!Pattern.matches(ConnectorConstants.MT_REGEX_PATTERN, reference)) {
             return new ErrorModel(ConnectorConstants.INVALID_REQUEST_PAYLOAD,
-                    String.format(ConnectorConstants.ERROR_PARAMETER_INVALID,
-                            ConnectorConstants.TRANSACTION_REF));
-        }
-        return new ErrorModel();
-    }
-
-    /**
-     * Method to validate whether Related reference is valid.
-     *
-     * @param relatedRef  Related reference to be validated
-     * @return    Whether related reference is valid
-     */
-    public static ErrorModel validateRelatedReference(String relatedRef) {
-        if (relatedRef != null) {
-            String[] referenceDetails = relatedRef.split(ConnectorConstants.COLON);
-            String reference = null;
-
-            if (referenceDetails.length == 3) {
-                reference = referenceDetails[2];
-            } else {
-                return new ErrorModel(ConnectorConstants.INVALID_REQUEST_PAYLOAD,
-                        String.format(ConnectorConstants.ERROR_PARAMETER_INVALID,
-                                ConnectorConstants.RELATED_REF));
-            }
-
-            if (StringUtils.isNotBlank(reference)) {
-                if (relatedRef.length() > 16) {
-                    return new ErrorModel(ConnectorConstants.ERROR_M50,
-                            String.format(ConnectorConstants.ERROR_PARAMETER_LENGTH,
-                                    ConnectorConstants.RELATED_REF, 16));
-                }
-
-                if (reference.startsWith(ConnectorConstants.SLASH) || reference.endsWith(ConnectorConstants.SLASH) ||
-                        reference.contains(ConnectorConstants.DOUBLE_SLASH)) {
-                    return new ErrorModel(ConnectorConstants.ERROR_T26,
-                            String.format(ConnectorConstants.ERROR_PARAMETER_CONTAINS_SLASH,
-                                    ConnectorConstants.RELATED_REF));
-                }
-
-                if (!Pattern.matches(ConnectorConstants.MT_REGEX_PATTERN, reference)) {
-                    return new ErrorModel(ConnectorConstants.INVALID_REQUEST_PAYLOAD,
-                            String.format(ConnectorConstants.ERROR_PARAMETER_INVALID,
-                                    ConnectorConstants.RELATED_REF));
-                }
-            } else {
-                return new ErrorModel(ConnectorConstants.INVALID_REQUEST_PAYLOAD,
-                        String.format(ConnectorConstants.ERROR_PARAMETER_INVALID,
-                                ConnectorConstants.RELATED_REF));
-            }
+                    String.format(ConnectorConstants.ERROR_PARAMETER_INVALID, fieldName));
         }
         return new ErrorModel();
     }
@@ -239,15 +188,12 @@ public class MT940ValidationUtils {
      */
     public static ErrorModel validateAccountIdentifier(String accIdentifier) {
         String[] accIdentifierDetails = accIdentifier.split(ConnectorConstants.COLON);
-        String account = null;
-        if (accIdentifierDetails.length == 3) {
-            account = accIdentifierDetails[2];
-        } else {
+        if (!isListLengthValid(accIdentifierDetails)) {
             return new ErrorModel(ConnectorConstants.INVALID_REQUEST_PAYLOAD,
                     String.format(ConnectorConstants.ERROR_PARAMETER_INVALID,
-                            ConnectorConstants.TRANSACTION_REF));
+                            ConnectorConstants.ACC_IDENTIFICATION));
         }
-
+        String account = accIdentifierDetails[2];
         if (StringUtils.isBlank(account)) {
             return new ErrorModel(ConnectorConstants.INVALID_REQUEST_PAYLOAD,
                     String.format(ConnectorConstants.ERROR_PARAMETER_MISSING,
@@ -276,15 +222,12 @@ public class MT940ValidationUtils {
      */
     public static ErrorModel validateStatementNumber(String statementNumber) {
         String[] statementNumberDetails = statementNumber.split(ConnectorConstants.COLON);
-        String number = null;
-        if (statementNumberDetails.length == 3) {
-            number = statementNumberDetails[2];
-        } else {
+        if (!isListLengthValid(statementNumberDetails)) {
             return new ErrorModel(ConnectorConstants.INVALID_REQUEST_PAYLOAD,
                     String.format(ConnectorConstants.ERROR_PARAMETER_INVALID,
-                            ConnectorConstants.TRANSACTION_REF));
+                            ConnectorConstants.STATEMENT_NUMBER));
         }
-
+        String number = statementNumberDetails[2];
         if (StringUtils.isBlank(number)) {
             return new ErrorModel(ConnectorConstants.INVALID_REQUEST_PAYLOAD,
                     String.format(ConnectorConstants.ERROR_PARAMETER_MISSING,
@@ -319,15 +262,13 @@ public class MT940ValidationUtils {
      */
     public static ErrorModel validateOpeningBalance(String openingBalance) {
         String[] openingBalanceDetails = openingBalance.split(ConnectorConstants.COLON);
-        String balance = null;
-        if (openingBalanceDetails.length == 3) {
-            balance = openingBalanceDetails[2];
-        } else {
+        if (!isListLengthValid(openingBalanceDetails)) {
             return new ErrorModel(ConnectorConstants.INVALID_REQUEST_PAYLOAD,
                     String.format(ConnectorConstants.ERROR_PARAMETER_INVALID,
-                            ConnectorConstants.TRANSACTION_REF));
+                            ConnectorConstants.OPENING_BALANCE));
         }
 
+        String balance = openingBalanceDetails[2];
         if (StringUtils.isBlank(balance)) {
             return new ErrorModel(ConnectorConstants.INVALID_REQUEST_PAYLOAD,
                     String.format(ConnectorConstants.ERROR_PARAMETER_MISSING,
@@ -349,15 +290,13 @@ public class MT940ValidationUtils {
      */
     public static ErrorModel validateClosingBalance(String closingBalance) {
         String[] closingBalanceDetails = closingBalance.split(ConnectorConstants.COLON);
-        String balance = null;
-        if (closingBalanceDetails.length == 3) {
-            balance = closingBalanceDetails[2];
-        } else {
+        if (!isListLengthValid(closingBalanceDetails)) {
             return new ErrorModel(ConnectorConstants.INVALID_REQUEST_PAYLOAD,
                     String.format(ConnectorConstants.ERROR_PARAMETER_INVALID,
                             ConnectorConstants.TRANSACTION_REF));
         }
 
+        String balance = closingBalanceDetails[2];
         if (StringUtils.isBlank(balance)) {
             return new ErrorModel(ConnectorConstants.ERROR_C24,
                     String.format(ConnectorConstants.ERROR_PARAMETER_MISSING,
@@ -379,16 +318,14 @@ public class MT940ValidationUtils {
     public static ErrorModel validateClosingAvailableBalance(String closingBalance) {
         if (closingBalance != null) {
             String[] closingBalanceDetails = closingBalance.split(ConnectorConstants.COLON);
-            String balance = null;
-            if (closingBalanceDetails.length == 3) {
-                balance = closingBalanceDetails[2];
-            } else {
+            if (!isListLengthValid(closingBalanceDetails)) {
                 return new ErrorModel(ConnectorConstants.INVALID_REQUEST_PAYLOAD,
                         String.format(ConnectorConstants.ERROR_PARAMETER_INVALID,
-                                ConnectorConstants.TRANSACTION_REF));
+                                ConnectorConstants.CLOSING_AVAIL_BALANCE));
             }
 
-            ErrorModel errorModel = validateBalance(balance, ConnectorConstants.CLOSING_AVAIL_BALANCE);
+            ErrorModel errorModel = validateBalance(closingBalanceDetails[2],
+                    ConnectorConstants.CLOSING_AVAIL_BALANCE);
             if (errorModel.isError()) {
                 return errorModel;
             }
@@ -404,16 +341,14 @@ public class MT940ValidationUtils {
     public static ErrorModel validateForwardAvailableBalance(String closingBalance) {
         if (closingBalance != null) {
             String[] closingBalanceDetails = closingBalance.split(ConnectorConstants.COLON);
-            String balance = null;
-            if (closingBalanceDetails.length == 3) {
-                balance = closingBalanceDetails[2];
-            } else {
+            if (!isListLengthValid(closingBalanceDetails)) {
                 return new ErrorModel(ConnectorConstants.INVALID_REQUEST_PAYLOAD,
                         String.format(ConnectorConstants.ERROR_PARAMETER_INVALID,
-                                ConnectorConstants.TRANSACTION_REF));
+                                ConnectorConstants.FORWARD_CLOSING_AVAIL_BALANCE));
             }
 
-            ErrorModel errorModel = validateBalance(balance, ConnectorConstants.FORWARD_CLOSING_AVAIL_BALANCE);
+            ErrorModel errorModel = validateBalance(closingBalanceDetails[2],
+                    ConnectorConstants.FORWARD_CLOSING_AVAIL_BALANCE);
             if (errorModel.isError()) {
                 return errorModel;
             }
@@ -465,5 +400,19 @@ public class MT940ValidationUtils {
                             fieldName + ConnectorConstants.AMOUNT));
         }
         return  new ErrorModel();
+    }
+
+    /**
+     * Method to validate the List length is valid.
+     *
+     * @param detailsList  Date to be validated
+     * @return    Whether List length is valid
+     */
+    private static boolean isListLengthValid(String[] detailsList) {
+        if (detailsList.length == 3) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

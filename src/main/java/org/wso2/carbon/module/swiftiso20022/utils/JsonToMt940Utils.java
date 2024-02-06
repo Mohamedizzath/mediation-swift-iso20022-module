@@ -49,12 +49,11 @@ public class JsonToMt940Utils {
 
     /**
      * Method to validate the request payload.
-     * @param requestPayload   Request Payload
+     * @param accountNumber   Account Number
      * @return  Whether the request payload is valid or not
      */
-    public static boolean validateAccountNumber(RequestPayloadModel requestPayload) {
-        return (StringUtils.isNotBlank(requestPayload.getAccountNumber()) &&
-                requestPayload.getAccountNumber().length() < 36);
+    public static boolean isValidAccountNumber(String accountNumber) {
+        return (StringUtils.isNotBlank(accountNumber) && accountNumber.length() < 36);
     }
 
     /**
@@ -62,18 +61,17 @@ public class JsonToMt940Utils {
      * @param reference   Reference
      * @return  Whether the reference is valid or not
      */
-    public static boolean validateReference(String reference) {
+    public static boolean isValidateReference(String reference) {
         return (StringUtils.isNotBlank(reference) && reference.length() < 17);
     }
 
     /**
      * Method to validate the Sequence Number in the request payload.
-     * @param requestPayload   Request Payload
+     * @param sequenceNumber   Sequence Number
      * @return  Whether the sequence number is valid or not
      */
-    public static boolean validateSequenceNumber(RequestPayloadModel requestPayload) {
-        return (StringUtils.isNotBlank(requestPayload.getSequenceNumber()) &&
-                requestPayload.getSequenceNumber().length() < 4);
+    public static boolean isValidateSequenceNumber(String sequenceNumber) {
+        return (StringUtils.isNotBlank(sequenceNumber) && sequenceNumber.length() < 4);
     }
 
     /**
@@ -87,13 +85,12 @@ public class JsonToMt940Utils {
 
         if (!isValidDateFormat(balanceDetails.getDate())) {
             return new ErrorModel(ConnectorConstants.ERROR_T50,
-                    String.format(ConnectorConstants.ERROR_BAL_DATE_INVALID, fieldName));
+                    String.format(ConnectorConstants.ERROR_INCORRECT_FORMAT, fieldName));
         }
 
         if (!ValidatorUtils.isValidCurrency(balanceDetails.getCurrency())) {
             return new ErrorModel(ConnectorConstants.ERROR_T52,
-                    String.format(ConnectorConstants.ERROR_CURRENCY_CODE_INVALID,
-                            ConnectorConstants.OPENING_BALANCE));
+                    String.format(ConnectorConstants.ERROR_CURRENCY_CODE_INVALID, fieldName));
         }
 
         ErrorModel error = ValidatorUtils.validateAmountLength(balanceDetails.getBalanceAmount(),
@@ -146,7 +143,7 @@ public class JsonToMt940Utils {
      * @param transactionType  Transaction type to validate
      * @return                 True if the transaction type is valid, else false
      */
-    public static ErrorModel isValidTransactionType(String transactionType) {
+    public static ErrorModel validTransactionType(String transactionType) {
         if (!transactionType.startsWith(ConnectorConstants.SWIFT_TRANSFER) &&
                 !transactionType.startsWith(ConnectorConstants.NON_SWIFT_TRANSFER) &&
                 !transactionType.startsWith(ConnectorConstants.FIRST_ADVICE)) {
@@ -275,12 +272,15 @@ public class JsonToMt940Utils {
             statementLineModel.setAmount(formatAmountValue(transaction.getAmount()));
             statementLineModel.setTransactionType(transaction.getTransactionType());
             statementLineModel.setCustomerReference(transaction.getCustomerReference());
-            statementLineModel.setBankReference("//" + transaction.getTransactionReference());
+            statementLineModel.setBankReference(ConnectorConstants.DOUBLE_SLASH +
+                    transaction.getTransactionReference());
             if (transaction.getSupplementaryData() != null) {
-                statementLineModel.setSupplementaryData("\n" + transaction.getSupplementaryData());
+                statementLineModel.setSupplementaryData(ConnectorConstants.LINE_BREAK +
+                        transaction.getSupplementaryData());
             }
             if (transaction.getInformation() != null) {
-                statementLineModel.setInformation("\n:86:" + transaction.getInformation());
+                statementLineModel.setInformation(ConnectorConstants.LINE_BREAK + ConnectorConstants.MT940_INFORMATION
+                        + transaction.getInformation());
             }
 
             statementLines.add(statementLineModel.toString());
@@ -296,10 +296,9 @@ public class JsonToMt940Utils {
      */
     private static String constructStatementNumber(RequestPayloadModel requestPayload) {
         DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        Date date = new Date();
-        String dateTime = formatter.format(date);
-        long diffInDays = calculateDaysDiff(dateTime);
-        return Long.toString(diffInDays).concat("/" + requestPayload.getSequenceNumber());
+        long diffInDays = calculateDaysDiff(formatter.format(new Date()));
+        return Long.toString(diffInDays).concat(ConnectorConstants.SLASH +
+                requestPayload.getSequenceNumber());
     }
 
     /**

@@ -38,6 +38,9 @@ import java.util.Optional;
  */
 public class MT940FormatValidator extends AbstractConnector {
 
+    private static final String OPEN_BRACKET = "{";
+    private static final String DASH = "-";
+
     @Override
     public void connect(MessageContext messageContext) throws ConnectException {
         log.debug("Executing MT940FormatValidator to validate the MT940 format");
@@ -103,7 +106,7 @@ public class MT940FormatValidator extends AbstractConnector {
         List<String> statementLine = new ArrayList<>();
 
         for (String line : lines) {
-            if (line.startsWith("{") || line.startsWith("-")) {
+            if (line.startsWith(OPEN_BRACKET) || line.startsWith(DASH)) {
                 continue;
             }
             switch (line.substring(0, 3)) {
@@ -137,7 +140,6 @@ public class MT940FormatValidator extends AbstractConnector {
                     break;
                 default:
                     break;
-
             }
         }
         return fields;
