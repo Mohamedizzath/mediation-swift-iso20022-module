@@ -18,6 +18,7 @@
 
 package org.wso2.carbon.module.swiftiso20022.mt103models.transformer;
 
+import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
 import org.wso2.carbon.module.swiftiso20022.model.ErrorModel;
 import org.wso2.carbon.module.swiftiso20022.mt103models.transformer.blocks.Block01;
 import org.wso2.carbon.module.swiftiso20022.mt103models.transformer.blocks.Block02;
@@ -40,7 +41,8 @@ public class RequestPayload {
     public ErrorModel validate() {
         if (Objects.isNull(block01)) {
             // TODO: replace with constants
-            return new ErrorModel("H01", "Basic Header block is mandatory for MT103");
+            return new ErrorModel(ConnectorConstants.ERROR_H01,
+                    String.format(ConnectorConstants.ERROR_BLOCK_MISSING, Block01.getBlockName()));
         } else {
             ErrorModel block01ValidationResponse = block01.validate();
             if (block01ValidationResponse.isError()) {
@@ -55,7 +57,8 @@ public class RequestPayload {
         }
         if (Objects.isNull(block03)) {
             // TODO: replace with constants
-            return new ErrorModel("H01", "User Header block is mandatory for MT103");
+            return new ErrorModel(ConnectorConstants.ERROR_U00,
+                    String.format(ConnectorConstants.ERROR_BLOCK_MISSING, Block03.getBlockName()));
         } else {
             ErrorModel block03ValidationResponse = block03.validate();
             if (block03ValidationResponse.isError()) {
@@ -64,7 +67,8 @@ public class RequestPayload {
         }
         if (Objects.isNull(block04)) {
             // TODO: replace with constants
-            return new ErrorModel("H01", "Text block is mandatory for MT103");
+            return new ErrorModel(ConnectorConstants.ERROR_V01,
+                    String.format(ConnectorConstants.ERROR_BLOCK_MISSING, Block04.getBlockName()));
         } else {
             ErrorModel block04ValidationResponse = block04.validate();
             if (block04ValidationResponse.isError()) {

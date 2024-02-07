@@ -38,6 +38,42 @@ public class ConnectorConstants {
     public static final String REV_CREDIT = "RC";
     public static final String LINE_BREAK = "\n";
 
+    // Block01 (Basic Header) Related Constants
+    public static final String BLOCK01_APPLICATION_ID = "Application Identifier";
+    public static final String BLOCK01_SERVICE_ID = "Service Identifier";
+    public static final String BLOCK01_LOGICAL_TERMINAL_ADDRESS = "Logical Terminal Address";
+    public static final String BLOCK01_SESSION_NUMBER = "Session Number";
+    public static final String BLOCK01_SEQUENCE_NUMBER = "Sequence Number";
+
+    // Block02 (Application Header) Related Constants
+    public static  final String BLOCK02_INPUT_OUTPUT_ID = "Input Output Identifier";
+    public static  final String BLOCK02_MESSAGE_TYPE = "Message Type";
+    public static  final String BLOCK02_DESTINATION_LOGICAL_TERMINAL_ADDRESS = "Destination Logical Terminal Address";
+    public static  final String BLOCK02_INPUT_TIME = "Input Time";
+    public static  final String BLOCK02_MESSAGE_INPUT_REFERENCE = "Message Input Reference";
+    public static  final String BLOCK02_OUTPUT_DATE = "Output Date";
+    public static  final String BLOCK02_OUTPUT_TIME = "Output Time";
+    public static  final String BLOCK02_PRIORITY = "Priority";
+    public static  final String BLOCK02_DELIVERY_MONITORING_CODE = "Delivery Monitoring Code";
+    public static  final String BLOCK02_OBSOLESCENCE_PERIOD_CODE = "Obsolescence Period Code";
+
+    // Block03 (User Header) Related Constants
+    public static final String BLOCK03_SERVICE_IDENTIFIER = "Service Identifier";
+    public static final String BLOCK03_BANKING_PRIORITY = "Banking Priority";
+    public static final String BLOCK03_MESSAGE_USER_REFERENCE = "Message User Reference";
+    public static final String BLOCK03_VALIDATION_FLAG = "Validation Flag";
+    public static final String BLOCK03_END_TO_END_REFERENCE = "End to End Reference";
+    public static final String BLOCK03_SERVICE_TYPE_IDENTIFIER = "Service Type Identifier";
+
+    // Block05 (Trailer) Related Constants
+    public static final String BLOCK05_CHECKSUM = "Checksum";
+    public static final String BLOCK05_TEST_AND_TRAINING_MESSAGE = "Test and Training Message";
+    public static final String BLOCK05_POSSIBLE_DUPLICATE_EMISSION = "Possible Duplicate Emission";
+    public static final String BLOCK05_DELAYED_MESSAGE = "Delayed Message";
+    public static final String BLOCK05_MESSAGE_REFERENCE = "Message Reference";
+    public static final String BLOCK05_POSSIBLE_DUPLICATE_MESSAGE = "Possible Duplicate Message";
+    public static final String BLOCK05_SYSTEM_ORIGINATED_MESSAGE = "System Originated Message";
+
     //MT940 Related Constants
     public static final String MT940_TRANSACTION_REF = ":20";
     public static final String MT940_RELATED_REF = ":21";
@@ -84,7 +120,10 @@ public class ConnectorConstants {
     public static final String ERROR_MISSING_PAYLOAD = "Missing Request Payload";
     public static final String PROCESSING_ERROR = "Error while processing the request";
     public static final String ERROR_PARAMETER_MISSING = "Missing mandatory parameter %s";
+    public static final String ERROR_BLOCK_MISSING = "Missing mandatory block %s";
+    public static final String ERROR_CONDITIONAL_PARAMETER_PRESENT = "Field %s cannot be present without %s";
     public static final String ERROR_PARAMETER_LENGTH = "%s should not contain more than %s characters";
+    public static final String ERROR_PARAMETER_CONSTANT_LENGTH = "%s length should be %s";
     public static final String ERROR_PARAMETER_CONTAINS_SLASH = "%s should not contain slashes";
     public static final String ERROR_PARAMETER_INVALID = "Field %s is invalid";
     public static final String ERROR_CURRENCY_CODE_INVALID = "Currency code in the field %s is not in ISO 4217" +
@@ -92,21 +131,57 @@ public class ConnectorConstants {
     public static final String ERROR_AMOUNT_NULL = "Amount cannot be null";
     public static final String ERROR_AMOUNT_SIZE_INVALID = "Amount should not be empty";
 
-    // MT940 Error Constants
+    // Error Constants
+    // Conditional Semantic Error Constants
     public static final String ERROR_C03 = "C03";
     public static final String ERROR_C24 = "C24";
     public static final String ERROR_C27 = "C27";
+
+    // Block01 (Basic Header) and Block02 (Application Header) Error Constants
     public static final String ERROR_H01 = "H01";
+    public static final String ERROR_H02 = "H02";
+    public static final String ERROR_H03 = "H03";
+    public static final String ERROR_H10 = "H10";
+    public static final String ERROR_H15 = "H15";
+    public static final String ERROR_H20 = "H20";
     public static final String ERROR_H25 = "H25";
+    public static final String ERROR_H50 = "H50";
+    public static final String ERROR_H80 = "H80";
+    public static final String ERROR_H81 = "H81";
+    public static final String ERROR_H98 = "H98";
+
+    // Block03 (User Header) Error Constants
+    public static final String ERROR_U00 = "U00";
+    public static final String ERROR_U01 = "U01";
+    public static final String ERROR_U02 = "U02";
+    public static final String ERROR_U03 = "U03";
+    public static final String ERROR_U08 = "U08";
+    public static final String ERROR_U12 = "U12";
+    public static final String ERROR_U13 = "U13";
+    public static final String ERROR_U14 = "U14";
+
+    // System Message Error and Message Block Format Error Constants
+    public static final String ERROR_V01 = "V01";
+
+    // Text Error Constants
     public static final String ERROR_T18 = "T18";
     public static final String ERROR_T13 = "T13";
     public static final String ERROR_T26 = "T26";
+    public static final String ERROR_T33 = "T33";
+    public static final String ERROR_T38 = "T38";
     public static final String ERROR_T40 = "T40";
     public static final String ERROR_T50 = "T50";
     public static final String ERROR_T51 = "T51";
     public static final String ERROR_T52 = "T52";
     public static final String ERROR_T53 = "T53";
+
+    // Message Error Constants
     public static final String ERROR_M50 = "M50";
+
+    // Block05 (Trailer) Error Constants
+    public static final String ERROR_Z00 = "Z00";
+    public static final String ERROR_Z04 = "Z04";
+    public static final String ERROR_Z05 = "Z05";
 
     public static final String ERROR_BLOCK1_INVALID = "Header block 1 is a mandatory parameter for MT940";
     public static final String ERROR_BLOCK2_INVALID = "Header block 2 is a mandatory parameter for MT940";

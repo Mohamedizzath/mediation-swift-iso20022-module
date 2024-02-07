@@ -19,6 +19,8 @@
 package org.wso2.carbon.module.swiftiso20022.mt103models.transformer.blocks;
 
 import org.apache.commons.lang.StringUtils;
+import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
+import org.wso2.carbon.module.swiftiso20022.constants.MT103Constants;
 import org.wso2.carbon.module.swiftiso20022.model.ErrorModel;
 
 /**
@@ -39,17 +41,19 @@ public class Block02 implements RequestPayloadBlock {
 
     @Override
     public ErrorModel validate() {
-        if (!StringUtils.isBlank(messageType) && !messageType.equals("103")) {
-            // TODO: replace with constants
-            return new ErrorModel("H98", "Message Type is invalid");
+        if (!StringUtils.isBlank(messageType) && !messageType.equals(MT103Constants.MT103_MESSAGE_TYPE)) {
+            return new ErrorModel(ConnectorConstants.ERROR_H98,
+                    String.format(ConnectorConstants.ERROR_PARAMETER_INVALID,
+                            ConnectorConstants.BLOCK02_MESSAGE_TYPE));
         }
-        // TODO: add validator to check message priority
         if (!StringUtils.isBlank(priority) && priority.length() != 1) {
-            return new ErrorModel("H98", "Priority length is invalid");
+            return new ErrorModel(ConnectorConstants.ERROR_H98,
+                    String.format(ConnectorConstants.ERROR_PARAMETER_INVALID, ConnectorConstants.BLOCK02_PRIORITY));
         }
         if (StringUtils.isBlank(inputOutputIdentifier)) {
-            // TODO: replace with constants
-            return new ErrorModel("H98", "Input Output Identifier is required");
+            return new ErrorModel(ConnectorConstants.ERROR_H98,
+                    String.format(ConnectorConstants.ERROR_PARAMETER_MISSING,
+                            ConnectorConstants.BLOCK02_INPUT_OUTPUT_ID));
         } else {
             switch (inputOutputIdentifier) {
                 case "I":
@@ -57,56 +61,74 @@ public class Block02 implements RequestPayloadBlock {
                 case "O":
                     return validateOutputMessagePayload();
                 default:
-                    return new ErrorModel("H98", "Input Output Identifier is invalid");
+                    return new ErrorModel(ConnectorConstants.ERROR_H98,
+                            String.format(ConnectorConstants.ERROR_PARAMETER_INVALID,
+                                    ConnectorConstants.BLOCK02_INPUT_OUTPUT_ID));
             }
         }
     }
 
     private ErrorModel validateInputMessagePayload() {
         if (StringUtils.isBlank(destinationLogicalTerminalAddress)) {
-            // TODO: replace with constants
-            return new ErrorModel("H25",
-                    "Destination Logical Address is required for Input Messages");
+            return new ErrorModel(ConnectorConstants.ERROR_H25,
+                    String.format(ConnectorConstants.ERROR_PARAMETER_MISSING,
+                            ConnectorConstants.BLOCK02_DESTINATION_LOGICAL_TERMINAL_ADDRESS));
         }
         if (destinationLogicalTerminalAddress.length() != 12) {
-            return new ErrorModel("H50", "Destination Logical Address is invalid");
+            return new ErrorModel(ConnectorConstants.ERROR_H50,
+                    String.format(ConnectorConstants.ERROR_PARAMETER_CONSTANT_LENGTH,
+                            ConnectorConstants.BLOCK02_DESTINATION_LOGICAL_TERMINAL_ADDRESS, 12));
         }
         if (!StringUtils.isBlank(deliveryMonitoringCode) && deliveryMonitoringCode.length() != 1) {
-            return new ErrorModel("H80", "Delivery Monitory Code length is invalid");
+            return new ErrorModel(ConnectorConstants.ERROR_H80,
+                    String.format(ConnectorConstants.ERROR_PARAMETER_CONSTANT_LENGTH,
+                            ConnectorConstants.BLOCK02_DELIVERY_MONITORING_CODE, 1));
         }
         if (!StringUtils.isBlank(obsolescencePeriodCode) && obsolescencePeriodCode.length() != 3) {
-            return new ErrorModel("H81", "Obsolescence Period Code length is invalid");
+            return new ErrorModel(ConnectorConstants.ERROR_H81,
+                    String.format(ConnectorConstants.ERROR_PARAMETER_CONSTANT_LENGTH,
+                            ConnectorConstants.BLOCK02_OBSOLESCENCE_PERIOD_CODE, 3));
         }
         return new ErrorModel();
     }
 
     private ErrorModel validateOutputMessagePayload() {
-        // TODO: replace with constants
         if (StringUtils.isBlank(inputTime)) {
-            return new ErrorModel("H25", "Input Time is required for Output message");
+            return new ErrorModel(ConnectorConstants.ERROR_H25,
+                    String.format(ConnectorConstants.ERROR_PARAMETER_MISSING, ConnectorConstants.BLOCK02_INPUT_TIME));
         }
         if (inputTime.length() != 4) {
-            // TODO: replace with constants
-            return new ErrorModel("T38", "Input time length is invalid");
+            return new ErrorModel(ConnectorConstants.ERROR_T38,
+                    String.format(ConnectorConstants.ERROR_PARAMETER_CONSTANT_LENGTH,
+                            ConnectorConstants.BLOCK02_INPUT_TIME, 4));
         }
         if (StringUtils.isBlank(messageInputReference)) {
-            return new ErrorModel("H25",
-                    "Message Input Reference is required for Output message");
+            return new ErrorModel(ConnectorConstants.ERROR_H25,
+                    String.format(ConnectorConstants.ERROR_PARAMETER_MISSING,
+                            ConnectorConstants.BLOCK02_MESSAGE_INPUT_REFERENCE));
         }
         if (messageInputReference.length() != 28) {
-            return new ErrorModel("H98", "Message Input Reference length is invalid");
+            return new ErrorModel(ConnectorConstants.ERROR_H98,
+                    String.format(ConnectorConstants.ERROR_PARAMETER_CONSTANT_LENGTH,
+                            ConnectorConstants.BLOCK02_MESSAGE_INPUT_REFERENCE, 28));
         }
         if (StringUtils.isBlank(outputDate)) {
-            return new ErrorModel("H25", "Output Date is required for Output message");
+            return new ErrorModel(ConnectorConstants.ERROR_H25,
+                    String.format(ConnectorConstants.ERROR_PARAMETER_MISSING, ConnectorConstants.BLOCK02_OUTPUT_DATE));
         }
         if (outputDate.length() != 6) {
-            return new ErrorModel("T50", "Output Date length is invalid");
+            return new ErrorModel(ConnectorConstants.ERROR_T50,
+                    String.format(ConnectorConstants.ERROR_PARAMETER_CONSTANT_LENGTH,
+                            ConnectorConstants.BLOCK02_OUTPUT_DATE, 6));
         }
         if (StringUtils.isBlank(outputTime)) {
-            return new ErrorModel("H25", "Output Time is required for Output message");
+            return new ErrorModel(ConnectorConstants.ERROR_H25,
+                    String.format(ConnectorConstants.ERROR_PARAMETER_MISSING, ConnectorConstants.BLOCK02_OUTPUT_TIME));
         }
         if (outputTime.length() != 4) {
-            return new ErrorModel("T38", "Output Time length is invalid");
+            return new ErrorModel(ConnectorConstants.ERROR_T38,
+                    String.format(ConnectorConstants.ERROR_PARAMETER_CONSTANT_LENGTH,
+                            ConnectorConstants.BLOCK02_OUTPUT_TIME, 4));
         }
         return new ErrorModel();
     }
@@ -189,5 +211,9 @@ public class Block02 implements RequestPayloadBlock {
 
     public String getObsolescencePeriodCode() {
         return obsolescencePeriodCode;
+    }
+
+    public static String getBlockName() {
+        return BLOCK_NAME;
     }
 }

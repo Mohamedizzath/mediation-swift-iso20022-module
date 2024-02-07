@@ -19,6 +19,8 @@
 package org.wso2.carbon.module.swiftiso20022.mt103models.transformer.blocks;
 
 import org.apache.commons.lang.StringUtils;
+import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
+import org.wso2.carbon.module.swiftiso20022.constants.MT103Constants;
 import org.wso2.carbon.module.swiftiso20022.model.ErrorModel;
 
 /**
@@ -33,36 +35,44 @@ public class Block01 implements RequestPayloadBlock {
     String sequenceNumber;
     @Override
     public ErrorModel validate() {
-        if (!StringUtils.isBlank(applicationIdentifier) && !applicationIdentifier.equals("F")) {
-            // TODO: replace with constants
-            return new ErrorModel("H02", "Application Identifier is invalid");
+        if (applicationIdentifier != null && !applicationIdentifier.equals(MT103Constants.MT103_APPLICATION_ID)) {
+            return new ErrorModel(ConnectorConstants.ERROR_H02,
+                    String.format(ConnectorConstants.ERROR_PARAMETER_INVALID,
+                            ConnectorConstants.BLOCK01_APPLICATION_ID));
         }
-        if (!StringUtils.isBlank(serviceIdentifier) && !serviceIdentifier.equals("01")) {
-            return new ErrorModel("H03", "Service Identifier should be a valid value");
+        if (serviceIdentifier != null && !serviceIdentifier.equals(MT103Constants.MT103_SERVICE_ID)) {
+            return new ErrorModel(ConnectorConstants.ERROR_H03,
+                    String.format(ConnectorConstants.ERROR_PARAMETER_INVALID, ConnectorConstants.BLOCK01_SERVICE_ID));
         }
         if (StringUtils.isBlank(logicalTerminalAddress)) {
-            // TODO: replace with constants
-            return new ErrorModel("H98", "Logical Terminal Address should be present");
+            return new ErrorModel(ConnectorConstants.ERROR_H98,
+                    String.format(ConnectorConstants.ERROR_PARAMETER_MISSING,
+                            ConnectorConstants.BLOCK01_LOGICAL_TERMINAL_ADDRESS));
         }
         if (logicalTerminalAddress.length() != 12) {
-            // TODO: replace with constants
-            return new ErrorModel("H10", "Logical Terminal Address length is invalid");
+            return new ErrorModel(ConnectorConstants.ERROR_H10,
+                    String.format(ConnectorConstants.ERROR_PARAMETER_CONSTANT_LENGTH,
+                            ConnectorConstants.BLOCK01_LOGICAL_TERMINAL_ADDRESS, 12));
         }
         if (StringUtils.isBlank(sessionNumber)) {
-            // TODO: replace with constants
-            return new ErrorModel("H98", "Session Number should be present");
+            return new ErrorModel(ConnectorConstants.ERROR_H98,
+                    String.format(ConnectorConstants.ERROR_PARAMETER_MISSING,
+                            ConnectorConstants.BLOCK01_SESSION_NUMBER));
         }
         if (sessionNumber.length() != 4) {
-            // TODO: replace with constants
-            return new ErrorModel("H15", "Session Number length is invalid");
+            return new ErrorModel(ConnectorConstants.ERROR_H15,
+                    String.format(ConnectorConstants.ERROR_PARAMETER_CONSTANT_LENGTH,
+                            ConnectorConstants.BLOCK01_SESSION_NUMBER, 4));
         }
         if (StringUtils.isBlank(sequenceNumber)) {
-            // TODO: replace with constants
-            return new ErrorModel("H98", "Sequence Number should be present");
+            return new ErrorModel(ConnectorConstants.ERROR_H98,
+                    String.format(ConnectorConstants.ERROR_PARAMETER_MISSING,
+                            ConnectorConstants.BLOCK01_SEQUENCE_NUMBER));
         }
         if (sequenceNumber.length() != 6) {
-            // TODO: replace with constants
-            return new ErrorModel("H20", "Sequence Number length is invalid");
+            return new ErrorModel(ConnectorConstants.ERROR_H20,
+                    String.format(ConnectorConstants.ERROR_PARAMETER_CONSTANT_LENGTH,
+                            ConnectorConstants.BLOCK01_SESSION_NUMBER, 6));
         }
         return new ErrorModel();
     }
@@ -97,6 +107,10 @@ public class Block01 implements RequestPayloadBlock {
 
     public String getSessionNumber() {
         return sessionNumber;
+    }
+
+    public static String getBlockName() {
+        return BLOCK_NAME;
     }
 
     public void setSequenceNumber(String sequenceNumber) {
