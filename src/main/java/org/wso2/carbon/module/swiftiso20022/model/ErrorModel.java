@@ -37,7 +37,6 @@ public class ErrorModel {
     }
 
     public ErrorModel() {
-       this(false, null, null);
     }
 
     public void setIsError(boolean isError) {

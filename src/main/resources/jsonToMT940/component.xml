@@ -16,12 +16,11 @@
  ~ specific language governing permissions and limitations
  ~ under the License.
  -->
-<connector>
-    <component name="swiftISO20022" package="org.wso2.carbon.module.swiftiso20022">
-        <dependency component="jsonToMT940"/>
-        <dependency component="mt940Validator"/>
-        <dependency component="jsonToMT103"/>
-        <description>WSO2 SWIFT ISO 20022 Mediation library</description>
-    </component>
-    <type>module</type>
-</connector>
+<component name="jsonToMT940" type="synapse/template">
+    <subComponents>
+        <component name="jsonToMT940">
+            <file>json-to-mt940.xml</file>
+            <description>Transform JSON to SWIFT MT940</description>
+        </component>
+    </subComponents>
+</component>
