@@ -23,6 +23,8 @@ import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
 import org.wso2.carbon.module.swiftiso20022.constants.MT103Constants;
 import org.wso2.carbon.module.swiftiso20022.model.ErrorModel;
 
+import java.util.Objects;
+
 /**
  * Class that models request payload block01.
  */
@@ -35,12 +37,13 @@ public class Block01 implements RequestPayloadBlock {
     String sequenceNumber;
     @Override
     public ErrorModel validate() {
-        if (applicationIdentifier != null && !applicationIdentifier.equals(MT103Constants.MT103_APPLICATION_ID)) {
+        if (!Objects.isNull(applicationIdentifier)
+                && !applicationIdentifier.equals(MT103Constants.MT103_APPLICATION_ID)) {
             return new ErrorModel(ConnectorConstants.ERROR_H02,
                     String.format(ConnectorConstants.ERROR_PARAMETER_INVALID,
                             ConnectorConstants.BLOCK01_APPLICATION_ID));
         }
-        if (serviceIdentifier != null && !serviceIdentifier.equals(MT103Constants.MT103_SERVICE_ID)) {
+        if (!Objects.isNull(serviceIdentifier) && !serviceIdentifier.equals(MT103Constants.MT103_SERVICE_ID)) {
             return new ErrorModel(ConnectorConstants.ERROR_H03,
                     String.format(ConnectorConstants.ERROR_PARAMETER_INVALID, ConnectorConstants.BLOCK01_SERVICE_ID));
         }

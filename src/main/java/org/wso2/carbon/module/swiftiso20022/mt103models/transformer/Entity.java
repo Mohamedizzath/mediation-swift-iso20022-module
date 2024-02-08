@@ -1,6 +1,5 @@
 package org.wso2.carbon.module.swiftiso20022.mt103models.transformer;
 
-import org.apache.commons.lang.StringUtils;
 import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
 import org.wso2.carbon.module.swiftiso20022.constants.MT103Constants;
 import org.wso2.carbon.module.swiftiso20022.model.ErrorModel;
@@ -17,7 +16,7 @@ public class Entity {
     List<String> details;
 
     public ErrorModel validate(String fieldName) {
-        if (StringUtils.isBlank(option)) {
+        if (Objects.isNull(option)) {
             return new ErrorModel(ConnectorConstants.ERROR_NO_CODE,
                     String.format(MT103Constants.ERROR_EMPTY_ENTITY_OPTION, fieldName));
         }

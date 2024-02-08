@@ -202,6 +202,9 @@ public class Block04 implements RequestPayloadBlock {
             ErrorModel sendersChargesValidationResponse =
                     JsonToMt103Utils.validateRepetitiveField(sendersCharges,
                             MT103Constants.SENDERS_CHARGES, 18);
+            if (sendersChargesValidationResponse.isError()) {
+                return sendersChargesValidationResponse;
+            }
         }
         if (!StringUtils.isBlank(receiversCharges) && receiversCharges.length() > 18) {
             return new ErrorModel(ConnectorConstants.ERROR_T33,

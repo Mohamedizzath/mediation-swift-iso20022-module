@@ -43,26 +43,27 @@ public class Block05 implements RequestPayloadBlock {
         }
         if (checksum.length() != 12) {
             return new ErrorModel(ConnectorConstants.ERROR_Z04,
-                    String.format(ConnectorConstants.ERROR_PARAMETER_LENGTH, ConnectorConstants.BLOCK05_CHECKSUM, 12));
+                    String.format(ConnectorConstants.ERROR_PARAMETER_CONSTANT_LENGTH,
+                            ConnectorConstants.BLOCK05_CHECKSUM, 12));
         }
         if (!StringUtils.isBlank(possibleDuplicateEmission) && possibleDuplicateEmission.length() != 32) {
             return new ErrorModel(ConnectorConstants.ERROR_Z05,
-                    String.format(ConnectorConstants.ERROR_PARAMETER_LENGTH,
+                    String.format(ConnectorConstants.ERROR_PARAMETER_CONSTANT_LENGTH,
                             ConnectorConstants.BLOCK05_POSSIBLE_DUPLICATE_EMISSION, 32));
         }
         if (!StringUtils.isBlank(messageReference) && messageReference.length() != 38) {
             return new ErrorModel(ConnectorConstants.ERROR_Z00,
-                    String.format(ConnectorConstants.ERROR_PARAMETER_LENGTH,
+                    String.format(ConnectorConstants.ERROR_PARAMETER_CONSTANT_LENGTH,
                             ConnectorConstants.BLOCK05_MESSAGE_REFERENCE, 38));
         }
         if (!StringUtils.isBlank(possibleDuplicateMessage) && possibleDuplicateMessage.length() != 32) {
             return new ErrorModel(ConnectorConstants.ERROR_Z00,
-                    String.format(ConnectorConstants.ERROR_PARAMETER_LENGTH,
+                    String.format(ConnectorConstants.ERROR_PARAMETER_CONSTANT_LENGTH,
                             ConnectorConstants.BLOCK05_POSSIBLE_DUPLICATE_MESSAGE, 32));
         }
         if (!StringUtils.isBlank(systemOriginatedMessage) && systemOriginatedMessage.length() != 32) {
             return new ErrorModel(ConnectorConstants.ERROR_Z00,
-                    String.format(ConnectorConstants.ERROR_PARAMETER_LENGTH,
+                    String.format(ConnectorConstants.ERROR_PARAMETER_CONSTANT_LENGTH,
                             ConnectorConstants.BLOCK05_SYSTEM_ORIGINATED_MESSAGE, 32));
         }
         return new ErrorModel();
