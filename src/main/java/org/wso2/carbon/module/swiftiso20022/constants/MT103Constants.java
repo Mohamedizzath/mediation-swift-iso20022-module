@@ -36,6 +36,9 @@ public class MT103Constants {
 
     // Generic Error Messages
     public static final String ERROR_REPETITION_LENGTH_EXCEED = "Length of %s repetition %s cannot exceed %s";
+    public static final String ERROR_EMPTY_ENTITY_OPTION = "Option is mandatory for %s field";
+    public static final String ERROR_INVALID_ENTITY_OPTION = "Option of field %s is invalid";
+    public static final String ERROR_EMPTY_ENTITY_DETAILS = "Details of field %s cannot be empty";
 
     // MT103 Text Fields
     public static final String SENDERS_REFERENCE = "Sender's Reference";

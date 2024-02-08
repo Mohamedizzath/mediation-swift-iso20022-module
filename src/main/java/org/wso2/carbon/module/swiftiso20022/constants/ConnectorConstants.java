@@ -135,6 +135,7 @@ public class ConnectorConstants {
     public static final String ERROR_AMOUNT_SIZE_INVALID = "Amount should not be empty";
 
     // Error Constants
+    public static final String ERROR_NO_CODE = "";
     // Conditional Semantic Error Constants
     public static final String ERROR_C03 = "C03";
     public static final String ERROR_C24 = "C24";
@@ -167,8 +168,8 @@ public class ConnectorConstants {
     public static final String ERROR_V01 = "V01";
 
     // Text Error Constants
-    public static final String ERROR_T10 = "T10";
     public static final String ERROR_T13 = "T13";
+    public static final String ERROR_T17 = "T17";
     public static final String ERROR_T18 = "T18";
     public static final String ERROR_T26 = "T26";
     public static final String ERROR_T30 = "T30";

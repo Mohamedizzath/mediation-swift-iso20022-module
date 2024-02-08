@@ -22,6 +22,7 @@ import org.apache.commons.lang.StringUtils;
 import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
 import org.wso2.carbon.module.swiftiso20022.constants.MT103Constants;
 import org.wso2.carbon.module.swiftiso20022.model.ErrorModel;
+import org.wso2.carbon.module.swiftiso20022.mt103models.transformer.Entity;
 import org.wso2.carbon.module.swiftiso20022.utils.JsonToMt103Utils;
 
 import java.util.List;
@@ -40,7 +41,15 @@ public class Block04 implements RequestPayloadBlock {
     String value;
     String instructedAmount;
     String exchangeRate;
-    // TODO: include entity fields
+    Entity orderingCustomer;
+    Entity sendingInstitution;
+    Entity orderingInstitution;
+    Entity sendersCorrespondent;
+    Entity receiversCorrespondent;
+    Entity thirdReimbursementInstitution;
+    Entity intermediaryInstitution;
+    Entity accountWithInstitution;
+    Entity beneficiaryCustomer;
     List<String> remittanceInformation;
     String detailsOfCharges;
     List<String> sendersCharges;
@@ -104,9 +113,74 @@ public class Block04 implements RequestPayloadBlock {
             return new ErrorModel(ConnectorConstants.ERROR_T33,
                     String.format(ConnectorConstants.ERROR_PARAMETER_LENGTH, MT103Constants.EXCHANGE_RATE, 12));
         }
-
-        // TODO: implement validation logic for entities
-
+        if (Objects.isNull(orderingCustomer)) {
+            return new ErrorModel(ConnectorConstants.ERROR_T13,
+                    String.format(ConnectorConstants.ERROR_PARAMETER_MISSING, MT103Constants.ORDERING_CUSTOMER));
+        } else {
+            ErrorModel orderingCustomerValidationResponse = orderingCustomer.validate(MT103Constants.ORDERING_CUSTOMER);
+            if (orderingCustomerValidationResponse.isError()) {
+                return orderingCustomerValidationResponse;
+            }
+        }
+        if (!Objects.isNull(sendingInstitution)) {
+            ErrorModel sendingInstitutionValidationResponse =
+                    sendingInstitution.validate(MT103Constants.SENDING_INSTITUTION);
+            if (sendingInstitutionValidationResponse.isError()) {
+                return sendingInstitutionValidationResponse;
+            }
+        }
+        if (!Objects.isNull(orderingInstitution)) {
+            ErrorModel orderingInstitutionValidationResponse =
+                    orderingInstitution.validate(MT103Constants.ORDERING_INSTITUTION);
+            if (orderingInstitutionValidationResponse.isError()) {
+                return orderingInstitutionValidationResponse;
+            }
+        }
+        if (!Objects.isNull(sendersCorrespondent)) {
+            ErrorModel sendersCorrespondentValidationResponse =
+                    sendersCorrespondent.validate(MT103Constants.SENDERS_CORRESPONDENT);
+            if (sendersCorrespondentValidationResponse.isError()) {
+                return sendersCorrespondentValidationResponse;
+            }
+        }
+        if (!Objects.isNull(receiversCorrespondent)) {
+            ErrorModel receiversCorrespondentValidationResponse =
+                    receiversCorrespondent.validate(MT103Constants.RECEIVERS_CORRESPONDENT);
+            if (receiversCorrespondentValidationResponse.isError()) {
+                return receiversCorrespondentValidationResponse;
+            }
+        }
+        if (!Objects.isNull(thirdReimbursementInstitution)) {
+            ErrorModel thirdReimbursementInstitutionValidationResponse =
+                    thirdReimbursementInstitution.validate(MT103Constants.THIRD_REIMBURSEMENT_INSTITUTION);
+            if (thirdReimbursementInstitutionValidationResponse.isError()) {
+                return thirdReimbursementInstitutionValidationResponse;
+            }
+        }
+        if (!Objects.isNull(intermediaryInstitution)) {
+            ErrorModel intermediaryInstitutionValidationResponse =
+                    intermediaryInstitution.validate(MT103Constants.INTERMEDIARY_INSTITUTION);
+            if (intermediaryInstitutionValidationResponse.isError()) {
+                return intermediaryInstitutionValidationResponse;
+            }
+        }
+        if (!Objects.isNull(accountWithInstitution)) {
+            ErrorModel accountWithInstitutionValidationResponse =
+                    accountWithInstitution.validate(MT103Constants.ACCOUNT_WITH_INSTITUTION);
+            if (accountWithInstitutionValidationResponse.isError()) {
+                return accountWithInstitutionValidationResponse;
+            }
+        }
+        if (Objects.isNull(beneficiaryCustomer)) {
+            return new ErrorModel(ConnectorConstants.ERROR_T13,
+                    String.format(ConnectorConstants.ERROR_PARAMETER_MISSING, MT103Constants.BENEFICIARY_CUSTOMER));
+        } else {
+            ErrorModel beneficiaryCustomerValidationResponse =
+                    beneficiaryCustomer.validate(MT103Constants.BENEFICIARY_CUSTOMER);
+            if (beneficiaryCustomerValidationResponse.isError()) {
+                return beneficiaryCustomerValidationResponse;
+            }
+        }
         if (!Objects.isNull(remittanceInformation)) {
             ErrorModel remittanceInformationValidationResponse =
                     JsonToMt103Utils.validateFieldLines(remittanceInformation,
@@ -220,8 +294,69 @@ public class Block04 implements RequestPayloadBlock {
         return exchangeRate;
     }
 
-    // TODO: implement setters and getters for entity fields
+    public void setOrderingCustomer(Entity orderingCustomer) {
+        this.orderingCustomer = orderingCustomer;
+    }
 
+    public Entity getOrderingCustomer() {
+        return orderingCustomer;
+    }
+
+    public void setSendingInstitution(Entity sendingInstitution) {
+        this.sendingInstitution = sendingInstitution;
+    }
+
+    public Entity getSendingInstitution() {
+        return sendingInstitution;
+    }
+
+    public void setOrderingInstitution(Entity orderingInstitution) {
+        this.orderingInstitution = orderingInstitution;
+    }
+
+    public Entity getOrderingInstitution() {
+        return orderingInstitution;
+    }
+
+    public void setSendersCorrespondent(Entity sendersCorrespondent) {
+        this.sendersCorrespondent = sendersCorrespondent;
+    }
+
+    public Entity getSendersCorrespondent() {
+        return sendersCorrespondent;
+    }
+
+    public void setReceiversCorrespondent(Entity receiversCorrespondent) {
+        this.receiversCorrespondent = receiversCorrespondent;
+    }
+
+    public Entity getReceiversCorrespondent() {
+        return receiversCorrespondent;
+    }
+
+    public void setThirdReimbursementInstitution(Entity thirdReimbursementInstitution) {
+        this.thirdReimbursementInstitution = thirdReimbursementInstitution;
+    }
+
+    public Entity getThirdReimbursementInstitution() {
+        return thirdReimbursementInstitution;
+    }
+
+    public void setIntermediaryInstitution(Entity intermediaryInstitution) {
+        this.intermediaryInstitution = intermediaryInstitution;
+    }
+
+    public Entity getIntermediaryInstitution() {
+        return intermediaryInstitution;
+    }
+
+    public void setAccountWithInstitution(Entity accountWithInstitution) {
+        this.accountWithInstitution = accountWithInstitution;
+    }
+
+    public Entity getAccountWithInstitution() {
+        return accountWithInstitution;
+    }
 
     public void setRemittanceInformation(List<String> remittanceInformation) {
         this.remittanceInformation = remittanceInformation;
@@ -283,4 +418,3 @@ public class Block04 implements RequestPayloadBlock {
         return envelopeContents;
     }
 }
-
