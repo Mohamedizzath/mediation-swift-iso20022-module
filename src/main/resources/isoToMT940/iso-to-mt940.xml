@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ ~ Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ ~
+ ~ WSO2 LLC. licenses this file to you under the Apache License,
+ ~ Version 2.0 (the "License"); you may not use this file except
+ ~ in compliance with the License.
+ ~ You may obtain a copy of the License at
+ ~
+ ~     http://www.apache.org/licenses/LICENSE-2.0
+ ~
+ ~ Unless required by applicable law or agreed to in writing,
+ ~ software distributed under the License is distributed on an
+ ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ ~ KIND, either express or implied. See the License for the
+ ~ specific language governing permissions and limitations
+ ~ under the License.
+ -->
+<template xmlns="http://ws.apache.org/ns/synapse" name="iso20022camt053Transformer">
+    <sequence>
+        <class name="org.wso2.carbon.esb.connector.ISO20022camt053Validator"/>
+        <payloadFactory media-type="text" template-type="freemarker">
+            <format>
+                <![CDATA[<#ftl ns_prefixes={"D": "urn:iso:std:iso:20022:tech:xsd:camt.053.001.11" }>
+<#macro dateTimeFormat dateTimeInd input format><#if dateTimeInd>${input?datetime.iso?string[format]}<#else>${input?date("YYYY-MM-DD")?string[format]}</#if></#macro>
+{1:F01<#if payload.Document.BkToCstmrStmt.Stmt.Acct.Svcr.FinInstnId.BICFI?length == 8>${payload.Document.BkToCstmrStmt.Stmt.Acct.Svcr.FinInstnId.BICFI + "XXX"}<#else>${payload.Document.BkToCstmrStmt.Stmt.Acct.Svcr.FinInstnId.BICFI}</#if>0000000000}<#assign createdDate = payload.Document.BkToCstmrStmt.GrpHdr.CreDtTm?datetime.iso>{2:O940${createdDate?string.hh}${createdDate?string.mm}${createdDate?string.yyyy}}{3:XXX}{4:
+:20:${payload.Document.BkToCstmrStmt.Stmt.Id}
+<#-- 21 Tag will added when MT message triggered MT940 message -->
+:21:${payload.Document.BkToCstmrStmt.Stmt.Id}
+:25:${payload.Document.BkToCstmrStmt.Stmt.Acct.Id.Othr.Id}
+<#assign firstStat = true>
+<#if payload.Document.BkToCstmrStmt.Stmt.ElctrncSeqNb[0]?? && payload.Document.BkToCstmrStmt.GrpHdr.MsgPgntn.PgNb[0]??>
+:28C:${payload.Document.BkToCstmrStmt.Stmt.ElctrncSeqNb}/${payload.Document.BkToCstmrStmt.GrpHdr.MsgPgntn.PgNb}
+  <#if payload.Document.BkToCstmrStmt.GrpHdr.MsgPgntn.PgNb gt 1>
+     <#assign firstStat = false>
+  </#if>
+</#if>
+<#-- Balance elements -->
+<#assign balances = payload.Document.BkToCstmrStmt.Stmt.Bal>
+<#list balances as balance>
+  <#switch balance.Tp.CdOrPrtry.Cd>
+    <#case "OPBD">
+      <#assign openingBal = balance>
+      <#break>
+    <#case "CLBD">
+      <#assign closingBal = balance>
+      <#break>
+   <#case "CLAV">
+      <#assign closingAvlBal = balance>
+      <#break>
+   <#case "FWAV">
+      <#assign forwardAvlFunds = balance>
+      <#break>
+  </#switch>
+</#list>
+<#if firstStat>:60F:<#else>:60M:</#if><#if openingBal.CdtDbtInd=="CRDT">C<#else>D</#if><#if (openingBal.Dt.DtTm)??><@dateTimeFormat dateTimeInd=true input=openingBal.Dt.DtTm format="yyMMdd"/><#else><@dateTimeFormat dateTimeInd=false input=openingBal.Dt.Dt format="yyMMdd"/></#if>${openingBal.Amt.@Ccy}${openingBal.Amt?split(".")[0]},${openingBal.Amt?split(".")[1]?left_pad(2,"0")}
+<#assign entries = payload.Document.BkToCstmrStmt.Stmt.Ntry>
+<#list entries as entry>
+:61:<#if entry.ValDt.DtTm?has_content><@dateTimeFormat dateTimeInd=true input=entry.ValDt.DtTm format="yyMMdd"/><#else><@dateTimeFormat dateTimeInd=false input=entry.ValDt.Dt format="yyMMdd"/></#if><#if entry.BookgDt.DtTm?has_content><@dateTimeFormat dateTimeInd=true input=entry.BookgDt.DtTm format="MMdd"/><#else><@dateTimeFormat dateTimeInd=false input=entry.BookgDt.Dt format="MMdd"/></#if><#if entry.RvslInd?has_content && entry.RvslInd=="true">R</#if><#if entry.CdtDbtInd=="CRDT">C<#else>D</#if>${entry.Amt.@Ccy?substring(2)}${entry.Amt?split(".")[0]},${entry.Amt?split(".")[1]}XXXX${payload.Document.BkToCstmrStmt.Stmt.Id}<#if entry.NtryDtls.TxDtls.Refs.AcctSvcrRef?has_content>${"//" + entry.NtryDtls.TxDtls.Refs.AcctSvcrRef}</#if>
+<#if entry.Ntry.AddtlNtryInf?has_content>
+:86:${entry.Ntry.AddtlNtryInf}
+</#if>
+</#list>
+<#if firstStat>:62F:<#else>:62M:</#if><#if closingBal.CdtDbtInd=="CRDT">C<#else>D</#if><#if (closingBal.Dt.DtTm)??><@dateTimeFormat dateTimeInd=true input=closingBal.Dt.DtTm format="yyMMdd"/><#else><@dateTimeFormat dateTimeInd=false input=closingBal.Dt.Dt format="yyMMdd"/></#if>${closingBal.Amt.@Ccy}${closingBal.Amt?split(".")[0]},${closingBal.Amt?split(".")[1]}
+<#if closingAvlBal??>
+:64:<#if closingAvlBal.CdtDbtInd=="CRDT">C<#else>D</#if><#if (closingAvlBal.Dt.DtTm)??><@dateTimeFormat dateTimeInd=true input=closingAvlBal.Dt.DtTm format="yyMMdd"/><#else><@dateTimeFormat dateTimeInd=false input=closingAvlBal.Dt.Dt format="yyMMdd"/></#if>${closingAvlBal.Amt.@Ccy}${closingAvlBal.Amt?split(".")[0]},${closingAvlBal.Amt?split(".")[1]}
+</#if>
+<#if forwardAvlFunds??>
+:64:<#if forwardAvlFunds.CdtDbtInd=="CRDT">C<#else>D</#if><#if (forwardAvlFunds.Dt.DtTm)??><@dateTimeFormat dateTimeInd=true input=forwardAvlFunds.Dt.DtTm format="yyMMdd"/><#else><@dateTimeFormat dateTimeInd=false input=forwardAvlFunds.Dt.Dt format="yyMMdd"/></#if>${forwardAvlFunds.Amt.@Ccy}${forwardAvlFunds.Amt?split(".")[0]},${forwardAvlFunds.Amt?split(".")[1]}
+</#if>
+-}]]>
+            </format>
+            <args/>
+        </payloadFactory>
+    </sequence>
+</template>
