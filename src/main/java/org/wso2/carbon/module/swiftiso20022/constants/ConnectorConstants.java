@@ -120,6 +120,9 @@ public class ConnectorConstants {
     public static final String ERROR_MISSING_PAYLOAD = "Missing Request Payload";
     public static final String PROCESSING_ERROR = "Error while processing the request";
     public static final String ERROR_PARAMETER_MISSING = "Missing mandatory parameter %s";
+    public static final String ERROR_REPETITIONS_EXCEED = "%s cannot be present more than %s times";
+    public static final String ERROR_FIELD_LINES_EXCEED = "Field %s cannot contain more than %s lines";
+    public static final String ERROR_FIELD_LINE_LENGTH_EXCEED = "Line %s of %s cannot contain more than %s characters";
     public static final String ERROR_BLOCK_MISSING = "Missing mandatory block %s";
     public static final String ERROR_CONDITIONAL_PARAMETER_PRESENT = "Field %s cannot be present without %s";
     public static final String ERROR_PARAMETER_LENGTH = "%s should not contain more than %s characters";
@@ -164,9 +167,11 @@ public class ConnectorConstants {
     public static final String ERROR_V01 = "V01";
 
     // Text Error Constants
-    public static final String ERROR_T18 = "T18";
+    public static final String ERROR_T10 = "T10";
     public static final String ERROR_T13 = "T13";
+    public static final String ERROR_T18 = "T18";
     public static final String ERROR_T26 = "T26";
+    public static final String ERROR_T30 = "T30";
     public static final String ERROR_T33 = "T33";
     public static final String ERROR_T38 = "T38";
     public static final String ERROR_T40 = "T40";

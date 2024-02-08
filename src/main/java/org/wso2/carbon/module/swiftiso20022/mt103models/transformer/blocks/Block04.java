@@ -22,6 +22,7 @@ import org.apache.commons.lang.StringUtils;
 import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
 import org.wso2.carbon.module.swiftiso20022.constants.MT103Constants;
 import org.wso2.carbon.module.swiftiso20022.model.ErrorModel;
+import org.wso2.carbon.module.swiftiso20022.utils.JsonToMt103Utils;
 
 import java.util.List;
 import java.util.Objects;
@@ -57,7 +58,12 @@ public class Block04 implements RequestPayloadBlock {
                     String.format(ConnectorConstants.ERROR_PARAMETER_LENGTH, MT103Constants.SENDERS_REFERENCE, 16));
         }
         if (!Objects.isNull(timeIndication)) {
-            // TODO: implement array checking
+            ErrorModel timeIndicationValidationResponse =
+                    JsonToMt103Utils.validateRepetitiveField(timeIndication,
+                            MT103Constants.TIME_INDICATION, 19);
+            if (timeIndicationValidationResponse.isError()) {
+                return timeIndicationValidationResponse;
+            }
         }
         if (StringUtils.isBlank(bankOperationCode)) {
             return new ErrorModel(ConnectorConstants.ERROR_T13,
@@ -69,7 +75,12 @@ public class Block04 implements RequestPayloadBlock {
                             MT103Constants.BANK_OPERATION_CODE, 4));
         }
         if (!Objects.isNull(instructionCodes)) {
-            // TODO: implement array checking
+            ErrorModel instructionCodeValidationResponse =
+                    JsonToMt103Utils.validateRepetitiveField(instructionCodes,
+                            MT103Constants.INSTRUCTION_CODE, 35);
+            if (instructionCodeValidationResponse.isError()) {
+                return instructionCodeValidationResponse;
+            }
         }
         if (!StringUtils.isBlank(transactionTypeCode) && transactionTypeCode.length() != 3) {
             return new ErrorModel(ConnectorConstants.ERROR_T33,
@@ -86,7 +97,7 @@ public class Block04 implements RequestPayloadBlock {
         }
         if (!StringUtils.isBlank(instructedAmount) && instructedAmount.length() > 18) {
             return new ErrorModel(ConnectorConstants.ERROR_T33,
-                    String.format(ConnectorConstants.ERROR_PARAMETER_LENGTH, MT103Constants.BANK_OPERATION_CODE, 18));
+                    String.format(ConnectorConstants.ERROR_PARAMETER_LENGTH, MT103Constants.INSTRUCTED_AMOUNT, 18));
         }
         if (!StringUtils.isBlank(exchangeRate) && exchangeRate.length() > 12) {
             return new ErrorModel(ConnectorConstants.ERROR_T33,
@@ -96,7 +107,12 @@ public class Block04 implements RequestPayloadBlock {
         // TODO: implement validation logic for entities
 
         if (!Objects.isNull(remittanceInformation)) {
-            // TODO: implement validation for arrays
+            ErrorModel remittanceInformationValidationResponse =
+                    JsonToMt103Utils.validateFieldLines(remittanceInformation,
+                            MT103Constants.REMITTANCE_INFORMATION, 35, 4);
+            if (remittanceInformationValidationResponse.isError()) {
+                return remittanceInformationValidationResponse;
+            }
         }
         if (StringUtils.isBlank(detailsOfCharges)) {
             return new ErrorModel(ConnectorConstants.ERROR_T13,
@@ -108,17 +124,29 @@ public class Block04 implements RequestPayloadBlock {
                             MT103Constants.BANK_OPERATION_CODE, 3));
         }
         if (!Objects.isNull(sendersCharges)) {
-            // TODO: implement validation for arrays
+            ErrorModel sendersChargesValidationResponse =
+                    JsonToMt103Utils.validateRepetitiveField(sendersCharges,
+                            MT103Constants.SENDERS_CHARGES, 18);
         }
         if (!StringUtils.isBlank(receiversCharges) && receiversCharges.length() > 18) {
             return new ErrorModel(ConnectorConstants.ERROR_T33,
                     String.format(ConnectorConstants.ERROR_PARAMETER_LENGTH, MT103Constants.RECEIVERS_CHARGES, 18));
         }
         if (!Objects.isNull(senderToReceiverInformation)) {
-            // TODO: implement validation for arrays
+            ErrorModel senderToReceiverInformationValidationResponse =
+                    JsonToMt103Utils.validateFieldLines(senderToReceiverInformation,
+                            MT103Constants.SENDER_TO_RECEIVER_INFORMATION, 35, 6);
+            if (senderToReceiverInformationValidationResponse.isError()) {
+                return senderToReceiverInformationValidationResponse;
+            }
         }
         if (!Objects.isNull(regulatoryReporting)) {
-            // TODO: implement validation for arrays
+            ErrorModel regulatoryReportingValidationResponse =
+                    JsonToMt103Utils.validateFieldLines(regulatoryReporting,
+                            MT103Constants.REGULATORY_REPORTING, 35, 3);
+            if (regulatoryReportingValidationResponse.isError()) {
+                return regulatoryReportingValidationResponse;
+            }
         }
         return new ErrorModel();
     }

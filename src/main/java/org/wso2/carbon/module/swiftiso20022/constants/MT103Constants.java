@@ -34,6 +34,9 @@ public class MT103Constants {
     public static final String MT103_STP_VALIDATION_FLAG = "STP";
     public static final String MT103_REMIT_VALIDATION_FLAG = "REMIT";
 
+    // Generic Error Messages
+    public static final String ERROR_REPETITION_LENGTH_EXCEED = "Length of %s repetition %s cannot exceed %s";
+
     // MT103 Text Fields
     public static final String SENDERS_REFERENCE = "Sender's Reference";
     public static final String TIME_INDICATION = "Time Indication";
