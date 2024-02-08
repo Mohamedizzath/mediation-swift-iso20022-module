@@ -20,19 +20,19 @@ package org.wso2.carbon.module.swiftiso20022.utils;
 
 import org.xml.sax.SAXException;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringReader;
+
 import javax.xml.XMLConstants;
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.StringReader;
 
 /**
- * Validate part of the ISO 20022 XML message
- * from message context and validate against XSD format
+ * Validate part of the ISO 20022 XML message from message context and validate against XSD format.
  */
 public class XSDValidator {
     private final Validator xsdValidator;
@@ -47,7 +47,7 @@ public class XSDValidator {
     }
 
     /**
-     * Validate the XML content against defined XSD validator
+     * Validate the XML content against defined XSD validator.
      * @param xmlContent XML content which needs validate against XSD
      * @throws SAXException
      * @throws IOException

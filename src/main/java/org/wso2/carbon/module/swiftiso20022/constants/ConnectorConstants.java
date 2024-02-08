@@ -144,4 +144,10 @@ public class ConnectorConstants {
     public static final String ERROR_BALANCES = "The first two characters of the three character currency code in" +
             " fields 60a, 62a, 64 and 65 must be the same for all occurrences of these fields";
 
+    // ISO 20022 Error Constants
+    public static final String ERROR_VALIDATING_XML = "XML validation failed";
+    public static final String ERROR_INVALID_ISO_BUSINESS_MSG = "XML message is not valid ISO business message";
+    public static final String ERROR_INVALID_ISO_HEAD001_XML_MSG = "XML message is not in the ISO20022.head.001 format";
+    public static final String ERROR_INVALID_ISO_CAMT053_XML_MSG = "XML message is not in the ISO20022.camt.053 format";
+    public static final String ERROR_INVALID_XML_ROOT_TAG = "XML msg should start with BizMsgEnvlp tag or Document tag";
 }
