@@ -47,6 +47,7 @@ public class Block04 implements RequestPayloadBlock {
     String receiversCharges;
     List<String> senderToReceiverInformation;
     List<String> regulatoryReporting;
+    String envelopeContents;
     @Override
     public ErrorModel validate() {
         if (StringUtils.isBlank(sendersReference)) {
@@ -147,6 +148,10 @@ public class Block04 implements RequestPayloadBlock {
             if (regulatoryReportingValidationResponse.isError()) {
                 return regulatoryReportingValidationResponse;
             }
+        }
+        if (!StringUtils.isBlank(envelopeContents) && envelopeContents.length() > 9000) {
+            return new ErrorModel(ConnectorConstants.ERROR_T33,
+                    String.format(ConnectorConstants.ERROR_PARAMETER_LENGTH, MT103Constants.ENVELOPE_CONTENTS, 9000));
         }
         return new ErrorModel();
     }
@@ -268,6 +273,14 @@ public class Block04 implements RequestPayloadBlock {
 
     public static String getBlockName() {
         return BLOCK_NAME;
+    }
+
+    public void setEnvelopeContents(String envelopeContents) {
+        this.envelopeContents = envelopeContents;
+    }
+
+    public String getEnvelopeContents() {
+        return envelopeContents;
     }
 }
 

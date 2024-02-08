@@ -61,4 +61,5 @@ public class MT103Constants {
     public static final String RECEIVERS_CHARGES = "Receiver's Charges";
     public static final String SENDER_TO_RECEIVER_INFORMATION = "Sender to Receiver Information";
     public static final String REGULATORY_REPORTING = "Regulatory Reporting";
+    public static final String ENVELOPE_CONTENTS = "Envelope Contents";
 }
