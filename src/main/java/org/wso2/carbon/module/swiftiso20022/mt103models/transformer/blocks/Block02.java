@@ -18,15 +18,10 @@
 
 package org.wso2.carbon.module.swiftiso20022.mt103models.transformer.blocks;
 
-import org.apache.commons.lang.StringUtils;
-import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
-import org.wso2.carbon.module.swiftiso20022.constants.MT103Constants;
-import org.wso2.carbon.module.swiftiso20022.model.ErrorModel;
-
 /**
  * Class that models request payload block02.
  */
-public class Block02 implements RequestPayloadBlock {
+public class Block02 {
     static final String BLOCK_NAME = "block02";
     String inputOutputIdentifier;
     String messageType;
@@ -38,100 +33,6 @@ public class Block02 implements RequestPayloadBlock {
     String priority;
     String deliveryMonitoringCode;
     String obsolescencePeriodCode;
-
-    @Override
-    public ErrorModel validate() {
-        if (!StringUtils.isBlank(messageType) && !messageType.equals(MT103Constants.MT103_MESSAGE_TYPE)) {
-            return new ErrorModel(ConnectorConstants.ERROR_H98,
-                    String.format(ConnectorConstants.ERROR_PARAMETER_INVALID,
-                            ConnectorConstants.BLOCK02_MESSAGE_TYPE));
-        }
-        if (!StringUtils.isBlank(priority) && priority.length() != 1) {
-            return new ErrorModel(ConnectorConstants.ERROR_H98,
-                    String.format(ConnectorConstants.ERROR_PARAMETER_INVALID, ConnectorConstants.BLOCK02_PRIORITY));
-        }
-        if (StringUtils.isBlank(inputOutputIdentifier)) {
-            return new ErrorModel(ConnectorConstants.ERROR_H98,
-                    String.format(ConnectorConstants.ERROR_PARAMETER_MISSING,
-                            ConnectorConstants.BLOCK02_INPUT_OUTPUT_ID));
-        } else {
-            switch (inputOutputIdentifier) {
-                case "I":
-                    return validateInputMessagePayload();
-                case "O":
-                    return validateOutputMessagePayload();
-                default:
-                    return new ErrorModel(ConnectorConstants.ERROR_H98,
-                            String.format(ConnectorConstants.ERROR_PARAMETER_INVALID,
-                                    ConnectorConstants.BLOCK02_INPUT_OUTPUT_ID));
-            }
-        }
-    }
-
-    private ErrorModel validateInputMessagePayload() {
-        if (StringUtils.isBlank(destinationLogicalTerminalAddress)) {
-            return new ErrorModel(ConnectorConstants.ERROR_H25,
-                    String.format(ConnectorConstants.ERROR_PARAMETER_MISSING,
-                            ConnectorConstants.BLOCK02_DESTINATION_LOGICAL_TERMINAL_ADDRESS));
-        }
-        if (destinationLogicalTerminalAddress.length() != 12) {
-            return new ErrorModel(ConnectorConstants.ERROR_H50,
-                    String.format(ConnectorConstants.ERROR_PARAMETER_CONSTANT_LENGTH,
-                            ConnectorConstants.BLOCK02_DESTINATION_LOGICAL_TERMINAL_ADDRESS, 12));
-        }
-        if (!StringUtils.isBlank(deliveryMonitoringCode) && deliveryMonitoringCode.length() != 1) {
-            return new ErrorModel(ConnectorConstants.ERROR_H80,
-                    String.format(ConnectorConstants.ERROR_PARAMETER_CONSTANT_LENGTH,
-                            ConnectorConstants.BLOCK02_DELIVERY_MONITORING_CODE, 1));
-        }
-        if (!StringUtils.isBlank(obsolescencePeriodCode) && obsolescencePeriodCode.length() != 3) {
-            return new ErrorModel(ConnectorConstants.ERROR_H81,
-                    String.format(ConnectorConstants.ERROR_PARAMETER_CONSTANT_LENGTH,
-                            ConnectorConstants.BLOCK02_OBSOLESCENCE_PERIOD_CODE, 3));
-        }
-        return new ErrorModel();
-    }
-
-    private ErrorModel validateOutputMessagePayload() {
-        if (StringUtils.isBlank(inputTime)) {
-            return new ErrorModel(ConnectorConstants.ERROR_H25,
-                    String.format(ConnectorConstants.ERROR_PARAMETER_MISSING, ConnectorConstants.BLOCK02_INPUT_TIME));
-        }
-        if (inputTime.length() != 4) {
-            return new ErrorModel(ConnectorConstants.ERROR_T38,
-                    String.format(ConnectorConstants.ERROR_PARAMETER_CONSTANT_LENGTH,
-                            ConnectorConstants.BLOCK02_INPUT_TIME, 4));
-        }
-        if (StringUtils.isBlank(messageInputReference)) {
-            return new ErrorModel(ConnectorConstants.ERROR_H25,
-                    String.format(ConnectorConstants.ERROR_PARAMETER_MISSING,
-                            ConnectorConstants.BLOCK02_MESSAGE_INPUT_REFERENCE));
-        }
-        if (messageInputReference.length() != 28) {
-            return new ErrorModel(ConnectorConstants.ERROR_H98,
-                    String.format(ConnectorConstants.ERROR_PARAMETER_CONSTANT_LENGTH,
-                            ConnectorConstants.BLOCK02_MESSAGE_INPUT_REFERENCE, 28));
-        }
-        if (StringUtils.isBlank(outputDate)) {
-            return new ErrorModel(ConnectorConstants.ERROR_H25,
-                    String.format(ConnectorConstants.ERROR_PARAMETER_MISSING, ConnectorConstants.BLOCK02_OUTPUT_DATE));
-        }
-        if (outputDate.length() != 6) {
-            return new ErrorModel(ConnectorConstants.ERROR_T50,
-                    String.format(ConnectorConstants.ERROR_PARAMETER_CONSTANT_LENGTH,
-                            ConnectorConstants.BLOCK02_OUTPUT_DATE, 6));
-        }
-        if (StringUtils.isBlank(outputTime)) {
-            return new ErrorModel(ConnectorConstants.ERROR_H25,
-                    String.format(ConnectorConstants.ERROR_PARAMETER_MISSING, ConnectorConstants.BLOCK02_OUTPUT_TIME));
-        }
-        if (outputTime.length() != 4) {
-            return new ErrorModel(ConnectorConstants.ERROR_T38,
-                    String.format(ConnectorConstants.ERROR_PARAMETER_CONSTANT_LENGTH,
-                            ConnectorConstants.BLOCK02_OUTPUT_TIME, 4));
-        }
-        return new ErrorModel();
-    }
 
     public void setInputOutputIdentifier(String inputOutputIdentifier) {
         this.inputOutputIdentifier = inputOutputIdentifier;

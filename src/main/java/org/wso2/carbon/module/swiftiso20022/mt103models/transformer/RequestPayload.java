@@ -18,15 +18,11 @@
 
 package org.wso2.carbon.module.swiftiso20022.mt103models.transformer;
 
-import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
-import org.wso2.carbon.module.swiftiso20022.model.ErrorModel;
 import org.wso2.carbon.module.swiftiso20022.mt103models.transformer.blocks.Block01;
 import org.wso2.carbon.module.swiftiso20022.mt103models.transformer.blocks.Block02;
 import org.wso2.carbon.module.swiftiso20022.mt103models.transformer.blocks.Block03;
 import org.wso2.carbon.module.swiftiso20022.mt103models.transformer.blocks.Block04;
 import org.wso2.carbon.module.swiftiso20022.mt103models.transformer.blocks.Block05;
-
-import java.util.Objects;
 
 /**
  * Class that models the request payload.
@@ -37,52 +33,6 @@ public class RequestPayload {
     Block03 block03;
     Block04 block04;
     Block05 block05;
-
-    public ErrorModel validate() {
-        if (Objects.isNull(block01)) {
-            // TODO: replace with constants
-            return new ErrorModel(ConnectorConstants.ERROR_H01,
-                    String.format(ConnectorConstants.ERROR_BLOCK_MISSING, Block01.getBlockName()));
-        } else {
-            ErrorModel block01ValidationResponse = block01.validate();
-            if (block01ValidationResponse.isError()) {
-                return block01ValidationResponse;
-            }
-        }
-        if (!Objects.isNull(block02)) {
-            ErrorModel block02ValidationResponse = block02.validate();
-            if (block02ValidationResponse.isError()) {
-                return block02ValidationResponse;
-            }
-        }
-        if (Objects.isNull(block03)) {
-            // TODO: replace with constants
-            return new ErrorModel(ConnectorConstants.ERROR_U00,
-                    String.format(ConnectorConstants.ERROR_BLOCK_MISSING, Block03.getBlockName()));
-        } else {
-            ErrorModel block03ValidationResponse = block03.validate();
-            if (block03ValidationResponse.isError()) {
-                return block03ValidationResponse;
-            }
-        }
-        if (Objects.isNull(block04)) {
-            // TODO: replace with constants
-            return new ErrorModel(ConnectorConstants.ERROR_V01,
-                    String.format(ConnectorConstants.ERROR_BLOCK_MISSING, Block04.getBlockName()));
-        } else {
-            ErrorModel block04ValidationResponse = block04.validate();
-            if (block04ValidationResponse.isError()) {
-                return block04ValidationResponse;
-            }
-        }
-        if (!Objects.isNull(block05)) {
-            ErrorModel block05ValidationResponse = block05.validate();
-            if (block05ValidationResponse.isError()) {
-                return block05ValidationResponse;
-            }
-        }
-        return new ErrorModel();
-    }
 
     public void setBlock01(Block01 block01) {
         this.block01 = block01;

@@ -18,14 +18,10 @@
 
 package org.wso2.carbon.module.swiftiso20022.mt103models.transformer.blocks;
 
-import org.apache.commons.lang.StringUtils;
-import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
-import org.wso2.carbon.module.swiftiso20022.model.ErrorModel;
-
 /**
  * Class that models request payload block05.
  */
-public class Block05 implements RequestPayloadBlock {
+public class Block05 {
     static final String BLOCK_NAME = "block05";
     String checksum;
     String testNTrainingMessage;
@@ -34,40 +30,6 @@ public class Block05 implements RequestPayloadBlock {
     String messageReference;
     String possibleDuplicateMessage;
     String systemOriginatedMessage;
-
-    @Override
-    public ErrorModel validate() {
-        if (StringUtils.isBlank(checksum)) {
-            return new ErrorModel(ConnectorConstants.ERROR_Z04,
-                    String.format(ConnectorConstants.ERROR_PARAMETER_MISSING, ConnectorConstants.BLOCK05_CHECKSUM));
-        }
-        if (checksum.length() != 12) {
-            return new ErrorModel(ConnectorConstants.ERROR_Z04,
-                    String.format(ConnectorConstants.ERROR_PARAMETER_CONSTANT_LENGTH,
-                            ConnectorConstants.BLOCK05_CHECKSUM, 12));
-        }
-        if (!StringUtils.isBlank(possibleDuplicateEmission) && possibleDuplicateEmission.length() != 32) {
-            return new ErrorModel(ConnectorConstants.ERROR_Z05,
-                    String.format(ConnectorConstants.ERROR_PARAMETER_CONSTANT_LENGTH,
-                            ConnectorConstants.BLOCK05_POSSIBLE_DUPLICATE_EMISSION, 32));
-        }
-        if (!StringUtils.isBlank(messageReference) && messageReference.length() != 38) {
-            return new ErrorModel(ConnectorConstants.ERROR_Z00,
-                    String.format(ConnectorConstants.ERROR_PARAMETER_CONSTANT_LENGTH,
-                            ConnectorConstants.BLOCK05_MESSAGE_REFERENCE, 38));
-        }
-        if (!StringUtils.isBlank(possibleDuplicateMessage) && possibleDuplicateMessage.length() != 32) {
-            return new ErrorModel(ConnectorConstants.ERROR_Z00,
-                    String.format(ConnectorConstants.ERROR_PARAMETER_CONSTANT_LENGTH,
-                            ConnectorConstants.BLOCK05_POSSIBLE_DUPLICATE_MESSAGE, 32));
-        }
-        if (!StringUtils.isBlank(systemOriginatedMessage) && systemOriginatedMessage.length() != 32) {
-            return new ErrorModel(ConnectorConstants.ERROR_Z00,
-                    String.format(ConnectorConstants.ERROR_PARAMETER_CONSTANT_LENGTH,
-                            ConnectorConstants.BLOCK05_SYSTEM_ORIGINATED_MESSAGE, 32));
-        }
-        return new ErrorModel();
-    }
 
     public void setChecksum(String checksum) {
         this.checksum = checksum;

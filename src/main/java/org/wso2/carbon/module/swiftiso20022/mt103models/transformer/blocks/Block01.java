@@ -18,67 +18,16 @@
 
 package org.wso2.carbon.module.swiftiso20022.mt103models.transformer.blocks;
 
-import org.apache.commons.lang.StringUtils;
-import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
-import org.wso2.carbon.module.swiftiso20022.constants.MT103Constants;
-import org.wso2.carbon.module.swiftiso20022.model.ErrorModel;
-
-import java.util.Objects;
-
 /**
  * Class that models request payload block01.
  */
-public class Block01 implements RequestPayloadBlock {
+public class Block01 {
     static final String BLOCK_NAME = "block01";
     String applicationIdentifier;
     String serviceIdentifier;
     String logicalTerminalAddress;
     String sessionNumber;
     String sequenceNumber;
-    @Override
-    public ErrorModel validate() {
-        if (!Objects.isNull(applicationIdentifier)
-                && !applicationIdentifier.equals(MT103Constants.MT103_APPLICATION_ID)) {
-            return new ErrorModel(ConnectorConstants.ERROR_H02,
-                    String.format(ConnectorConstants.ERROR_PARAMETER_INVALID,
-                            ConnectorConstants.BLOCK01_APPLICATION_ID));
-        }
-        if (!Objects.isNull(serviceIdentifier) && !serviceIdentifier.equals(MT103Constants.MT103_SERVICE_ID)) {
-            return new ErrorModel(ConnectorConstants.ERROR_H03,
-                    String.format(ConnectorConstants.ERROR_PARAMETER_INVALID, ConnectorConstants.BLOCK01_SERVICE_ID));
-        }
-        if (StringUtils.isBlank(logicalTerminalAddress)) {
-            return new ErrorModel(ConnectorConstants.ERROR_H98,
-                    String.format(ConnectorConstants.ERROR_PARAMETER_MISSING,
-                            ConnectorConstants.BLOCK01_LOGICAL_TERMINAL_ADDRESS));
-        }
-        if (logicalTerminalAddress.length() != 12) {
-            return new ErrorModel(ConnectorConstants.ERROR_H10,
-                    String.format(ConnectorConstants.ERROR_PARAMETER_CONSTANT_LENGTH,
-                            ConnectorConstants.BLOCK01_LOGICAL_TERMINAL_ADDRESS, 12));
-        }
-        if (StringUtils.isBlank(sessionNumber)) {
-            return new ErrorModel(ConnectorConstants.ERROR_H98,
-                    String.format(ConnectorConstants.ERROR_PARAMETER_MISSING,
-                            ConnectorConstants.BLOCK01_SESSION_NUMBER));
-        }
-        if (sessionNumber.length() != 4) {
-            return new ErrorModel(ConnectorConstants.ERROR_H15,
-                    String.format(ConnectorConstants.ERROR_PARAMETER_CONSTANT_LENGTH,
-                            ConnectorConstants.BLOCK01_SESSION_NUMBER, 4));
-        }
-        if (StringUtils.isBlank(sequenceNumber)) {
-            return new ErrorModel(ConnectorConstants.ERROR_H98,
-                    String.format(ConnectorConstants.ERROR_PARAMETER_MISSING,
-                            ConnectorConstants.BLOCK01_SEQUENCE_NUMBER));
-        }
-        if (sequenceNumber.length() != 6) {
-            return new ErrorModel(ConnectorConstants.ERROR_H20,
-                    String.format(ConnectorConstants.ERROR_PARAMETER_CONSTANT_LENGTH,
-                            ConnectorConstants.BLOCK01_SESSION_NUMBER, 6));
-        }
-        return new ErrorModel();
-    }
 
     public void setApplicationIdentifier(String applicationIdentifier) {
         this.applicationIdentifier = applicationIdentifier;
