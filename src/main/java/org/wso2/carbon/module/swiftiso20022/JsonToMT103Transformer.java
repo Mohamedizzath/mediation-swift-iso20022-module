@@ -23,6 +23,7 @@ import org.apache.synapse.MessageContext;
 import org.apache.synapse.core.axis2.Axis2MessageContext;
 import org.wso2.carbon.connector.core.AbstractConnector;
 import org.wso2.carbon.connector.core.ConnectException;
+import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
 import org.wso2.carbon.module.swiftiso20022.model.ErrorModel;
 import org.wso2.carbon.module.swiftiso20022.mt103models.transformer.RequestPayload;
 import org.wso2.carbon.module.swiftiso20022.utils.ConnectorUtils;
@@ -47,17 +48,19 @@ public class JsonToMT103Transformer extends AbstractConnector {
                     this.log.error(validationResponse.getErrorMessage());
                     ConnectorUtils.appendErrorToMessageContext(messageContext, validationResponse.getErrorCode(),
                             validationResponse.getErrorMessage());
-                    this.handleException("Validation failed", messageContext);
+                    super.handleException(ConnectorConstants.ERROR_VALIDATION_FAILED, messageContext);
                 }
-                // TODO: Implement validation logic
             } else {
-                // TODO: replace with constants
-                this.log.error("Request payload is missing.");
+                this.log.error(ConnectorConstants.ERROR_MISSING_PAYLOAD);
+                ConnectorUtils.appendErrorToMessageContext(messageContext, ConnectorConstants.MISSING_REQUEST_PAYLOAD,
+                        ConnectorConstants.ERROR_MISSING_PAYLOAD);
+                super.handleException(ConnectorConstants.ERROR_MISSING_PAYLOAD, messageContext);
             }
         } catch (Exception e) {
-            // TODO: add exception handling logic
-            this.log.error(e.getMessage());
-            throw new ConnectException(e);
+            this.log.error(ConnectorConstants.PROCESSING_ERROR, e);
+            ConnectorUtils.appendErrorToMessageContext(messageContext, ConnectorConstants.SERVER_ERROR,
+                    ConnectorConstants.PROCESSING_ERROR);
+            throw new ConnectException(e, ConnectorConstants.PROCESSING_ERROR);
         }
     }
 }
