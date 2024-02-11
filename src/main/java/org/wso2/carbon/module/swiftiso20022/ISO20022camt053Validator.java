@@ -28,7 +28,7 @@ import org.wso2.carbon.module.swiftiso20022.utils.XSDValidator;
 import org.xml.sax.SAXParseException;
 
 /**
- * Validate the ISO20022.camt.053 message against XSD and transform from XML to Text format.
+ * Validate the ISO20022.camt.053 message.
  */
 public class ISO20022camt053Validator extends AbstractConnector {
     @Override
