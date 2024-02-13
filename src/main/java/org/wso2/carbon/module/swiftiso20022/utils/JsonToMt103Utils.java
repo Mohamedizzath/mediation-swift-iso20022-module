@@ -1,13 +1,13 @@
 /**
  * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
- *
+ * <p>
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -54,6 +54,11 @@ public class JsonToMt103Utils {
                     String.format(ConnectorConstants.ERROR_PARAMETER_MISSING,
                             ConnectorConstants.BLOCK01_LOGICAL_TERMINAL_ADDRESS));
         }
+        if (!StringUtils.isAlphanumeric(block01.getLogicalTerminalAddress())) {
+            return new ErrorModel(ConnectorConstants.ERROR_H10,
+                    String.format(ConnectorConstants.ERROR_PARAMETER_INVALID,
+                            ConnectorConstants.BLOCK01_LOGICAL_TERMINAL_ADDRESS));
+        }
         if (block01.getLogicalTerminalAddress().length() != 12) {
             return new ErrorModel(ConnectorConstants.ERROR_H10,
                     String.format(ConnectorConstants.ERROR_PARAMETER_CONSTANT_LENGTH,
@@ -64,6 +69,11 @@ public class JsonToMt103Utils {
                     String.format(ConnectorConstants.ERROR_PARAMETER_MISSING,
                             ConnectorConstants.BLOCK01_SESSION_NUMBER));
         }
+        if (!StringUtils.isNumeric(block01.getSessionNumber())) {
+            return new ErrorModel(ConnectorConstants.ERROR_H15,
+                    String.format(ConnectorConstants.ERROR_PARAMETER_INVALID,
+                            ConnectorConstants.BLOCK01_SESSION_NUMBER));
+        }
         if (block01.getSessionNumber().length() != 4) {
             return new ErrorModel(ConnectorConstants.ERROR_H15,
                     String.format(ConnectorConstants.ERROR_PARAMETER_CONSTANT_LENGTH,
@@ -72,6 +82,11 @@ public class JsonToMt103Utils {
         if (StringUtils.isBlank(block01.getSequenceNumber())) {
             return new ErrorModel(ConnectorConstants.ERROR_H98,
                     String.format(ConnectorConstants.ERROR_PARAMETER_MISSING,
+                            ConnectorConstants.BLOCK01_SEQUENCE_NUMBER));
+        }
+        if (!StringUtils.isNumeric(block01.getSequenceNumber())) {
+            return new ErrorModel(ConnectorConstants.ERROR_H20,
+                    String.format(ConnectorConstants.ERROR_PARAMETER_INVALID,
                             ConnectorConstants.BLOCK01_SEQUENCE_NUMBER));
         }
         if (block01.getSequenceNumber().length() != 6) {
@@ -89,7 +104,10 @@ public class JsonToMt103Utils {
                     String.format(ConnectorConstants.ERROR_PARAMETER_INVALID,
                             ConnectorConstants.BLOCK02_MESSAGE_TYPE));
         }
-        if (block02.getPriority() != null && block02.getPriority().length() != 1) {
+        if (block02.getPriority() != null &&
+                (block02.getPriority().isBlank()
+                        || !StringUtils.isAlpha(block02.getPriority())
+                        || block02.getPriority().length() != 1)) {
             return new ErrorModel(ConnectorConstants.ERROR_H98,
                     String.format(ConnectorConstants.ERROR_PARAMETER_INVALID, ConnectorConstants.BLOCK02_PRIORITY));
         }
@@ -101,7 +119,7 @@ public class JsonToMt103Utils {
         switch (block02.getInputOutputIdentifier()) {
             case "I":
                 return validateInputMessageBlock02(block02);
-            case"O":
+            case "O":
                 return validateOutputMessageBlock02(block02);
             default:
                 return new ErrorModel(ConnectorConstants.ERROR_H98,
@@ -116,20 +134,38 @@ public class JsonToMt103Utils {
                     String.format(ConnectorConstants.ERROR_PARAMETER_MISSING,
                             ConnectorConstants.BLOCK02_DESTINATION_LOGICAL_TERMINAL_ADDRESS));
         }
+        if (!StringUtils.isAlphanumeric(block02.getDestinationLogicalTerminalAddress())) {
+            return new ErrorModel(ConnectorConstants.ERROR_H50,
+                    String.format(ConnectorConstants.ERROR_PARAMETER_INVALID,
+                            ConnectorConstants.BLOCK02_DESTINATION_LOGICAL_TERMINAL_ADDRESS));
+        }
         if (block02.getDestinationLogicalTerminalAddress().length() != 12) {
             return new ErrorModel(ConnectorConstants.ERROR_H50,
                     String.format(ConnectorConstants.ERROR_PARAMETER_CONSTANT_LENGTH,
                             ConnectorConstants.BLOCK02_DESTINATION_LOGICAL_TERMINAL_ADDRESS, 12));
         }
-        if (block02.getDeliveryMonitoringCode() != null && block02.getDeliveryMonitoringCode().length() != 1) {
-            return new ErrorModel(ConnectorConstants.ERROR_H80,
-                    String.format(ConnectorConstants.ERROR_PARAMETER_CONSTANT_LENGTH,
-                            ConnectorConstants.BLOCK02_DELIVERY_MONITORING_CODE, 1));
+        if (block02.getDeliveryMonitoringCode() != null) {
+            if (!StringUtils.isNumeric(block02.getDeliveryMonitoringCode())) {
+                return new ErrorModel(ConnectorConstants.ERROR_H80,
+                        String.format(ConnectorConstants.ERROR_PARAMETER_INVALID,
+                                ConnectorConstants.BLOCK02_DELIVERY_MONITORING_CODE));
+            }
+            if (block02.getDeliveryMonitoringCode().length() != 1) {
+                return new ErrorModel(ConnectorConstants.ERROR_H80,
+                        String.format(ConnectorConstants.ERROR_PARAMETER_CONSTANT_LENGTH,
+                                ConnectorConstants.BLOCK02_DELIVERY_MONITORING_CODE, 1));
+            }
         }
-        if (block02.getObsolescencePeriodCode() != null && block02.getObsolescencePeriodCode().length() != 3) {
-            return new ErrorModel(ConnectorConstants.ERROR_H81,
-                    String.format(ConnectorConstants.ERROR_PARAMETER_CONSTANT_LENGTH,
-                            ConnectorConstants.BLOCK02_OBSOLESCENCE_PERIOD_CODE, 3));
+        if (block02.getObsolescencePeriodCode() != null) {
+            if (!StringUtils.isNumeric(block02.getObsolescencePeriodCode())) {
+                return new ErrorModel(ConnectorConstants.ERROR_H81,
+                        ConnectorConstants.BLOCK02_OBSOLESCENCE_PERIOD_CODE);
+            }
+            if (block02.getObsolescencePeriodCode().length() != 3) {
+                return new ErrorModel(ConnectorConstants.ERROR_H81,
+                        String.format(ConnectorConstants.ERROR_PARAMETER_CONSTANT_LENGTH,
+                                ConnectorConstants.BLOCK02_OBSOLESCENCE_PERIOD_CODE, 3));
+            }
         }
         return new ErrorModel();
     }
@@ -139,7 +175,12 @@ public class JsonToMt103Utils {
             return new ErrorModel(ConnectorConstants.ERROR_H25,
                     String.format(ConnectorConstants.ERROR_PARAMETER_MISSING, ConnectorConstants.BLOCK02_INPUT_TIME));
         }
-        if (block02.getOutputTime().length() != 4) {
+        if (!StringUtils.isNumeric(block02.getInputTime())) {
+            return new ErrorModel(ConnectorConstants.ERROR_T38,
+                    String.format(ConnectorConstants.ERROR_PARAMETER_INVALID,
+                            ConnectorConstants.BLOCK02_INPUT_TIME));
+        }
+        if (block02.getInputTime().length() != 4) {
             return new ErrorModel(ConnectorConstants.ERROR_T38,
                     String.format(ConnectorConstants.ERROR_PARAMETER_CONSTANT_LENGTH,
                             ConnectorConstants.BLOCK02_INPUT_TIME, 4));
@@ -147,6 +188,11 @@ public class JsonToMt103Utils {
         if (StringUtils.isBlank(block02.getMessageInputReference())) {
             return new ErrorModel(ConnectorConstants.ERROR_H25,
                     String.format(ConnectorConstants.ERROR_PARAMETER_MISSING,
+                            ConnectorConstants.BLOCK02_MESSAGE_INPUT_REFERENCE));
+        }
+        if (!StringUtils.isAlphanumeric(block02.getMessageInputReference())) {
+            return new ErrorModel(ConnectorConstants.ERROR_H98,
+                    String.format(ConnectorConstants.ERROR_PARAMETER_INVALID,
                             ConnectorConstants.BLOCK02_MESSAGE_INPUT_REFERENCE));
         }
         if (block02.getMessageInputReference().length() != 28) {
@@ -158,6 +204,11 @@ public class JsonToMt103Utils {
             return new ErrorModel(ConnectorConstants.ERROR_H25,
                     String.format(ConnectorConstants.ERROR_PARAMETER_MISSING, ConnectorConstants.BLOCK02_OUTPUT_DATE));
         }
+        if (!StringUtils.isNumeric(block02.getOutputDate())) {
+            return new ErrorModel(ConnectorConstants.ERROR_T50,
+                    String.format(ConnectorConstants.ERROR_PARAMETER_INVALID,
+                            ConnectorConstants.BLOCK02_OUTPUT_DATE));
+        }
         if (block02.getOutputDate().length() != 6) {
             return new ErrorModel(ConnectorConstants.ERROR_T50,
                     String.format(ConnectorConstants.ERROR_PARAMETER_CONSTANT_LENGTH,
@@ -167,12 +218,17 @@ public class JsonToMt103Utils {
             return new ErrorModel(ConnectorConstants.ERROR_H25,
                     String.format(ConnectorConstants.ERROR_PARAMETER_MISSING, ConnectorConstants.BLOCK02_OUTPUT_TIME));
         }
+        if (!StringUtils.isNumeric(block02.getOutputTime())) {
+            return new ErrorModel(ConnectorConstants.ERROR_T38,
+                    String.format(ConnectorConstants.ERROR_PARAMETER_INVALID,
+                            ConnectorConstants.BLOCK02_OUTPUT_TIME));
+        }
         if (block02.getOutputTime().length() != 4) {
             return new ErrorModel(ConnectorConstants.ERROR_T38,
                     String.format(ConnectorConstants.ERROR_PARAMETER_CONSTANT_LENGTH,
                             ConnectorConstants.BLOCK02_OUTPUT_TIME, 4));
         }
-        return  new ErrorModel();
+        return new ErrorModel();
     }
 
     public static ErrorModel validateBlock03(Block03 block03) {
@@ -181,24 +237,43 @@ public class JsonToMt103Utils {
                     String.format(ConnectorConstants.ERROR_PARAMETER_MISSING,
                             ConnectorConstants.BLOCK03_SERVICE_IDENTIFIER));
         }
+        if (!StringUtils.isAlpha(block03.getServiceIdentifier())) {
+            return new ErrorModel(ConnectorConstants.ERROR_U03,
+                    String.format(ConnectorConstants.ERROR_PARAMETER_INVALID,
+                            ConnectorConstants.BLOCK03_SERVICE_IDENTIFIER));
+        }
         if (block03.getServiceIdentifier().length() != 3) {
             return new ErrorModel(ConnectorConstants.ERROR_U03,
                     String.format(ConnectorConstants.ERROR_PARAMETER_CONSTANT_LENGTH,
                             ConnectorConstants.BLOCK03_SERVICE_IDENTIFIER, 3));
         }
-        if (block03.getBankingPriority() != null && block03.getBankingPriority().length() != 4) {
-            return new ErrorModel(ConnectorConstants.ERROR_U01,
-                    String.format(ConnectorConstants.ERROR_PARAMETER_CONSTANT_LENGTH,
-                            ConnectorConstants.BLOCK03_BANKING_PRIORITY, 4));
+        if (block03.getBankingPriority() != null) {
+            if (block03.getBankingPriority().isBlank()) {
+                return new ErrorModel(ConnectorConstants.ERROR_U01,
+                        String.format(ConnectorConstants.ERROR_PARAMETER_EMPTY,
+                                ConnectorConstants.BLOCK03_BANKING_PRIORITY));
+            }
+            if (block03.getBankingPriority().length() != 4) {
+                return new ErrorModel(ConnectorConstants.ERROR_U01,
+                        String.format(ConnectorConstants.ERROR_PARAMETER_CONSTANT_LENGTH,
+                                ConnectorConstants.BLOCK03_BANKING_PRIORITY, 4));
+            }
         }
-        if (block03.getMessageUserReference() != null && block03.getMessageUserReference().length() != 16) {
-            return new ErrorModel(ConnectorConstants.ERROR_U02,
-                    String.format(ConnectorConstants.ERROR_PARAMETER_CONSTANT_LENGTH,
-                            ConnectorConstants.BLOCK03_MESSAGE_USER_REFERENCE, 16));
+        if (block03.getMessageUserReference() != null) {
+            if (block03.getMessageUserReference().isBlank()) {
+                return new ErrorModel(ConnectorConstants.ERROR_U02,
+                        String.format(ConnectorConstants.ERROR_PARAMETER_EMPTY,
+                                ConnectorConstants.BLOCK03_MESSAGE_USER_REFERENCE));
+            }
+            if (block03.getMessageUserReference().length() != 16) {
+                return new ErrorModel(ConnectorConstants.ERROR_U02,
+                        String.format(ConnectorConstants.ERROR_PARAMETER_CONSTANT_LENGTH,
+                                ConnectorConstants.BLOCK03_MESSAGE_USER_REFERENCE, 16));
+            }
         }
         if (block03.getValidationFlag() != null
-                && block03.getValidationFlag().equals(MT103Constants.MT103_STP_VALIDATION_FLAG)
-                && block03.getValidationFlag().equals(MT103Constants.MT103_REMIT_VALIDATION_FLAG)) {
+                && !block03.getValidationFlag().equals(MT103Constants.MT103_STP_VALIDATION_FLAG)
+                && !block03.getValidationFlag().equals(MT103Constants.MT103_REMIT_VALIDATION_FLAG)) {
             return new ErrorModel(ConnectorConstants.ERROR_U08,
                     String.format(ConnectorConstants.ERROR_PARAMETER_INVALID,
                             ConnectorConstants.BLOCK03_VALIDATION_FLAG));
@@ -213,11 +288,17 @@ public class JsonToMt103Utils {
                     String.format(ConnectorConstants.ERROR_PARAMETER_CONSTANT_LENGTH,
                             ConnectorConstants.BLOCK03_END_TO_END_REFERENCE, 36));
         }
-        if (block03.getServiceTypeIdentifier() != null
-                && block03.getServiceTypeIdentifier().length() != 3) {
-            return new ErrorModel(ConnectorConstants.ERROR_U14,
-                    String.format(ConnectorConstants.ERROR_PARAMETER_CONSTANT_LENGTH,
-                            ConnectorConstants.BLOCK03_SERVICE_TYPE_IDENTIFIER, 3));
+        if (block03.getServiceTypeIdentifier() != null) {
+            if (!StringUtils.isNumeric(block03.getServiceTypeIdentifier())) {
+                return new ErrorModel(ConnectorConstants.ERROR_U14,
+                        String.format(ConnectorConstants.ERROR_PARAMETER_EMPTY,
+                                ConnectorConstants.BLOCK03_SERVICE_TYPE_IDENTIFIER));
+            }
+            if (block03.getServiceTypeIdentifier().length() != 3) {
+                return new ErrorModel(ConnectorConstants.ERROR_U14,
+                        String.format(ConnectorConstants.ERROR_PARAMETER_CONSTANT_LENGTH,
+                                ConnectorConstants.BLOCK03_SERVICE_TYPE_IDENTIFIER, 3));
+            }
         }
         return new ErrorModel();
     }
@@ -243,6 +324,10 @@ public class JsonToMt103Utils {
             return new ErrorModel(ConnectorConstants.ERROR_T13,
                     String.format(ConnectorConstants.ERROR_PARAMETER_MISSING, MT103Constants.BANK_OPERATION_CODE));
         }
+        if (!StringUtils.isAlphanumeric(block04.getBankOperationCode())) {
+            return new ErrorModel(ConnectorConstants.ERROR_T36,
+                    String.format(ConnectorConstants.ERROR_PARAMETER_INVALID, MT103Constants.BANK_OPERATION_CODE));
+        }
         if (block04.getBankOperationCode().length() != 4) {
             return new ErrorModel(ConnectorConstants.ERROR_T33,
                     String.format(ConnectorConstants.ERROR_PARAMETER_CONSTANT_LENGTH,
@@ -255,10 +340,17 @@ public class JsonToMt103Utils {
                 return fieldValidationResponse;
             }
         }
-        if (block04.getTransactionTypeCode() != null && block04.getTransactionTypeCode().length() != 3) {
-            return new ErrorModel(ConnectorConstants.ERROR_T33,
-                    String.format(ConnectorConstants.ERROR_PARAMETER_CONSTANT_LENGTH,
-                            MT103Constants.TRANSACTION_TYPE_CODE, 3));
+        if (block04.getTransactionTypeCode() != null) {
+            if (!StringUtils.isAlphanumeric(block04.getTransactionTypeCode())) {
+                return new ErrorModel(ConnectorConstants.ERROR_T90,
+                        String.format(ConnectorConstants.ERROR_PARAMETER_INVALID,
+                                MT103Constants.TRANSACTION_TYPE_CODE));
+            }
+            if (block04.getTransactionTypeCode().length() != 3) {
+                return new ErrorModel(ConnectorConstants.ERROR_T33,
+                        String.format(ConnectorConstants.ERROR_PARAMETER_CONSTANT_LENGTH,
+                                MT103Constants.TRANSACTION_TYPE_CODE, 3));
+            }
         }
         if (StringUtils.isBlank(block04.getValue())) {
             return new ErrorModel(ConnectorConstants.ERROR_T13,
@@ -268,13 +360,25 @@ public class JsonToMt103Utils {
             return new ErrorModel(ConnectorConstants.ERROR_T33,
                     String.format(ConnectorConstants.ERROR_PARAMETER_LENGTH, MT103Constants.VALUE, 24));
         }
-        if (block04.getInstructedAmount() != null && block04.getInstructedAmount().length() > 18) {
-            return new ErrorModel(ConnectorConstants.ERROR_T33,
-                    String.format(ConnectorConstants.ERROR_PARAMETER_LENGTH, MT103Constants.INSTRUCTED_AMOUNT, 18));
+        if (block04.getInstructedAmount() != null) {
+            if (block04.getInstructedAmount().isBlank()) {
+                return new ErrorModel(ConnectorConstants.ERROR_T90,
+                        String.format(ConnectorConstants.ERROR_PARAMETER_INVALID, MT103Constants.INSTRUCTED_AMOUNT));
+            }
+            if (block04.getInstructedAmount().length() > 18) {
+                return new ErrorModel(ConnectorConstants.ERROR_T33,
+                        String.format(ConnectorConstants.ERROR_PARAMETER_LENGTH, MT103Constants.INSTRUCTED_AMOUNT, 18));
+            }
         }
-        if (block04.getExchangeRate() != null && block04.getExchangeRate().length() > 12) {
-            return new ErrorModel(ConnectorConstants.ERROR_T33,
-                    String.format(ConnectorConstants.ERROR_PARAMETER_LENGTH, MT103Constants.EXCHANGE_RATE, 12));
+        if (block04.getExchangeRate() != null) {
+            if (block04.getExchangeRate().isBlank()) {
+                return new ErrorModel(ConnectorConstants.ERROR_T90,
+                        String.format(ConnectorConstants.ERROR_PARAMETER_INVALID, MT103Constants.EXCHANGE_RATE));
+            }
+            if (block04.getExchangeRate().length() > 12) {
+                return new ErrorModel(ConnectorConstants.ERROR_T33,
+                        String.format(ConnectorConstants.ERROR_PARAMETER_LENGTH, MT103Constants.EXCHANGE_RATE, 12));
+            }
         }
         if (block04.getOrderingCustomer() == null) {
             return new ErrorModel(ConnectorConstants.ERROR_T13,
@@ -352,6 +456,10 @@ public class JsonToMt103Utils {
             return new ErrorModel(ConnectorConstants.ERROR_T13,
                     String.format(ConnectorConstants.ERROR_PARAMETER_MISSING, MT103Constants.DETAILS_OF_CHARGES));
         }
+        if (!StringUtils.isAlpha(block04.getDetailsOfCharges())) {
+            return new ErrorModel(ConnectorConstants.ERROR_T08,
+                    String.format(ConnectorConstants.ERROR_PARAMETER_INVALID, MT103Constants.DETAILS_OF_CHARGES));
+        }
         if (block04.getDetailsOfCharges().length() != 3) {
             return new ErrorModel(ConnectorConstants.ERROR_T33,
                     String.format(ConnectorConstants.ERROR_PARAMETER_LENGTH, MT103Constants.RECEIVERS_CHARGES, 18));
@@ -363,13 +471,22 @@ public class JsonToMt103Utils {
                 return fieldValidationResponse;
             }
         }
-        if (block04.getReceiversCharges() != null && block04.getReceiversCharges().length() > 18) {
-            return new ErrorModel(ConnectorConstants.ERROR_T33,
-                    String.format(ConnectorConstants.ERROR_PARAMETER_LENGTH, MT103Constants.RECEIVERS_CHARGES, 18));
+        if (block04.getReceiversCharges() != null) {
+            if (block04.getReceiversCharges().isBlank()) {
+                return new ErrorModel(ConnectorConstants.ERROR_T90,
+                        String.format(ConnectorConstants.ERROR_PARAMETER_INVALID, MT103Constants.RECEIVERS_CHARGES));
+            }
+            if (block04.getReceiversCharges().length() > 18) {
+                return new ErrorModel(ConnectorConstants.ERROR_T33,
+                        String.format(ConnectorConstants.ERROR_PARAMETER_LENGTH, MT103Constants.RECEIVERS_CHARGES, 18));
+            }
         }
         if (block04.getSenderToReceiverInformation() != null) {
             fieldValidationResponse = validateFieldLines(block04.getSenderToReceiverInformation(),
                     MT103Constants.SENDER_TO_RECEIVER_INFORMATION, 35, 6);
+            if (fieldValidationResponse.isError()) {
+                return fieldValidationResponse;
+            }
         }
         if (block04.getRegulatoryReporting() != null) {
             fieldValidationResponse = validateFieldLines(
@@ -378,9 +495,16 @@ public class JsonToMt103Utils {
                 return fieldValidationResponse;
             }
         }
-        if (block04.getEnvelopeContents() != null && block04.getEnvelopeContents().length() > 9000) {
-            return new ErrorModel(ConnectorConstants.ERROR_T33,
-                    String.format(ConnectorConstants.ERROR_PARAMETER_LENGTH, MT103Constants.ENVELOPE_CONTENTS, 9000));
+        if (block04.getEnvelopeContents() != null) {
+            if (block04.getEnvelopeContents().isBlank()) {
+                return new ErrorModel(ConnectorConstants.ERROR_T90,
+                        String.format(ConnectorConstants.ERROR_PARAMETER_INVALID, MT103Constants.ENVELOPE_CONTENTS));
+            }
+            if (block04.getEnvelopeContents().length() > 9000) {
+                return new ErrorModel(ConnectorConstants.ERROR_T33,
+                        String.format(ConnectorConstants.ERROR_PARAMETER_LENGTH,
+                                MT103Constants.ENVELOPE_CONTENTS, 9000));
+            }
         }
         return new ErrorModel();
     }
@@ -395,25 +519,53 @@ public class JsonToMt103Utils {
                     String.format(ConnectorConstants.ERROR_PARAMETER_CONSTANT_LENGTH,
                             ConnectorConstants.BLOCK05_CHECKSUM, 12));
         }
-        if (block05.getPossibleDuplicateEmission() == null && block05.getPossibleDuplicateEmission().length() != 32) {
-            return new ErrorModel(ConnectorConstants.ERROR_Z05,
-                    String.format(ConnectorConstants.ERROR_PARAMETER_CONSTANT_LENGTH,
-                            ConnectorConstants.BLOCK05_POSSIBLE_DUPLICATE_EMISSION, 32));
+        if (block05.getPossibleDuplicateEmission() != null) {
+            if (!StringUtils.isAlphanumeric(block05.getPossibleDuplicateEmission())) {
+                return new ErrorModel(ConnectorConstants.ERROR_Z05,
+                        String.format(ConnectorConstants.ERROR_PARAMETER_INVALID,
+                                ConnectorConstants.BLOCK05_POSSIBLE_DUPLICATE_EMISSION));
+            }
+            if (block05.getPossibleDuplicateEmission().length() != 32) {
+                return new ErrorModel(ConnectorConstants.ERROR_Z05,
+                        String.format(ConnectorConstants.ERROR_PARAMETER_CONSTANT_LENGTH,
+                                ConnectorConstants.BLOCK05_POSSIBLE_DUPLICATE_EMISSION, 32));
+            }
         }
-        if (block05.getMessageReference() != null && block05.getMessageReference().length() != 38) {
-            return new ErrorModel(ConnectorConstants.ERROR_Z00,
-                    String.format(ConnectorConstants.ERROR_PARAMETER_CONSTANT_LENGTH,
-                            ConnectorConstants.BLOCK05_MESSAGE_REFERENCE, 38));
+        if (block05.getMessageReference() != null) {
+            if (!StringUtils.isAlphanumeric(block05.getMessageReference())) {
+                return new ErrorModel(ConnectorConstants.ERROR_Z00,
+                        String.format(ConnectorConstants.ERROR_PARAMETER_INVALID,
+                                ConnectorConstants.BLOCK05_MESSAGE_REFERENCE));
+            }
+            if (block05.getMessageReference().length() != 38) {
+                return new ErrorModel(ConnectorConstants.ERROR_Z00,
+                        String.format(ConnectorConstants.ERROR_PARAMETER_CONSTANT_LENGTH,
+                                ConnectorConstants.BLOCK05_MESSAGE_REFERENCE, 38));
+            }
         }
-        if (block05.getPossibleDuplicateMessage() != null && block05.getPossibleDuplicateMessage().length() != 32) {
-            return new ErrorModel(ConnectorConstants.ERROR_Z00,
-                    String.format(ConnectorConstants.ERROR_PARAMETER_CONSTANT_LENGTH,
-                            ConnectorConstants.BLOCK05_POSSIBLE_DUPLICATE_MESSAGE, 32));
+        if (block05.getPossibleDuplicateMessage() != null) {
+            if (!StringUtils.isAlphanumeric(block05.getPossibleDuplicateMessage())) {
+                return new ErrorModel(ConnectorConstants.ERROR_Z00,
+                        String.format(ConnectorConstants.ERROR_PARAMETER_INVALID,
+                                ConnectorConstants.BLOCK05_POSSIBLE_DUPLICATE_MESSAGE));
+            }
+            if (block05.getPossibleDuplicateMessage().length() != 32) {
+                return new ErrorModel(ConnectorConstants.ERROR_Z00,
+                        String.format(ConnectorConstants.ERROR_PARAMETER_CONSTANT_LENGTH,
+                                ConnectorConstants.BLOCK05_POSSIBLE_DUPLICATE_MESSAGE, 32));
+            }
         }
-        if (block05.getSystemOriginatedMessage() != null && block05.getSystemOriginatedMessage().length() != 32) {
-            return new ErrorModel(ConnectorConstants.ERROR_Z00,
-                    String.format(ConnectorConstants.ERROR_PARAMETER_CONSTANT_LENGTH,
-                            ConnectorConstants.BLOCK05_SYSTEM_ORIGINATED_MESSAGE, 32));
+        if (block05.getSystemOriginatedMessage() != null) {
+            if (!StringUtils.isAlphanumeric(block05.getSystemOriginatedMessage())) {
+                return new ErrorModel(ConnectorConstants.ERROR_Z00,
+                        String.format(ConnectorConstants.ERROR_PARAMETER_INVALID,
+                                ConnectorConstants.BLOCK05_SYSTEM_ORIGINATED_MESSAGE));
+            }
+            if (block05.getSystemOriginatedMessage().length() != 32) {
+                return new ErrorModel(ConnectorConstants.ERROR_Z00,
+                        String.format(ConnectorConstants.ERROR_PARAMETER_CONSTANT_LENGTH,
+                                ConnectorConstants.BLOCK05_SYSTEM_ORIGINATED_MESSAGE, 32));
+            }
         }
         return new ErrorModel();
     }
@@ -440,7 +592,7 @@ public class JsonToMt103Utils {
             }
             if (repetition.length() > maxElementLength) {
                 return new ErrorModel(ConnectorConstants.ERROR_T33,
-                        String.format(MT103Constants.ERROR_REPETITION_LENGTH_EXCEED, fieldName, ++i, maxElementLength));
+                        String.format(MT103Constants.ERROR_REPETITION_LENGTH_EXCEED, ++i, fieldName, maxElementLength));
             }
         }
         return new ErrorModel();

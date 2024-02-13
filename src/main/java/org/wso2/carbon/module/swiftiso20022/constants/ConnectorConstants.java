@@ -170,18 +170,21 @@ public class ConnectorConstants {
     public static final String ERROR_V01 = "V01";
 
     // Text Error Constants
+    public static final String ERROR_T08 = "T08";
     public static final String ERROR_T13 = "T13";
     public static final String ERROR_T17 = "T17";
     public static final String ERROR_T18 = "T18";
     public static final String ERROR_T26 = "T26";
     public static final String ERROR_T30 = "T30";
     public static final String ERROR_T33 = "T33";
+    public static final String ERROR_T36 = "T36";
     public static final String ERROR_T38 = "T38";
     public static final String ERROR_T40 = "T40";
     public static final String ERROR_T50 = "T50";
     public static final String ERROR_T51 = "T51";
     public static final String ERROR_T52 = "T52";
     public static final String ERROR_T53 = "T53";
+    public static final String ERROR_T90 = "T90";
 
     // Message Error Constants
     public static final String ERROR_M50 = "M50";

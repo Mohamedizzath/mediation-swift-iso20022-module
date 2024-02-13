@@ -35,7 +35,7 @@ public class MT103Constants {
     public static final String MT103_REMIT_VALIDATION_FLAG = "REMIT";
 
     // Generic Error Messages
-    public static final String ERROR_REPETITION_EMPTY = "repetition %s of %s cannot be empty";
+    public static final String ERROR_REPETITION_EMPTY = "Repetition %s of %s cannot be empty";
     public static final String ERROR_REPETITION_LENGTH_EXCEED = "Length of repetition %s of %s cannot exceed %s";
     public static final String ERROR_EMPTY_ENTITY_OPTION = "Option is mandatory for %s field";
     public static final String ERROR_INVALID_ENTITY_OPTION = "Option of field %s is invalid";
