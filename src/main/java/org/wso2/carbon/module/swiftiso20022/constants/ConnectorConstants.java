@@ -67,9 +67,7 @@ public class ConnectorConstants {
 
     // Block05 (Trailer) Related Constants
     public static final String BLOCK05_CHECKSUM = "Checksum";
-    public static final String BLOCK05_TEST_AND_TRAINING_MESSAGE = "Test and Training Message";
     public static final String BLOCK05_POSSIBLE_DUPLICATE_EMISSION = "Possible Duplicate Emission";
-    public static final String BLOCK05_DELAYED_MESSAGE = "Delayed Message";
     public static final String BLOCK05_MESSAGE_REFERENCE = "Message Reference";
     public static final String BLOCK05_POSSIBLE_DUPLICATE_MESSAGE = "Possible Duplicate Message";
     public static final String BLOCK05_SYSTEM_ORIGINATED_MESSAGE = "System Originated Message";
@@ -121,12 +119,10 @@ public class ConnectorConstants {
     public static final String PROCESSING_ERROR = "Error while processing the request";
     public static final String ERROR_PARAMETER_MISSING = "Missing mandatory parameter %s";
     public static final String ERROR_PARAMETER_EMPTY = "%s cannot be empty";
-    public static final String ERROR_REPETITIONS_EXCEED = "%s cannot be present more than %s times";
     public static final String ERROR_FIELD_LINES_EXCEED = "Field %s cannot contain more than %s lines";
     public static final String ERROR_FIELD_LINE_EMPTY = "Line %s of %s cannot be empty";
     public static final String ERROR_FIELD_LINE_LENGTH_EXCEED = "Line %s of %s cannot contain more than %s characters";
     public static final String ERROR_BLOCK_MISSING = "Missing mandatory block %s";
-    public static final String ERROR_CONDITIONAL_PARAMETER_PRESENT = "Field %s cannot be present without %s";
     public static final String ERROR_PARAMETER_LENGTH = "%s should not contain more than %s characters";
     public static final String ERROR_PARAMETER_CONSTANT_LENGTH = "%s length should be %s";
     public static final String ERROR_PARAMETER_CONTAINS_SLASH = "%s should not contain slashes";
@@ -170,18 +166,21 @@ public class ConnectorConstants {
     public static final String ERROR_V01 = "V01";
 
     // Text Error Constants
+    public static final String ERROR_T08 = "T08";
     public static final String ERROR_T13 = "T13";
     public static final String ERROR_T17 = "T17";
     public static final String ERROR_T18 = "T18";
     public static final String ERROR_T26 = "T26";
     public static final String ERROR_T30 = "T30";
     public static final String ERROR_T33 = "T33";
+    public static final String ERROR_T36 = "T36";
     public static final String ERROR_T38 = "T38";
     public static final String ERROR_T40 = "T40";
     public static final String ERROR_T50 = "T50";
     public static final String ERROR_T51 = "T51";
     public static final String ERROR_T52 = "T52";
     public static final String ERROR_T53 = "T53";
+    public static final String ERROR_T90 = "T90";
 
     // Message Error Constants
     public static final String ERROR_M50 = "M50";
