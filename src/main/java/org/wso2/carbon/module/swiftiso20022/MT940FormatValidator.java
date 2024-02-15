@@ -20,6 +20,7 @@ package org.wso2.carbon.module.swiftiso20022;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.synapse.MessageContext;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.XML;
 import org.wso2.carbon.connector.core.AbstractConnector;
@@ -61,7 +62,7 @@ public class MT940FormatValidator extends AbstractConnector {
                     }
                 }
             }
-        } catch (Exception e) {
+        } catch (JSONException e) {
             log.error(String.format("Failed to read the text payload from request. %s", e.getMessage()));
             ConnectorUtils.appendErrorToMessageContext(messageContext, ConnectorConstants.INVALID_REQUEST_PAYLOAD,
                     e.getMessage());
