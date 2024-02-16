@@ -1,6 +1,9 @@
 package org.wso2.carbon.module.swiftiso20022;
 
+import org.apache.axiom.soap.SOAPBody;
+import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.axis2.context.MessageContext;
+import org.apache.synapse.SynapseException;
 import org.apache.synapse.core.axis2.Axis2MessageContext;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
@@ -15,8 +18,6 @@ import org.wso2.carbon.module.swiftiso20022.model.ErrorModel;
 import org.wso2.carbon.module.swiftiso20022.utils.ConnectorUtils;
 import org.wso2.carbon.module.swiftiso20022.utils.MT940FormatValidatorTestConstants;
 import org.wso2.carbon.module.swiftiso20022.utils.MT940ValidationUtils;
-
-import java.util.Optional;
 
 /**
  * Test class for MT940FormatValidator.
@@ -37,11 +38,51 @@ public class MT940FormatValidatorTests extends PowerMockTestCase {
     public void testMT940FormatValidator() throws Exception {
 
         Axis2MessageContext msgCtx = Mockito.mock(Axis2MessageContext.class);
-        Mockito.doReturn(messageContext).when(msgCtx).getAxis2MessageContext();
+        SOAPEnvelope soapEnvelope = Mockito.spy(SOAPEnvelope.class);
+        Mockito.doReturn(soapEnvelope).when(msgCtx).getEnvelope();
+        SOAPBody soapBody = Mockito.spy(SOAPBody.class);
+        Mockito.doReturn(soapBody).when(soapEnvelope).getBody();
+        Mockito.doReturn(MT940FormatValidatorTestConstants.PAYLOAD).when(soapBody).toString();
 
         PowerMockito.mockStatic(ConnectorUtils.class);
-        PowerMockito.when(ConnectorUtils.buildMessagePayloadFromMessageContext(messageContext))
-                .thenReturn(Optional.of(MT940FormatValidatorTestConstants.PAYLOAD));
+        PowerMockito.doNothing().when(ConnectorUtils.class, "appendJsonResponseToMessageContext",
+                Mockito.any(), Mockito.any());
+        PowerMockito.doNothing().when(ConnectorUtils.class, "appendErrorToMessageContext",
+                Mockito.any(), Mockito.anyString(), Mockito.anyString());
+
+        mt940FormatValidator.connect(msgCtx);
+    }
+
+    @Test
+    public void testMT940FormatValidatorForAxis2Payload() throws Exception {
+
+        Axis2MessageContext msgCtx = Mockito.mock(Axis2MessageContext.class);
+        SOAPEnvelope soapEnvelope = Mockito.spy(SOAPEnvelope.class);
+        Mockito.doReturn(soapEnvelope).when(msgCtx).getEnvelope();
+        SOAPBody soapBody = Mockito.spy(SOAPBody.class);
+        Mockito.doReturn(soapBody).when(soapEnvelope).getBody();
+        Mockito.doReturn(MT940FormatValidatorTestConstants.AXIS2_PAYLOAD).when(soapBody).toString();
+
+        PowerMockito.mockStatic(ConnectorUtils.class);
+        PowerMockito.doNothing().when(ConnectorUtils.class, "appendJsonResponseToMessageContext",
+                Mockito.any(), Mockito.any());
+        PowerMockito.doNothing().when(ConnectorUtils.class, "appendErrorToMessageContext",
+                Mockito.any(), Mockito.anyString(), Mockito.anyString());
+
+        mt940FormatValidator.connect(msgCtx);
+    }
+
+    @Test(expectedExceptions = SynapseException.class)
+    public void testMT940FormatValidatorForInvalidPayload() throws Exception {
+
+        Axis2MessageContext msgCtx = Mockito.mock(Axis2MessageContext.class);
+        SOAPEnvelope soapEnvelope = Mockito.spy(SOAPEnvelope.class);
+        Mockito.doReturn(soapEnvelope).when(msgCtx).getEnvelope();
+        SOAPBody soapBody = Mockito.spy(SOAPBody.class);
+        Mockito.doReturn(soapBody).when(soapEnvelope).getBody();
+        Mockito.doReturn(MT940FormatValidatorTestConstants.INVALID_PAYLOAD).when(soapBody).toString();
+
+        PowerMockito.mockStatic(ConnectorUtils.class);
         PowerMockito.doNothing().when(ConnectorUtils.class, "appendJsonResponseToMessageContext",
                 Mockito.any(), Mockito.any());
         PowerMockito.doNothing().when(ConnectorUtils.class, "appendErrorToMessageContext",
