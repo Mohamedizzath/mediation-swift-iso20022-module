@@ -59,6 +59,5 @@
 ${"\n"}-}<#if payload.block05?? >{5:{CHK:${payload.block05.checksum}}<#if payload.block05.testNTrainingMessage??>{TNG:}</#if><@printIfAvailable payload.block05.possibleDuplicationEmission "PDE"></@><@printIfAvailable payload.block05.messageReference "MRF"></@><#if payload.block05.delayedMessage??>{DLM:}</#if><@printIfAvailable payload.block05.possibleDuplicationMessage "PDM"></@><@printIfAvailable payload.block05.systemOriginatedMessage "SYS"></@></#if>]]></format>
             <args/>
         </payloadFactory>
-        <respond/>
     </sequence>
 </template>
