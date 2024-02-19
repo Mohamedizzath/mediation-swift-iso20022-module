@@ -65,8 +65,7 @@ public class ConnectorUtils {
         try {
             InputStream jsonPayload = JsonUtil.getJsonPayload(axis2MC);
             if (jsonPayload != null) {
-                return Optional.ofNullable(IOUtils.toString(JsonUtil.getJsonPayload(axis2MC),
-                        StandardCharsets.UTF_8.name()));
+                return Optional.ofNullable(IOUtils.toString(jsonPayload, StandardCharsets.UTF_8.name()));
             }
         } catch (IOException e) {
             log.error("Unable to read payload stream", e);

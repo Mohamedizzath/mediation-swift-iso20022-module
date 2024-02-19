@@ -18,8 +18,11 @@
 
 package org.wso2.carbon.module.swiftiso20022;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.synapse.MessageContext;
-import org.apache.synapse.core.axis2.Axis2MessageContext;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.XML;
 import org.wso2.carbon.connector.core.AbstractConnector;
 import org.wso2.carbon.connector.core.ConnectException;
 import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
@@ -29,9 +32,9 @@ import org.wso2.carbon.module.swiftiso20022.utils.MT940ValidationUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 /**
  * Class to validate the MT940 format.
@@ -44,11 +47,29 @@ public class MT940FormatValidator extends AbstractConnector {
     @Override
     public void connect(MessageContext messageContext) throws ConnectException {
         log.debug("Executing MT940FormatValidator to validate the MT940 format");
-        org.apache.axis2.context.MessageContext axis2MessageContext = ((Axis2MessageContext) messageContext)
-                .getAxis2MessageContext();
-        Optional<String> payload = ConnectorUtils.buildMessagePayloadFromMessageContext(axis2MessageContext);
-        if (payload.isPresent()) {
-            String[] lines = payload.get().split(ConnectorConstants.LINE_BREAK);
+
+        String payload = null;
+        try {
+            JSONObject jsonPayload = XML.toJSONObject(messageContext.getEnvelope().getBody().toString())
+                    .getJSONObject("soapenv:Body");
+            if (jsonPayload.has("text")) {
+                payload = jsonPayload.getJSONObject("text").getString("content");
+            } else {
+                for (Iterator it = jsonPayload.keys(); it.hasNext(); ) {
+                    String key = (String) it.next();
+                    if (key.startsWith("axis2ns")) {
+                        payload = jsonPayload.getJSONObject(key).getString("content");
+                    }
+                }
+            }
+        } catch (JSONException e) {
+            log.error(String.format("Failed to read the text payload from request. %s", e.getMessage()));
+            ConnectorUtils.appendErrorToMessageContext(messageContext, ConnectorConstants.INVALID_REQUEST_PAYLOAD,
+                    e.getMessage());
+            this.handleException(e.getMessage(), messageContext);
+        }
+        if (StringUtils.isNotBlank(payload)) {
+            String[] lines = payload.split(ConnectorConstants.LINE_BREAK);
             ErrorModel validationResponse = validateMT940(messageContext, lines);
 
             if (validationResponse.isError()) {
