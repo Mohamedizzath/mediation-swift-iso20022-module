@@ -48,6 +48,5 @@ ${payload.accountNumberIdentifier}
 	            ]]></format>
             <args/>
         </payloadFactory>
-        <respond/>
     </sequence>
 </template>
