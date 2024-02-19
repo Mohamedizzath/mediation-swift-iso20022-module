@@ -18,6 +18,7 @@
 
 package org.wso2.carbon.module.swiftiso20022;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.synapse.MessageContext;
 import org.wso2.carbon.connector.core.AbstractConnector;
 import org.wso2.carbon.connector.core.ConnectException;
@@ -35,8 +36,9 @@ public class ISO20022camt053Validator extends AbstractConnector {
     public void connect(MessageContext messageContext) throws ConnectException {
         String rootElementTag = ISOMessageParser.getRootXMLElement(messageContext);
 
-        if (!rootElementTag.equals(ConnectorConstants.XML_INPUT_BUSINESS_ENV_TAG) &&
-            !rootElementTag.equals(ConnectorConstants.XML_INPUT_DOCUMENT_TAG)) {
+        if (StringUtils.isBlank(rootElementTag) || (
+                (!rootElementTag.equals(ConnectorConstants.XML_INPUT_BUSINESS_ENV_TAG) &&
+                (!rootElementTag.equals(ConnectorConstants.XML_INPUT_DOCUMENT_TAG))))) {
             // Invalid XML root tag
             this.log.error(ConnectorConstants.ERROR_INVALID_XML_ROOT_TAG);
             ConnectorUtils.appendErrorToMessageContext(messageContext,
@@ -49,7 +51,8 @@ public class ISO20022camt053Validator extends AbstractConnector {
             // Validate ISO 20022 message business header
             log.debug("Business application header present");
             try {
-                String appHdrStr = ISOMessageParser.extractISOMessage(messageContext, ConnectorConstants.XPATH_APPHDR);
+                String appHdrStr = ISOMessageParser.extractISOMessage(messageContext,
+                        ConnectorConstants.XPATH_CAMT_053_APPHDR);
 
                 XSDValidator appHdrValidator = new XSDValidator(ConnectorConstants.XSD_SCHEMA_HEAD_001_001);
                 appHdrValidator.validateXMLContent(appHdrStr);

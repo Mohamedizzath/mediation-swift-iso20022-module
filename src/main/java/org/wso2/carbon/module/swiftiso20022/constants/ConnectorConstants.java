@@ -81,7 +81,8 @@ public class ConnectorConstants {
     public static final String XSD_SCHEMA_HEAD_001_001 = "schema/head.001.001.03.xsd";
     public static final String XML_INPUT_BUSINESS_ENV_TAG = "BizMsgEnvlp";
     public static final String XML_INPUT_APPHDR_TAG = "AppHdr";
-    public static final String XPATH_APPHDR = "/soapenv:Body/BizMsgEnvlp/app:AppHdr";
+    public static final String XPATH_APPHDR = "/soapenv:Body/app:AppHdr";
+    public static final String XPATH_CAMT_053_APPHDR = "/soapenv:Body/BizMsgEnvlp/app:AppHdr";
     public static final String APPHDR_PREFIX = "app";
     public static final String XML_INPUT_APPHDR_NAMESPACE = "urn:iso:std:iso:20022:tech:xsd:head.001.001.03";
     public static final String XML_INPUT_DOCUMENT_TAG = "Document";
