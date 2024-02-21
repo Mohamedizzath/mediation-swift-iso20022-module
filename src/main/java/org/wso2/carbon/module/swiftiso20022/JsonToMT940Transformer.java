@@ -20,7 +20,6 @@ package org.wso2.carbon.module.swiftiso20022;
 
 import com.google.gson.Gson;
 import org.apache.axis2.AxisFault;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.synapse.MessageContext;
 import org.apache.synapse.core.axis2.Axis2MessageContext;
 import org.json.JSONException;
@@ -30,12 +29,11 @@ import org.wso2.carbon.connector.core.ConnectException;
 import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
 import org.wso2.carbon.module.swiftiso20022.model.ErrorModel;
 import org.wso2.carbon.module.swiftiso20022.mt940models.RequestPayloadModel;
-import org.wso2.carbon.module.swiftiso20022.mt940models.TransactionModel;
 import org.wso2.carbon.module.swiftiso20022.utils.ConnectorUtils;
 import org.wso2.carbon.module.swiftiso20022.utils.JsonToMt940Utils;
-import org.wso2.carbon.module.swiftiso20022.utils.ValidatorUtils;
+import org.wso2.carbon.module.swiftiso20022.validation.common.ValidationEngine;
+import org.wso2.carbon.module.swiftiso20022.validation.common.ValidatorContext;
 
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -89,116 +87,29 @@ public class JsonToMT940Transformer extends AbstractConnector {
      */
     private ErrorModel validateRequestPayload(RequestPayloadModel requestPayload) {
 
-        if (StringUtils.isBlank(requestPayload.getBlock1())) {
-            return new ErrorModel(ConnectorConstants.ERROR_H01, ConnectorConstants.ERROR_BLOCK1_INVALID);
+        ErrorModel validationResult = ValidationEngine.getInstance()
+                .addMandatoryParamValidationRules(JsonToMt940Utils.getMandatoryFieldsInPayload(requestPayload))
+                .addOptionalParamValidationRule(new ValidatorContext(ConnectorConstants.ACC_NUMBER_IDENTIFICATION,
+                        requestPayload.getAccountNumberIdentifier()))
+                .addParameterLengthValidationRules(JsonToMt940Utils.
+                        getFieldsInPayloadForLengthValidation(requestPayload))
+                .addAlphaNumericParamValidationRules(JsonToMt940Utils.getAlphaNumericFieldsInPayload(requestPayload))
+                .addNumericParamValidationRules(JsonToMt940Utils.getNumericFieldsInPayload(requestPayload))
+                .validate();
+
+        if (validationResult.isError()) {
+            return validationResult;
         }
 
-        if (StringUtils.isBlank(requestPayload.getBlock2())) {
-            return new ErrorModel(ConnectorConstants.ERROR_H25, ConnectorConstants.ERROR_BLOCK2_INVALID);
+        ErrorModel balanceValidationResult = JsonToMt940Utils.validateBalances(requestPayload);
+        if (balanceValidationResult.isError()) {
+            return balanceValidationResult;
         }
 
-        if (!JsonToMt940Utils.isValidAccountNumber(requestPayload.getAccountNumber())) {
-            return new ErrorModel(ConnectorConstants.ERROR_M50, ConnectorConstants.ERROR_ACC_NO_INVALID);
-        }
-
-        if (!JsonToMt940Utils.isValidateReference(requestPayload.getReference())) {
-            return new ErrorModel(ConnectorConstants.ERROR_M50, ConnectorConstants.ERROR_REF_INVALID);
-        }
-
-        if (!JsonToMt940Utils.isValidateSequenceNumber(requestPayload.getSequenceNumber())) {
-            return new ErrorModel(ConnectorConstants.ERROR_M50, ConnectorConstants.ERROR_SEQ_NO_INVALID);
-        }
-
-        if (requestPayload.getOpeningBalanceDetails() == null) {
-            return new ErrorModel(ConnectorConstants.ERROR_T13,
-                    String.format(ConnectorConstants.ERROR_MANDATORY_PARAM_MISSING,
-                            ConnectorConstants.OPENING_BALANCE));
-        }
-
-        ErrorModel errorModel = JsonToMt940Utils.validateBalanceDetails(requestPayload.getOpeningBalanceDetails(),
-                ConnectorConstants.OPENING_BALANCE);
-        if (errorModel.isError()) {
-            return errorModel;
-        }
-
-        if (requestPayload.getClosingBalanceDetails() == null) {
-            return new ErrorModel(ConnectorConstants.ERROR_T13,
-                    String.format(ConnectorConstants.ERROR_MANDATORY_PARAM_MISSING,
-                            ConnectorConstants.CLOSING_BALANCE));
-        }
-
-        errorModel = JsonToMt940Utils.validateBalanceDetails(requestPayload.getClosingBalanceDetails(),
-                ConnectorConstants.CLOSING_BALANCE);
-        if (errorModel.isError()) {
-            return errorModel;
-        }
-
-        if (requestPayload.getClosingAvailableBalanceDetails() != null) {
-            errorModel = JsonToMt940Utils.validateBalanceDetails(requestPayload.getClosingAvailableBalanceDetails(),
-                    ConnectorConstants.CLOSING_AVAIL_BALANCE);
-            if (errorModel.isError()) {
-                return errorModel;
-            }
-        }
-
-        if (requestPayload.getForwardAvailableBalanceDetails() != null) {
-            errorModel = JsonToMt940Utils.validateBalanceDetails(requestPayload.getForwardAvailableBalanceDetails(),
-                    ConnectorConstants.FORWARD_CLOSING_AVAIL_BALANCE);
-            if (errorModel.isError()) {
-                return errorModel;
-            }
-        }
-
-        ErrorModel error = validateTransactionDetails(requestPayload.getTransactions());
-        if (error.isError()) {
-            return error;
-        }
-        return new ErrorModel();
-    }
-
-    /**
-     * Method to validate the transaction details.
-     *
-     * @param transactions  List of transactions
-     * @return              Error model if there is an error, else empty error model
-     */
-    private static ErrorModel validateTransactionDetails(List<TransactionModel> transactions) {
-
-        for (TransactionModel transaction : transactions) {
-            if (!JsonToMt940Utils.isValidDateFormat(transaction.getDateTime())) {
-                return new ErrorModel(ConnectorConstants.INVALID_REQUEST_PAYLOAD,
-                        ConnectorConstants.ERROR_DATE_TIME_INVALID);
-            }
-
-            ErrorModel error = JsonToMt940Utils.validTransactionType(transaction.getTransactionType());
-            if (error.isError()) {
-                return error;
-            }
-
-            if (!ValidatorUtils.isValidCurrency(transaction.getCurrency())) {
-                return new ErrorModel(ConnectorConstants.ERROR_T52,
-                        String.format(ConnectorConstants.ERROR_CURRENCY_CODE_INVALID,
-                                ConnectorConstants.STATEMENT_LINE));
-            }
-
-            if (!JsonToMt940Utils.isValidDebitCreditMark(transaction.getTransactionIndicator())) {
-                return new ErrorModel(ConnectorConstants.ERROR_T51,
-                        String.format(ConnectorConstants.ERROR_PARAMETER_INVALID,
-                                ConnectorConstants.STATEMENT_LINE));
-            }
-
-            error = ValidatorUtils.validateAmountLength(transaction.getAmount(), ConnectorConstants.STATEMENT_LINE);
-            if (error.isError()) {
-                return error;
-            }
-
-            if (!JsonToMt940Utils.isValidateReference(transaction.getCustomerReference())) {
-                return new ErrorModel(ConnectorConstants.ERROR_M50, ConnectorConstants.ERROR_CUS_REF_INVALID);
-            }
-
-            if (!JsonToMt940Utils.isValidateReference(transaction.getTransactionReference())) {
-                return new ErrorModel(ConnectorConstants.ERROR_M50, ConnectorConstants.ERROR_TRANS_REF_INVALID);
-            }
+        ErrorModel transactionValidationResult = JsonToMt940Utils
+                .validateTransactionDetails(requestPayload.getTransactions());
+        if (transactionValidationResult.isError()) {
+            return transactionValidationResult;
         }
         return new ErrorModel();
     }

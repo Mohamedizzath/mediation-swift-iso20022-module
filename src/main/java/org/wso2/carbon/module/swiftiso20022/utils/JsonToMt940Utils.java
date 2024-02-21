@@ -30,9 +30,12 @@ import org.wso2.carbon.module.swiftiso20022.mt940models.BalanceModel;
 import org.wso2.carbon.module.swiftiso20022.mt940models.RequestPayloadModel;
 import org.wso2.carbon.module.swiftiso20022.mt940models.StatementLineModel;
 import org.wso2.carbon.module.swiftiso20022.mt940models.TransactionModel;
+import org.wso2.carbon.module.swiftiso20022.validation.common.ValidationEngine;
+import org.wso2.carbon.module.swiftiso20022.validation.common.ValidatorContext;
+import org.wso2.carbon.module.swiftiso20022.validation.rules.custom.MT940TransactionIndicatorValidationRule;
+import org.wso2.carbon.module.swiftiso20022.validation.rules.custom.MT940TransactionTypeValidationRule;
 
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -48,30 +51,165 @@ public class JsonToMt940Utils {
     private static final Log log = LogFactory.getLog(JsonToMt940Utils.class);
 
     /**
-     * Method to validate the request payload.
-     * @param accountNumber   Account Number
-     * @return  Whether the request payload is valid or not
+     * Method to construct list of fields for Mandatory parameter validation.
+     * @param requestPayload    Request Payload
+     * @return List of fields for Mandatory parameter validation
      */
-    public static boolean isValidAccountNumber(String accountNumber) {
-        return (StringUtils.isNotBlank(accountNumber) && accountNumber.length() < 36);
+    public static List<ValidatorContext> getMandatoryFieldsInPayload(RequestPayloadModel requestPayload) {
+        List<ValidatorContext> mandatoryFields = new ArrayList<>();
+        mandatoryFields.add(new ValidatorContext(ConnectorConstants.HEADER_BLOCK_1,
+                requestPayload.getBlock1()));
+        mandatoryFields.add(new ValidatorContext(ConnectorConstants.HEADER_BLOCK_2,
+                requestPayload.getBlock2()));
+        mandatoryFields.add(new ValidatorContext(ConnectorConstants.ACC_NUMBER,
+                requestPayload.getAccountNumber()));
+        mandatoryFields.add(new ValidatorContext(ConnectorConstants.TRANSACTION_REF,
+                requestPayload.getReference()));
+        mandatoryFields.add(new ValidatorContext(ConnectorConstants.SEQUENCE_NO,
+                requestPayload.getSequenceNumber()));
+        mandatoryFields.add(new ValidatorContext(ConnectorConstants.OPENING_BALANCE,
+                requestPayload.getOpeningBalanceDetails()));
+        mandatoryFields.add(new ValidatorContext(ConnectorConstants.CLOSING_BALANCE,
+                requestPayload.getClosingBalanceDetails()));
+
+        return mandatoryFields;
     }
 
     /**
-     * Method to validate the reference in the request payload.
-     * @param reference   Reference
-     * @return  Whether the reference is valid or not
+     * Method to construct list of fields for length validation.
+     * @param requestPayload      Request Payload
+     * @return List of fields for length validation
      */
-    public static boolean isValidateReference(String reference) {
-        return (StringUtils.isNotBlank(reference) && reference.length() < 17);
+    public static List<ValidatorContext> getFieldsInPayloadForLengthValidation(RequestPayloadModel requestPayload) {
+        List<ValidatorContext> fields = new ArrayList<>();
+        fields.add(new ValidatorContext(ConnectorConstants.ACC_NUMBER,
+                requestPayload.getAccountNumber(), ConnectorConstants.ACC_IDENTIFICATION_LENGTH));
+        fields.add(new ValidatorContext(ConnectorConstants.TRANSACTION_REF, requestPayload.getReference(),
+                ConnectorConstants.REFERENCE_LENGTH));
+        fields.add(new ValidatorContext(ConnectorConstants.SEQUENCE_NO, requestPayload.getSequenceNumber(),
+                ConnectorConstants.SEQUENCE_NO_LENGTH));
+        return fields;
     }
 
     /**
-     * Method to validate the Sequence Number in the request payload.
-     * @param sequenceNumber   Sequence Number
-     * @return  Whether the sequence number is valid or not
+     * Method to construct list of alphanumeric fields from the payload for validation.
+     * @param requestPayload      Request Payload
+     * @return List of fields for length validation
      */
-    public static boolean isValidateSequenceNumber(String sequenceNumber) {
-        return (StringUtils.isNotBlank(sequenceNumber) && sequenceNumber.length() < 4);
+    public static List<ValidatorContext> getAlphaNumericFieldsInPayload(RequestPayloadModel requestPayload) {
+        List<ValidatorContext> fields = new ArrayList<>();
+        fields.add(new ValidatorContext(ConnectorConstants.ACC_NUMBER,
+                requestPayload.getAccountNumber()));
+        fields.add(new ValidatorContext(ConnectorConstants.ACC_NUMBER_IDENTIFICATION,
+                requestPayload.getAccountNumberIdentifier()));
+        return fields;
+    }
+
+    /**
+     * Method to construct list of numeric fields from the payload for validation.
+     * @param requestPayload      Request Payload
+     * @return List of fields for length validation
+     */
+    public static List<ValidatorContext> getNumericFieldsInPayload(RequestPayloadModel requestPayload) {
+        List<ValidatorContext> fields = new ArrayList<>();
+        fields.add(new ValidatorContext(ConnectorConstants.SEQUENCE_NO, requestPayload.getSequenceNumber()));
+        return fields;
+    }
+
+    /**
+     * Method to construct list of fields in Balances for Mandatory parameter validation.
+     * @param balanceDetails     Balance object in Payload
+     * @param balanceName        Name of the Balance object in Payload
+     * @return List of fields for Mandatory parameter validation
+     */
+    public static List<ValidatorContext> getMandatoryFieldsInBalance(BalanceModel balanceDetails,
+                                                                     String balanceName) {
+        List<ValidatorContext> mandatoryFields = new ArrayList<>();
+        mandatoryFields.add(new ValidatorContext(StringUtils.join(balanceName, ConnectorConstants.DATE),
+                balanceDetails.getDate()));
+        mandatoryFields.add(new ValidatorContext(StringUtils.join(balanceName, ConnectorConstants.CURRENCY),
+                balanceDetails.getCurrency()));
+        mandatoryFields.add(new ValidatorContext(StringUtils.join(balanceName, ConnectorConstants.AMOUNT),
+                balanceDetails.getBalanceAmount()));
+        mandatoryFields.add(new ValidatorContext(StringUtils.join(balanceName, ConnectorConstants.INDICATOR),
+                balanceDetails.getIndicator()));
+
+        return mandatoryFields;
+    }
+
+    /**
+     * Method to construct list of fields in Balances for length validation.
+     * @param balanceDetails     Balance object in Payload
+     * @param balanceName        Name of the Balance object in Payload
+     * @return List of fields for length validation
+     */
+    public static List<ValidatorContext> getFieldsInBalanceForLengthValidation(BalanceModel balanceDetails,
+                                                                               String balanceName) {
+        List<ValidatorContext> fields = new ArrayList<>();
+        fields.add(new ValidatorContext(StringUtils.join(balanceName, ConnectorConstants.DATE),
+                balanceDetails.getDate(), ConnectorConstants.DATE_LENGTH));
+        fields.add(new ValidatorContext(StringUtils.join(balanceName, ConnectorConstants.CURRENCY),
+                balanceDetails.getCurrency(), ConnectorConstants.CURRENCY_LENGTH));
+        fields.add(new ValidatorContext(StringUtils.join(balanceName, ConnectorConstants.AMOUNT),
+                balanceDetails.getBalanceAmount(), ConnectorConstants.AMOUNT_LENGTH));
+        fields.add(new ValidatorContext(StringUtils.join(balanceName, ConnectorConstants.INDICATOR),
+                balanceDetails.getIndicator(), ConnectorConstants.INDICATOR_LENGTH));
+        return fields;
+    }
+
+    /**
+     * Method to construct list of fields in Transactions for Mandatory parameter validation.
+     * @param transactionDetails     Transaction object in Payload
+     * @return List of fields for Mandatory parameter validation
+     */
+    public static List<ValidatorContext> getMandatoryFieldsInTransaction(TransactionModel transactionDetails) {
+        List<ValidatorContext> mandatoryFields = new ArrayList<>();
+        String fieldName = ConnectorConstants.TRANSACTION;
+
+        mandatoryFields.add(new ValidatorContext(StringUtils.join(fieldName, ConnectorConstants.DATE),
+                transactionDetails.getDateTime()));
+        mandatoryFields.add(new ValidatorContext(StringUtils.join(fieldName, ConnectorConstants.CURRENCY),
+                transactionDetails.getCurrency()));
+        mandatoryFields.add(new ValidatorContext(StringUtils.join(fieldName, ConnectorConstants.AMOUNT),
+                transactionDetails.getAmount()));
+        mandatoryFields.add(new ValidatorContext(StringUtils.join(fieldName, ConnectorConstants.INDICATOR),
+                transactionDetails.getTransactionIndicator()));
+        mandatoryFields.add(new ValidatorContext(ConnectorConstants.TRANSACTION_REFERENCE,
+                transactionDetails.getTransactionReference()));
+        mandatoryFields.add(new ValidatorContext(ConnectorConstants.CUSTOMER_REFERENCE,
+                transactionDetails.getCustomerReference()));
+        mandatoryFields.add(new ValidatorContext(ConnectorConstants.TRANSACTION_TYPE,
+                transactionDetails.getTransactionType()));
+
+        return mandatoryFields;
+    }
+
+    /**
+     * Method to construct list of fields in Transactions for length validation.
+     * @param transactionDetails     Transaction object in Payload
+     * @return List of fields for length validation
+     */
+    public static List<ValidatorContext> getFieldsInTransactionForLengthValidation(
+            TransactionModel transactionDetails) {
+
+        List<ValidatorContext> fields = new ArrayList<>();
+        String fieldName = ConnectorConstants.TRANSACTION;
+
+        fields.add(new ValidatorContext(StringUtils.join(fieldName, ConnectorConstants.DATE),
+                transactionDetails.getDateTime(), ConnectorConstants.DATE_LENGTH));
+        fields.add(new ValidatorContext(StringUtils.join(fieldName, ConnectorConstants.CURRENCY),
+                transactionDetails.getCurrency(), ConnectorConstants.CURRENCY_LENGTH));
+        fields.add(new ValidatorContext(StringUtils.join(fieldName, ConnectorConstants.AMOUNT),
+                transactionDetails.getAmount(), ConnectorConstants.AMOUNT_LENGTH));
+        fields.add(new ValidatorContext(StringUtils.join(fieldName, ConnectorConstants.INDICATOR),
+                transactionDetails.getTransactionIndicator(), ConnectorConstants.TRANSACTION_IND_LENGTH));
+        fields.add(new ValidatorContext(ConnectorConstants.TRANSACTION_REFERENCE,
+                transactionDetails.getTransactionReference(), ConnectorConstants.REFERENCE_LENGTH));
+        fields.add(new ValidatorContext(ConnectorConstants.CUSTOMER_REFERENCE,
+                transactionDetails.getCustomerReference(), ConnectorConstants.REFERENCE_LENGTH));
+        fields.add(new ValidatorContext(ConnectorConstants.TRANSACTION_TYPE,
+                transactionDetails.getTransactionType(), ConnectorConstants.TRANSACTION_TYPE_LENGTH));
+        return fields;
     }
 
     /**
@@ -83,24 +221,24 @@ public class JsonToMt940Utils {
      */
     public static ErrorModel validateBalanceDetails(BalanceModel balanceDetails, String fieldName) {
 
-        if (!isValidDateFormat(balanceDetails.getDate())) {
-            return new ErrorModel(ConnectorConstants.ERROR_T50,
-                    String.format(ConnectorConstants.ERROR_INCORRECT_FORMAT, fieldName));
+        ErrorModel paramValidationResult = ValidationEngine.getInstance()
+                .addMandatoryParamValidationRules(
+                        JsonToMt940Utils.getMandatoryFieldsInBalance(balanceDetails, fieldName))
+                .addOptionalParamValidationRule(new ValidatorContext(StringUtils.join(fieldName,
+                        ConnectorConstants.STATEMENT_TYPE), balanceDetails.getStatementType()))
+                .addParameterLengthValidationRules(JsonToMt940Utils.
+                        getFieldsInBalanceForLengthValidation(balanceDetails, fieldName))
+                .addDateFormatValidationRule(new ValidatorContext(StringUtils.join(fieldName,
+                        ConnectorConstants.DATE), balanceDetails.getDate()))
+                .addCurrencyFormatValidationRule(new ValidatorContext(StringUtils.join(fieldName,
+                        ConnectorConstants.CURRENCY), balanceDetails.getCurrency()))
+                .validate();
+
+        if (paramValidationResult.isError()) {
+            return paramValidationResult;
         }
 
-        if (!ValidatorUtils.isValidCurrency(balanceDetails.getCurrency())) {
-            return new ErrorModel(ConnectorConstants.ERROR_T52,
-                    String.format(ConnectorConstants.ERROR_CURRENCY_CODE_INVALID, fieldName));
-        }
-
-        ErrorModel error = ValidatorUtils.validateAmountLength(balanceDetails.getBalanceAmount(),
-                fieldName);
-        if (error.isError()) {
-            return error;
-        }
-
-        if (StringUtils.isBlank(balanceDetails.getIndicator()) ||
-                !(ConnectorConstants.DEBIT.equals(balanceDetails.getIndicator()) ||
+        if (!(ConnectorConstants.DEBIT.equals(balanceDetails.getIndicator()) ||
                 ConnectorConstants.CREDIT.equals(balanceDetails.getIndicator()))) {
             return new ErrorModel(ConnectorConstants.ERROR_T51, ConnectorConstants.ERROR_BAL_IND_INVALID);
         }
@@ -116,68 +254,76 @@ public class JsonToMt940Utils {
     }
 
     /**
-     * Method to validate the date format.
+     * Method to validate the Balance object details.
      *
-     * @param dateTime  Date time to validate
-     * @return          True if the date format is valid, else false
+     * @param requestPayload  Request Payload
+     * @return              Error model if there is an error, else empty error model
      */
-    public static boolean isValidDateFormat(String dateTime) {
-
-        if (StringUtils.isBlank(dateTime)) {
-            return false;
+    public static ErrorModel validateBalances(RequestPayloadModel requestPayload) {
+        ErrorModel errorModel = JsonToMt940Utils.validateBalanceDetails(requestPayload.getOpeningBalanceDetails(),
+                ConnectorConstants.OPENING_BALANCE);
+        if (errorModel.isError()) {
+            return errorModel;
         }
-        DateFormat formatter = new SimpleDateFormat(ConnectorConstants.DATE_TIME_FORMAT);
 
-        try {
-            formatter.parse(dateTime);
-            return true;
-        } catch (ParseException e) {
-            log.error("Error while parsing the date time", e);
-            return false;
+        errorModel = JsonToMt940Utils.validateBalanceDetails(requestPayload.getClosingBalanceDetails(),
+                ConnectorConstants.CLOSING_BALANCE);
+        if (errorModel.isError()) {
+            return errorModel;
         }
+
+        if (requestPayload.getClosingAvailableBalanceDetails() != null) {
+            errorModel = JsonToMt940Utils.validateBalanceDetails(requestPayload.getClosingAvailableBalanceDetails(),
+                    ConnectorConstants.CLOSING_AVAIL_BALANCE);
+            if (errorModel.isError()) {
+                return errorModel;
+            }
+        }
+
+        if (requestPayload.getForwardAvailableBalanceDetails() != null) {
+            errorModel = JsonToMt940Utils.validateBalanceDetails(requestPayload.getForwardAvailableBalanceDetails(),
+                    ConnectorConstants.FORWARD_CLOSING_AVAIL_BALANCE);
+            if (errorModel.isError()) {
+                return errorModel;
+            }
+        }
+
+        return new ErrorModel();
     }
 
     /**
-     * Method to validate the transaction type.
+     * Method to validate the transaction details.
      *
-     * @param transactionType  Transaction type to validate
-     * @return                 True if the transaction type is valid, else false
+     * @param transactions  List of transactions
+     * @return              Error model if there is an error, else empty error model
      */
-    public static ErrorModel validTransactionType(String transactionType) {
-        if (!transactionType.startsWith(ConnectorConstants.SWIFT_TRANSFER) &&
-                !transactionType.startsWith(ConnectorConstants.NON_SWIFT_TRANSFER) &&
-                !transactionType.startsWith(ConnectorConstants.FIRST_ADVICE)) {
-            return new ErrorModel(ConnectorConstants.ERROR_T53,
-                    ConnectorConstants.ERROR_TRANS_TYPE_INVALID);
-        }
+    public static ErrorModel validateTransactionDetails(List<TransactionModel> transactions) {
 
-        if (transactionType.startsWith(ConnectorConstants.SWIFT_TRANSFER)) {
-            String identificationCode = transactionType.substring(1);
-            if (!ValidatorUtils.isNumber(identificationCode)) {
-                return new ErrorModel(ConnectorConstants.ERROR_T53,
-                        ConnectorConstants.ERROR_TRANS_TYPE_INVALID);
-            }
+        String fieldName = ConnectorConstants.TRANSACTION;
 
-            if (!(Integer.parseInt(identificationCode) > 99 && Integer.parseInt(identificationCode) < 1000)) {
-                return new ErrorModel(ConnectorConstants.ERROR_T18,
-                        ConnectorConstants.ERROR_TRANS_TYPE_INVALID);
+        for (TransactionModel transaction : transactions) {
+            ErrorModel paramValidationResult = ValidationEngine.getInstance()
+                    .addMandatoryParamValidationRules(
+                            JsonToMt940Utils.getMandatoryFieldsInTransaction(transaction))
+                    .addParameterLengthValidationRules(JsonToMt940Utils
+                            .getFieldsInTransactionForLengthValidation(transaction))
+                    .addDateFormatValidationRule(new ValidatorContext(StringUtils.join(fieldName,
+                            ConnectorConstants.DATE), transaction.getDateTime()))
+                    .addCurrencyFormatValidationRule(new ValidatorContext(StringUtils.join(fieldName,
+                            ConnectorConstants.CURRENCY), transaction.getCurrency()))
+                    .addCustomRule(new MT940TransactionTypeValidationRule(new ValidatorContext(
+                            ConnectorConstants.TRANSACTION_TYPE, transaction.getTransactionType())))
+                    .addCustomRule(new MT940TransactionIndicatorValidationRule(new ValidatorContext(
+                            ConnectorConstants.TRANSACTION_IND, transaction.getTransactionIndicator())))
+                    .validate();
+
+            if (paramValidationResult.isError()) {
+                return paramValidationResult;
             }
         }
         return new ErrorModel();
     }
 
-    /**
-     * Method to validate the transaction type.
-     *
-     * @param debitCreditMark  Debit/Credit Mark to validate
-     * @return                 True if the debitCreditMark is valid, else false
-     */
-    public static boolean isValidDebitCreditMark(String debitCreditMark) {
-        return debitCreditMark.startsWith(ConnectorConstants.DEBIT) ||
-                debitCreditMark.startsWith(ConnectorConstants.CREDIT) ||
-                debitCreditMark.startsWith(ConnectorConstants.REV_DEBIT) ||
-                debitCreditMark.startsWith(ConnectorConstants.REV_CREDIT);
-    }
 
     /**
      * Method to append constructed fields to the payload.

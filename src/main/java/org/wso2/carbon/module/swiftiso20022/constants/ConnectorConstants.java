@@ -55,12 +55,23 @@ public class ConnectorConstants {
     public static final String COLON = ":";
     public static final String SLASH = "/";
     public static final String DOUBLE_SLASH = "//";
+    public static final String HEADER_BLOCK_1 = "Header block 1";
+    public static final String HEADER_BLOCK_2 = "Header block 2";
+    public static final String HEADER_BLOCK_3 = "Header block 3";
     public static final String TRANSACTION_REF = "Transaction Reference Number";
+    public static final String SEQUENCE_NO = "Sequence Number";
     public static final String RELATED_REF = "Related Reference";
+    public static final String ACC_NUMBER = "Account Number";
+    public static final String ACC_NUMBER_IDENTIFICATION = "Account Number Identification";
     public static final String ACC_IDENTIFICATION = "Account Identification";
     public static final String STATEMENT_NUMBER = "Statement Number";
     public static final String OPENING_BALANCE = "Opening Balance";
+    public static final String TRANSACTION = "Transaction";
     public static final String AMOUNT = " Amount";
+    public static final String CURRENCY = " Currency";
+    public static final String DATE = " Date";
+    public static final String INDICATOR = " Indicator";
+    public static final String STATEMENT_TYPE = " Statement Type";
     public static final String CLOSING_BALANCE = "Closing Balance";
     public static final String CLOSING_AVAIL_BALANCE = "Closing Available Balance";
     public static final String FORWARD_CLOSING_AVAIL_BALANCE = "Forward Available Balance";
@@ -73,6 +84,10 @@ public class ConnectorConstants {
     public static final String STATEMENT_LINES = "statementLines";
     public static final String CURRENT_STATEMENT_TYPE = "current";
     public static final String LAST_STATEMENT_TYPE = "last";
+    public static final String CUSTOMER_REFERENCE = "Customer Reference";
+    public static final String TRANSACTION_REFERENCE = "Transaction Reference";
+    public static final String TRANSACTION_TYPE = "Transaction Type";
+    public static final String TRANSACTION_IND = "Transaction Indicator";
 
     //Common Error Constants
     public static final String ERROR_CODE = "ERROR_CODE";
@@ -83,16 +98,21 @@ public class ConnectorConstants {
     public static final String ERROR_VALIDATION_FAILED = "Validation failed";
     public static final String ERROR_MISSING_PAYLOAD = "Missing Request Payload";
     public static final String PROCESSING_ERROR = "Error while processing the request";
-    public static final String ERROR_PARAMETER_MISSING = "Missing mandatory parameter %s";
+    public static final String ERROR_MANDATORY_PARAM_MISSING = "Mandatory parameter %s cannot be null or empty";
+    public static final String ERROR_OPTIONAL_PARAM_MISSING = "Optional parameter %s cannot be empty";
     public static final String ERROR_PARAMETER_LENGTH = "%s should not contain more than %s characters";
-    public static final String ERROR_PARAMETER_CONTAINS_SLASH = "%s should not contain slashes";
-    public static final String ERROR_PARAMETER_INVALID = "Field %s is invalid";
+    public static final String ERROR_NOT_ALPHA_NUMERIC = "Parameter %s is not in the alphanumeric format";
+    public static final String ERROR_NOT_NUMERIC = "Parameter %s is not in the numeric format";
     public static final String ERROR_CURRENCY_CODE_INVALID = "Currency code in the field %s is not in ISO 4217" +
             " format";
+    public static final String ERROR_PARAMETER_MISSING = "Missing mandatory parameter %s";
+    public static final String ERROR_DATE_INVALID = "%s is not in the correct format";
+    public static final String ERROR_PARAMETER_CONTAINS_SLASH = "%s should not contain slashes";
+    public static final String ERROR_PARAMETER_INVALID = "Field %s is invalid";
     public static final String ERROR_AMOUNT_NULL = "Amount cannot be null";
     public static final String ERROR_AMOUNT_SIZE_INVALID = "Amount should not be empty";
 
-    // MT940 Error Constants
+    // MT  Error Constants
     public static final String ERROR_C03 = "C03";
     public static final String ERROR_C24 = "C24";
     public static final String ERROR_C27 = "C27";
@@ -108,20 +128,19 @@ public class ConnectorConstants {
     public static final String ERROR_T53 = "T53";
     public static final String ERROR_M50 = "M50";
 
-    public static final String ERROR_BLOCK1_INVALID = "Header block 1 is a mandatory parameter for MT940";
-    public static final String ERROR_BLOCK2_INVALID = "Header block 2 is a mandatory parameter for MT940";
-    public static final String ERROR_ACC_NO_INVALID = "Account Number is not in the correct format";
-    public static final String ERROR_REF_INVALID = "Reference is not in the correct format";
-    public static final String ERROR_SEQ_NO_INVALID = "Sequence Number is not in the correct format";
-    public static final String ERROR_CUS_REF_INVALID = "Customer Reference is not in the correct format";
-    public static final String ERROR_TRANS_REF_INVALID = "Transaction Reference is not in the correct format";
-    public static final String ERROR_MANDATORY_PARAM_MISSING = "%s is a mandatory parameter for MT940";
-    public static final String ERROR_INCORRECT_FORMAT = "%s is not in the correct format";
+    public static final int ACC_IDENTIFICATION_LENGTH = 36;
+    public static final int REFERENCE_LENGTH = 17;
+    public static final int SEQUENCE_NO_LENGTH = 4;
+    public static final int DATE_LENGTH = 6;
+    public static final int CURRENCY_LENGTH = 3;
+    public static final int AMOUNT_LENGTH = 16;
+    public static final int INDICATOR_LENGTH = 1;
+    public static final int TRANSACTION_IND_LENGTH = 2;
+    public static final int TRANSACTION_TYPE_LENGTH = 4;
 
     public static final String ERROR_BAL_IND_INVALID = "Balance Indicator should be either D or C";
     public static final String ERROR_INVALID_STATEMENT_TYPE = "Invalid statement type found. Accepted values are" +
             " either current or last";
-    public static final String ERROR_DATE_TIME_INVALID = "Transaction Date Time is not in the correct format";
     public static final String ERROR_TRANS_TYPE_INVALID = "Transaction Type is not in the correct format";
     public static final String ERROR_FIELD_86 = "Information to Account Owner field should be preceded by " +
             "Statement Line field";
