@@ -61,7 +61,7 @@ public class DateFormatValidationRule implements ValidationRule {
                 return new ErrorModel();
             } catch (ParseException e) {
                 log.error("Error while parsing the date time", e);
-                return new ErrorModel("test",
+                return new ErrorModel(ConnectorConstants.ERROR_CODE_INVALID_PARAM,
                         String.format(ConnectorConstants.ERROR_DATE_INVALID, context.getFieldName()));
             }
         }

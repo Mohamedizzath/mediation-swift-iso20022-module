@@ -53,12 +53,12 @@ public class MandatoryParamValidationRule implements ValidationRule {
             Object value = context.getFieldValue();
             if (value instanceof String) {
                 if (StringUtils.isBlank(value.toString())) {
-                    return new ErrorModel("test",
+                    return new ErrorModel(ConnectorConstants.ERROR_CODE_MISSING_PARAM,
                             String.format(ConnectorConstants.ERROR_MANDATORY_PARAM_MISSING, context.getFieldName()));
                 }
             } else {
                 if (value == null) {
-                    return new ErrorModel("test",
+                    return new ErrorModel(ConnectorConstants.ERROR_CODE_MISSING_PARAM,
                             String.format(ConnectorConstants.ERROR_MANDATORY_PARAM_MISSING, context.getFieldName()));
                 }
             }

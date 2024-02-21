@@ -50,7 +50,7 @@ public class AlphaNumericParamValidationRule implements ValidationRule {
     public ErrorModel validate() {
         for (ValidatorContext context : alphaNumericParamValidationContextList) {
             if (!StringUtils.isAlphanumeric(context.getFieldValue().toString())) {
-                return new ErrorModel("test",
+                return new ErrorModel(ConnectorConstants.ERROR_CODE_INVALID_PARAM,
                         String.format(ConnectorConstants.ERROR_NOT_ALPHA_NUMERIC, context.getFieldName()));
             }
         }

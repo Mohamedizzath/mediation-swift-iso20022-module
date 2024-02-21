@@ -52,7 +52,7 @@ public class OptionalParamValidationRule implements ValidationRule {
         for (ValidatorContext context : optionalParamValidationContextList) {
             if (context.getFieldValue() instanceof String) {
                 if (StringUtils.isEmpty(context.getFieldValue().toString())) {
-                    return new ErrorModel("test",
+                    return new ErrorModel(ConnectorConstants.ERROR_CODE_MISSING_PARAM,
                             String.format(ConnectorConstants.ERROR_OPTIONAL_PARAM_MISSING, context.getFieldName()));
                 }
             }

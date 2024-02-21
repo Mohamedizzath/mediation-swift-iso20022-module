@@ -52,7 +52,7 @@ public class CurrencyFormatValidationRule implements ValidationRule {
         for (ValidatorContext context : currencyFormatValidationContextList) {
             if (Currency.getAvailableCurrencies().stream()
                     .noneMatch(c -> c.getCurrencyCode().equals(context.getFieldValue()))) {
-                return new ErrorModel("test",
+                return new ErrorModel(ConnectorConstants.ERROR_CODE_INVALID_PARAM,
                         String.format(ConnectorConstants.ERROR_CURRENCY_CODE_INVALID, context.getFieldName()));
             }
         }

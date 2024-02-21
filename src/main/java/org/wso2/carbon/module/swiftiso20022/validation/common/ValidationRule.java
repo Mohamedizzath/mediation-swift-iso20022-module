@@ -38,6 +38,4 @@ public interface ValidationRule {
      * @return display name string.
      */
     String getDisplayName();
-
-
 }

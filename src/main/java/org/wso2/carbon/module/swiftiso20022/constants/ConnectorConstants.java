@@ -112,6 +112,10 @@ public class ConnectorConstants {
     public static final String ERROR_AMOUNT_NULL = "Amount cannot be null";
     public static final String ERROR_AMOUNT_SIZE_INVALID = "Amount should not be empty";
 
+    //Common Error Codes
+    public static final String ERROR_CODE_MISSING_PARAM = "T0002";
+    public static final String ERROR_CODE_INVALID_PARAM = "T0003";
+
     // MT  Error Constants
     public static final String ERROR_C03 = "C03";
     public static final String ERROR_C24 = "C24";

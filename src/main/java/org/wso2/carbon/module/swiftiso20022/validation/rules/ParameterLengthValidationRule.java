@@ -50,7 +50,7 @@ public class ParameterLengthValidationRule implements ValidationRule {
     public ErrorModel validate() {
         for (ValidatorContext context : parameterLengthValidationContextList) {
             if (context.getFieldValue().toString().length() > context.getFieldLength()) {
-                return new ErrorModel("test",
+                return new ErrorModel(ConnectorConstants.ERROR_CODE_INVALID_PARAM,
                         String.format(ConnectorConstants.ERROR_PARAMETER_LENGTH, context.getFieldName(),
                                 context.getFieldLength()));
             }

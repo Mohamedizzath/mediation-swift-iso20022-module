@@ -51,7 +51,7 @@ public class NumericParamValidationRule implements ValidationRule {
     public ErrorModel validate() {
         for (ValidatorContext context : numericParamValidationContextList) {
             if (!StringUtils.isNumeric(context.getFieldValue().toString())) {
-                return new ErrorModel("test",
+                return new ErrorModel(ConnectorConstants.ERROR_CODE_INVALID_PARAM,
                         String.format(ConnectorConstants.ERROR_NOT_NUMERIC, context.getFieldName()));
             }
         }
