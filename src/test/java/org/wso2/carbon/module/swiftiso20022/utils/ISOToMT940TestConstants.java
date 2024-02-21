@@ -317,6 +317,272 @@ public class ISOToMT940TestConstants {
             "<Document xmlns=\"urn:iso:std:iso:20022:tech:xsd:camt.053.001.11\">\n" +
             "</Document>";
 
+    public static final String PAYLOAD_EMPTY_CAMT_WITH_APPHDR = "<BizMsgEnvlp>" +
+            PAYLOAD_APPHDR + PAYLOAD_EMPTY_CAMT + "</BizMsgEnvlp>";
+
+    public static final String PAYLOAD_INVALID_ROOT_ELEMENT =
+            "<ISOMessage xmlns=\"urn:iso:std:iso:20022:tech:xsd:camt.053.001.11\">\n" +
+            "    <BkToCstmrStmt>\n" +
+            "        <GrpHdr>\n" +
+            "            <MsgId>235549650</MsgId>\n" +
+            "            <CreDtTm>2023-10-05T14:43:51.979</CreDtTm>\n" +
+            "            <MsgRcpt>\n" +
+            "                <Nm>Test Client Ltd.</Nm>\n" +
+            "                <Id>\n" +
+            "                    <OrgId>\n" +
+            "                        <Othr>\n" +
+            "                            <Id>test001</Id>\n" +
+            "                        </Othr>\n" +
+            "                    </OrgId>\n" +
+            "                </Id>\n" +
+            "            </MsgRcpt>\n" +
+            "        </GrpHdr>\n" +
+            "        <Stmt>\n" +
+            "            <Id>258158850</Id>\n" +
+            "            <ElctrncSeqNb>1</ElctrncSeqNb>\n" +
+            "            <LglSeqNb>1</LglSeqNb>\n" +
+            "            <CreDtTm>2023-10-05T14:43:52.098</CreDtTm>\n" +
+            "            <FrToDt>\n" +
+            "                <FrDtTm>2023-09-30T20:00:00.000</FrDtTm>\n" +
+            "                <ToDtTm>2023-10-01T19:59:59.000</ToDtTm>\n" +
+            "            </FrToDt>\n" +
+            "            <Acct>\n" +
+            "                <Id>\n" +
+            "                    <Othr>\n" +
+            "                        <Id>DD01100056869</Id>\n" +
+            "                    </Othr>\n" +
+            "                </Id>\n" +
+            "                <Tp>\n" +
+            "                    <Prtry>IBDA_DDA</Prtry>\n" +
+            "                </Tp>\n" +
+            "                <Ccy>USD</Ccy>\n" +
+            "                <Nm>Sample Name 123</Nm>\n" +
+            "                <Svcr>\n" +
+            "                    <FinInstnId>\n" +
+            "                        <BICFI>GSCRUS30</BICFI>\n" +
+            "                        <Nm>Goldman Sachs Bank</Nm>\n" +
+            "                    </FinInstnId>\n" +
+            "                </Svcr>\n" +
+            "            </Acct>\n" +
+            "            <Bal>\n" +
+            "                <Tp>\n" +
+            "                    <CdOrPrtry>\n" +
+            "                        <Cd>OPBD</Cd>\n" +
+            "                    </CdOrPrtry>\n" +
+            "                </Tp>\n" +
+            "                <Amt Ccy=\"USD\">843686.20</Amt>\n" +
+            "                <CdtDbtInd>DBIT</CdtDbtInd>\n" +
+            "                <Dt>\n" +
+            "                    <DtTm>2023-09-30T20:00:00.000</DtTm>\n" +
+            "                </Dt>\n" +
+            "            </Bal>\n" +
+            "            <Bal>\n" +
+            "                <Tp>\n" +
+            "                    <CdOrPrtry>\n" +
+            "                        <Cd>CLBD</Cd>\n" +
+            "                    </CdOrPrtry>\n" +
+            "                </Tp>\n" +
+            "                <Amt Ccy=\"USD\">846665.15</Amt>\n" +
+            "                <CdtDbtInd>DBIT</CdtDbtInd>\n" +
+            "                <Dt>\n" +
+            "                    <DtTm>2023-09-30T20:00:00.000</DtTm>\n" +
+            "                </Dt>\n" +
+            "            </Bal>\n" +
+            "            <Bal>\n" +
+            "                <Tp>\n" +
+            "                    <CdOrPrtry>\n" +
+            "                        <Cd>OPAV</Cd>\n" +
+            "                    </CdOrPrtry>\n" +
+            "                </Tp>\n" +
+            "                <Amt Ccy=\"USD\">334432492.92</Amt>\n" +
+            "                <CdtDbtInd>CRDT</CdtDbtInd>\n" +
+            "                <Dt>\n" +
+            "                    <DtTm>2023-09-30T23:59:00.000Z</DtTm>\n" +
+            "                </Dt>\n" +
+            "            </Bal>\n" +
+            "            <Bal>\n" +
+            "                <Tp>\n" +
+            "                    <CdOrPrtry>\n" +
+            "                        <Cd>CLAV</Cd>\n" +
+            "                    </CdOrPrtry>\n" +
+            "                </Tp>\n" +
+            "                <Amt Ccy=\"USD\">334432401.27</Amt>\n" +
+            "                <CdtDbtInd>CRDT</CdtDbtInd>\n" +
+            "                <Dt>\n" +
+            "                    <DtTm>2023-10-01T23:59:00.000Z</DtTm>\n" +
+            "                </Dt>\n" +
+            "            </Bal>\n" +
+            "            <TxsSummry>\n" +
+            "                <TtlNtries>\n" +
+            "                    <NbOfNtries>14</NbOfNtries>\n" +
+            "                    <Sum>140.00</Sum>\n" +
+            "                  \t<TtlNetNtry>\n" +
+            "                      <Amt>40.00</Amt>\n" +
+            "                      <CdtDbtInd>CRDT</CdtDbtInd>\n" +
+            "                  \t</TtlNetNtry>\n" +
+            "                </TtlNtries>\n" +
+            "                <TtlCdtNtries>\n" +
+            "                    <NbOfNtries>9</NbOfNtries>\n" +
+            "                    <Sum>90.00</Sum>\n" +
+            "                </TtlCdtNtries>\n" +
+            "                <TtlDbtNtries>\n" +
+            "                    <NbOfNtries>5</NbOfNtries>\n" +
+            "                    <Sum>50.00</Sum>\n" +
+            "                </TtlDbtNtries>\n" +
+            "            </TxsSummry>\n" +
+            "            <Ntry>\n" +
+            "                <NtryRef>52198201</NtryRef>\n" +
+            "                <Amt Ccy=\"USD\">10.00</Amt>\n" +
+            "                <CdtDbtInd>CRDT</CdtDbtInd>\n" +
+            "                <RvslInd>true</RvslInd>\n" +
+            "                <Sts>\n" +
+            "                  <Cd>BOOK</Cd>\n" +
+            "              \t</Sts>\n" +
+            "                <BookgDt>\n" +
+            "                    <DtTm>2023-10-01T13:37:14.000</DtTm>\n" +
+            "                </BookgDt>\n" +
+            "                <ValDt>\n" +
+            "                    <Dt>2023-10-01</Dt>\n" +
+            "                </ValDt>\n" +
+            "                <BkTxCd>\n" +
+            "                    <Prtry>\n" +
+            "                        <Cd>ACH Credit Reject</Cd>\n" +
+            "                    </Prtry>\n" +
+            "                </BkTxCd>\n" +
+            "                <NtryDtls>\n" +
+            "                    <TxDtls>\n" +
+            "                        <Refs>\n" +
+            "                            <MsgId>GSNULXSKMMJ479NMKS</MsgId>\n" +
+            "                            <AcctSvcrRef>B20092800002225</AcctSvcrRef>\n" +
+            "                            <PmtInfId>RP/GS/CTFILERP0002/CTBA0003</PmtInfId>\n" +
+            "                            <EndToEndId>GSGWGDNCTAHQM8</EndToEndId>\n" +
+            "                        </Refs>\n" +
+            "                        <AmtDtls>\n" +
+            "                            <InstdAmt>\n" +
+            "                                <Amt Ccy=\"USD\">10.00</Amt>\n" +
+            "                            </InstdAmt>\n" +
+            "                            <TxAmt>\n" +
+            "                                <Amt Ccy=\"USD\">10.00</Amt>\n" +
+            "                                <CcyXchg>\n" +
+            "                                  \t<SrcCcy>USD</SrcCcy>\n" +
+            "                                    <TrgtCcy>USD</TrgtCcy>\n" +
+            "                                   \t<XchgRate>10.00</XchgRate>\n" +
+            "                                </CcyXchg>\n" +
+            "                            </TxAmt>\n" +
+            "                        </AmtDtls>\n" +
+            "                        <RmtInf>\n" +
+            "                            <Ustrd>Sample Unstructured Remittance 123</Ustrd>\n" +
+            "                        </RmtInf>\n" +
+            "                        <RtrInf>\n" +
+            "                            <AddtlInf>Status changed to REJECTED : REJECT REVERSAL</AddtlInf>\n" +
+            "                        </RtrInf>\n" +
+            "                    </TxDtls>\n" +
+            "                </NtryDtls>\n" +
+            "            </Ntry>\n" +
+            "            <Ntry>\n" +
+            "                <NtryRef>52198251</NtryRef>\n" +
+            "                <Amt Ccy=\"USD\">10.00</Amt>\n" +
+            "                <CdtDbtInd>DBIT</CdtDbtInd>\n" +
+            "                <RvslInd>false</RvslInd>\n" +
+            "                <Sts>\n" +
+            "                  <Cd>BOOK</Cd>\n" +
+            "              \t</Sts>\n" +
+            "                <BookgDt>\n" +
+            "                    <DtTm>2023-10-01T13:37:11.000</DtTm>\n" +
+            "                </BookgDt>\n" +
+            "                <ValDt>\n" +
+            "                    <Dt>2023-10-01</Dt>\n" +
+            "                </ValDt>\n" +
+            "                <BkTxCd>\n" +
+            "                    <Prtry>\n" +
+            "                        <Cd>ACH Credit Payment</Cd>\n" +
+            "                    </Prtry>\n" +
+            "                </BkTxCd>\n" +
+            "                <NtryDtls>\n" +
+            "                    <TxDtls>\n" +
+            "                        <Refs>\n" +
+            "                            <MsgId>GSNULXSKMMJ479NMKS</MsgId>\n" +
+            "                            <AcctSvcrRef>SPB20092845886394</AcctSvcrRef>\n" +
+            "                            <PmtInfId>RP/GS/CTFILERP0002/CTBA0003</PmtInfId>\n" +
+            "                        </Refs>\n" +
+            "                        <AmtDtls>\n" +
+            "                            <InstdAmt>\n" +
+            "                                <Amt Ccy=\"USD\">10.00</Amt>\n" +
+            "                            </InstdAmt>\n" +
+            "                            <TxAmt>\n" +
+            "                                <Amt Ccy=\"USD\">10.00</Amt>\n" +
+            "                                <CcyXchg>\n" +
+            "                                  \t<SrcCcy>USD</SrcCcy>\n" +
+            "                                    <TrgtCcy>USD</TrgtCcy>\n" +
+            "                                   \t<XchgRate>10.00</XchgRate>\n" +
+            "                                </CcyXchg>\n" +
+            "                            </TxAmt>\n" +
+            "                        </AmtDtls>\n" +
+            "                        <RltdPties>\n" +
+            "                            <Cdtr>\n" +
+            "                              \t<Pty>\n" +
+            "                                \t<Nm>GS Bank USA</Nm>\n" +
+            "                              \t</Pty>\n" +
+            "                            </Cdtr>\n" +
+            "                            <CdtrAcct>\n" +
+            "                                <Id>\n" +
+            "                                    <Othr>\n" +
+            "                                        <Id>ACHCONTROLOUTUSD01</Id>\n" +
+            "                                    </Othr>\n" +
+            "                                </Id>\n" +
+            "                            </CdtrAcct>\n" +
+            "                        </RltdPties>\n" +
+            "                    </TxDtls>\n" +
+            "                </NtryDtls>\n" +
+            "            </Ntry>\n" +
+            "            <Ntry>\n" +
+            "                <NtryRef>52198301</NtryRef>\n" +
+            "                <Amt Ccy=\"USD\">10.00</Amt>\n" +
+            "                <CdtDbtInd>CRDT</CdtDbtInd>\n" +
+            "                <RvslInd>false</RvslInd>\n" +
+            "                <Sts>\n" +
+            "                  <Cd>BOOK</Cd>\n" +
+            "              \t</Sts>\n" +
+            "                <BookgDt>\n" +
+            "                    <DtTm>2023-10-01T13:36:04.000</DtTm>\n" +
+            "                </BookgDt>\n" +
+            "                <ValDt>\n" +
+            "                    <Dt>2023-10-01</Dt>\n" +
+            "                </ValDt>\n" +
+            "                <BkTxCd>\n" +
+            "                    <Prtry>\n" +
+            "                        <Cd>Incoming Wire</Cd>\n" +
+            "                    </Prtry>\n" +
+            "                </BkTxCd>\n" +
+            "                <NtryDtls>\n" +
+            "                    <TxDtls>\n" +
+            "                        <Refs>\n" +
+            "                            <MsgId>20230928LTERMID100000312221631FT01</MsgId>\n" +
+            "                            <AcctSvcrRef>I20092800008308</AcctSvcrRef>\n" +
+            "                            <PmtInfId>RP/GS/CTFILERP0002/CTBA0003</PmtInfId>\n" +
+            "                            <EndToEndId>20230928LTERMID2000003</EndToEndId>\n" +
+            "                            <ClrSysRef>20230928LTERMID2000003</ClrSysRef>\n" +
+            "                        </Refs>\n" +
+            "                        <AmtDtls>\n" +
+            "                            <InstdAmt>\n" +
+            "                                <Amt Ccy=\"USD\">10.00</Amt>\n" +
+            "                            </InstdAmt>\n" +
+            "                            <TxAmt>\n" +
+            "                                <Amt Ccy=\"USD\">10.00</Amt>\n" +
+            "                                <CcyXchg>\n" +
+            "                                  \t<SrcCcy>USD</SrcCcy>\n" +
+            "                                    <TrgtCcy>USD</TrgtCcy>\n" +
+            "                                   \t<XchgRate>10.00</XchgRate>\n" +
+            "                                </CcyXchg>\n" +
+            "                            </TxAmt>\n" +
+            "                        </AmtDtls>\n" +
+            "                    </TxDtls>\n" +
+            "                </NtryDtls>\n" +
+            "            </Ntry>\n" +
+            "        </Stmt>\n" +
+            "    </BkToCstmrStmt>\n" +
+            "</ISOMessage>";
+
     public static final String PAYLOAD_APPHDR_AND_DOCUMENT = "<BizMsgEnvlp>" +
             PAYLOAD_APPHDR + PAYLOAD_CAMT +
             "</BizMsgEnvlp>";
@@ -415,8 +681,8 @@ public class ISOToMT940TestConstants {
                 "        </GrpHdr>\n" +
                 "        <Stmt>\n" +
                 "            <Id>" + (params.getOrDefault("StmtId", "258158850")) + "</Id>\n" +
-                "            <ElctrncSeqNb>" + (params.getOrDefault("ElecSeqNum", "1")) + "</ElctrncSeqNb>\n" +
-                "            <LglSeqNb>" + (params.getOrDefault("LogSeqNum", "1")) + "</LglSeqNb>\n" +
+                              (params.getOrDefault("ElecSeqNum", "<ElctrncSeqNb>1</ElctrncSeqNb>\n")) +
+                              (params.getOrDefault("LogSeqNum", "<LglSeqNb>1</LglSeqNb>\n")) +
                 "            <CreDtTm>" + (params.getOrDefault("CreDtTm", "2023-10-05T14:43:52.098")) + "</CreDtTm>\n" +
                 "            <FrToDt>\n" +
                 "                <FrDtTm>2023-09-30T20:00:00.000</FrDtTm>\n" +
@@ -448,7 +714,7 @@ public class ISOToMT940TestConstants {
                 "</Cd>\n" +
                 "                    </CdOrPrtry>\n" +
                 "                </Tp>\n" +
-                "                <Amt Ccy=" + (params.getOrDefault("OpeningBalCCY", "\"USD\"")) + ">" +
+                "                <Amt Ccy=\"" + (params.getOrDefault("OpeningBalCCY", "USD")) + "\">" +
                 (params.getOrDefault("OpeningBalAmt", "843686.20")) + "</Amt>\n" +
                 "                <CdtDbtInd>" + (params.getOrDefault("OpeningBalInd", "DBIT")) +
                 "</CdtDbtInd>\n" +
@@ -464,7 +730,7 @@ public class ISOToMT940TestConstants {
                 "</Cd>\n" +
                 "                    </CdOrPrtry>\n" +
                 "                </Tp>\n" +
-                "                <Amt Ccy=" + (params.getOrDefault("ClosingBalCCY", "\"USD\"")) + ">" +
+                "                <Amt Ccy=\"" + (params.getOrDefault("ClosingBalCCY", "USD")) + "\">" +
                 (params.getOrDefault("ClosingBalAmt", "846665.15")) + "</Amt>\n" +
                 "                <CdtDbtInd>" + (params.getOrDefault("ClosingBalInd", "DBIT")) +
                 "</CdtDbtInd>\n" +
@@ -480,7 +746,7 @@ public class ISOToMT940TestConstants {
                 "</Cd>\n" +
                 "                    </CdOrPrtry>\n" +
                 "                </Tp>\n" +
-                "                <Amt Ccy=" + (params.getOrDefault("ForwardAvlBalCCY", "\"USD\"")) + ">"
+                "                <Amt Ccy=\"" + (params.getOrDefault("ForwardAvlBalCCY", "USD")) + "\">"
                 + (params.getOrDefault("ForwardAvlBalAmt", "334432492.92")) + "</Amt>\n" +
                 "                <CdtDbtInd>" + (params.getOrDefault("ForwardAvlBalInd", "CRDT")) +
                 "</CdtDbtInd>\n" +
@@ -496,7 +762,7 @@ public class ISOToMT940TestConstants {
                 "</Cd>\n" +
                 "                    </CdOrPrtry>\n" +
                 "                </Tp>\n" +
-                "                <Amt Ccy=" + (params.getOrDefault("ClosingAvlBalCCY", "\"USD\"")) + ">"
+                "                <Amt Ccy=\"" + (params.getOrDefault("ClosingAvlBalCCY", "USD")) + "\">"
                 + (params.getOrDefault("ClosingAvlBalAmt", "334432401.27")) + "</Amt>\n" +
                 "                <CdtDbtInd>" + (params.getOrDefault("ClosingAvlBalInd", "CRDT")) +
                 "</CdtDbtInd>\n" +
@@ -525,7 +791,7 @@ public class ISOToMT940TestConstants {
                 "            </TxsSummry>\n" +
                 "            <Ntry>\n" +
                 "                <NtryRef>52198201</NtryRef>\n" +
-                "                <Amt Ccy=" + (params.getOrDefault("TransCCY", "\"USD\"")) + ">" +
+                "                <Amt Ccy=\"" + (params.getOrDefault("TransCCY", "USD")) + "\">" +
                 (params.getOrDefault("TransAmt", "10.00")) + "</Amt>\n" +
                 "                <CdtDbtInd>" + (params.getOrDefault("TransInd", "CRDT")) +
                 "</CdtDbtInd>\n" +
@@ -600,7 +866,8 @@ public class ISOToMT940TestConstants {
 
         return new Object[][]{
             {getDocumentPayload(Map.of("ElecSeqNum", ""))},
-            {getDocumentPayload(Map.of("ElecSeqNum", "AWESLLIOM12"))}
+            {getDocumentPayload(Map.of("ElecSeqNum", "<ElctrncSeqNb></ElctrncSeqNb>"))},
+            {getDocumentPayload(Map.of("ElecSeqNum", "<ElctrncSeqNb>AWESLLIOM12</ElctrncSeqNb>"))}
         };
     }
 
@@ -609,7 +876,8 @@ public class ISOToMT940TestConstants {
 
         return new Object[][]{
             {getDocumentPayload(Map.of("LogSeqNum", ""))},
-            {getDocumentPayload(Map.of("LogSeqNum", "EXXLOYIEM34"))}
+            {getDocumentPayload(Map.of("LogSeqNum", "<LogSeqNum></LogSeqNum>"))},
+            {getDocumentPayload(Map.of("LogSeqNum", "<LogSeqNum>EXXLOYIEM34</LogSeqNum>"))}
         };
     }
 
