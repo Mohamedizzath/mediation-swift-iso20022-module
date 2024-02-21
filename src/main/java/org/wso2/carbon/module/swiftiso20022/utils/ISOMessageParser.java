@@ -31,13 +31,15 @@ import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
  * Extract part of the ISO 20022 XML message from message context.
  */
 public class ISOMessageParser {
+
     /**
-     * Read the XML input from MessageContext and return the content of child elements of the parent tag as a String.
-     * @param mc         MessageContext which contains the XML 20022 input
-     * @param xPath      Xpath for the XML contents which needs to be extracted
-     * @return           Child contents as a String element
+     * Retrieve specific OMElement from MessageContext according to the XPATH.
+     * @param xPath         XPath expression to the OMElement
+     * @param mc            MessageContext which contains the XML 20022 input
+     * @return OMElement    Required XML element as OMElement
+     * @throws JaxenException
      */
-    public static String extractISOMessage(MessageContext mc, String xPath) throws ConnectException, JaxenException {
+    public static OMElement getXMLElementByXPath(String xPath, MessageContext mc) throws JaxenException {
         AXIOMXPath xpathExp = new AXIOMXPath(xPath);
 
         // Setting up XML namespaces for AXIOM SOAP, AppHdr, and Document
@@ -45,9 +47,18 @@ public class ISOMessageParser {
         xpathExp.addNamespace(ConnectorConstants.APPHDR_PREFIX, ConnectorConstants.XML_INPUT_APPHDR_NAMESPACE);
         xpathExp.addNamespace(ConnectorConstants.DOCUMENT_PREFIX, ConnectorConstants.XML_INPUT_DOCUMENT_NAMESPACE);
 
+        OMNode rootElement = mc.getEnvelope().getBody();
+        return (OMElement) xpathExp.selectSingleNode(rootElement);
+    }
+    /**
+     * Read the XML input from MessageContext and return the content of child elements of the parent tag as a String.
+     * @param mc         MessageContext which contains the XML 20022 input
+     * @param xPath      Xpath for the XML contents which needs to be extracted
+     * @return           Child contents as a String element
+     */
+    public static String extractISOMessage(MessageContext mc, String xPath) throws ConnectException, JaxenException {
         try {
-            OMNode rootElement = mc.getEnvelope().getBody();
-            OMElement element = (OMElement) xpathExp.selectSingleNode(rootElement);
+            OMElement element = getXMLElementByXPath(xPath, mc);
 
             if (element == null) {
                 // No element to be extracted
@@ -69,4 +80,6 @@ public class ISOMessageParser {
         OMElement rootElement = mc.getEnvelope().getBody().getFirstElement();
         return rootElement.getLocalName();
     }
+
+
 }

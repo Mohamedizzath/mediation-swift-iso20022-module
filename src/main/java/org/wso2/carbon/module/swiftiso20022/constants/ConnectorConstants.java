@@ -90,6 +90,14 @@ public class ConnectorConstants {
     public static final String XPATH_DOCUMENT_WITHOUT_BUSINESS_HDR = "/soapenv:Body/doc:Document";
     public static final String DOCUMENT_PREFIX = "doc";
     public static final String XML_INPUT_DOCUMENT_NAMESPACE = "urn:iso:std:iso:20022:tech:xsd:camt.053.001.11";
+    public static final String XPATH_ELECTSEQ_NUMBER_WITH_BUSINESS_HDR =
+            "/soapenv:Body/BizMsgEnvlp/doc:Document/doc:BkToCstmrStmt/doc:Stmt/doc:ElctrncSeqNb";
+    public static final String XPATH_ELECTSEQ_NUMBER_WITHOUT_BUSINESS_HDR =
+            "/soapenv:Body/doc:Document/doc:BkToCstmrStmt/doc:Stmt/doc:ElctrncSeqNb";
+    public static final String XPATH_LEGALSEQ_NUMBER_WITH_BUSINESS_HDR =
+            "/soapenv:Body/BizMsgEnvlp/doc:Document/doc:BkToCstmrStmt/doc:Stmt/doc:LglSeqNb";
+    public static final String XPATH_LEGALSEQ_NUMBER_WITHOUT_BUSINESS_HDR =
+            "/soapenv:Body/doc:Document/doc:BkToCstmrStmt/doc:Stmt/doc:LglSeqNb";
 
     //Common Error Constants
     public static final String ERROR_CODE = "ERROR_CODE";
@@ -151,4 +159,12 @@ public class ConnectorConstants {
     public static final String ERROR_INVALID_ISO_HEAD001_XML_MSG = "XML message is not in the ISO20022.head.001 format";
     public static final String ERROR_INVALID_ISO_CAMT053_XML_MSG = "XML message is not in the ISO20022.camt.053 format";
     public static final String ERROR_INVALID_XML_ROOT_TAG = "XML msg should start with BizMsgEnvlp tag or Document tag";
+    public static final String ERROR_EMPTY_ELECTRONIC_SEQUENCE_NUMBER =
+            "To convert MT940 message Electronic Sequence number need to be present in ISO20022.camt.053 message";
+    public static final String ERROR_INVALID_ELECTRONIC_SEQUENCE_NUMBER =
+            "To convert MT940 message Electronic Sequence number need to be valid number";
+    public static final String ERROR_EMPTY_LEGAL_SEQUENCE_NUMBER =
+            "To convert MT940 message Legal Sequence number need to be present in ISO20022.camt.053 message";
+    public static final String ERROR_INVALID_LEGAL_SEQUENCE_NUMBER =
+            "To convert MT940 message Legal Sequence number need to be valid number";
 }

@@ -18,12 +18,14 @@
 
 package org.wso2.carbon.module.swiftiso20022;
 
+import org.apache.axiom.om.OMException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.synapse.MessageContext;
 import org.wso2.carbon.connector.core.AbstractConnector;
 import org.wso2.carbon.connector.core.ConnectException;
 import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
 import org.wso2.carbon.module.swiftiso20022.utils.ConnectorUtils;
+import org.wso2.carbon.module.swiftiso20022.utils.ISO20022camt053ValidatorUtils;
 import org.wso2.carbon.module.swiftiso20022.utils.ISOMessageParser;
 import org.wso2.carbon.module.swiftiso20022.utils.XSDValidator;
 import org.xml.sax.SAXParseException;
@@ -34,6 +36,7 @@ import org.xml.sax.SAXParseException;
 public class ISO20022camt053Validator extends AbstractConnector {
     @Override
     public void connect(MessageContext messageContext) throws ConnectException {
+        boolean isBusinessMsg = false;
         String rootElementTag = ISOMessageParser.getRootXMLElement(messageContext);
 
         if (StringUtils.isBlank(rootElementTag) || (
@@ -56,6 +59,8 @@ public class ISO20022camt053Validator extends AbstractConnector {
 
                 XSDValidator appHdrValidator = new XSDValidator(ConnectorConstants.XSD_SCHEMA_HEAD_001_001);
                 appHdrValidator.validateXMLContent(appHdrStr);
+                isBusinessMsg = true;
+
                 log.debug("Valid business application header");
             } catch (SAXParseException e) {
                 this.log.error(ConnectorConstants.ERROR_INVALID_ISO_HEAD001_XML_MSG);
@@ -90,8 +95,12 @@ public class ISO20022camt053Validator extends AbstractConnector {
             XSDValidator documentValidator = new XSDValidator(ConnectorConstants.XSD_SCHEMA_CAMT_053_001);
             documentValidator.validateXMLContent(documentStr);
 
+            // Validate Electronic Seq number and Legal number
+            ISO20022camt053ValidatorUtils.validateElectronicSequenceNumber(isBusinessMsg, messageContext);
+            ISO20022camt053ValidatorUtils.validateLegalSequenceNumber(isBusinessMsg, messageContext);
+
             log.debug("Valid camt.053.001.11 message");
-        } catch (SAXParseException e) {
+        } catch (SAXParseException | OMException e) {
             this.log.error(ConnectorConstants.ERROR_INVALID_ISO_CAMT053_XML_MSG);
             ConnectorUtils.appendErrorToMessageContext(messageContext,
                     ConnectorConstants.ERROR_INVALID_ISO_CAMT053_XML_MSG,
