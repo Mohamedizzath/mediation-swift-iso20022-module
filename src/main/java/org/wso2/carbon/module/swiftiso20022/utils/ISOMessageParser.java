@@ -27,6 +27,8 @@ import org.jaxen.JaxenException;
 import org.wso2.carbon.connector.core.ConnectException;
 import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
 
+import java.util.List;
+
 /**
  * Extract part of the ISO 20022 XML message from message context.
  */
@@ -50,6 +52,26 @@ public class ISOMessageParser {
         OMNode rootElement = mc.getEnvelope().getBody();
         return (OMElement) xpathExp.selectSingleNode(rootElement);
     }
+
+    /**
+     * Retrieve specific list of OMElement from MessageContext according to the XPATH.
+     * @param xPath                 XPath expression to the OMElements
+     * @param mc                    MessageContext which contains the XML 20022 input
+     * @return "List<OMELement>"    List of OMElements
+     * @throws JaxenException
+     */
+    public static List<OMElement> getXMLElementsByPath(String xPath, MessageContext mc) throws JaxenException {
+        AXIOMXPath xpathExp = new AXIOMXPath(xPath);
+
+        // Setting up XML namespaces for AXIOM SOAP, AppHdr, and Document
+        xpathExp.addNamespace(ConnectorConstants.SOAP_PREFIX, ConnectorConstants.SOAP_NAMESPACE);
+        xpathExp.addNamespace(ConnectorConstants.APPHDR_PREFIX, ConnectorConstants.XML_INPUT_APPHDR_NAMESPACE);
+        xpathExp.addNamespace(ConnectorConstants.DOCUMENT_PREFIX, ConnectorConstants.XML_INPUT_DOCUMENT_NAMESPACE);
+
+        OMNode rootElement = mc.getEnvelope().getBody();
+        return xpathExp.selectNodes(rootElement);
+    }
+
     /**
      * Read the XML input from MessageContext and return the content of child elements of the parent tag as a String.
      * @param mc         MessageContext which contains the XML 20022 input

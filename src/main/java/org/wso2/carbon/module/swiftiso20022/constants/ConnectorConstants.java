@@ -98,6 +98,12 @@ public class ConnectorConstants {
             "/soapenv:Body/BizMsgEnvlp/doc:Document/doc:BkToCstmrStmt/doc:Stmt/doc:LglSeqNb";
     public static final String XPATH_LEGALSEQ_NUMBER_WITHOUT_BUSINESS_HDR =
             "/soapenv:Body/doc:Document/doc:BkToCstmrStmt/doc:Stmt/doc:LglSeqNb";
+    public static final String XPATH_BALANCE_ELEMENTS_WITH_BUSINESS_HDR =
+            "/soapenv:Body/BizMsgEnvlp/doc:Document/doc:BkToCstmrStmt/doc:Stmt/doc:Bal/doc:Tp/doc:CdOrPrtry/doc:Cd";
+    public static final String XPATH_BALANCE_ELEMENTS_WITHOUT_BUSINESS_HDR =
+            "/soapenv:Body/doc:Document/doc:BkToCstmrStmt/doc:Stmt/doc:Bal/doc:Tp/doc:CdOrPrtry/doc:Cd";
+    public static final String OPENING_BALANCE_CODE = "OPBD";
+    public static final String CLOSING_BALANCE_CODE = "CLBD";
 
     //Common Error Constants
     public static final String ERROR_CODE = "ERROR_CODE";
@@ -167,4 +173,9 @@ public class ConnectorConstants {
             "To convert MT940 message Legal Sequence number need to be present in ISO20022.camt.053 message";
     public static final String ERROR_INVALID_LEGAL_SEQUENCE_NUMBER =
             "To convert MT940 message Legal Sequence number need to be valid number";
+    public static final String ERROR_MISSING_OPENING_BALANCE = "Missing Opening Balance in ISO20022.camt.053 message";
+    public static final String ERROR_MISSING_CLOSING_BALANCE = "Missing Closing Balance in ISO20022.camt.053 message";
+    public static final String ERROR_INVALID_BALANCE_TYPES =
+            "Error in parsing balance type from ISO20022.camt.053 message";
+
 }

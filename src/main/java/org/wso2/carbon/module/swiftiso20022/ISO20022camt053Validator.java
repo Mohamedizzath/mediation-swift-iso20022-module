@@ -63,18 +63,18 @@ public class ISO20022camt053Validator extends AbstractConnector {
 
                 log.debug("Valid business application header");
             } catch (SAXParseException e) {
-                this.log.error(ConnectorConstants.ERROR_INVALID_ISO_HEAD001_XML_MSG);
+                this.log.error(e.getMessage());
                 ConnectorUtils.appendErrorToMessageContext(messageContext,
                         ConnectorConstants.ERROR_INVALID_ISO_HEAD001_XML_MSG,
-                        ConnectorConstants.ERROR_INVALID_ISO_HEAD001_XML_MSG);
+                        e.getMessage());
 
-                throw new ConnectException(e, ConnectorConstants.ERROR_INVALID_ISO_HEAD001_XML_MSG);
+                throw new ConnectException(e.getMessage());
             } catch (Exception e) {
                 this.log.error(e.getMessage());
                 ConnectorUtils.appendErrorToMessageContext(messageContext,
-                        ConnectorConstants.ERROR_VALIDATING_XML, e.getMessage());
+                        ConnectorConstants.ERROR_VALIDATING_XML, ConnectorConstants.ERROR_VALIDATING_XML);
 
-                throw new ConnectException(e, ConnectorConstants.ERROR_VALIDATING_XML);
+                throw new ConnectException(ConnectorConstants.ERROR_VALIDATING_XML);
             }
         } else {
             log.debug("Business application header not present");
@@ -99,20 +99,23 @@ public class ISO20022camt053Validator extends AbstractConnector {
             ISO20022camt053ValidatorUtils.validateElectronicSequenceNumber(isBusinessMsg, messageContext);
             ISO20022camt053ValidatorUtils.validateLegalSequenceNumber(isBusinessMsg, messageContext);
 
+            // Validate Balance types
+            ISO20022camt053ValidatorUtils.validateBalanceElements(isBusinessMsg, messageContext);
+
             log.debug("Valid camt.053.001.11 message");
         } catch (SAXParseException | OMException e) {
-            this.log.error(ConnectorConstants.ERROR_INVALID_ISO_CAMT053_XML_MSG);
+            this.log.error(e.getMessage());
             ConnectorUtils.appendErrorToMessageContext(messageContext,
                     ConnectorConstants.ERROR_INVALID_ISO_CAMT053_XML_MSG,
-                    ConnectorConstants.ERROR_INVALID_ISO_CAMT053_XML_MSG);
+                    e.getMessage());
 
-            throw new ConnectException(e, ConnectorConstants.ERROR_INVALID_ISO_CAMT053_XML_MSG);
+            throw new ConnectException(e.getMessage());
         } catch (Exception e) {
             this.log.error(e.getMessage());
             ConnectorUtils.appendErrorToMessageContext(messageContext,
                     ConnectorConstants.ERROR_VALIDATING_XML, e.getMessage());
 
-            throw new ConnectException(e, ConnectorConstants.ERROR_VALIDATING_XML);
+            throw new ConnectException(e.getMessage());
         }
 
     }

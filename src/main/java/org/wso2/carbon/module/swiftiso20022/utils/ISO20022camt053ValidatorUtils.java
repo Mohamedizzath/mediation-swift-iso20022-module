@@ -24,6 +24,9 @@ import org.jaxen.JaxenException;
 import org.wso2.carbon.connector.core.ConnectException;
 import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 /**
  * Utils methods for ISO20022.camt.053 validations.
  */
@@ -76,6 +79,36 @@ public class ISO20022camt053ValidatorUtils {
             }
         } catch (JaxenException e) {
             throw new ConnectException(ConnectorConstants.ERROR_INVALID_LEGAL_SEQUENCE_NUMBER);
+        }
+    }
+
+    /**
+     * Check whether ISO20022.camt.053 message contains opening balance(OPBD) and closing balance(CLBD).
+     * @param isBusinessMsg     Boolean value to indicate ISO20022 message is business message or not
+     * @param mc                MessageContext which contains the XML 20022 input
+     * @throws ConnectException
+     */
+    public static void validateBalanceElements(boolean isBusinessMsg, MessageContext mc) throws ConnectException {
+        try {
+            String xPathToBalanceEle = ConnectorConstants.XPATH_BALANCE_ELEMENTS_WITHOUT_BUSINESS_HDR;
+
+            if (isBusinessMsg) {
+                xPathToBalanceEle = ConnectorConstants.XPATH_BALANCE_ELEMENTS_WITH_BUSINESS_HDR;
+            }
+
+            List<OMElement> codeElements = ISOMessageParser.getXMLElementsByPath(xPathToBalanceEle, mc);
+            List<String> codes = codeElements.stream().map(OMElement::getText).collect(Collectors.toList());
+
+            if (!codes.contains(ConnectorConstants.OPENING_BALANCE_CODE)) {
+                // Opening balance not present in the message
+                throw new ConnectException(ConnectorConstants.ERROR_MISSING_OPENING_BALANCE);
+            }
+            if (!codes.contains(ConnectorConstants.CLOSING_BALANCE_CODE)) {
+                // Closing balance not present in the message
+                throw new ClassCastException(ConnectorConstants.ERROR_MISSING_CLOSING_BALANCE);
+            }
+        } catch (JaxenException e) {
+            throw new ConnectException(ConnectorConstants.ERROR_INVALID_BALANCE_TYPES);
         }
     }
 }
