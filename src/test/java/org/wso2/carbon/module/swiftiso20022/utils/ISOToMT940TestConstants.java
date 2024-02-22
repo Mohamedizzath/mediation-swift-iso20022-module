@@ -660,6 +660,60 @@ public class ISOToMT940TestConstants {
         };
     }
 
+    public static String getBusinessHdrPayload(Map<String, String> params) {
+        return "<BizMsgEnvlp>" + getAppHdrPayload(params) + PAYLOAD_CAMT + "</BizMsgEnvlp>";
+    }
+
+    @DataProvider(name = "invalidReceiverBICBusinessHdr")
+    Object[][] getInvalidReceiverBICBusinessHdr() {
+
+        return new Object[][]{
+                {getBusinessHdrPayload(Map.of("FrBIC", ""))},
+                {getBusinessHdrPayload(Map.of("FrBIC", "BCEYL"))},
+                {getBusinessHdrPayload(Map.of("FrBIC", "BCEYLKLX002WWW"))}
+        };
+    }
+
+    @DataProvider(name = "invalidSenderBICBusinessHdr")
+    Object[][] getInvalidSenderBICBusinessHdr() {
+
+        return new Object[][]{
+                {getBusinessHdrPayload(Map.of("ToBIC", ""))},
+                {getBusinessHdrPayload(Map.of("ToBIC", "BCEYL"))},
+                {getBusinessHdrPayload(Map.of("ToBIC", "BCEYLKLX002WWW"))}
+        };
+    }
+
+    @DataProvider(name = "invalidCreationDateBusinessHdr")
+    Object[][] getInvalidCreationDateBusinessHdr() {
+
+        return new Object[][]{
+                {getBusinessHdrPayload(Map.of("CreDt", ""))},
+                {getBusinessHdrPayload(Map.of("CreDt", "2019-04-25"))},
+                {getBusinessHdrPayload(Map.of("CreDt", "2019-04-2510:30:00Z"))},
+                {getBusinessHdrPayload(Map.of("CreDt", "10:30:00Z"))},
+                {getBusinessHdrPayload(Map.of("CreDt", "10:30:00"))},
+        };
+    }
+
+    @DataProvider(name = "invalidBusinessMsgIdBusinessHdr")
+    Object[][] getInvalidBusinessMsgIdBusinessHdr() {
+
+        return new Object[][]{
+                {getBusinessHdrPayload(Map.of("BizId", ""))},
+                {getBusinessHdrPayload(Map.of("BizId", "LOCA0000001593400007810000238500001212"))},
+        };
+    }
+
+    @DataProvider(name = "invalidMessageDefIdBusinessHdr")
+    Object[][] getInvalidMessageDefinitionIdBusinessHdr() {
+
+        return new Object[][]{
+                {getBusinessHdrPayload(Map.of("MsgId", ""))},
+                {getBusinessHdrPayload(Map.of("MsgId", "seev.00378001.0012300012.0734500001026"))},
+        };
+    }
+
     public static String getDocumentPayload(Map<String, String> params) {
         return "<Document xmlns=\"urn:iso:std:iso:20022:tech:xsd:camt.053.001.11\">\n" +
                 "    <BkToCstmrStmt>\n" +
@@ -707,6 +761,7 @@ public class ISOToMT940TestConstants {
                 "                    </FinInstnId>\n" +
                 "                </Svcr>\n" +
                 "            </Acct>\n" +
+                (params.getOrDefault("OpeningBal",
                 "            <Bal>\n" +
                 "                <Tp>\n" +
                 "                    <CdOrPrtry>\n" +
@@ -722,7 +777,8 @@ public class ISOToMT940TestConstants {
                 "                    <DtTm>" + (params.getOrDefault("OpeningBalDt",
                                         "2023-09-30T20:00:00.000")) + "</DtTm>\n" +
                 "                </Dt>\n" +
-                "            </Bal>\n" +
+                "            </Bal>\n")) +
+                        (params.getOrDefault("ClosingBal",
                 "            <Bal>\n" +
                 "                <Tp>\n" +
                 "                    <CdOrPrtry>\n" +
@@ -738,7 +794,7 @@ public class ISOToMT940TestConstants {
                 "                    <DtTm>" + (params.getOrDefault("ClosingBalDt",
                 "2023-09-30T20:00:00.000")) + "</DtTm>\n" +
                 "                </Dt>\n" +
-                "            </Bal>\n" +
+                "            </Bal>\n")) +
                 "            <Bal>\n" +
                 "                <Tp>\n" +
                 "                    <CdOrPrtry>\n" +
@@ -1021,6 +1077,15 @@ public class ISOToMT940TestConstants {
                 {getDocumentPayload(Map.of("TransDt", "2023-10"))},
                 {getDocumentPayload(Map.of("TxAcctSvcrRef", ""))},
                 {getDocumentPayload(Map.of("TxAcctSvcrRef", "B20092800002225B20092800002225B20092800002225"))}
+        };
+    }
+
+    @DataProvider(name = "invalidBalance")
+    Object[][] getInvalidBalance() {
+
+        return new Object[][]{
+                {getDocumentPayload(Map.of("OpeningBal", ""))},
+                {getDocumentPayload(Map.of("ClosingBal", ""))},
         };
     }
 }
