@@ -32,7 +32,8 @@ import org.wso2.carbon.module.swiftiso20022.models.mt940models.TransactionModel;
 import org.wso2.carbon.module.swiftiso20022.validation.common.ValidationEngine;
 import org.wso2.carbon.module.swiftiso20022.validation.common.ValidationResult;
 import org.wso2.carbon.module.swiftiso20022.validation.common.ValidatorContext;
-import org.wso2.carbon.module.swiftiso20022.validation.rules.custom.MT940TransactionIndicatorValidationRule;
+import org.wso2.carbon.module.swiftiso20022.validation.rules.custom.MT940IndicatorValidationRule;
+import org.wso2.carbon.module.swiftiso20022.validation.rules.custom.MT940StatementTypeValidationRule;
 import org.wso2.carbon.module.swiftiso20022.validation.rules.custom.MT940TransactionTypeValidationRule;
 
 import java.text.DateFormat;
@@ -232,23 +233,14 @@ public class JsonToMt940Utils {
                         ConnectorConstants.DATE), balanceDetails.getDate()))
                 .addCurrencyFormatValidationRule(new ValidatorContext(StringUtils.join(fieldName,
                         ConnectorConstants.CURRENCY), balanceDetails.getCurrency()))
+                .addCustomRule(new MT940IndicatorValidationRule(new ValidatorContext(StringUtils.join(fieldName,
+                        ConnectorConstants.INDICATOR),  balanceDetails.getIndicator())))
+                .addCustomRule(new MT940StatementTypeValidationRule(new ValidatorContext(
+                        ConnectorConstants.STATEMENT_TYPE, balanceDetails.getStatementType())))
                 .validate();
 
         if (paramValidationResult.isError()) {
             return paramValidationResult;
-        }
-
-        if (!(ConnectorConstants.DEBIT.equals(balanceDetails.getIndicator()) ||
-                ConnectorConstants.CREDIT.equals(balanceDetails.getIndicator()))) {
-            return new ValidationResult(ConnectorConstants.ERROR_T51, ConnectorConstants.ERROR_BAL_IND_INVALID);
-        }
-
-        if (StringUtils.isNotBlank(balanceDetails.getStatementType())) {
-            if (!(ConnectorConstants.CURRENT_STATEMENT_TYPE.equals(balanceDetails.getStatementType()) ||
-                    ConnectorConstants.LAST_STATEMENT_TYPE.equals(balanceDetails.getStatementType()))) {
-                return new ValidationResult(ConnectorConstants.ERROR_T51,
-                        ConnectorConstants.ERROR_INVALID_STATEMENT_TYPE);
-            }
         }
 
         return new ValidationResult();
@@ -314,7 +306,7 @@ public class JsonToMt940Utils {
                             ConnectorConstants.CURRENCY), transaction.getCurrency()))
                     .addCustomRule(new MT940TransactionTypeValidationRule(new ValidatorContext(
                             ConnectorConstants.TRANSACTION_TYPE, transaction.getTransactionType())))
-                    .addCustomRule(new MT940TransactionIndicatorValidationRule(new ValidatorContext(
+                    .addCustomRule(new MT940IndicatorValidationRule(new ValidatorContext(
                             ConnectorConstants.TRANSACTION_IND, transaction.getTransactionIndicator())))
                     .validate();
 

@@ -28,13 +28,15 @@ import java.util.List;
 /**
  * MT940 Transaction Indicator Validation Rule.
  */
-public class MT940TransactionIndicatorValidationRule extends ValidationRule {
+public class MT940IndicatorValidationRule extends ValidationRule {
 
     private static final String RULE_NAME = "MT940 Transaction Indicator Validation";
-    private static final List<String> supportedFields = List.of(ConnectorConstants.DEBIT,
+    private static final List<String> supportedFieldsForBalances = List.of(ConnectorConstants.DEBIT,
+            ConnectorConstants.CREDIT);
+    private static final List<String> supportedFieldsForTransactions = List.of(ConnectorConstants.DEBIT,
             ConnectorConstants.CREDIT, ConnectorConstants.REV_DEBIT, ConnectorConstants.REV_CREDIT);
 
-    public MT940TransactionIndicatorValidationRule(ValidatorContext context) {
+    public MT940IndicatorValidationRule(ValidatorContext context) {
         super(context);
     }
 
@@ -46,11 +48,14 @@ public class MT940TransactionIndicatorValidationRule extends ValidationRule {
     public ValidationResult validate() {
         ValidatorContext context = super.getContext();
         String debitCreditMark = context.getFieldValue().toString();
+        List<String> supportedFields = supportedFieldsForBalances;
+        if (context.getFieldName().contains(ConnectorConstants.TRANSACTION)) {
+            supportedFields = supportedFieldsForTransactions;
+        }
         boolean isSupported = supportedFields.stream().anyMatch(debitCreditMark::startsWith);
         if (!isSupported) {
             return new ValidationResult(ConnectorConstants.ERROR_T53,
-                    String.format(ConnectorConstants.ERROR_PARAMETER_INVALID,
-                            ConnectorConstants.TRANSACTION_TYPE));
+                    String.format(ConnectorConstants.ERROR_PARAMETER_INVALID, context.getFieldName()));
         }
         return new ValidationResult();
     }
