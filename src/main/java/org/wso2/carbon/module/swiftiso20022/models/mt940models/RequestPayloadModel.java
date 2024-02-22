@@ -16,7 +16,7 @@
  * under the License.
  */
 
-package org.wso2.carbon.module.swiftiso20022.mt940models;
+package org.wso2.carbon.module.swiftiso20022.models.mt940models;
 
 import java.util.List;
 

@@ -26,9 +26,9 @@ import org.json.XML;
 import org.wso2.carbon.connector.core.AbstractConnector;
 import org.wso2.carbon.connector.core.ConnectException;
 import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
-import org.wso2.carbon.module.swiftiso20022.model.ErrorModel;
 import org.wso2.carbon.module.swiftiso20022.utils.ConnectorUtils;
 import org.wso2.carbon.module.swiftiso20022.utils.MT940ValidationUtils;
+import org.wso2.carbon.module.swiftiso20022.validation.common.ValidationResult;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -70,7 +70,7 @@ public class MT940FormatValidator extends AbstractConnector {
         }
         if (StringUtils.isNotBlank(payload)) {
             String[] lines = payload.split(ConnectorConstants.LINE_BREAK);
-            ErrorModel validationResponse = validateMT940(messageContext, lines);
+            ValidationResult validationResponse = validateMT940(messageContext, lines);
 
             if (validationResponse.isError()) {
                 this.log.error(validationResponse.getErrorMessage());
@@ -91,29 +91,29 @@ public class MT940FormatValidator extends AbstractConnector {
      *
      * @param messageContext  Message context
      * @param lines           Payload lines
-     * @return                Error model
+     * @return                Validation Result
      */
-    private ErrorModel validateMT940(MessageContext messageContext, String[] lines) {
+    private ValidationResult validateMT940(MessageContext messageContext, String[] lines) {
         Map<String, Object> extractFields = extractFields(lines);
 
         if (!MT940ValidationUtils.isValidC1Rule(lines)) {
-            return new ErrorModel(ConnectorConstants.ERROR_C24,
+            return new ValidationResult(ConnectorConstants.ERROR_C24,
                     ConnectorConstants.ERROR_FIELD_86);
         }
 
         if (!MT940ValidationUtils.isValidC2Rule(lines)) {
-            return new ErrorModel(ConnectorConstants.ERROR_C27,
+            return new ValidationResult(ConnectorConstants.ERROR_C27,
                     ConnectorConstants.ERROR_BALANCES);
         }
 
-        ErrorModel errorModel = MT940ValidationUtils.validateMT940Format(extractFields);
+        ValidationResult errorModel = MT940ValidationUtils.validateMT940Format(extractFields);
         if (errorModel.isError()) {
             this.log.error(errorModel.getErrorMessage());
             ConnectorUtils.appendErrorToMessageContext(messageContext, errorModel.getErrorCode(),
                     errorModel.getErrorMessage());
             this.handleException(errorModel.getErrorMessage(), messageContext);
         }
-        return new ErrorModel();
+        return new ValidationResult();
     }
 
     /**

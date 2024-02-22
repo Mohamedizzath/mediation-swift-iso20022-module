@@ -20,7 +20,6 @@ package org.wso2.carbon.module.swiftiso20022.validation.common;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.wso2.carbon.module.swiftiso20022.model.ErrorModel;
 import org.wso2.carbon.module.swiftiso20022.validation.rules.AlphaNumericParamValidationRule;
 import org.wso2.carbon.module.swiftiso20022.validation.rules.CurrencyFormatValidationRule;
 import org.wso2.carbon.module.swiftiso20022.validation.rules.DateFormatValidationRule;
@@ -130,18 +129,13 @@ public class ValidationEngine {
      *
      * @return validation results.
      */
-    public ErrorModel validate() {
+    public ValidationResult validate() {
 
         for (ValidationRule rule : ruleList) {
-            ErrorModel validationResult = rule.validate();
+            ValidationResult validationResult = rule.validate();
             if (logger.isDebugEnabled()) {
                 logger.debug(String.format("applicable validator %s invoked with context and returned %b",
                         rule.getDisplayName(), validationResult.isError()));
-            } else {
-                if (logger.isDebugEnabled()) {
-                    logger.debug(String.format("%s validator not applicable for current context",
-                            rule.getDisplayName()));
-                }
             }
 
             if (validationResult.isError()) {
@@ -153,6 +147,6 @@ public class ValidationEngine {
                 return validationResult;
             }
         }
-        return new ErrorModel();
+        return new ValidationResult();
     }
 }

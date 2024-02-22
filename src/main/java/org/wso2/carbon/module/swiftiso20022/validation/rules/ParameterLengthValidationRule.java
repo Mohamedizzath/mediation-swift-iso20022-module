@@ -19,43 +19,34 @@
 package org.wso2.carbon.module.swiftiso20022.validation.rules;
 
 import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
-import org.wso2.carbon.module.swiftiso20022.model.ErrorModel;
+import org.wso2.carbon.module.swiftiso20022.validation.common.ValidationResult;
 import org.wso2.carbon.module.swiftiso20022.validation.common.ValidationRule;
 import org.wso2.carbon.module.swiftiso20022.validation.common.ValidatorContext;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Mandatory Param Validation Rule.
  */
-public class ParameterLengthValidationRule implements ValidationRule {
+public class ParameterLengthValidationRule extends ValidationRule {
 
     private static final String RULE_NAME = "Parameter Length Validation";
-    List<ValidatorContext> parameterLengthValidationContextList;
 
-    public ParameterLengthValidationRule(ValidatorContext validationContext) {
-
-        if (parameterLengthValidationContextList == null) {
-            parameterLengthValidationContextList = new ArrayList<>();
-        }
-        this.parameterLengthValidationContextList.add(validationContext);
+    public ParameterLengthValidationRule(ValidatorContext context) {
+        super(context);
     }
 
     /**
      * Validate whether the parameter length is valid.
-     * @return Error Model
+     * @return Validation Result
      */
     @Override
-    public ErrorModel validate() {
-        for (ValidatorContext context : parameterLengthValidationContextList) {
-            if (context.getFieldValue().toString().length() > context.getFieldLength()) {
-                return new ErrorModel(ConnectorConstants.ERROR_CODE_INVALID_PARAM,
-                        String.format(ConnectorConstants.ERROR_PARAMETER_LENGTH, context.getFieldName(),
-                                context.getFieldLength()));
-            }
+    public ValidationResult validate() {
+        ValidatorContext context = super.getContext();
+        if (context.getFieldValue().toString().length() > context.getFieldLength()) {
+            return new ValidationResult(ConnectorConstants.ERROR_CODE_INVALID_PARAM,
+                    String.format(ConnectorConstants.ERROR_PARAMETER_LENGTH, context.getFieldName(),
+                            context.getFieldLength()));
         }
-        return new ErrorModel();
+        return new ValidationResult();
     }
 
     @Override

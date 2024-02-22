@@ -42,23 +42,11 @@ public class ValidatorContext {
         return fieldName;
     }
 
-    public void setFieldName(String fieldName) {
-        this.fieldName = fieldName;
-    }
-
     public Object getFieldValue() {
         return fieldValue;
     }
 
-    public void setFieldValue(Object fieldValue) {
-        this.fieldValue = fieldValue;
-    }
-
     public int getFieldLength() {
         return fieldLength;
-    }
-
-    public void setFieldLength(int fieldLength) {
-        this.fieldLength = fieldLength;
     }
 }

@@ -21,51 +21,42 @@ package org.wso2.carbon.module.swiftiso20022.validation.rules;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
-import org.wso2.carbon.module.swiftiso20022.model.ErrorModel;
+import org.wso2.carbon.module.swiftiso20022.validation.common.ValidationResult;
 import org.wso2.carbon.module.swiftiso20022.validation.common.ValidationRule;
 import org.wso2.carbon.module.swiftiso20022.validation.common.ValidatorContext;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Date Format Validation Rule.
  */
-public class DateFormatValidationRule implements ValidationRule {
+public class DateFormatValidationRule extends ValidationRule {
 
     private static final Log log = LogFactory.getLog(DateFormatValidationRule.class);
     private static final String RULE_NAME = "Date Format Validation";
-    List<ValidatorContext> dateFormatValidationContextList;
 
-    public DateFormatValidationRule(ValidatorContext validationContext) {
-
-        if (dateFormatValidationContextList == null) {
-            dateFormatValidationContextList = new ArrayList<>();
-        }
-        this.dateFormatValidationContextList.add(validationContext);
+    public DateFormatValidationRule(ValidatorContext context) {
+        super(context);
     }
 
     /**
      * Validate whether the date is in the correct format.
-     * @return Error Model
+     * @return Validation Result
      */
     @Override
-    public ErrorModel validate() {
-        for (ValidatorContext context : dateFormatValidationContextList) {
-            DateFormat formatter = new SimpleDateFormat(ConnectorConstants.DATE_TIME_FORMAT);
-            try {
-                formatter.parse(context.getFieldValue().toString());
-                return new ErrorModel();
-            } catch (ParseException e) {
-                log.error("Error while parsing the date time", e);
-                return new ErrorModel(ConnectorConstants.ERROR_CODE_INVALID_PARAM,
-                        String.format(ConnectorConstants.ERROR_DATE_INVALID, context.getFieldName()));
-            }
+    public ValidationResult validate() {
+        ValidatorContext ctx = super.getContext();
+        DateFormat formatter = new SimpleDateFormat(ConnectorConstants.DATE_TIME_FORMAT);
+        try {
+            formatter.parse(ctx.getFieldValue().toString());
+            return new ValidationResult();
+        } catch (ParseException e) {
+            log.error("Error while parsing the date time", e);
+            return new ValidationResult(ConnectorConstants.ERROR_CODE_INVALID_PARAM,
+                    String.format(ConnectorConstants.ERROR_DATE_INVALID, ctx.getFieldName()));
         }
-        return new ErrorModel();
     }
 
     @Override

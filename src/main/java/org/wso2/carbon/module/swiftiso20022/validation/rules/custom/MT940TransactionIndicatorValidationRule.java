@@ -19,47 +19,40 @@
 package org.wso2.carbon.module.swiftiso20022.validation.rules.custom;
 
 import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
-import org.wso2.carbon.module.swiftiso20022.model.ErrorModel;
+import org.wso2.carbon.module.swiftiso20022.validation.common.ValidationResult;
 import org.wso2.carbon.module.swiftiso20022.validation.common.ValidationRule;
 import org.wso2.carbon.module.swiftiso20022.validation.common.ValidatorContext;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * MT940 Transaction Indicator Validation Rule.
  */
-public class MT940TransactionIndicatorValidationRule implements ValidationRule {
+public class MT940TransactionIndicatorValidationRule extends ValidationRule {
 
     private static final String RULE_NAME = "MT940 Transaction Indicator Validation";
-    List<ValidatorContext> mt940TransactionIndValidationContextList;
+    private static final List<String> supportedFields = List.of(ConnectorConstants.DEBIT,
+            ConnectorConstants.CREDIT, ConnectorConstants.REV_DEBIT, ConnectorConstants.REV_CREDIT);
 
-    public MT940TransactionIndicatorValidationRule(ValidatorContext validationContext) {
-
-        if (mt940TransactionIndValidationContextList == null) {
-            mt940TransactionIndValidationContextList = new ArrayList<>();
-        }
-        this.mt940TransactionIndValidationContextList.add(validationContext);
+    public MT940TransactionIndicatorValidationRule(ValidatorContext context) {
+        super(context);
     }
 
     /**
      * Validate whether the parameter Transaction indicator in MT940 is valid.
-     * @return Error Model
+     * @return Validation Result
      */
     @Override
-    public ErrorModel validate() {
-        for (ValidatorContext context : mt940TransactionIndValidationContextList) {
-            String debitCreditMark = context.getFieldValue().toString();
-            if (!debitCreditMark.startsWith(ConnectorConstants.DEBIT) &&
-                    !debitCreditMark.startsWith(ConnectorConstants.CREDIT) &&
-                    !debitCreditMark.startsWith(ConnectorConstants.REV_DEBIT) &&
-                    !debitCreditMark.startsWith(ConnectorConstants.REV_CREDIT)) {
-                return new ErrorModel(ConnectorConstants.ERROR_T53,
-                        String.format(ConnectorConstants.ERROR_PARAMETER_INVALID,
-                                ConnectorConstants.TRANSACTION_TYPE));
-            }
+    public ValidationResult validate() {
+        ValidatorContext context = super.getContext();
+        String debitCreditMark = context.getFieldValue().toString();
+        boolean isSupported = supportedFields.stream().anyMatch(debitCreditMark::startsWith);
+        if (!isSupported) {
+            return new ValidationResult(ConnectorConstants.ERROR_T53,
+                    String.format(ConnectorConstants.ERROR_PARAMETER_INVALID,
+                            ConnectorConstants.TRANSACTION_TYPE));
         }
-        return new ErrorModel();
+        return new ValidationResult();
     }
 
     @Override

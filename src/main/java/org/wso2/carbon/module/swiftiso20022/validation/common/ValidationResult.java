@@ -16,47 +16,35 @@
  * under the License.
  */
 
-package org.wso2.carbon.module.swiftiso20022.model;
+package org.wso2.carbon.module.swiftiso20022.validation.common;
 
 /**
  * Class to hold the error details.
  */
-public class ErrorModel {
+public class ValidationResult {
     private boolean isError;
     private String errorCode;
     private String errorMessage;
 
-    public ErrorModel(boolean isError, String errorCode, String errorMessage) {
+    public ValidationResult(boolean isError, String errorCode, String errorMessage) {
         this.isError = isError;
         this.errorCode = errorCode;
         this.errorMessage = errorMessage;
     }
 
-    public ErrorModel(String errorCode, String errorMessage) {
+    public ValidationResult(String errorCode, String errorMessage) {
         this(true, errorCode, errorMessage);
     }
 
-    public ErrorModel() {
-    }
-
-    public void setIsError(boolean isError) {
-        this.isError = isError;
+    public ValidationResult() {
     }
 
     public boolean isError() {
         return this.isError;
     }
 
-    public void setErrorCode(String errorCode) {
-        this.errorCode = errorCode;
-    }
-
     public String getErrorCode() {
         return this.errorCode;
-    }
-
-    public void setErrorMessage(String errorMessage) {
-        this.errorMessage = errorMessage;
     }
 
     public String getErrorMessage() {

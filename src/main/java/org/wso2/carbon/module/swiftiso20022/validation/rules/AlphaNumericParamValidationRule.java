@@ -20,41 +20,32 @@ package org.wso2.carbon.module.swiftiso20022.validation.rules;
 
 import org.apache.commons.lang3.StringUtils;
 import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
-import org.wso2.carbon.module.swiftiso20022.model.ErrorModel;
+import org.wso2.carbon.module.swiftiso20022.validation.common.ValidationResult;
 import org.wso2.carbon.module.swiftiso20022.validation.common.ValidationRule;
 import org.wso2.carbon.module.swiftiso20022.validation.common.ValidatorContext;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Alpha Numeric Param Validation Rule.
  */
-public class AlphaNumericParamValidationRule implements ValidationRule {
+public class AlphaNumericParamValidationRule extends ValidationRule {
 
     private static final String RULE_NAME = "Alpha Numeric Param Validation";
-    List<ValidatorContext> alphaNumericParamValidationContextList;
-
-    public AlphaNumericParamValidationRule(ValidatorContext validationContext) {
-        if (alphaNumericParamValidationContextList == null) {
-            alphaNumericParamValidationContextList = new ArrayList<>();
-        }
-        this.alphaNumericParamValidationContextList.add(validationContext);
+    public AlphaNumericParamValidationRule(ValidatorContext context) {
+        super(context);
     }
 
     /**
-     * Validate whether the parameter is an alpha numeric param.
-     * @return Error Model
+     * Validate whether the parameter is an alphanumeric param.
+     * @return Validation Result
      */
     @Override
-    public ErrorModel validate() {
-        for (ValidatorContext context : alphaNumericParamValidationContextList) {
-            if (!StringUtils.isAlphanumeric(context.getFieldValue().toString())) {
-                return new ErrorModel(ConnectorConstants.ERROR_CODE_INVALID_PARAM,
-                        String.format(ConnectorConstants.ERROR_NOT_ALPHA_NUMERIC, context.getFieldName()));
-            }
+    public ValidationResult validate() {
+        ValidatorContext ctx = super.getContext();
+        if (!StringUtils.isAlphanumeric(ctx.getFieldValue().toString())) {
+            return new ValidationResult(ConnectorConstants.ERROR_CODE_INVALID_PARAM,
+                    String.format(ConnectorConstants.ERROR_NOT_ALPHA_NUMERIC, ctx.getFieldName()));
         }
-        return new ErrorModel();
+        return new ValidationResult();
     }
 
     @Override

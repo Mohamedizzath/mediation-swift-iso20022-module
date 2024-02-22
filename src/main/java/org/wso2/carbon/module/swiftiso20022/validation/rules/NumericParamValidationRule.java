@@ -20,42 +20,33 @@ package org.wso2.carbon.module.swiftiso20022.validation.rules;
 
 import org.apache.commons.lang3.StringUtils;
 import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
-import org.wso2.carbon.module.swiftiso20022.model.ErrorModel;
+import org.wso2.carbon.module.swiftiso20022.validation.common.ValidationResult;
 import org.wso2.carbon.module.swiftiso20022.validation.common.ValidationRule;
 import org.wso2.carbon.module.swiftiso20022.validation.common.ValidatorContext;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Numeric Param Validation Rule.
  */
-public class NumericParamValidationRule implements ValidationRule {
+public class NumericParamValidationRule extends ValidationRule {
 
     private static final String RULE_NAME = "Numeric Param Validation";
-    List<ValidatorContext> numericParamValidationContextList;
 
-    public NumericParamValidationRule(ValidatorContext validationContext) {
-
-        if (numericParamValidationContextList == null) {
-            numericParamValidationContextList = new ArrayList<>();
-        }
-        this.numericParamValidationContextList.add(validationContext);
+    public NumericParamValidationRule(ValidatorContext context) {
+        super(context);
     }
 
     /**
      * Validate whether the parameter is a numeric param.
-     * @return Error Model
+     * @return Validation Result
      */
     @Override
-    public ErrorModel validate() {
-        for (ValidatorContext context : numericParamValidationContextList) {
-            if (!StringUtils.isNumeric(context.getFieldValue().toString())) {
-                return new ErrorModel(ConnectorConstants.ERROR_CODE_INVALID_PARAM,
-                        String.format(ConnectorConstants.ERROR_NOT_NUMERIC, context.getFieldName()));
-            }
+    public ValidationResult validate() {
+        ValidatorContext ctx = super.getContext();
+        if (!StringUtils.isNumeric(ctx.getFieldValue().toString())) {
+            return new ValidationResult(ConnectorConstants.ERROR_CODE_INVALID_PARAM,
+                    String.format(ConnectorConstants.ERROR_NOT_NUMERIC, ctx.getFieldName()));
         }
-        return new ErrorModel();
+        return new ValidationResult();
     }
 
     @Override

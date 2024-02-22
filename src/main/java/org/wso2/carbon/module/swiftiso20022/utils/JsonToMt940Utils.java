@@ -25,12 +25,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.wso2.carbon.connector.core.ConnectException;
 import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
-import org.wso2.carbon.module.swiftiso20022.model.ErrorModel;
-import org.wso2.carbon.module.swiftiso20022.mt940models.BalanceModel;
-import org.wso2.carbon.module.swiftiso20022.mt940models.RequestPayloadModel;
-import org.wso2.carbon.module.swiftiso20022.mt940models.StatementLineModel;
-import org.wso2.carbon.module.swiftiso20022.mt940models.TransactionModel;
+import org.wso2.carbon.module.swiftiso20022.models.mt940models.BalanceModel;
+import org.wso2.carbon.module.swiftiso20022.models.mt940models.RequestPayloadModel;
+import org.wso2.carbon.module.swiftiso20022.models.mt940models.StatementLineModel;
+import org.wso2.carbon.module.swiftiso20022.models.mt940models.TransactionModel;
 import org.wso2.carbon.module.swiftiso20022.validation.common.ValidationEngine;
+import org.wso2.carbon.module.swiftiso20022.validation.common.ValidationResult;
 import org.wso2.carbon.module.swiftiso20022.validation.common.ValidatorContext;
 import org.wso2.carbon.module.swiftiso20022.validation.rules.custom.MT940TransactionIndicatorValidationRule;
 import org.wso2.carbon.module.swiftiso20022.validation.rules.custom.MT940TransactionTypeValidationRule;
@@ -219,9 +219,9 @@ public class JsonToMt940Utils {
      * @param fieldName        Balance Field Name
      * @return  Return ErrorModel if the balance is invalid.
      */
-    public static ErrorModel validateBalanceDetails(BalanceModel balanceDetails, String fieldName) {
+    public static ValidationResult validateBalanceDetails(BalanceModel balanceDetails, String fieldName) {
 
-        ErrorModel paramValidationResult = ValidationEngine.getInstance()
+        ValidationResult paramValidationResult = ValidationEngine.getInstance()
                 .addMandatoryParamValidationRules(
                         JsonToMt940Utils.getMandatoryFieldsInBalance(balanceDetails, fieldName))
                 .addOptionalParamValidationRule(new ValidatorContext(StringUtils.join(fieldName,
@@ -240,27 +240,28 @@ public class JsonToMt940Utils {
 
         if (!(ConnectorConstants.DEBIT.equals(balanceDetails.getIndicator()) ||
                 ConnectorConstants.CREDIT.equals(balanceDetails.getIndicator()))) {
-            return new ErrorModel(ConnectorConstants.ERROR_T51, ConnectorConstants.ERROR_BAL_IND_INVALID);
+            return new ValidationResult(ConnectorConstants.ERROR_T51, ConnectorConstants.ERROR_BAL_IND_INVALID);
         }
 
         if (StringUtils.isNotBlank(balanceDetails.getStatementType())) {
             if (!(ConnectorConstants.CURRENT_STATEMENT_TYPE.equals(balanceDetails.getStatementType()) ||
                     ConnectorConstants.LAST_STATEMENT_TYPE.equals(balanceDetails.getStatementType()))) {
-                return new ErrorModel(ConnectorConstants.ERROR_T51, ConnectorConstants.ERROR_INVALID_STATEMENT_TYPE);
+                return new ValidationResult(ConnectorConstants.ERROR_T51,
+                        ConnectorConstants.ERROR_INVALID_STATEMENT_TYPE);
             }
         }
 
-        return new ErrorModel();
+        return new ValidationResult();
     }
 
     /**
      * Method to validate the Balance object details.
      *
      * @param requestPayload  Request Payload
-     * @return              Error model if there is an error, else empty error model
+     * @return              Validation Result if there is an error, else empty Validation Result
      */
-    public static ErrorModel validateBalances(RequestPayloadModel requestPayload) {
-        ErrorModel errorModel = JsonToMt940Utils.validateBalanceDetails(requestPayload.getOpeningBalanceDetails(),
+    public static ValidationResult validateBalances(RequestPayloadModel requestPayload) {
+        ValidationResult errorModel = JsonToMt940Utils.validateBalanceDetails(requestPayload.getOpeningBalanceDetails(),
                 ConnectorConstants.OPENING_BALANCE);
         if (errorModel.isError()) {
             return errorModel;
@@ -288,21 +289,21 @@ public class JsonToMt940Utils {
             }
         }
 
-        return new ErrorModel();
+        return new ValidationResult();
     }
 
     /**
      * Method to validate the transaction details.
      *
      * @param transactions  List of transactions
-     * @return              Error model if there is an error, else empty error model
+     * @return              Validation Result if there is an error, else empty Validation Result
      */
-    public static ErrorModel validateTransactionDetails(List<TransactionModel> transactions) {
+    public static ValidationResult validateTransactionDetails(List<TransactionModel> transactions) {
 
         String fieldName = ConnectorConstants.TRANSACTION;
 
         for (TransactionModel transaction : transactions) {
-            ErrorModel paramValidationResult = ValidationEngine.getInstance()
+            ValidationResult paramValidationResult = ValidationEngine.getInstance()
                     .addMandatoryParamValidationRules(
                             JsonToMt940Utils.getMandatoryFieldsInTransaction(transaction))
                     .addParameterLengthValidationRules(JsonToMt940Utils
@@ -321,7 +322,7 @@ public class JsonToMt940Utils {
                 return paramValidationResult;
             }
         }
-        return new ErrorModel();
+        return new ValidationResult();
     }
 
 

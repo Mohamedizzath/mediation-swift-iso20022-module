@@ -20,44 +20,35 @@ package org.wso2.carbon.module.swiftiso20022.validation.rules;
 
 import org.apache.commons.lang3.StringUtils;
 import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
-import org.wso2.carbon.module.swiftiso20022.model.ErrorModel;
+import org.wso2.carbon.module.swiftiso20022.validation.common.ValidationResult;
 import org.wso2.carbon.module.swiftiso20022.validation.common.ValidationRule;
 import org.wso2.carbon.module.swiftiso20022.validation.common.ValidatorContext;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Optional Param Validation Rule.
  */
-public class OptionalParamValidationRule implements ValidationRule {
+public class OptionalParamValidationRule extends ValidationRule {
 
     private static final String RULE_NAME = "Optional Param Validation";
-    List<ValidatorContext> optionalParamValidationContextList;
 
-    public OptionalParamValidationRule(ValidatorContext validationRule) {
-
-        if (optionalParamValidationContextList == null) {
-            optionalParamValidationContextList = new ArrayList<>();
-        }
-        this.optionalParamValidationContextList.add(validationRule);
+    public OptionalParamValidationRule(ValidatorContext context) {
+        super(context);
     }
 
     /**
      * Validate whether the parameter is an optional param.
-     * @return Error Model
+     * @return Validation Result
      */
     @Override
-    public ErrorModel validate() {
-        for (ValidatorContext context : optionalParamValidationContextList) {
-            if (context.getFieldValue() instanceof String) {
-                if (StringUtils.isEmpty(context.getFieldValue().toString())) {
-                    return new ErrorModel(ConnectorConstants.ERROR_CODE_MISSING_PARAM,
-                            String.format(ConnectorConstants.ERROR_OPTIONAL_PARAM_MISSING, context.getFieldName()));
-                }
+    public ValidationResult validate() {
+        ValidatorContext context = super.getContext();
+        if (context.getFieldValue() instanceof String) {
+            if (StringUtils.isEmpty(context.getFieldValue().toString())) {
+                return new ValidationResult(ConnectorConstants.ERROR_CODE_MISSING_PARAM,
+                        String.format(ConnectorConstants.ERROR_OPTIONAL_PARAM_MISSING, context.getFieldName()));
             }
         }
-        return new ErrorModel();
+        return new ValidationResult();
     }
 
     @Override

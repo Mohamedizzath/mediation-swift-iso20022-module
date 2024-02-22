@@ -19,44 +19,36 @@
 package org.wso2.carbon.module.swiftiso20022.validation.rules;
 
 import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
-import org.wso2.carbon.module.swiftiso20022.model.ErrorModel;
+import org.wso2.carbon.module.swiftiso20022.validation.common.ValidationResult;
 import org.wso2.carbon.module.swiftiso20022.validation.common.ValidationRule;
 import org.wso2.carbon.module.swiftiso20022.validation.common.ValidatorContext;
 
-import java.util.ArrayList;
 import java.util.Currency;
-import java.util.List;
 
 /**
  * Currency Format Validation Rule.
  */
-public class CurrencyFormatValidationRule implements ValidationRule {
+public class CurrencyFormatValidationRule extends ValidationRule {
 
     private static final String RULE_NAME = "Currency Format Validation";
-    List<ValidatorContext> currencyFormatValidationContextList;
 
-    public CurrencyFormatValidationRule(ValidatorContext validationContext) {
-
-        if (currencyFormatValidationContextList == null) {
-            currencyFormatValidationContextList = new ArrayList<>();
-        }
-        this.currencyFormatValidationContextList.add(validationContext);
+    public CurrencyFormatValidationRule(ValidatorContext context) {
+        super(context);
     }
 
     /**
-     * Validate whether the currency is valid.
-     * @return Error Model
+     * Validate whether the value in currency code field is a valid currency code.
+     * @return Validation Result
      */
     @Override
-    public ErrorModel validate() {
-        for (ValidatorContext context : currencyFormatValidationContextList) {
-            if (Currency.getAvailableCurrencies().stream()
-                    .noneMatch(c -> c.getCurrencyCode().equals(context.getFieldValue()))) {
-                return new ErrorModel(ConnectorConstants.ERROR_CODE_INVALID_PARAM,
-                        String.format(ConnectorConstants.ERROR_CURRENCY_CODE_INVALID, context.getFieldName()));
-            }
+    public ValidationResult validate() {
+        ValidatorContext ctx = super.getContext();
+        if (Currency.getAvailableCurrencies().stream()
+                .noneMatch(c -> c.getCurrencyCode().equals(ctx.getFieldValue()))) {
+            return new ValidationResult(ConnectorConstants.ERROR_CODE_INVALID_PARAM,
+                    String.format(ConnectorConstants.ERROR_CURRENCY_CODE_INVALID, ctx.getFieldName()));
         }
-        return new ErrorModel();
+        return new ValidationResult();
     }
 
     @Override

@@ -19,32 +19,8 @@
 package org.wso2.carbon.module.swiftiso20022.validation.common;
 
 /**
- * Abstract Validation Rule.
+ * Rule Interface.
  */
-public abstract class ValidationRule implements IRule {
-
-    private final ValidatorContext context;
-
-    protected ValidationRule(ValidatorContext context) {
-        this.context = context;
-    }
-
-    /**
-     * Run validation rules for given context.
-     *
-     * @return validation Validation Result.
-     */
-    @Override
-    public abstract ValidationResult validate();
-
-    public final ValidatorContext getContext() {
-        return context;
-    }
-
-    /**
-     * Get Display Name Of Validation.
-     *
-     * @return display name string.
-     */
-    public abstract String getDisplayName();
+public interface IRule {
+    ValidationResult validate();
 }
