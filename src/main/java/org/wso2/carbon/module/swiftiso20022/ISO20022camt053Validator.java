@@ -62,7 +62,7 @@ public class ISO20022camt053Validator extends AbstractConnector {
                 isBusinessMsg = true;
 
                 log.debug("Valid business application header");
-            } catch (SAXParseException e) {
+            } catch (SAXParseException | OMException e) {
                 this.log.error(e.getMessage());
                 ConnectorUtils.appendErrorToMessageContext(messageContext,
                         ConnectorConstants.ERROR_INVALID_ISO_HEAD001_XML_MSG,
@@ -72,9 +72,9 @@ public class ISO20022camt053Validator extends AbstractConnector {
             } catch (Exception e) {
                 this.log.error(e.getMessage());
                 ConnectorUtils.appendErrorToMessageContext(messageContext,
-                        ConnectorConstants.ERROR_VALIDATING_XML, ConnectorConstants.ERROR_VALIDATING_XML);
+                        ConnectorConstants.ERROR_VALIDATING_XML, e.getMessage());
 
-                throw new ConnectException(ConnectorConstants.ERROR_VALIDATING_XML);
+                throw new ConnectException(e.getMessage());
             }
         } else {
             log.debug("Business application header not present");
