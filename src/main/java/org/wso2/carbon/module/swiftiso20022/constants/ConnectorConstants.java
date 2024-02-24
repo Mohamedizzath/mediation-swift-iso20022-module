@@ -74,6 +74,37 @@ public class ConnectorConstants {
     public static final String CURRENT_STATEMENT_TYPE = "current";
     public static final String LAST_STATEMENT_TYPE = "last";
 
+    // ISO 20022 Related Constants
+    public static final String SOAP_PREFIX = "soapenv";
+    public static final String SOAP_NAMESPACE = "http://schemas.xmlsoap.org/soap/envelope/";
+    public static final String XSD_SCHEMA_CAMT_053_001 = "schema/camt.053.001.11.xsd";
+    public static final String XSD_SCHEMA_HEAD_001_001 = "schema/head.001.001.03.xsd";
+    public static final String XML_INPUT_BUSINESS_ENV_TAG = "BizMsgEnvlp";
+    public static final String XML_INPUT_APPHDR_TAG = "AppHdr";
+    public static final String XPATH_APPHDR = "/soapenv:Body/app:AppHdr";
+    public static final String XPATH_CAMT_053_APPHDR = "/soapenv:Body/BizMsgEnvlp/app:AppHdr";
+    public static final String APPHDR_PREFIX = "app";
+    public static final String XML_INPUT_APPHDR_NAMESPACE = "urn:iso:std:iso:20022:tech:xsd:head.001.001.03";
+    public static final String XML_INPUT_DOCUMENT_TAG = "Document";
+    public static final String XPATH_DOCUMENT_WITH_BUSINESS_HDR = "/soapenv:Body/BizMsgEnvlp/doc:Document";
+    public static final String XPATH_DOCUMENT_WITHOUT_BUSINESS_HDR = "/soapenv:Body/doc:Document";
+    public static final String DOCUMENT_PREFIX = "doc";
+    public static final String XML_INPUT_DOCUMENT_NAMESPACE = "urn:iso:std:iso:20022:tech:xsd:camt.053.001.11";
+    public static final String XPATH_ELECTSEQ_NUMBER_WITH_BUSINESS_HDR =
+            "/soapenv:Body/BizMsgEnvlp/doc:Document/doc:BkToCstmrStmt/doc:Stmt/doc:ElctrncSeqNb";
+    public static final String XPATH_ELECTSEQ_NUMBER_WITHOUT_BUSINESS_HDR =
+            "/soapenv:Body/doc:Document/doc:BkToCstmrStmt/doc:Stmt/doc:ElctrncSeqNb";
+    public static final String XPATH_LEGALSEQ_NUMBER_WITH_BUSINESS_HDR =
+            "/soapenv:Body/BizMsgEnvlp/doc:Document/doc:BkToCstmrStmt/doc:Stmt/doc:LglSeqNb";
+    public static final String XPATH_LEGALSEQ_NUMBER_WITHOUT_BUSINESS_HDR =
+            "/soapenv:Body/doc:Document/doc:BkToCstmrStmt/doc:Stmt/doc:LglSeqNb";
+    public static final String XPATH_BALANCE_ELEMENTS_WITH_BUSINESS_HDR =
+            "/soapenv:Body/BizMsgEnvlp/doc:Document/doc:BkToCstmrStmt/doc:Stmt/doc:Bal/doc:Tp/doc:CdOrPrtry/doc:Cd";
+    public static final String XPATH_BALANCE_ELEMENTS_WITHOUT_BUSINESS_HDR =
+            "/soapenv:Body/doc:Document/doc:BkToCstmrStmt/doc:Stmt/doc:Bal/doc:Tp/doc:CdOrPrtry/doc:Cd";
+    public static final String OPENING_BALANCE_CODE = "OPBD";
+    public static final String CLOSING_BALANCE_CODE = "CLBD";
+
     //Common Error Constants
     public static final String ERROR_CODE = "ERROR_CODE";
     public static final String ERROR_MESSAGE = "ERROR_MESSAGE";
@@ -127,5 +158,24 @@ public class ConnectorConstants {
             "Statement Line field";
     public static final String ERROR_BALANCES = "The first two characters of the three character currency code in" +
             " fields 60a, 62a, 64 and 65 must be the same for all occurrences of these fields";
+
+    // ISO 20022 Error Constants
+    public static final String ERROR_VALIDATING_XML = "XML validation failed";
+    public static final String ERROR_INVALID_ISO_BUSINESS_MSG = "XML message is not valid ISO business message";
+    public static final String ERROR_INVALID_ISO_HEAD001_XML_MSG = "XML message is not in the ISO20022.head.001 format";
+    public static final String ERROR_INVALID_ISO_CAMT053_XML_MSG = "XML message is not in the ISO20022.camt.053 format";
+    public static final String ERROR_INVALID_XML_ROOT_TAG = "XML msg should start with BizMsgEnvlp tag or Document tag";
+    public static final String ERROR_EMPTY_ELECTRONIC_SEQUENCE_NUMBER =
+            "To convert MT940 message Electronic Sequence number need to be present in ISO20022.camt.053 message";
+    public static final String ERROR_INVALID_ELECTRONIC_SEQUENCE_NUMBER =
+            "To convert MT940 message Electronic Sequence number need to be valid number";
+    public static final String ERROR_EMPTY_LEGAL_SEQUENCE_NUMBER =
+            "To convert MT940 message Legal Sequence number need to be present in ISO20022.camt.053 message";
+    public static final String ERROR_INVALID_LEGAL_SEQUENCE_NUMBER =
+            "To convert MT940 message Legal Sequence number need to be valid number";
+    public static final String ERROR_MISSING_OPENING_BALANCE = "Missing Opening Balance in ISO20022.camt.053 message";
+    public static final String ERROR_MISSING_CLOSING_BALANCE = "Missing Closing Balance in ISO20022.camt.053 message";
+    public static final String ERROR_INVALID_BALANCE_TYPES =
+            "Error in parsing balance type from ISO20022.camt.053 message";
 
 }
