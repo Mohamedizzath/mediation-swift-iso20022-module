@@ -18,7 +18,6 @@
 
 package org.wso2.carbon.module.swiftiso20022;
 
-import org.apache.axiom.om.OMException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.synapse.MessageContext;
 import org.wso2.carbon.connector.core.AbstractConnector;
@@ -54,13 +53,15 @@ public class ISO20022head001Validator extends AbstractConnector {
             XSDValidator appHdrValidator = new XSDValidator(ConnectorConstants.XSD_SCHEMA_HEAD_001_001);
             appHdrValidator.validateXMLContent(appHdrStr);
             log.debug("Valid business application header");
-        } catch (SAXParseException | OMException e) {
-            this.log.error(ConnectorConstants.ERROR_INVALID_ISO_HEAD001_XML_MSG);
+        } catch (SAXParseException e) {
+            String errMsg = e.getMessage() + ", Line number: " +
+                    e.getLineNumber() + ", Column number: " + e.getColumnNumber();
+            this.log.error(errMsg);
             ConnectorUtils.appendErrorToMessageContext(messageContext,
                     ConnectorConstants.ERROR_INVALID_ISO_HEAD001_XML_MSG,
-                    e.getMessage());
+                    errMsg);
 
-            throw new ConnectException(e.getMessage());
+            throw new ConnectException(errMsg);
         } catch (Exception e) {
             this.log.error(e.getMessage());
             ConnectorUtils.appendErrorToMessageContext(messageContext,
