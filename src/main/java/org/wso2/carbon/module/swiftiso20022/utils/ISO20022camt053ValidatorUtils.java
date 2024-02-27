@@ -105,7 +105,7 @@ public class ISO20022camt053ValidatorUtils {
             }
             if (!codes.contains(ConnectorConstants.CLOSING_BALANCE_CODE)) {
                 // Closing balance not present in the message
-                throw new ClassCastException(ConnectorConstants.ERROR_MISSING_CLOSING_BALANCE);
+                throw new ConnectException(ConnectorConstants.ERROR_MISSING_CLOSING_BALANCE);
             }
         } catch (JaxenException e) {
             throw new ConnectException(ConnectorConstants.ERROR_INVALID_BALANCE_TYPES);
