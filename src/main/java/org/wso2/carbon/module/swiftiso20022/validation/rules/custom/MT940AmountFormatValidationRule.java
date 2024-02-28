@@ -16,44 +16,45 @@
  * under the License.
  */
 
-package org.wso2.carbon.module.swiftiso20022.validation.rules;
+package org.wso2.carbon.module.swiftiso20022.validation.rules.custom;
 
-import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
 import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
 import org.wso2.carbon.module.swiftiso20022.validation.common.ValidationResult;
 import org.wso2.carbon.module.swiftiso20022.validation.common.ValidationRule;
 import org.wso2.carbon.module.swiftiso20022.validation.common.ValidatorContext;
 
-import java.util.List;
+import java.util.regex.Pattern;
 
 /**
- * Alpha Numeric Param Validation Rule.
+ * Currency Format Validation Rule.
+ * Validates whether amount is in xxx,xxx,xxx.xxx format.
  */
-public class AlphaNumericParamValidationRule extends ValidationRule {
+public class MT940AmountFormatValidationRule extends ValidationRule {
 
-    private final List<ValidatorContext> validationParamList;
-    private static final String RULE_NAME = "Alpha Numeric Param Validation";
-    public AlphaNumericParamValidationRule(List<ValidatorContext> validationParamList) {
-        this.validationParamList = validationParamList;
+    ValidatorContext context;
+    private static final String RULE_NAME = "Amount Format Validation";
+
+    public MT940AmountFormatValidationRule(ValidatorContext context) {
+
+        this.context = context;
     }
 
     /**
-     * Validate whether the parameter is an alphanumeric param.
+     * Validate whether amount is in xxx,xxx,xxx.xxx format.
      * @return Validation Result
      */
     @Override
     public ValidationResult validate(JSONObject payload) {
-        for (ValidatorContext ctx : validationParamList) {
-            if (payload.has(ctx.getFieldName())) {
-                Object value = payload.get(ctx.getFieldName());
-                if (value instanceof String && !StringUtils.isAlphanumeric(value.toString())) {
-                    return new ValidationResult(ConnectorConstants.ERROR_CODE_INVALID_PARAM,
-                            String.format(ConnectorConstants.ERROR_NOT_ALPHA_NUMERIC,
-                                    ctx.getFieldDisplayName()));
-                }
-            }
+        if (payload.has(context.getFieldName())) {
+            Object value = payload.get(context.getFieldName());
+            if (value instanceof String && !Pattern.matches(ConnectorConstants.AMOUNT_REGEX_PATTERN,
+                    (String) value)) {
+                return new ValidationResult(ConnectorConstants.ERROR_CODE_INVALID_PARAM,
+                        String.format(ConnectorConstants.ERROR_PARAMETER_INVALID,
+                                context.getFieldDisplayName()));
 
+            }
         }
         return new ValidationResult();
     }

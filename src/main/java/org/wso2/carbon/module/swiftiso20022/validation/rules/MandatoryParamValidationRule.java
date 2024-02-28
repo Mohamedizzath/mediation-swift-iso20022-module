@@ -19,20 +19,24 @@
 package org.wso2.carbon.module.swiftiso20022.validation.rules;
 
 import org.apache.commons.lang3.StringUtils;
+import org.json.JSONObject;
 import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
 import org.wso2.carbon.module.swiftiso20022.validation.common.ValidationResult;
 import org.wso2.carbon.module.swiftiso20022.validation.common.ValidationRule;
 import org.wso2.carbon.module.swiftiso20022.validation.common.ValidatorContext;
+
+import java.util.List;
 
 /**
  * Mandatory Param Validation Rule.
  */
 public class MandatoryParamValidationRule extends ValidationRule {
 
+    private final List<ValidatorContext> validationParamList;
     private static final String RULE_NAME = "Mandatory Param Validation";
 
-    public MandatoryParamValidationRule(ValidatorContext context) {
-        super(context);
+    public MandatoryParamValidationRule(List<ValidatorContext> validationParamList) {
+        this.validationParamList = validationParamList;
     }
 
     /**
@@ -40,18 +44,21 @@ public class MandatoryParamValidationRule extends ValidationRule {
      * @return Validation Result
      */
     @Override
-    public ValidationResult validate() {
-        ValidatorContext ctx = super.getContext();
-        Object value = ctx.getFieldValue();
-        if (value instanceof String) {
-            if (StringUtils.isBlank(value.toString())) {
-                return new ValidationResult(ConnectorConstants.ERROR_CODE_MISSING_PARAM,
-                        String.format(ConnectorConstants.ERROR_MANDATORY_PARAM_MISSING, ctx.getFieldName()));
-            }
-        } else {
-            if (value == null) {
-                return new ValidationResult(ConnectorConstants.ERROR_CODE_MISSING_PARAM,
-                        String.format(ConnectorConstants.ERROR_MANDATORY_PARAM_MISSING, ctx.getFieldName()));
+    public ValidationResult validate(JSONObject payload) {
+        for (ValidatorContext ctx : validationParamList) {
+            if (payload.has(ctx.getFieldName())) {
+                Object value = payload.get(ctx.getFieldName());
+                if (value instanceof String && StringUtils.isBlank(value.toString())) {
+                    return new ValidationResult(ConnectorConstants.ERROR_CODE_MISSING_PARAM,
+                            String.format(ConnectorConstants.ERROR_MANDATORY_PARAM_MISSING,
+                                    ctx.getFieldDisplayName()));
+                } else {
+                    if (value == null) {
+                        return new ValidationResult(ConnectorConstants.ERROR_CODE_MISSING_PARAM,
+                                String.format(ConnectorConstants.ERROR_MANDATORY_PARAM_MISSING,
+                                        ctx.getFieldDisplayName()));
+                    }
+                }
             }
         }
         return new ValidationResult();

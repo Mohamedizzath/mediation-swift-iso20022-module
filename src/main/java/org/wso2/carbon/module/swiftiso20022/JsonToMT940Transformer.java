@@ -27,12 +27,12 @@ import org.json.JSONObject;
 import org.wso2.carbon.connector.core.AbstractConnector;
 import org.wso2.carbon.connector.core.ConnectException;
 import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
+import org.wso2.carbon.module.swiftiso20022.constants.MT940Constants;
 import org.wso2.carbon.module.swiftiso20022.models.mt940models.RequestPayloadModel;
 import org.wso2.carbon.module.swiftiso20022.utils.ConnectorUtils;
 import org.wso2.carbon.module.swiftiso20022.utils.JsonToMt940Utils;
-import org.wso2.carbon.module.swiftiso20022.validation.common.ValidationEngine;
+import org.wso2.carbon.module.swiftiso20022.validation.JsonToMT940PayloadValidator;
 import org.wso2.carbon.module.swiftiso20022.validation.common.ValidationResult;
-import org.wso2.carbon.module.swiftiso20022.validation.common.ValidatorContext;
 
 import java.util.Optional;
 
@@ -54,8 +54,8 @@ public class JsonToMT940Transformer extends AbstractConnector {
             if (payload.isPresent()) {
                 RequestPayloadModel requestPayload = gson.fromJson(payload.get(), RequestPayloadModel.class);
 
-                ValidationResult validationResponse = validateRequestPayload(requestPayload);
-                if (validationResponse.isError()) {
+                ValidationResult validationResponse = validateRequestPayload(payload.get());
+                if (!validationResponse.isValid()) {
                     this.log.error(validationResponse.getErrorMessage());
                     ConnectorUtils.appendErrorToMessageContext(messageContext, validationResponse.getErrorCode(),
                             validationResponse.getErrorMessage());
@@ -85,30 +85,25 @@ public class JsonToMT940Transformer extends AbstractConnector {
      * @param requestPayload  Request payload
      * @return               Validation Result if there is an error, else empty Validation Result
      */
-    private ValidationResult validateRequestPayload(RequestPayloadModel requestPayload) {
+    private ValidationResult validateRequestPayload(String requestPayload) {
 
-        ValidationResult validationResult = ValidationEngine.getInstance()
-                .addMandatoryParamValidationRules(JsonToMt940Utils.getMandatoryFieldsInPayload(requestPayload))
-                .addOptionalParamValidationRule(new ValidatorContext(ConnectorConstants.ACC_NUMBER_IDENTIFICATION,
-                        requestPayload.getAccountNumberIdentifier()))
-                .addParameterLengthValidationRules(JsonToMt940Utils.
-                        getFieldsInPayloadForLengthValidation(requestPayload))
-                .addAlphaNumericParamValidationRules(JsonToMt940Utils.getAlphaNumericFieldsInPayload(requestPayload))
-                .addNumericParamValidationRules(JsonToMt940Utils.getNumericFieldsInPayload(requestPayload))
-                .validate();
+        JSONObject requestPayloadJson = new JSONObject(requestPayload);
 
-        if (validationResult.isError()) {
+        ValidationResult validationResult = JsonToMT940PayloadValidator.getMT940ValidationEngine()
+                .validate(requestPayloadJson);
+
+        if (!validationResult.isValid()) {
             return validationResult;
         }
 
-        ValidationResult balanceValidationResult = JsonToMt940Utils.validateBalances(requestPayload);
-        if (balanceValidationResult.isError()) {
+        ValidationResult balanceValidationResult = JsonToMt940Utils.validateBalances(requestPayloadJson);
+        if (!balanceValidationResult.isValid()) {
             return balanceValidationResult;
         }
 
         ValidationResult transactionValidationResult = JsonToMt940Utils
-                .validateTransactionDetails(requestPayload.getTransactions());
-        if (transactionValidationResult.isError()) {
+                .validateTransactionDetails(requestPayloadJson.getJSONArray(MT940Constants.TRANSACTIONS));
+        if (!transactionValidationResult.isValid()) {
             return transactionValidationResult;
         }
         return new ValidationResult();

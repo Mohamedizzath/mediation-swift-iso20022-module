@@ -13,7 +13,7 @@ import org.powermock.modules.testng.PowerMockTestCase;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
+import org.wso2.carbon.module.swiftiso20022.constants.MT940Constants;
 import org.wso2.carbon.module.swiftiso20022.utils.ConnectorUtils;
 import org.wso2.carbon.module.swiftiso20022.utils.MT940FormatValidatorTestConstants;
 import org.wso2.carbon.module.swiftiso20022.utils.MT940ValidationUtils;
@@ -95,17 +95,18 @@ public class MT940FormatValidatorTests extends PowerMockTestCase {
             dataProviderClass = MT940FormatValidatorTestConstants.class)
     public void testValidateTransactionReference(String reference) {
         ValidationResult error = MT940ValidationUtils.validateReference(reference,
-                ConnectorConstants.TRANSACTION_REF);
+                MT940Constants.DN_TRANSACTION_REFERENCE);
 
-        Assert.assertTrue(error.isError());
+        Assert.assertFalse(error.isValid());
     }
 
     @Test(dataProvider = "invalidReferenceDataProvider",
             dataProviderClass = MT940FormatValidatorTestConstants.class)
     public void testValidateRelatedReference(String reference) {
-        ValidationResult error = MT940ValidationUtils.validateReference(reference, ConnectorConstants.RELATED_REF);
+        ValidationResult error = MT940ValidationUtils.validateReference(reference,
+                MT940Constants.DN_RELATED_REF);
 
-        Assert.assertTrue(error.isError());
+        Assert.assertFalse(error.isValid());
     }
 
     @Test(dataProvider = "invalidAccountIdentifierDataProvider",
@@ -113,7 +114,7 @@ public class MT940FormatValidatorTests extends PowerMockTestCase {
     public void testValidateAccountIdentifier(String account) {
         ValidationResult error = MT940ValidationUtils.validateAccountIdentifier(account);
 
-        Assert.assertTrue(error.isError());
+        Assert.assertFalse(error.isValid());
     }
 
     @Test(dataProvider = "invalidStatementNumberDataProvider",
@@ -121,7 +122,7 @@ public class MT940FormatValidatorTests extends PowerMockTestCase {
     public void testValidateStatementNumber(String statementNumber) {
         ValidationResult error = MT940ValidationUtils.validateStatementNumber(statementNumber);
 
-        Assert.assertTrue(error.isError());
+        Assert.assertFalse(error.isValid());
     }
 
     @Test(dataProvider = "invalidBalanceDataProvider",
@@ -129,7 +130,7 @@ public class MT940FormatValidatorTests extends PowerMockTestCase {
     public void testValidateOpeningBalance(String balance) {
         ValidationResult error = MT940ValidationUtils.validateOpeningBalance(balance);
 
-        Assert.assertTrue(error.isError());
+        Assert.assertFalse(error.isValid());
     }
 
     @Test(dataProvider = "invalidBalanceDataProvider",
@@ -137,7 +138,7 @@ public class MT940FormatValidatorTests extends PowerMockTestCase {
     public void testValidateClosingBalance(String balance) {
         ValidationResult error = MT940ValidationUtils.validateClosingBalance(balance);
 
-        Assert.assertTrue(error.isError());
+        Assert.assertFalse(error.isValid());
     }
 
     @Test(dataProvider = "invalidBalanceDataProvider",
@@ -145,7 +146,7 @@ public class MT940FormatValidatorTests extends PowerMockTestCase {
     public void testValidateClosingAvailableBalance(String balance) {
         ValidationResult error = MT940ValidationUtils.validateClosingAvailableBalance(balance);
 
-        Assert.assertTrue(error.isError());
+        Assert.assertFalse(error.isValid());
     }
 
     @Test(dataProvider = "invalidBalanceDataProvider",
@@ -153,7 +154,7 @@ public class MT940FormatValidatorTests extends PowerMockTestCase {
     public void testValidateForwardAvailableBalance(String balance) {
         ValidationResult error = MT940ValidationUtils.validateForwardAvailableBalance(balance);
 
-        Assert.assertTrue(error.isError());
+        Assert.assertFalse(error.isValid());
     }
 
 }

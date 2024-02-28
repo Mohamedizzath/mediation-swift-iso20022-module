@@ -18,14 +18,17 @@
 
 package org.wso2.carbon.module.swiftiso20022.validation.common;
 
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wso2.carbon.module.swiftiso20022.validation.rules.AlphaNumericParamValidationRule;
+import org.wso2.carbon.module.swiftiso20022.validation.rules.AlphaParamValidationRule;
 import org.wso2.carbon.module.swiftiso20022.validation.rules.CurrencyFormatValidationRule;
 import org.wso2.carbon.module.swiftiso20022.validation.rules.DateFormatValidationRule;
+import org.wso2.carbon.module.swiftiso20022.validation.rules.MTCharacterSetXValidationRule;
 import org.wso2.carbon.module.swiftiso20022.validation.rules.MandatoryParamValidationRule;
 import org.wso2.carbon.module.swiftiso20022.validation.rules.NumericParamValidationRule;
-import org.wso2.carbon.module.swiftiso20022.validation.rules.OptionalParamValidationRule;
+import org.wso2.carbon.module.swiftiso20022.validation.rules.OptionalStringParamValidationRule;
 import org.wso2.carbon.module.swiftiso20022.validation.rules.ParameterLengthValidationRule;
 
 import java.util.ArrayList;
@@ -39,83 +42,54 @@ public class ValidationEngine {
     private static final Logger logger = LoggerFactory.getLogger(ValidationEngine.class);
 
     static List<ValidationRule> ruleList;
-    private static ValidationEngine validationEngine;
-    public static synchronized ValidationEngine getInstance() {
 
-        if (validationEngine == null) {
-            validationEngine = new ValidationEngine();
-        }
+    public ValidationEngine() {
         ruleList = new ArrayList<>();
-        return validationEngine;
     }
 
-    public ValidationEngine addMandatoryParamValidationRule(ValidatorContext context) {
-        ruleList.add(new MandatoryParamValidationRule(context));
+    public ValidationEngine addMandatoryParamValidationRule(List<ValidatorContext> validationParamList) {
+        ruleList.add(new MandatoryParamValidationRule(validationParamList));
         return this;
     }
 
-    public ValidationEngine addMandatoryParamValidationRules(List<ValidatorContext> contexts) {
-        contexts.forEach(context -> ruleList.add(new MandatoryParamValidationRule(context)));
+    public ValidationEngine addOptionalStringParamValidationRule(List<ValidatorContext> validationParamList) {
+        ruleList.add(new OptionalStringParamValidationRule(validationParamList));
         return this;
     }
 
-    public ValidationEngine addOptionalParamValidationRule(ValidatorContext context) {
-        ruleList.add(new OptionalParamValidationRule(context));
+    public ValidationEngine addAlphaNumericParamValidationRule(List<ValidatorContext> validationParamList) {
+        ruleList.add(new AlphaNumericParamValidationRule(validationParamList));
         return this;
     }
 
-    public ValidationEngine addOptionalParamValidationRules(List<ValidatorContext> contexts) {
-        contexts.forEach(context -> ruleList.add(new OptionalParamValidationRule(context)));
+    public ValidationEngine addAlphaParamValidationRule(List<ValidatorContext> validationParamList) {
+        ruleList.add(new AlphaParamValidationRule(validationParamList));
         return this;
     }
 
-    public ValidationEngine addAlphaNumericParamValidationRule(ValidatorContext context) {
-        ruleList.add(new AlphaNumericParamValidationRule(context));
+    public ValidationEngine addNumericParamValidationRule(List<ValidatorContext> validationParamList) {
+        ruleList.add(new NumericParamValidationRule(validationParamList));
         return this;
     }
 
-    public ValidationEngine addAlphaNumericParamValidationRules(List<ValidatorContext> contexts) {
-        contexts.forEach(context -> ruleList.add(new AlphaNumericParamValidationRule(context)));
+    public ValidationEngine addMTCharacterSetXValidationRule(List<ValidatorContext> validationParamList) {
+        ruleList.add(new MTCharacterSetXValidationRule(validationParamList));
         return this;
     }
 
-    public ValidationEngine addNumericParamValidationRule(ValidatorContext context) {
-        ruleList.add(new NumericParamValidationRule(context));
+    public ValidationEngine addParameterLengthValidationRule(List<ValidatorContext> validationParamList,
+                                                             List<String> definedLengthFields) {
+        ruleList.add(new ParameterLengthValidationRule(validationParamList, definedLengthFields));
         return this;
     }
 
-    public ValidationEngine addNumericParamValidationRules(List<ValidatorContext> contexts) {
-        contexts.forEach(context -> ruleList.add(new NumericParamValidationRule(context)));
+    public ValidationEngine addDateFormatValidationRule(List<ValidatorContext> validationParamList) {
+        ruleList.add(new DateFormatValidationRule(validationParamList));
         return this;
     }
 
-    public ValidationEngine addParameterLengthValidationRule(ValidatorContext context) {
-        ruleList.add(new ParameterLengthValidationRule(context));
-        return this;
-    }
-
-    public ValidationEngine addParameterLengthValidationRules(List<ValidatorContext> contexts) {
-        contexts.forEach(context -> ruleList.add(new ParameterLengthValidationRule(context)));
-        return this;
-    }
-
-    public ValidationEngine addDateFormatValidationRule(ValidatorContext context) {
-        ruleList.add(new DateFormatValidationRule(context));
-        return this;
-    }
-
-    public ValidationEngine addDateFormatValidationRules(List<ValidatorContext> contexts) {
-        contexts.forEach(context -> ruleList.add(new DateFormatValidationRule(context)));
-        return this;
-    }
-
-    public ValidationEngine addCurrencyFormatValidationRule(ValidatorContext context) {
-        ruleList.add(new CurrencyFormatValidationRule(context));
-        return this;
-    }
-
-    public ValidationEngine addCurrencyFormatValidationRules(List<ValidatorContext> contexts) {
-        contexts.forEach(context -> ruleList.add(new CurrencyFormatValidationRule(context)));
+    public ValidationEngine addCurrencyFormatValidationRule(List<ValidatorContext> validationParamList) {
+        ruleList.add(new CurrencyFormatValidationRule(validationParamList));
         return this;
     }
 
@@ -129,16 +103,16 @@ public class ValidationEngine {
      *
      * @return validation results.
      */
-    public ValidationResult validate() {
+    public ValidationResult validate(JSONObject payload) {
 
         for (ValidationRule rule : ruleList) {
-            ValidationResult validationResult = rule.validate();
+            ValidationResult validationResult = rule.validate(payload);
             if (logger.isDebugEnabled()) {
                 logger.debug(String.format("applicable validator %s invoked with context and returned %b",
-                        rule.getDisplayName(), validationResult.isError()));
+                        rule.getDisplayName(), validationResult.isValid()));
             }
 
-            if (validationResult.isError()) {
+            if (!validationResult.isValid()) {
                 if (logger.isDebugEnabled()) {
                     logger.debug(String.format("Stop on failure validator %s returned unsuccessful" +
                                     " validation therefore stopping further validation",

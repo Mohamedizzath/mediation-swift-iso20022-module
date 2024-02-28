@@ -18,28 +18,15 @@
 
 package org.wso2.carbon.module.swiftiso20022.utils;
 
-import org.apache.commons.lang3.StringUtils;
 import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
+import org.wso2.carbon.module.swiftiso20022.constants.MT940Constants;
 import org.wso2.carbon.module.swiftiso20022.validation.common.ValidationResult;
 
-import java.util.Currency;
 
 /**
  * Class to validate the request payload.
  */
 public class ValidatorUtils {
-
-    /** Method to validate whether currency is in ISO 4217 format.
-     *
-     * @param currency  Currency to be validated
-     * @return     Whether currency is valid
-     */
-    public static boolean isValidCurrency(String currency) {
-        if (StringUtils.isBlank(currency)) {
-            return false;
-        }
-        return Currency.getAvailableCurrencies().stream().anyMatch(c -> c.getCurrencyCode().equals(currency));
-    }
 
     /** Method to validate whether amount is valid.
      *
@@ -60,7 +47,7 @@ public class ValidatorUtils {
         if (amount.length() > 16) {
             return new ValidationResult(ConnectorConstants.ERROR_M50,
                     String.format(ConnectorConstants.ERROR_PARAMETER_LENGTH,
-                            fieldName + ConnectorConstants.AMOUNT, 15));
+                            fieldName + MT940Constants.DN_AMOUNT, 15));
         }
         return new ValidationResult();
     }

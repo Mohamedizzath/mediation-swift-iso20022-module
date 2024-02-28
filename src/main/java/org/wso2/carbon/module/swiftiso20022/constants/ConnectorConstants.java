@@ -32,62 +32,17 @@ public class ConnectorConstants {
 
     public static final String MT_REGEX_PATTERN = "[0-9a-zA-Z*#+.,()/-?:'-]+";
     public static final String NUMBER_REGEX_PATTERN = "[0-9]+";
+    public static final String AMOUNT_REGEX_PATTERN = "^\\d{1,3}(,\\d{3})*(\\.\\d+)?$";
     public static final String DEBIT = "D";
     public static final String CREDIT = "C";
     public static final String REV_DEBIT = "D";
     public static final String REV_CREDIT = "RC";
     public static final String LINE_BREAK = "\n";
 
-    //MT940 Related Constants
-    public static final String MT940_TRANSACTION_REF = ":20";
-    public static final String MT940_RELATED_REF = ":21";
-    public static final String MT940_ACCOUNT_NO = ":25";
-    public static final String MT940_STATEMENT_NO = ":28";
-    public static final String MT940_INFORMATION = ":86:";;
-    public static final String MT940_STATEMENT_LINE = ":61";
-    public static final String MT940_OPENING_BAL = ":60";
-    public static final String MT940_CLOSING_BAL = ":62";
-    public static final String MT940_CLOSING_AVAIL_BAL = ":64";
-    public static final String MT940_FORWARD_AVAIL_BAL = ":65";
-    public static final String SWIFT_TRANSFER = "S";
-    public static final String NON_SWIFT_TRANSFER = "N";
-    public static final String FIRST_ADVICE = "F";
+
     public static final String COLON = ":";
     public static final String SLASH = "/";
     public static final String DOUBLE_SLASH = "//";
-    public static final String HEADER_BLOCK_1 = "Header block 1";
-    public static final String HEADER_BLOCK_2 = "Header block 2";
-    public static final String HEADER_BLOCK_3 = "Header block 3";
-    public static final String TRANSACTION_REF = "Transaction Reference Number";
-    public static final String SEQUENCE_NO = "Sequence Number";
-    public static final String RELATED_REF = "Related Reference";
-    public static final String ACC_NUMBER = "Account Number";
-    public static final String ACC_NUMBER_IDENTIFICATION = "Account Number Identification";
-    public static final String ACC_IDENTIFICATION = "Account Identification";
-    public static final String STATEMENT_NUMBER = "Statement Number";
-    public static final String OPENING_BALANCE = "Opening Balance";
-    public static final String TRANSACTION = "Transaction";
-    public static final String AMOUNT = " Amount";
-    public static final String CURRENCY = " Currency";
-    public static final String DATE = " Date";
-    public static final String INDICATOR = " Indicator";
-    public static final String STATEMENT_TYPE = " Statement Type";
-    public static final String CLOSING_BALANCE = "Closing Balance";
-    public static final String CLOSING_AVAIL_BALANCE = "Closing Available Balance";
-    public static final String FORWARD_CLOSING_AVAIL_BALANCE = "Forward Available Balance";
-    public static final String STATEMENT_LINE = "Statement Line";
-    public static final String STATEMENT_NO = "statementNumber";
-    public static final String OPENING_BAL = "openingBalance";
-    public static final String CLOSING_BAL = "closingBalance";
-    public static final String CLOSING_AVAIL_BAL = "closingAvailableBalance";
-    public static final String FORWARD_AVAIL_BAL = "forwardAvailableBalance";
-    public static final String STATEMENT_LINES = "statementLines";
-    public static final String CURRENT_STATEMENT_TYPE = "current";
-    public static final String LAST_STATEMENT_TYPE = "last";
-    public static final String CUSTOMER_REFERENCE = "Customer Reference";
-    public static final String TRANSACTION_REFERENCE = "Transaction Reference";
-    public static final String TRANSACTION_TYPE = "Transaction Type";
-    public static final String TRANSACTION_IND = "Transaction Indicator";
 
     //Common Error Constants
     public static final String ERROR_CODE = "ERROR_CODE";
@@ -101,7 +56,9 @@ public class ConnectorConstants {
     public static final String ERROR_MANDATORY_PARAM_MISSING = "Mandatory parameter %s cannot be null or empty";
     public static final String ERROR_OPTIONAL_PARAM_MISSING = "Optional parameter %s cannot be empty";
     public static final String ERROR_PARAMETER_LENGTH = "%s should not contain more than %s characters";
+    public static final String ERROR_NOT_ALPHA = "Parameter %s is not in the alpha format";
     public static final String ERROR_NOT_ALPHA_NUMERIC = "Parameter %s is not in the alphanumeric format";
+    public static final String ERROR_NOT_CHARACTER_SET_X = "Parameter %s is not in the MT Character set X format";
     public static final String ERROR_NOT_NUMERIC = "Parameter %s is not in the numeric format";
     public static final String ERROR_CURRENCY_CODE_INVALID = "Currency code in the field %s is not in ISO 4217" +
             " format";
@@ -132,9 +89,9 @@ public class ConnectorConstants {
     public static final String ERROR_T53 = "T53";
     public static final String ERROR_M50 = "M50";
 
-    public static final int ACC_IDENTIFICATION_LENGTH = 36;
-    public static final int REFERENCE_LENGTH = 17;
-    public static final int SEQUENCE_NO_LENGTH = 4;
+    public static final int ACC_IDENTIFICATION_LENGTH = 35;
+    public static final int REFERENCE_LENGTH = 16;
+    public static final int SEQUENCE_NO_LENGTH = 3;
     public static final int DATE_LENGTH = 6;
     public static final int CURRENCY_LENGTH = 3;
     public static final int AMOUNT_LENGTH = 16;

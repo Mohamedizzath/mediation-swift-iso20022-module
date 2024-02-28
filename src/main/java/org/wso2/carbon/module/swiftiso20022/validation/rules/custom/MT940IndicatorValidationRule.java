@@ -18,7 +18,9 @@
 
 package org.wso2.carbon.module.swiftiso20022.validation.rules.custom;
 
+import org.json.JSONObject;
 import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
+import org.wso2.carbon.module.swiftiso20022.constants.MT940Constants;
 import org.wso2.carbon.module.swiftiso20022.validation.common.ValidationResult;
 import org.wso2.carbon.module.swiftiso20022.validation.common.ValidationRule;
 import org.wso2.carbon.module.swiftiso20022.validation.common.ValidatorContext;
@@ -30,6 +32,7 @@ import java.util.List;
  */
 public class MT940IndicatorValidationRule extends ValidationRule {
 
+    ValidatorContext context;
     private static final String RULE_NAME = "MT940 Transaction Indicator Validation";
     private static final List<String> supportedFieldsForBalances = List.of(ConnectorConstants.DEBIT,
             ConnectorConstants.CREDIT);
@@ -37,7 +40,7 @@ public class MT940IndicatorValidationRule extends ValidationRule {
             ConnectorConstants.CREDIT, ConnectorConstants.REV_DEBIT, ConnectorConstants.REV_CREDIT);
 
     public MT940IndicatorValidationRule(ValidatorContext context) {
-        super(context);
+        this.context = context;
     }
 
     /**
@@ -45,17 +48,25 @@ public class MT940IndicatorValidationRule extends ValidationRule {
      * @return Validation Result
      */
     @Override
-    public ValidationResult validate() {
-        ValidatorContext context = super.getContext();
-        String debitCreditMark = context.getFieldValue().toString();
-        List<String> supportedFields = supportedFieldsForBalances;
-        if (context.getFieldName().contains(ConnectorConstants.TRANSACTION)) {
-            supportedFields = supportedFieldsForTransactions;
-        }
-        boolean isSupported = supportedFields.stream().anyMatch(debitCreditMark::startsWith);
-        if (!isSupported) {
-            return new ValidationResult(ConnectorConstants.ERROR_T53,
-                    String.format(ConnectorConstants.ERROR_PARAMETER_INVALID, context.getFieldName()));
+    public ValidationResult validate(JSONObject payload) {
+        if (payload.has(context.getFieldName())) {
+            Object debitCreditMark = payload.get(context.getFieldName());
+
+            if (!(debitCreditMark instanceof String)) {
+                return new ValidationResult(ConnectorConstants.ERROR_T53,
+                        String.format(ConnectorConstants.ERROR_PARAMETER_INVALID,
+                                context.getFieldDisplayName()));
+            }
+            List<String> supportedFields = supportedFieldsForBalances;
+            if (context.getFieldName().contains(MT940Constants.TRANSACTION)) {
+                supportedFields = supportedFieldsForTransactions;
+            }
+            boolean isSupported = supportedFields.stream().anyMatch(debitCreditMark.toString()::startsWith);
+            if (!isSupported) {
+                return new ValidationResult(ConnectorConstants.ERROR_T53,
+                        String.format(ConnectorConstants.ERROR_PARAMETER_INVALID,
+                                context.getFieldDisplayName()));
+            }
         }
         return new ValidationResult();
     }

@@ -80,7 +80,7 @@ public class MT940FormatValidator extends AbstractConnector {
             String[] lines = payload.split(ConnectorConstants.LINE_BREAK);
             ValidationResult validationResponse = validateMT940(messageContext, lines);
 
-            if (validationResponse.isError()) {
+            if (!validationResponse.isValid()) {
                 this.log.error(validationResponse.getErrorMessage());
                 ConnectorUtils.appendErrorToMessageContext(messageContext, validationResponse.getErrorCode(),
                         validationResponse.getErrorMessage());
@@ -115,7 +115,7 @@ public class MT940FormatValidator extends AbstractConnector {
         }
 
         ValidationResult errorModel = MT940ValidationUtils.validateMT940Format(extractFields);
-        if (errorModel.isError()) {
+        if (!errorModel.isValid()) {
             this.log.error(errorModel.getErrorMessage());
             ConnectorUtils.appendErrorToMessageContext(messageContext, errorModel.getErrorCode(),
                     errorModel.getErrorMessage());
@@ -139,33 +139,33 @@ public class MT940FormatValidator extends AbstractConnector {
                 continue;
             }
             switch (line.substring(0, 3)) {
-                case ConnectorConstants.MT940_TRANSACTION_REF :
-                    fields.put(ConnectorConstants.TRANSACTION_REF, line);
+                case MT940Constants.MT940_TRANSACTION_REF :
+                    fields.put(MT940Constants.DN_TRANSACTION_REF, line);
                     break;
-                case ConnectorConstants.MT940_RELATED_REF :
-                    fields.put(ConnectorConstants.RELATED_REF, line);
+                case MT940Constants.MT940_RELATED_REF :
+                    fields.put(MT940Constants.DN_RELATED_REF, line);
                     break;
-                case ConnectorConstants.MT940_ACCOUNT_NO :
-                    fields.put(ConnectorConstants.ACC_IDENTIFICATION, line);
+                case MT940Constants.MT940_ACCOUNT_NO :
+                    fields.put(MT940Constants.DN_ACC_IDENTIFICATION, line);
                     break;
-                case ConnectorConstants.MT940_STATEMENT_NO :
-                    fields.put(ConnectorConstants.STATEMENT_NUMBER, line);
+                case MT940Constants.MT940_STATEMENT_NO :
+                    fields.put(MT940Constants.DN_STATEMENT_NUMBER, line);
                     break;
-                case ConnectorConstants.MT940_OPENING_BAL :
-                    fields.put(ConnectorConstants.OPENING_BALANCE, line);
+                case MT940Constants.MT940_OPENING_BAL :
+                    fields.put(MT940Constants.DN_OPENING_BALANCE, line);
                     break;
-                case ConnectorConstants.MT940_STATEMENT_LINE :
+                case MT940Constants.MT940_STATEMENT_LINE :
                     statementLine.add(line);
-                    fields.put(ConnectorConstants.STATEMENT_LINE, statementLine);
+                    fields.put(MT940Constants.DN_STATEMENT_LINE, statementLine);
                     break;
-                case ConnectorConstants.MT940_CLOSING_BAL :
-                    fields.put(ConnectorConstants.CLOSING_BALANCE, line);
+                case MT940Constants.MT940_CLOSING_BAL :
+                    fields.put(MT940Constants.DN_CLOSING_BALANCE, line);
                     break;
-                case ConnectorConstants.MT940_CLOSING_AVAIL_BAL :
-                    fields.put(ConnectorConstants.CLOSING_AVAIL_BALANCE, line);
+                case MT940Constants.MT940_CLOSING_AVAIL_BAL :
+                    fields.put(MT940Constants.DN_CLOSING_AVAIL_BALANCE, line);
                     break;
-                case ConnectorConstants.MT940_FORWARD_AVAIL_BAL :
-                    fields.put(ConnectorConstants.FORWARD_CLOSING_AVAIL_BALANCE, line);
+                case MT940Constants.MT940_FORWARD_AVAIL_BAL :
+                    fields.put(MT940Constants.DN_FORWARD_CLOSING_AVAIL_BALANCE, line);
                     break;
                 default:
                     break;

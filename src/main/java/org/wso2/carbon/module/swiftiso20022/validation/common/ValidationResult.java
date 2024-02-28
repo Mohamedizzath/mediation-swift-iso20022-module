@@ -22,25 +22,28 @@ package org.wso2.carbon.module.swiftiso20022.validation.common;
  * Class to hold the error details.
  */
 public class ValidationResult {
-    private boolean isError;
+    private boolean isValid;
     private String errorCode;
     private String errorMessage;
 
-    public ValidationResult(boolean isError, String errorCode, String errorMessage) {
-        this.isError = isError;
+    public ValidationResult() {
+        this.isValid = true;
+        this.errorCode = null;
+        this.errorMessage = null;
+    }
+
+    public ValidationResult(boolean isValid, String errorCode, String errorMessage) {
+        this.isValid = isValid;
         this.errorCode = errorCode;
         this.errorMessage = errorMessage;
     }
 
     public ValidationResult(String errorCode, String errorMessage) {
-        this(true, errorCode, errorMessage);
+        this(false, errorCode, errorMessage);
     }
 
-    public ValidationResult() {
-    }
-
-    public boolean isError() {
-        return this.isError;
+    public boolean isValid() {
+        return this.isValid;
     }
 
     public String getErrorCode() {

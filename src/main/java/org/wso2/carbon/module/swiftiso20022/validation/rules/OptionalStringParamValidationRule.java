@@ -19,33 +19,39 @@
 package org.wso2.carbon.module.swiftiso20022.validation.rules;
 
 import org.apache.commons.lang3.StringUtils;
+import org.json.JSONObject;
 import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
 import org.wso2.carbon.module.swiftiso20022.validation.common.ValidationResult;
 import org.wso2.carbon.module.swiftiso20022.validation.common.ValidationRule;
 import org.wso2.carbon.module.swiftiso20022.validation.common.ValidatorContext;
 
+import java.util.List;
+
 /**
  * Optional Param Validation Rule.
  */
-public class OptionalParamValidationRule extends ValidationRule {
+public class OptionalStringParamValidationRule extends ValidationRule {
 
+    private final List<ValidatorContext> validationParamList;
     private static final String RULE_NAME = "Optional Param Validation";
 
-    public OptionalParamValidationRule(ValidatorContext context) {
-        super(context);
+    public OptionalStringParamValidationRule(List<ValidatorContext> validationParamList) {
+        this.validationParamList = validationParamList;
     }
-
     /**
      * Validate whether the parameter is an optional param.
      * @return Validation Result
      */
     @Override
-    public ValidationResult validate() {
-        ValidatorContext context = super.getContext();
-        if (context.getFieldValue() instanceof String) {
-            if (StringUtils.isEmpty(context.getFieldValue().toString())) {
-                return new ValidationResult(ConnectorConstants.ERROR_CODE_MISSING_PARAM,
-                        String.format(ConnectorConstants.ERROR_OPTIONAL_PARAM_MISSING, context.getFieldName()));
+    public ValidationResult validate(JSONObject payload) {
+        for (ValidatorContext ctx : validationParamList) {
+            if (payload.has(ctx.getFieldName())) {
+                Object value = payload.get(ctx.getFieldName());
+                if (value instanceof String && StringUtils.isEmpty(value.toString())) {
+                    return new ValidationResult(ConnectorConstants.ERROR_CODE_MISSING_PARAM,
+                            String.format(ConnectorConstants.ERROR_OPTIONAL_PARAM_MISSING,
+                                    ctx.getFieldDisplayName()));
+                }
             }
         }
         return new ValidationResult();

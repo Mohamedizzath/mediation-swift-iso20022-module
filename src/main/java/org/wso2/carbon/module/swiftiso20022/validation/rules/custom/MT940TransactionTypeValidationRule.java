@@ -19,7 +19,9 @@
 package org.wso2.carbon.module.swiftiso20022.validation.rules.custom;
 
 import org.apache.commons.lang3.StringUtils;
+import org.json.JSONObject;
 import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
+import org.wso2.carbon.module.swiftiso20022.constants.MT940Constants;
 import org.wso2.carbon.module.swiftiso20022.validation.common.ValidationResult;
 import org.wso2.carbon.module.swiftiso20022.validation.common.ValidationRule;
 import org.wso2.carbon.module.swiftiso20022.validation.common.ValidatorContext;
@@ -31,16 +33,17 @@ import java.util.List;
  */
 public class MT940TransactionTypeValidationRule extends ValidationRule {
 
+    ValidatorContext context;
     private static final String RULE_NAME = "MT940 Transaction Type Validation";
     private static final int INDEX = 1;
     private static final int START_VALUE = 99;
     private static final int END_VALUE = 1000;
 
-    private static final List<String> supportedFields = List.of(ConnectorConstants.SWIFT_TRANSFER,
-            ConnectorConstants.NON_SWIFT_TRANSFER, ConnectorConstants.FIRST_ADVICE);
+    private static final List<String> supportedFields = List.of(MT940Constants.SWIFT_TRANSFER,
+            MT940Constants.NON_SWIFT_TRANSFER, MT940Constants.FIRST_ADVICE);
 
     public MT940TransactionTypeValidationRule(ValidatorContext context) {
-        super(context);
+        this.context = context;
     }
 
     /**
@@ -48,26 +51,33 @@ public class MT940TransactionTypeValidationRule extends ValidationRule {
      * @return Validation Result
      */
     @Override
-    public ValidationResult validate() {
-        ValidatorContext context = super.getContext();
-        String transactionType = context.getFieldValue().toString();
-        boolean isSupported = supportedFields.stream().anyMatch(transactionType::startsWith);
-        if (!isSupported) {
-            return new ValidationResult(ConnectorConstants.ERROR_T53,
-                    ConnectorConstants.ERROR_TRANS_TYPE_INVALID);
-        }
+    public ValidationResult validate(JSONObject payload) {
+        if (payload.has(context.getFieldName())) {
+            Object transactionType = payload.get(context.getFieldName());
 
-        if (transactionType.startsWith(ConnectorConstants.SWIFT_TRANSFER)) {
-            String identificationCode = transactionType.substring(INDEX);
-            if (!StringUtils.isNumeric(identificationCode)) {
+            if (!(transactionType instanceof String) || StringUtils.isBlank(transactionType.toString())) {
+                return new ValidationResult(ConnectorConstants.ERROR_T53,
+                        String.format(ConnectorConstants.ERROR_PARAMETER_INVALID,
+                                context.getFieldDisplayName()));
+            }
+            boolean isSupported = supportedFields.stream().anyMatch(transactionType.toString()::startsWith);
+            if (!isSupported) {
                 return new ValidationResult(ConnectorConstants.ERROR_T53,
                         ConnectorConstants.ERROR_TRANS_TYPE_INVALID);
             }
 
-            if (!(Integer.parseInt(identificationCode) > START_VALUE &&
-                    Integer.parseInt(identificationCode) < END_VALUE)) {
-                return new ValidationResult(ConnectorConstants.ERROR_T18,
-                        ConnectorConstants.ERROR_TRANS_TYPE_INVALID);
+            if (transactionType.toString().startsWith(MT940Constants.SWIFT_TRANSFER)) {
+                String identificationCode = transactionType.toString().substring(INDEX);
+                if (!StringUtils.isNumeric(identificationCode)) {
+                    return new ValidationResult(ConnectorConstants.ERROR_T53,
+                            ConnectorConstants.ERROR_TRANS_TYPE_INVALID);
+                }
+
+                if (!(Integer.parseInt(identificationCode) > START_VALUE &&
+                        Integer.parseInt(identificationCode) < END_VALUE)) {
+                    return new ValidationResult(ConnectorConstants.ERROR_T18,
+                            ConnectorConstants.ERROR_TRANS_TYPE_INVALID);
+                }
             }
         }
         return new ValidationResult();

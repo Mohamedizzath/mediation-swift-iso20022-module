@@ -20,6 +20,7 @@ package org.wso2.carbon.module.swiftiso20022.utils;
 
 import org.apache.commons.lang3.StringUtils;
 import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
+import org.wso2.carbon.module.swiftiso20022.constants.MT940Constants;
 import org.wso2.carbon.module.swiftiso20022.validation.common.ValidationResult;
 
 import java.util.Map;
@@ -40,8 +41,8 @@ public class MT940ValidationUtils {
     public static boolean isValidC1Rule(String[] lines) {
 
         for (int itr = 0; itr < lines.length; itr++) {
-            if (lines[itr].startsWith(ConnectorConstants.MT940_INFORMATION)) {
-                return lines[itr - 1].startsWith(ConnectorConstants.MT940_STATEMENT_LINE);
+            if (lines[itr].startsWith(MT940Constants.MT940_INFORMATION)) {
+                return lines[itr - 1].startsWith(MT940Constants.MT940_STATEMENT_LINE);
             }
         }
         return true;
@@ -64,13 +65,13 @@ public class MT940ValidationUtils {
             String mandatoryCurrencyField = line.length() > 18 ? line.substring(14, 17) : null;
             String optionalCurrencyField = line.length() > 17 ? line.substring(13, 16) : null;
 
-            if (line.startsWith(ConnectorConstants.MT940_OPENING_BAL)) {
+            if (line.startsWith(MT940Constants.MT940_OPENING_BAL)) {
                 openBalanceCurrency = mandatoryCurrencyField;
-            } else if (line.startsWith(ConnectorConstants.MT940_CLOSING_BAL)) {
+            } else if (line.startsWith(MT940Constants.MT940_CLOSING_BAL)) {
                 closeBalanceCurrency = mandatoryCurrencyField;
-            } else if (line.startsWith(ConnectorConstants.MT940_CLOSING_AVAIL_BAL)) {
+            } else if (line.startsWith(MT940Constants.MT940_CLOSING_AVAIL_BAL)) {
                 closeAvailBalanceCurrency = optionalCurrencyField;
-            } else if (line.startsWith(ConnectorConstants.MT940_FORWARD_AVAIL_BAL)) {
+            } else if (line.startsWith(MT940Constants.MT940_FORWARD_AVAIL_BAL)) {
                 forwardAvailBalanceCurrency = optionalCurrencyField;
             }
         }
@@ -95,49 +96,49 @@ public class MT940ValidationUtils {
     public static ValidationResult validateMT940Format(Map<String, Object> fields) {
         ValidationResult errorModel;
 
-        errorModel = validateReference((String) fields.get(ConnectorConstants.TRANSACTION_REF),
-                ConnectorConstants.TRANSACTION_REF);
-        if (errorModel.isError()) {
+        errorModel = validateReference((String) fields.get(MT940Constants.DN_TRANSACTION_REF),
+                MT940Constants.DN_TRANSACTION_REF);
+        if (!errorModel.isValid()) {
             return errorModel;
         }
 
-        if (fields.containsKey(ConnectorConstants.RELATED_REF)) {
-            errorModel = validateReference((String) fields.get(ConnectorConstants.RELATED_REF),
-                    ConnectorConstants.RELATED_REF);
-            if (errorModel.isError()) {
+        if (fields.containsKey(MT940Constants.DN_RELATED_REF)) {
+            errorModel = validateReference((String) fields.get(MT940Constants.DN_RELATED_REF),
+                    MT940Constants.DN_RELATED_REF);
+            if (!errorModel.isValid()) {
                 return errorModel;
             }
         }
 
-        errorModel = validateAccountIdentifier((String) fields.get(ConnectorConstants.ACC_IDENTIFICATION));
-        if (errorModel.isError()) {
+        errorModel = validateAccountIdentifier((String) fields.get(MT940Constants.DN_ACC_IDENTIFICATION));
+        if (!errorModel.isValid()) {
             return errorModel;
         }
 
-        errorModel = validateStatementNumber((String) fields.get(ConnectorConstants.STATEMENT_NUMBER));
-        if (errorModel.isError()) {
+        errorModel = validateStatementNumber((String) fields.get(MT940Constants.DN_STATEMENT_NUMBER));
+        if (!errorModel.isValid()) {
             return errorModel;
         }
 
-        errorModel = validateOpeningBalance((String) fields.get(ConnectorConstants.OPENING_BALANCE));
-        if (errorModel.isError()) {
+        errorModel = validateOpeningBalance((String) fields.get(MT940Constants.DN_OPENING_BALANCE));
+        if (!errorModel.isValid()) {
             return errorModel;
         }
 
-        errorModel = validateClosingBalance((String) fields.get(ConnectorConstants.CLOSING_BALANCE));
-        if (errorModel.isError()) {
+        errorModel = validateClosingBalance((String) fields.get(MT940Constants.DN_CLOSING_BALANCE));
+        if (!errorModel.isValid()) {
             return errorModel;
         }
 
         errorModel = validateClosingAvailableBalance((String) fields
-                .get(ConnectorConstants.CLOSING_AVAIL_BALANCE));
-        if (errorModel.isError()) {
+                .get(MT940Constants.DN_CLOSING_AVAIL_BALANCE));
+        if (!errorModel.isValid()) {
             return errorModel;
         }
 
         errorModel = validateForwardAvailableBalance((String) fields
-                .get(ConnectorConstants.FORWARD_CLOSING_AVAIL_BALANCE));
-        if (errorModel.isError()) {
+                .get(MT940Constants.DN_FORWARD_CLOSING_AVAIL_BALANCE));
+        if (!errorModel.isValid()) {
             return errorModel;
         }
         return new ValidationResult();
@@ -191,25 +192,25 @@ public class MT940ValidationUtils {
         if (!isListLengthValid(accIdentifierDetails)) {
             return new ValidationResult(ConnectorConstants.INVALID_REQUEST_PAYLOAD,
                     String.format(ConnectorConstants.ERROR_PARAMETER_INVALID,
-                            ConnectorConstants.ACC_IDENTIFICATION));
+                            MT940Constants.DN_ACC_IDENTIFICATION));
         }
         String account = accIdentifierDetails[2];
         if (StringUtils.isBlank(account)) {
             return new ValidationResult(ConnectorConstants.INVALID_REQUEST_PAYLOAD,
                     String.format(ConnectorConstants.ERROR_PARAMETER_MISSING,
-                            ConnectorConstants.ACC_IDENTIFICATION));
+                            MT940Constants.DN_ACC_IDENTIFICATION));
         }
 
         if (account.length() > 35) {
             return new ValidationResult(ConnectorConstants.ERROR_M50,
                     String.format(ConnectorConstants.ERROR_PARAMETER_LENGTH,
-                            ConnectorConstants.ACC_IDENTIFICATION, 35));
+                            MT940Constants.DN_ACC_IDENTIFICATION, 35));
         }
 
         if (!Pattern.matches(ConnectorConstants.MT_REGEX_PATTERN, account)) {
             return new ValidationResult(ConnectorConstants.INVALID_REQUEST_PAYLOAD,
                     String.format(ConnectorConstants.ERROR_PARAMETER_INVALID,
-                            ConnectorConstants.ACC_IDENTIFICATION));
+                            MT940Constants.DN_ACC_IDENTIFICATION));
         }
         return new ValidationResult();
     }
@@ -225,31 +226,31 @@ public class MT940ValidationUtils {
         if (!isListLengthValid(statementNumberDetails)) {
             return new ValidationResult(ConnectorConstants.INVALID_REQUEST_PAYLOAD,
                     String.format(ConnectorConstants.ERROR_PARAMETER_INVALID,
-                            ConnectorConstants.STATEMENT_NUMBER));
+                            MT940Constants.DN_STATEMENT_NUMBER));
         }
         String number = statementNumberDetails[2];
         if (StringUtils.isBlank(number)) {
             return new ValidationResult(ConnectorConstants.INVALID_REQUEST_PAYLOAD,
                     String.format(ConnectorConstants.ERROR_PARAMETER_MISSING,
-                            ConnectorConstants.STATEMENT_NUMBER));
+                            MT940Constants.DN_STATEMENT_NUMBER));
         }
 
         if (number.length() > 5) {
             return new ValidationResult(ConnectorConstants.ERROR_M50,
                     String.format(ConnectorConstants.ERROR_PARAMETER_LENGTH,
-                            ConnectorConstants.STATEMENT_NUMBER, 16));
+                            MT940Constants.DN_STATEMENT_NUMBER, 16));
         }
 
         if (!number.contains(ConnectorConstants.SLASH)) {
             return new ValidationResult(ConnectorConstants.INVALID_REQUEST_PAYLOAD,
                     String.format(ConnectorConstants.ERROR_PARAMETER_INVALID,
-                            ConnectorConstants.STATEMENT_NUMBER));
+                            MT940Constants.DN_STATEMENT_NUMBER));
         }
 
         if (!StringUtils.isNumeric(number.replace(ConnectorConstants.SLASH, ""))) {
             return new ValidationResult(ConnectorConstants.INVALID_REQUEST_PAYLOAD,
                     String.format(ConnectorConstants.ERROR_PARAMETER_INVALID,
-                            ConnectorConstants.STATEMENT_NUMBER));
+                            MT940Constants.DN_STATEMENT_NUMBER));
         }
         return new ValidationResult();
     }
@@ -265,18 +266,18 @@ public class MT940ValidationUtils {
         if (!isListLengthValid(openingBalanceDetails)) {
             return new ValidationResult(ConnectorConstants.INVALID_REQUEST_PAYLOAD,
                     String.format(ConnectorConstants.ERROR_PARAMETER_INVALID,
-                            ConnectorConstants.OPENING_BALANCE));
+                            MT940Constants.DN_OPENING_BALANCE));
         }
 
         String balance = openingBalanceDetails[2];
         if (StringUtils.isBlank(balance)) {
             return new ValidationResult(ConnectorConstants.INVALID_REQUEST_PAYLOAD,
                     String.format(ConnectorConstants.ERROR_PARAMETER_MISSING,
-                            ConnectorConstants.OPENING_BALANCE));
+                            MT940Constants.DN_OPENING_BALANCE));
         }
 
-        ValidationResult errorModel = validateBalance(balance, ConnectorConstants.OPENING_BALANCE);
-        if (errorModel.isError()) {
+        ValidationResult errorModel = validateBalance(balance, MT940Constants.DN_OPENING_BALANCE);
+        if (!errorModel.isValid()) {
             return errorModel;
         }
         return new ValidationResult();
@@ -293,18 +294,18 @@ public class MT940ValidationUtils {
         if (!isListLengthValid(closingBalanceDetails)) {
             return new ValidationResult(ConnectorConstants.INVALID_REQUEST_PAYLOAD,
                     String.format(ConnectorConstants.ERROR_PARAMETER_INVALID,
-                            ConnectorConstants.TRANSACTION_REF));
+                            MT940Constants.DN_CLOSING_BALANCE));
         }
 
         String balance = closingBalanceDetails[2];
         if (StringUtils.isBlank(balance)) {
             return new ValidationResult(ConnectorConstants.ERROR_C24,
                     String.format(ConnectorConstants.ERROR_PARAMETER_MISSING,
-                            ConnectorConstants.CLOSING_BALANCE));
+                            MT940Constants.DN_CLOSING_BALANCE));
         }
 
-        ValidationResult errorModel = validateBalance(balance, ConnectorConstants.CLOSING_BALANCE);
-        if (errorModel.isError()) {
+        ValidationResult errorModel = validateBalance(balance, MT940Constants.DN_CLOSING_BALANCE);
+        if (!errorModel.isValid()) {
             return errorModel;
         }
         return new ValidationResult();
@@ -321,12 +322,12 @@ public class MT940ValidationUtils {
             if (!isListLengthValid(closingBalanceDetails)) {
                 return new ValidationResult(ConnectorConstants.INVALID_REQUEST_PAYLOAD,
                         String.format(ConnectorConstants.ERROR_PARAMETER_INVALID,
-                                ConnectorConstants.CLOSING_AVAIL_BALANCE));
+                                MT940Constants.DN_CLOSING_AVAIL_BALANCE));
             }
 
             ValidationResult errorModel = validateBalance(closingBalanceDetails[2],
-                    ConnectorConstants.CLOSING_AVAIL_BALANCE);
-            if (errorModel.isError()) {
+                    MT940Constants.DN_CLOSING_AVAIL_BALANCE);
+            if (!errorModel.isValid()) {
                 return errorModel;
             }
         }
@@ -344,12 +345,12 @@ public class MT940ValidationUtils {
             if (!isListLengthValid(closingBalanceDetails)) {
                 return new ValidationResult(ConnectorConstants.INVALID_REQUEST_PAYLOAD,
                         String.format(ConnectorConstants.ERROR_PARAMETER_INVALID,
-                                ConnectorConstants.FORWARD_CLOSING_AVAIL_BALANCE));
+                                MT940Constants.DN_FORWARD_CLOSING_AVAIL_BALANCE));
             }
 
             ValidationResult errorModel = validateBalance(closingBalanceDetails[2],
-                    ConnectorConstants.FORWARD_CLOSING_AVAIL_BALANCE);
-            if (errorModel.isError()) {
+                    MT940Constants.DN_FORWARD_CLOSING_AVAIL_BALANCE);
+            if (!errorModel.isValid()) {
                 return errorModel;
             }
         }
@@ -376,12 +377,12 @@ public class MT940ValidationUtils {
         }
 
         errorModel = ValidatorUtils.validateAmountLength(balance.substring(10), balanceName);
-        if (errorModel.isError()) {
+        if (!errorModel.isValid()) {
             return errorModel;
         }
 
         errorModel = validateAmountFormat(balance.substring(10), balanceName);
-        if (errorModel.isError()) {
+        if (!errorModel.isValid()) {
             return errorModel;
         }
         return new ValidationResult();
@@ -397,7 +398,7 @@ public class MT940ValidationUtils {
         if (amount.contains(".")) {
             return new ValidationResult(ConnectorConstants.ERROR_T40,
                     String.format(ConnectorConstants.ERROR_PARAMETER_INVALID,
-                            fieldName + ConnectorConstants.AMOUNT));
+                            fieldName + MT940Constants.DN_AMOUNT));
         }
         return  new ValidationResult();
     }

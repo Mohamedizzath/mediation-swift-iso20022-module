@@ -18,28 +18,19 @@
 
 package org.wso2.carbon.module.swiftiso20022.validation.common;
 
+import org.json.JSONObject;
+
 /**
  * Abstract Validation Rule.
  */
-public abstract class ValidationRule implements IRule {
-
-    private final ValidatorContext context;
-
-    protected ValidationRule(ValidatorContext context) {
-        this.context = context;
-    }
+public abstract class ValidationRule {
 
     /**
      * Run validation rules for given context.
      *
      * @return validation Validation Result.
      */
-    @Override
-    public abstract ValidationResult validate();
-
-    public final ValidatorContext getContext() {
-        return context;
-    }
+    public abstract ValidationResult validate(JSONObject payload);
 
     /**
      * Get Display Name Of Validation.

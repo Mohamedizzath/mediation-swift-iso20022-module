@@ -18,34 +18,55 @@
 
 package org.wso2.carbon.module.swiftiso20022.validation.rules;
 
+import org.json.JSONObject;
 import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
 import org.wso2.carbon.module.swiftiso20022.validation.common.ValidationResult;
 import org.wso2.carbon.module.swiftiso20022.validation.common.ValidationRule;
 import org.wso2.carbon.module.swiftiso20022.validation.common.ValidatorContext;
+
+import java.util.List;
 
 /**
  * Mandatory Param Validation Rule.
  */
 public class ParameterLengthValidationRule extends ValidationRule {
 
+    private final List<ValidatorContext> validationParamList;
+    private final List<String> definedLengthFields;
     private static final String RULE_NAME = "Parameter Length Validation";
 
-    public ParameterLengthValidationRule(ValidatorContext context) {
-        super(context);
+    public ParameterLengthValidationRule(List<ValidatorContext> validationParamList,
+                                         List<String> definedLengthFields) {
+        this.validationParamList = validationParamList;
+        this.definedLengthFields = definedLengthFields;
     }
-
     /**
      * Validate whether the parameter length is valid.
      * @return Validation Result
      */
     @Override
-    public ValidationResult validate() {
-        ValidatorContext context = super.getContext();
-        if (context.getFieldValue().toString().length() > context.getFieldLength()) {
-            return new ValidationResult(ConnectorConstants.ERROR_CODE_INVALID_PARAM,
-                    String.format(ConnectorConstants.ERROR_PARAMETER_LENGTH, context.getFieldName(),
-                            context.getFieldLength()));
+    public ValidationResult validate(JSONObject payload) {
+        for (ValidatorContext ctx : validationParamList) {
+            if (payload.has(ctx.getFieldName())) {
+                Object value = payload.get(ctx.getFieldName());
+                int length = ctx.getFieldLength();
+                if (definedLengthFields.stream().anyMatch(ctx.getFieldName()::contains)) {
+                    if (value instanceof String && length > 0 && value.toString().length() != length) {
+                        return new ValidationResult(ConnectorConstants.ERROR_CODE_INVALID_PARAM,
+                                String.format(ConnectorConstants.ERROR_PARAMETER_LENGTH,
+                                        ctx.getFieldDisplayName(), ctx.getFieldLength()));
+                    }
+                } else {
+                    if (value instanceof String && length > 0 && value.toString().length() > length) {
+                        return new ValidationResult(ConnectorConstants.ERROR_CODE_INVALID_PARAM,
+                                String.format(ConnectorConstants.ERROR_PARAMETER_LENGTH,
+                                        ctx.getFieldDisplayName(), ctx.getFieldLength()));
+                    }
+                }
+
+            }
         }
+
         return new ValidationResult();
     }
 

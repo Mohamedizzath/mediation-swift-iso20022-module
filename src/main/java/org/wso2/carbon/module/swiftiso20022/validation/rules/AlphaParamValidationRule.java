@@ -30,16 +30,16 @@ import java.util.List;
 /**
  * Alpha Numeric Param Validation Rule.
  */
-public class AlphaNumericParamValidationRule extends ValidationRule {
+public class AlphaParamValidationRule extends ValidationRule {
 
     private final List<ValidatorContext> validationParamList;
-    private static final String RULE_NAME = "Alpha Numeric Param Validation";
-    public AlphaNumericParamValidationRule(List<ValidatorContext> validationParamList) {
+    private static final String RULE_NAME = "Alpha Param Validation";
+    public AlphaParamValidationRule(List<ValidatorContext> validationParamList) {
         this.validationParamList = validationParamList;
     }
 
     /**
-     * Validate whether the parameter is an alphanumeric param.
+     * Validate whether the parameter is an alpha param.
      * @return Validation Result
      */
     @Override
@@ -47,10 +47,9 @@ public class AlphaNumericParamValidationRule extends ValidationRule {
         for (ValidatorContext ctx : validationParamList) {
             if (payload.has(ctx.getFieldName())) {
                 Object value = payload.get(ctx.getFieldName());
-                if (value instanceof String && !StringUtils.isAlphanumeric(value.toString())) {
+                if (value instanceof String && !StringUtils.isAlpha(value.toString())) {
                     return new ValidationResult(ConnectorConstants.ERROR_CODE_INVALID_PARAM,
-                            String.format(ConnectorConstants.ERROR_NOT_ALPHA_NUMERIC,
-                                    ctx.getFieldDisplayName()));
+                            String.format(ConnectorConstants.ERROR_NOT_ALPHA, ctx.getFieldDisplayName()));
                 }
             }
 

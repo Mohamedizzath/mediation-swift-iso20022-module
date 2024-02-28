@@ -23,18 +23,18 @@ package org.wso2.carbon.module.swiftiso20022.validation.common;
  */
 public class ValidatorContext {
 
-    private String fieldName;
-    private Object fieldValue;
+    private final String fieldName;
+    private final String fieldDisplayName;
     private int fieldLength;
 
-    public ValidatorContext(String fieldName, Object fieldValue) {
+    public ValidatorContext(String fieldName, String fieldDisplayName) {
         this.fieldName = fieldName;
-        this.fieldValue = fieldValue;
+        this.fieldDisplayName = fieldDisplayName;
     }
 
-    public ValidatorContext(String fieldName, Object fieldValue, int fieldLength) {
+    public ValidatorContext(String fieldName, String fieldDisplayName, int fieldLength) {
         this.fieldName = fieldName;
-        this.fieldValue = fieldValue;
+        this.fieldDisplayName = fieldDisplayName;
         this.fieldLength = fieldLength;
     }
 
@@ -42,8 +42,8 @@ public class ValidatorContext {
         return fieldName;
     }
 
-    public Object getFieldValue() {
-        return fieldValue;
+    public String getFieldDisplayName() {
+        return fieldDisplayName;
     }
 
     public int getFieldLength() {

@@ -18,22 +18,26 @@
 
 package org.wso2.carbon.module.swiftiso20022.validation.rules;
 
+import org.json.JSONObject;
 import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
 import org.wso2.carbon.module.swiftiso20022.validation.common.ValidationResult;
 import org.wso2.carbon.module.swiftiso20022.validation.common.ValidationRule;
 import org.wso2.carbon.module.swiftiso20022.validation.common.ValidatorContext;
 
 import java.util.Currency;
+import java.util.List;
 
 /**
  * Currency Format Validation Rule.
  */
 public class CurrencyFormatValidationRule extends ValidationRule {
 
+    private final List<ValidatorContext> validationParamList;
     private static final String RULE_NAME = "Currency Format Validation";
 
-    public CurrencyFormatValidationRule(ValidatorContext context) {
-        super(context);
+    public CurrencyFormatValidationRule(List<ValidatorContext> validationParamList) {
+
+        this.validationParamList = validationParamList;
     }
 
     /**
@@ -41,12 +45,18 @@ public class CurrencyFormatValidationRule extends ValidationRule {
      * @return Validation Result
      */
     @Override
-    public ValidationResult validate() {
-        ValidatorContext ctx = super.getContext();
-        if (Currency.getAvailableCurrencies().stream()
-                .noneMatch(c -> c.getCurrencyCode().equals(ctx.getFieldValue()))) {
-            return new ValidationResult(ConnectorConstants.ERROR_CODE_INVALID_PARAM,
-                    String.format(ConnectorConstants.ERROR_CURRENCY_CODE_INVALID, ctx.getFieldName()));
+    public ValidationResult validate(JSONObject payload) {
+        for (ValidatorContext ctx : validationParamList) {
+            if (payload.has(ctx.getFieldName())) {
+                Object value = payload.get(ctx.getFieldName());
+                if (value instanceof String && Currency.getAvailableCurrencies().stream()
+                        .noneMatch(c -> c.getCurrencyCode().equals(value))) {
+                    return new ValidationResult(ConnectorConstants.ERROR_CODE_INVALID_PARAM,
+                            String.format(ConnectorConstants.ERROR_CURRENCY_CODE_INVALID,
+                                    ctx.getFieldDisplayName()));
+
+                }
+            }
         }
         return new ValidationResult();
     }
