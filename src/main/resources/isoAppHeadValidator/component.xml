@@ -16,10 +16,10 @@
  ~ specific language governing permissions and limitations
  ~ under the License.
  -->
-<component name="isoHeadValidator" type="synapse/template">
+<component name="isoAppHeadValidator" type="synapse/template">
     <subComponents>
-        <component name="isoHeadValidator">
-            <file>iso-head-validator.xml</file>
+        <component name="isoAppHeadValidator">
+            <file>iso-apphead-validator.xml</file>
             <description>Validate ISO 20022.Head.001 message</description>
         </component>
     </subComponents>

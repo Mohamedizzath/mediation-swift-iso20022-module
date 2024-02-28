@@ -16,8 +16,8 @@
  ~ specific language governing permissions and limitations
  ~ under the License.
  -->
-<template xmlns="http://ws.apache.org/ns/synapse" name="isoHeadValidator">
+<template xmlns="http://ws.apache.org/ns/synapse" name="isoAppHeadValidator">
     <sequence>
-        <class name="org.wso2.carbon.module.swiftiso20022.ISO20022head001Validator"/>
+        <class name="org.wso2.carbon.module.swiftiso20022.ISO20022AppHead001Validator"/>
     </sequence>
 </template>

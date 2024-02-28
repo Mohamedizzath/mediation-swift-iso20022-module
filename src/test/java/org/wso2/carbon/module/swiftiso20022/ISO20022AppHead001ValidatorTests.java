@@ -39,9 +39,9 @@ import org.wso2.carbon.module.swiftiso20022.utils.XSDValidator;
  */
 @PowerMockIgnore("jdk.internal.reflect.*")
 @PrepareForTest({ConnectorUtils.class, ISOMessageParser.class})
-public class ISO20022head001ValidatorTests extends PowerMockTestCase {
+public class ISO20022AppHead001ValidatorTests extends PowerMockTestCase {
     private MessageContext messageContext;
-    ISO20022head001Validator isoValidator = new ISO20022head001Validator();
+    ISO20022AppHead001Validator isoValidator = new ISO20022AppHead001Validator();
 
     @BeforeClass
     public void init() {

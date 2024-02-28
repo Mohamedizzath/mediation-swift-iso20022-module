@@ -89,7 +89,7 @@ public class ISOMessageParser {
 
             return element.toString();
         } catch (OMException e) {
-            throw new ConnectException("Error: Parsing XML document");
+            throw new ConnectException(e, "Error: Parsing XML document");
         }
     }
 
