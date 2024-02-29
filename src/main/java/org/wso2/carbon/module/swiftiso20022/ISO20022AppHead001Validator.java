@@ -52,7 +52,7 @@ public class ISO20022AppHead001Validator extends AbstractConnector {
 
             XSDValidator appHdrValidator = new XSDValidator(ConnectorConstants.XSD_SCHEMA_HEAD_001_001);
             appHdrValidator.validateXMLContent(appHdrStr);
-            log.debug("Valid business application header");
+            this.log.debug("Valid business application header");
         } catch (SAXParseException e) {
             String errMsg = e.getMessage() + ", Line number: " +
                     e.getLineNumber() + ", Column number: " + e.getColumnNumber();

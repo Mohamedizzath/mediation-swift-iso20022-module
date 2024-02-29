@@ -25,7 +25,7 @@
             <class name="org.wso2.carbon.module.swiftiso20022.JsonToMT940TransformerTests" />
             <class name="org.wso2.carbon.module.swiftiso20022.MT940FormatValidatorTests" />
             <class name="org.wso2.carbon.module.swiftiso20022.ISO20022AppHead001ValidatorTests" />
-            <class name="org.wso2.carbon.module.swiftiso20022.ISO20022camt053ValidatorTests" />
+            <class name="org.wso2.carbon.module.swiftiso20022.ISO20022Camt053ValidatorTests" />
             <class name="org.wso2.carbon.module.swiftiso20022.ISOMessageParserTests" />
         </classes>
     </test>

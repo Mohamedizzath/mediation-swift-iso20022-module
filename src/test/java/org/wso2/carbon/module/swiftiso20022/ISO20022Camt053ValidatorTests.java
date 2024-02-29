@@ -43,9 +43,9 @@ import org.wso2.carbon.module.swiftiso20022.utils.XSDValidator;
  */
 @PowerMockIgnore("jdk.internal.reflect.*")
 @PrepareForTest({ConnectorUtils.class})
-public class ISO20022camt053ValidatorTests extends PowerMockTestCase {
+public class ISO20022Camt053ValidatorTests extends PowerMockTestCase {
     private MessageContext messageContext;
-    ISO20022camt053Validator isoValidator = new ISO20022camt053Validator();
+    ISO20022Camt053Validator isoValidator = new ISO20022Camt053Validator();
 
     @BeforeClass
     public void init() {
@@ -141,86 +141,6 @@ public class ISO20022camt053ValidatorTests extends PowerMockTestCase {
                 withArguments(ConnectorConstants.XSD_SCHEMA_CAMT_053_001).thenReturn(documentValidator);
 
         SOAPEnvelope soapEnvelope = getSOAPEnvelope(ISOToMT940TestConstants.PAYLOAD_EMPTY_CAMT_WITH_APPHDR);
-        PowerMockito.doReturn(soapEnvelope).when(messageContext).getEnvelope();
-
-        isoValidator.connect(messageContext);
-    }
-
-    @Test(expectedExceptions = ConnectException.class, dataProvider = "invalidReceiverBICBusinessHdr",
-            dataProviderClass = ISOToMT940TestConstants.class)
-    public void testInvalidReceiverBICBusinessHdrScenario(String payload) throws Exception {
-        XSDValidator appHdrValidator = Mockito.mock(XSDValidator.class);
-        XSDValidator documentValidator = Mockito.mock(XSDValidator.class);
-        PowerMockito.whenNew(XSDValidator.class).
-                withArguments(ConnectorConstants.XSD_SCHEMA_HEAD_001_001).thenReturn(appHdrValidator);
-        PowerMockito.whenNew(XSDValidator.class).
-                withArguments(ConnectorConstants.XSD_SCHEMA_CAMT_053_001).thenReturn(documentValidator);
-
-        SOAPEnvelope soapEnvelope = getSOAPEnvelope(payload);
-        PowerMockito.doReturn(soapEnvelope).when(messageContext).getEnvelope();
-
-        isoValidator.connect(messageContext);
-    }
-
-    @Test(expectedExceptions = ConnectException.class, dataProvider = "invalidSenderBICBusinessHdr",
-            dataProviderClass = ISOToMT940TestConstants.class)
-    public void testInvalidSenderBICBusinessHdrScenario(String payload) throws Exception {
-        XSDValidator appHdrValidator = Mockito.mock(XSDValidator.class);
-        XSDValidator documentValidator = Mockito.mock(XSDValidator.class);
-        PowerMockito.whenNew(XSDValidator.class).
-                withArguments(ConnectorConstants.XSD_SCHEMA_HEAD_001_001).thenReturn(appHdrValidator);
-        PowerMockito.whenNew(XSDValidator.class).
-                withArguments(ConnectorConstants.XSD_SCHEMA_CAMT_053_001).thenReturn(documentValidator);
-
-        SOAPEnvelope soapEnvelope = getSOAPEnvelope(payload);
-        PowerMockito.doReturn(soapEnvelope).when(messageContext).getEnvelope();
-
-        isoValidator.connect(messageContext);
-    }
-
-    @Test(expectedExceptions = ConnectException.class, dataProvider = "invalidCreationDateBusinessHdr",
-            dataProviderClass = ISOToMT940TestConstants.class)
-    public void testInvalidCreationDateBusinessHdrScenario(String payload) throws Exception {
-        XSDValidator appHdrValidator = Mockito.mock(XSDValidator.class);
-        XSDValidator documentValidator = Mockito.mock(XSDValidator.class);
-        PowerMockito.whenNew(XSDValidator.class).
-                withArguments(ConnectorConstants.XSD_SCHEMA_HEAD_001_001).thenReturn(appHdrValidator);
-        PowerMockito.whenNew(XSDValidator.class).
-                withArguments(ConnectorConstants.XSD_SCHEMA_CAMT_053_001).thenReturn(documentValidator);
-
-        SOAPEnvelope soapEnvelope = getSOAPEnvelope(payload);
-        PowerMockito.doReturn(soapEnvelope).when(messageContext).getEnvelope();
-
-        isoValidator.connect(messageContext);
-    }
-
-    @Test(expectedExceptions = ConnectException.class, dataProvider = "invalidBusinessMsgIdBusinessHdr",
-            dataProviderClass = ISOToMT940TestConstants.class)
-    public void testInvalidBusinessMsgIdBusinessHdrScenario(String payload) throws Exception {
-        XSDValidator appHdrValidator = Mockito.mock(XSDValidator.class);
-        XSDValidator documentValidator = Mockito.mock(XSDValidator.class);
-        PowerMockito.whenNew(XSDValidator.class).
-                withArguments(ConnectorConstants.XSD_SCHEMA_HEAD_001_001).thenReturn(appHdrValidator);
-        PowerMockito.whenNew(XSDValidator.class).
-                withArguments(ConnectorConstants.XSD_SCHEMA_CAMT_053_001).thenReturn(documentValidator);
-
-        SOAPEnvelope soapEnvelope = getSOAPEnvelope(payload);
-        PowerMockito.doReturn(soapEnvelope).when(messageContext).getEnvelope();
-
-        isoValidator.connect(messageContext);
-    }
-
-    @Test(expectedExceptions = ConnectException.class, dataProvider = "invalidMessageDefIdBusinessHdr",
-            dataProviderClass = ISOToMT940TestConstants.class)
-    public void testInvalidMessageDefIdBusinessHdrScenario(String payload) throws Exception {
-        XSDValidator appHdrValidator = Mockito.mock(XSDValidator.class);
-        XSDValidator documentValidator = Mockito.mock(XSDValidator.class);
-        PowerMockito.whenNew(XSDValidator.class).
-                withArguments(ConnectorConstants.XSD_SCHEMA_HEAD_001_001).thenReturn(appHdrValidator);
-        PowerMockito.whenNew(XSDValidator.class).
-                withArguments(ConnectorConstants.XSD_SCHEMA_CAMT_053_001).thenReturn(documentValidator);
-
-        SOAPEnvelope soapEnvelope = getSOAPEnvelope(payload);
         PowerMockito.doReturn(soapEnvelope).when(messageContext).getEnvelope();
 
         isoValidator.connect(messageContext);

@@ -18,7 +18,7 @@
  -->
 <template xmlns="http://ws.apache.org/ns/synapse" name="isoToMT940">
     <sequence>
-        <class name="org.wso2.carbon.module.swiftiso20022.ISO20022camt053Validator"/>
+        <class name="org.wso2.carbon.module.swiftiso20022.ISO20022Camt053Validator"/>
         <payloadFactory media-type="text" template-type="freemarker">
             <format>
                 <![CDATA[<#ftl ns_prefixes={"A": "urn:iso:std:iso:20022:tech:xsd:head.001.001.03", "C": "urn:iso:std:iso:20022:tech:xsd:camt.053.001.11" }>

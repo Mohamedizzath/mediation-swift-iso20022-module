@@ -18,7 +18,6 @@
 
 package org.wso2.carbon.module.swiftiso20022;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.synapse.MessageContext;
 import org.wso2.carbon.connector.core.AbstractConnector;
 import org.wso2.carbon.connector.core.ConnectException;
@@ -32,15 +31,14 @@ import org.xml.sax.SAXParseException;
 /**
  * Validate the ISO20022.camt.053 message.
  */
-public class ISO20022camt053Validator extends AbstractConnector {
+public class ISO20022Camt053Validator extends AbstractConnector {
     @Override
     public void connect(MessageContext messageContext) throws ConnectException {
         boolean isBusinessMsg = false;
         String rootElementTag = ISOMessageParser.getRootXMLElement(messageContext);
 
-        if (StringUtils.isBlank(rootElementTag) || (
-                (!rootElementTag.equals(ConnectorConstants.XML_INPUT_BUSINESS_ENV_TAG) &&
-                (!rootElementTag.equals(ConnectorConstants.XML_INPUT_DOCUMENT_TAG))))) {
+        if (!ConnectorConstants.XML_INPUT_BUSINESS_ENV_TAG.equals(rootElementTag) &&
+                (!ConnectorConstants.XML_INPUT_DOCUMENT_TAG.equals(rootElementTag))) {
             // Invalid XML root tag
             this.log.error(ConnectorConstants.ERROR_INVALID_XML_ROOT_TAG);
             ConnectorUtils.appendErrorToMessageContext(messageContext,
@@ -49,43 +47,15 @@ public class ISO20022camt053Validator extends AbstractConnector {
             super.handleException(ConnectorConstants.ERROR_INVALID_XML_ROOT_TAG, messageContext);
         }
 
-        if (rootElementTag.equals(ConnectorConstants.XML_INPUT_BUSINESS_ENV_TAG)) {
-            // Validate ISO 20022 message business header
-            log.debug("Business application header present");
-            try {
-                String appHdrStr = ISOMessageParser.extractISOMessage(messageContext,
-                        ConnectorConstants.XPATH_CAMT_053_APPHDR);
-
-                XSDValidator appHdrValidator = new XSDValidator(ConnectorConstants.XSD_SCHEMA_HEAD_001_001);
-                appHdrValidator.validateXMLContent(appHdrStr);
-                isBusinessMsg = true;
-
-                log.debug("Valid business application header");
-            } catch (SAXParseException e) {
-                String errMsg = e.getMessage() + ", Line number: " +
-                        e.getLineNumber() + ", Column number: " + e.getColumnNumber();
-                this.log.error(errMsg);
-                ConnectorUtils.appendErrorToMessageContext(messageContext,
-                        ConnectorConstants.ERROR_INVALID_ISO_HEAD001_XML_MSG,
-                        errMsg);
-
-                throw new ConnectException(errMsg);
-            } catch (Exception e) {
-                this.log.error(e.getMessage());
-                ConnectorUtils.appendErrorToMessageContext(messageContext,
-                        ConnectorConstants.ERROR_VALIDATING_XML, e.getMessage());
-
-                throw new ConnectException(e.getMessage());
-            }
-        } else {
-            log.debug("Business application header not present");
+        if (ConnectorConstants.XML_INPUT_BUSINESS_ENV_TAG.equals(rootElementTag)) {
+            isBusinessMsg = true;
         }
 
         // Processing ISO20022.camt.053 message
         try {
             String documentStr;
 
-            if (rootElementTag.equals(ConnectorConstants.XML_INPUT_BUSINESS_ENV_TAG)) {
+            if (isBusinessMsg) {
                 documentStr = ISOMessageParser.extractISOMessage(messageContext,
                         ConnectorConstants.XPATH_DOCUMENT_WITH_BUSINESS_HDR);
             } else {
@@ -103,7 +73,7 @@ public class ISO20022camt053Validator extends AbstractConnector {
             // Validate Balance types
             ISO20022camt053ValidatorUtils.validateBalanceElements(isBusinessMsg, messageContext);
 
-            log.debug("Valid camt.053.001.11 message");
+            this.log.debug("Valid camt.053.001.11 message");
         } catch (SAXParseException e) {
             String errMsg = e.getMessage() + ", Line number: " +
                     e.getLineNumber() + ", Column number: " + e.getColumnNumber();
