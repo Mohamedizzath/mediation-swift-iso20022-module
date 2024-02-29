@@ -165,7 +165,8 @@ public class MT940ValidationUtils {
 
         if (reference.length() > ConnectorConstants.REFERENCE_LENGTH) {
             return new ValidationResult(ConnectorConstants.ERROR_M50,
-                    String.format(ConnectorConstants.ERROR_PARAMETER_LENGTH, fieldName, 16));
+                    String.format(ConnectorConstants.ERROR_PARAMETER_LENGTH, fieldName,
+                            ConnectorConstants.REFERENCE_LENGTH));
         }
 
         if (reference.startsWith(ConnectorConstants.SLASH) || reference.endsWith(ConnectorConstants.SLASH) ||
@@ -204,7 +205,8 @@ public class MT940ValidationUtils {
         if (account.length() > ConnectorConstants.ACC_IDENTIFICATION_LENGTH) {
             return new ValidationResult(ConnectorConstants.ERROR_M50,
                     String.format(ConnectorConstants.ERROR_PARAMETER_LENGTH,
-                            MT940Constants.DN_ACC_IDENTIFICATION, 35));
+                            MT940Constants.DN_ACC_IDENTIFICATION,
+                            ConnectorConstants.ACC_IDENTIFICATION_LENGTH));
         }
 
         if (!Pattern.matches(ConnectorConstants.MT_REGEX_PATTERN, account)) {
@@ -238,7 +240,7 @@ public class MT940ValidationUtils {
         if (number.length() > ConnectorConstants.STATEMENT_NO_LENGTH) {
             return new ValidationResult(ConnectorConstants.ERROR_M50,
                     String.format(ConnectorConstants.ERROR_PARAMETER_LENGTH,
-                            MT940Constants.DN_STATEMENT_NUMBER, 16));
+                            MT940Constants.DN_STATEMENT_NUMBER, ConnectorConstants.STATEMENT_NO_LENGTH));
         }
 
         if (!number.contains(ConnectorConstants.SLASH)) {
@@ -367,7 +369,7 @@ public class MT940ValidationUtils {
         if (balance.length() > ConnectorConstants.BALANCE_LENGTH) {
             return new ValidationResult(ConnectorConstants.ERROR_M50,
                     String.format(ConnectorConstants.ERROR_PARAMETER_LENGTH,
-                            balanceName, 25));
+                            balanceName, ConnectorConstants.BALANCE_LENGTH));
         }
 
         if (!balance.startsWith(ConnectorConstants.DEBIT) && !balance.startsWith(ConnectorConstants.CREDIT)) {
