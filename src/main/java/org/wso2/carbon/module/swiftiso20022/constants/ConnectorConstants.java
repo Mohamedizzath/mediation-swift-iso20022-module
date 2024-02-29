@@ -98,6 +98,8 @@ public class ConnectorConstants {
     public static final int INDICATOR_LENGTH = 1;
     public static final int TRANSACTION_IND_LENGTH = 2;
     public static final int TRANSACTION_TYPE_LENGTH = 4;
+    public static final int STATEMENT_NO_LENGTH = 5;
+    public static final int BALANCE_LENGTH = 25;
 
     public static final String ERROR_BAL_IND_INVALID = "Balance Indicator should be either D or C";
     public static final String ERROR_INVALID_STATEMENT_TYPE = "Invalid statement type found. Accepted values are" +

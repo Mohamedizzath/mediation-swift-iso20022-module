@@ -34,43 +34,6 @@ public class JsonToMT940PayloadValidator {
     private static final List<String> definedLengthFields  = List.of(MT940Constants.BAL_DATE,
             MT940Constants.BAL_CURRENCY, MT940Constants.SEQUENCE_NO, MT940Constants.TRANSACTION_TYPE);
 
-    public static synchronized ValidationEngine getMT940ValidationEngine() {
-
-        return new ValidationEngine()
-                .addMandatoryParamValidationRule(mandatoryValidationParamList)
-                .addOptionalStringParamValidationRule(optionalStringValidationParamList)
-                .addParameterLengthValidationRule(lengthValidationParamList, definedLengthFields)
-                .addAlphaNumericParamValidationRule(alphaNumericValidationParamList)
-                .addNumericParamValidationRule(numericValidationParamList)
-                .addMTCharacterSetXValidationRule(characterSetXValidationParamList);
-    }
-
-    public static synchronized ValidationEngine getMT940BalanceValidationEngine(String fieldName) {
-
-        return new ValidationEngine()
-                .addMandatoryParamValidationRule(getMandatoryParamsInBalances(fieldName))
-                .addOptionalStringParamValidationRule(getOptionalParamsInBalances(fieldName))
-                .addParameterLengthValidationRule(getFieldsInBalanceForLengthValidation(fieldName),
-                        definedLengthFields)
-                .addAlphaParamValidationRule(getAlphaParamsInBalances(fieldName))
-                .addNumericParamValidationRule(getNumericParamsInBalances(fieldName))
-                .addDateFormatValidationRule(getDateParamInBalance(fieldName))
-                .addCurrencyFormatValidationRule(getCurrencyParamInBalance(fieldName));
-    }
-
-    public static synchronized ValidationEngine getMT940TransactionValidationEngine() {
-
-        return new ValidationEngine()
-                .addMandatoryParamValidationRule(getMandatoryFieldsInTransaction())
-                .addParameterLengthValidationRule(getFieldsInTransactionForLengthValidation(),
-                        definedLengthFields)
-                .addAlphaNumericParamValidationRule(getAlphaNumericParamsInTransactions())
-                .addAlphaParamValidationRule(getAlphaParamsInTransactions())
-                .addNumericParamValidationRule(getNumericParamsInTransactions())
-                .addDateFormatValidationRule(getDateParamInTransaction())
-                .addCurrencyFormatValidationRule(getCurrencyParamInTransaction());
-    }
-
     // List of mandatory fields from the payload for validation.
     private static final List<ValidatorContext> mandatoryValidationParamList = List.of(
             new ValidatorContext(MT940Constants.HEADER_BLOCK_1, MT940Constants.DN_HEADER_BLOCK_1),
@@ -196,96 +159,121 @@ public class JsonToMT940PayloadValidator {
         );
     }
 
-    /**
-     * Method to construct list of fields in Transactions for Mandatory parameter validation.
-     * @return List of fields for Mandatory parameter validation
-     */
-    public static List<ValidatorContext> getMandatoryFieldsInTransaction() {
-        String fieldName = MT940Constants.DN_TRANSACTION;
+    // Method to construct list of fields in Transactions for Mandatory parameter validation.
+    private static final List<ValidatorContext> mandatoryFieldsInTransaction = List.of(
+            new ValidatorContext(MT940Constants.TRANSACTION_DATE, StringUtils.join(
+                    MT940Constants.DN_TRANSACTION, MT940Constants.DN_DATE)),
+            new ValidatorContext(MT940Constants.TRANSACTION_CURRENCY, StringUtils.join(
+                    MT940Constants.DN_TRANSACTION, MT940Constants.DN_CURRENCY)),
+            new ValidatorContext(MT940Constants.TRANSACTION_AMOUNT, StringUtils.join(
+                    MT940Constants.DN_TRANSACTION, MT940Constants.DN_AMOUNT)),
+            new ValidatorContext(MT940Constants.TRANSACTION_INDICATOR, StringUtils.join(
+                    MT940Constants.DN_TRANSACTION, MT940Constants.DN_INDICATOR)),
+            new ValidatorContext(MT940Constants.TRANSACTION_REFERENCE,
+                    MT940Constants.DN_TRANSACTION_REFERENCE),
+            new ValidatorContext(MT940Constants.CUSTOMER_REFERENCE, StringUtils.join(
+                    MT940Constants.DN_TRANSACTION, MT940Constants.DN_CUSTOMER_REFERENCE)),
+            new ValidatorContext(MT940Constants.TRANSACTION_TYPE, MT940Constants.DN_TRANSACTION_TYPE)
+    );
 
-        return List.of(
-                new ValidatorContext(MT940Constants.TRANSACTION_DATE, StringUtils.join(fieldName,
-                        MT940Constants.DN_DATE)),
-                new ValidatorContext(MT940Constants.TRANSACTION_CURRENCY, StringUtils.join(fieldName,
-                        MT940Constants.DN_CURRENCY)),
-                new ValidatorContext(MT940Constants.TRANSACTION_AMOUNT, StringUtils.join(fieldName,
-                        MT940Constants.DN_AMOUNT)),
-                new ValidatorContext(MT940Constants.TRANSACTION_INDICATOR, StringUtils.join(fieldName,
-                        MT940Constants.DN_INDICATOR)),
-                new ValidatorContext(MT940Constants.TRANSACTION_REFERENCE, MT940Constants.DN_TRANSACTION_REFERENCE),
-                new ValidatorContext(MT940Constants.CUSTOMER_REFERENCE, StringUtils.join(fieldName,
-                        MT940Constants.DN_CUSTOMER_REFERENCE)),
-                new ValidatorContext(MT940Constants.TRANSACTION_TYPE, MT940Constants.DN_TRANSACTION_TYPE)
-        );
-    }
-
-    /**
-     * Method to construct list of fields in Transactions for length validation.
-     * @return List of fields for length validation
-     */
-    public static List<ValidatorContext> getFieldsInTransactionForLengthValidation() {
-
-        String fieldName = MT940Constants.DN_TRANSACTION;
-
-        return List.of(
-                new ValidatorContext(MT940Constants.TRANSACTION_DATE, StringUtils.join(fieldName,
-                        MT940Constants.DN_DATE), ConnectorConstants.DATE_LENGTH),
-                new ValidatorContext(MT940Constants.TRANSACTION_CURRENCY, StringUtils.join(fieldName,
-                        MT940Constants.DN_CURRENCY), ConnectorConstants.CURRENCY_LENGTH),
-                new ValidatorContext(MT940Constants.TRANSACTION_AMOUNT, StringUtils.join(fieldName,
-                        MT940Constants.DN_AMOUNT), ConnectorConstants.AMOUNT_LENGTH),
-                new ValidatorContext(MT940Constants.TRANSACTION_INDICATOR, StringUtils.join(fieldName,
-                        MT940Constants.DN_INDICATOR), ConnectorConstants.TRANSACTION_IND_LENGTH),
-                new ValidatorContext(MT940Constants.TRANSACTION_REFERENCE, MT940Constants.DN_TRANSACTION_REFERENCE,
-                        ConnectorConstants.REFERENCE_LENGTH),
-                new ValidatorContext(MT940Constants.CUSTOMER_REFERENCE, StringUtils.join(fieldName,
-                        MT940Constants.DN_CUSTOMER_REFERENCE), ConnectorConstants.REFERENCE_LENGTH),
-                new ValidatorContext(MT940Constants.TRANSACTION_TYPE, MT940Constants.DN_TRANSACTION_TYPE,
-                        ConnectorConstants.TRANSACTION_TYPE_LENGTH)
-        );
-    }
+    // Method to construct list of fields in Transactions for length validation.
+    private static final List<ValidatorContext> fieldsInTransactionForLengthValidation = List.of(
+            new ValidatorContext(MT940Constants.TRANSACTION_DATE, StringUtils.join(MT940Constants.DN_TRANSACTION,
+                    MT940Constants.DN_DATE), ConnectorConstants.DATE_LENGTH),
+            new ValidatorContext(MT940Constants.TRANSACTION_CURRENCY, StringUtils.join(MT940Constants.DN_TRANSACTION,
+                    MT940Constants.DN_CURRENCY), ConnectorConstants.CURRENCY_LENGTH),
+            new ValidatorContext(MT940Constants.TRANSACTION_AMOUNT, StringUtils.join(MT940Constants.DN_TRANSACTION,
+                    MT940Constants.DN_AMOUNT), ConnectorConstants.AMOUNT_LENGTH),
+            new ValidatorContext(MT940Constants.TRANSACTION_INDICATOR, StringUtils.join(MT940Constants.DN_TRANSACTION,
+                    MT940Constants.DN_INDICATOR), ConnectorConstants.TRANSACTION_IND_LENGTH),
+            new ValidatorContext(MT940Constants.TRANSACTION_REFERENCE, MT940Constants.DN_TRANSACTION_REFERENCE,
+                    ConnectorConstants.REFERENCE_LENGTH),
+            new ValidatorContext(MT940Constants.CUSTOMER_REFERENCE, StringUtils.join(MT940Constants.DN_TRANSACTION,
+                    MT940Constants.DN_CUSTOMER_REFERENCE), ConnectorConstants.REFERENCE_LENGTH),
+            new ValidatorContext(MT940Constants.TRANSACTION_TYPE, MT940Constants.DN_TRANSACTION_TYPE,
+                    ConnectorConstants.TRANSACTION_TYPE_LENGTH)
+    );
 
     // List of alphanumeric fields from the payload for validation.
-    private static List<ValidatorContext> getAlphaNumericParamsInTransactions() {
-        return List.of(
-                new ValidatorContext(MT940Constants.TRANSACTION_REFERENCE,
-                        MT940Constants.DN_TRANSACTION_REFERENCE),
-                new ValidatorContext(MT940Constants.CUSTOMER_REFERENCE,
-                        MT940Constants.DN_CUSTOMER_REFERENCE)
-        );
-    }
+    private static final List<ValidatorContext> alphaNumericParamsInTransactions = List.of(
+            new ValidatorContext(MT940Constants.TRANSACTION_REFERENCE,
+                    MT940Constants.DN_TRANSACTION_REFERENCE),
+            new ValidatorContext(MT940Constants.CUSTOMER_REFERENCE,
+                    MT940Constants.DN_CUSTOMER_REFERENCE)
+    );
 
     // List of alpha fields from the payload for validation.
-    private static List<ValidatorContext> getAlphaParamsInTransactions() {
-        return List.of(
-                new ValidatorContext(MT940Constants.TRANSACTION_INDICATOR,
-                        MT940Constants.DN_TRANSACTION_IND),
-                new ValidatorContext(MT940Constants.TRANSACTION_CURRENCY, StringUtils.join(
-                        MT940Constants.DN_TRANSACTION, MT940Constants.DN_CURRENCY)),
-                new ValidatorContext(MT940Constants.TRANSACTION_TYPE, MT940Constants.DN_TRANSACTION_TYPE)
-        );
-    }
+    private static final List<ValidatorContext> alphaParamsInTransactions = List.of(
+            new ValidatorContext(MT940Constants.TRANSACTION_INDICATOR,
+                    MT940Constants.DN_TRANSACTION_IND),
+            new ValidatorContext(MT940Constants.TRANSACTION_CURRENCY, StringUtils.join(
+                    MT940Constants.DN_TRANSACTION, MT940Constants.DN_CURRENCY)),
+            new ValidatorContext(MT940Constants.TRANSACTION_TYPE, MT940Constants.DN_TRANSACTION_TYPE)
+    );
 
-    private static List<ValidatorContext> getNumericParamsInTransactions() {
-        return List.of(
-                new ValidatorContext(MT940Constants.TRANSACTION_DATE, StringUtils.join(MT940Constants.DN_TRANSACTION,
-                        MT940Constants.DN_DATE))
-        );
-    }
+    private static final List<ValidatorContext> numericParamsInTransactions = List.of(
+            new ValidatorContext(MT940Constants.TRANSACTION_DATE, StringUtils.join(
+                    MT940Constants.DN_TRANSACTION, MT940Constants.DN_DATE))
+    );
 
     // List of date fields from the payload for validation.
-    private static List<ValidatorContext> getDateParamInTransaction() {
-        return List.of(
-                new ValidatorContext(MT940Constants.BAL_DATE, StringUtils.join(
-                        MT940Constants.DN_TRANSACTION, MT940Constants.DN_DATE))
-        );
-    }
+    private static final List<ValidatorContext> dateParamInTransaction = List.of(
+            new ValidatorContext(MT940Constants.BAL_DATE, StringUtils.join(
+                    MT940Constants.DN_TRANSACTION, MT940Constants.DN_DATE))
+    );
 
     // List of currency fields from the payload for validation.
-    private static List<ValidatorContext> getCurrencyParamInTransaction() {
-        return List.of(
-                new ValidatorContext(MT940Constants.BAL_CURRENCY, StringUtils.join(
-                        MT940Constants.DN_TRANSACTION, MT940Constants.DN_CURRENCY))
-        );
+    private static final List<ValidatorContext> currencyParamInTransaction = List.of(
+            new ValidatorContext(MT940Constants.BAL_CURRENCY, StringUtils.join(
+                    MT940Constants.DN_TRANSACTION, MT940Constants.DN_CURRENCY))
+    );
+
+    /**
+     * Method to get the validation engine for MT940 Payload.
+     * @return ValidationEngine
+     */
+    public static synchronized ValidationEngine getMT940ValidationEngine() {
+
+        return new ValidationEngine()
+                .addMandatoryParamValidationRule(mandatoryValidationParamList)
+                .addOptionalStringParamValidationRule(optionalStringValidationParamList)
+                .addParameterLengthValidationRule(lengthValidationParamList, definedLengthFields)
+                .addAlphaNumericParamValidationRule(alphaNumericValidationParamList)
+                .addNumericParamValidationRule(numericValidationParamList)
+                .addMTCharacterSetXValidationRule(characterSetXValidationParamList);
+    }
+
+    /**
+     * Method to get the validation engine for MT940 Balances.
+     * @return ValidationEngine
+     */
+    public static synchronized ValidationEngine getMT940BalanceValidationEngine(String fieldName) {
+
+        return new ValidationEngine()
+                .addMandatoryParamValidationRule(getMandatoryParamsInBalances(fieldName))
+                .addOptionalStringParamValidationRule(getOptionalParamsInBalances(fieldName))
+                .addParameterLengthValidationRule(getFieldsInBalanceForLengthValidation(fieldName),
+                        definedLengthFields)
+                .addAlphaParamValidationRule(getAlphaParamsInBalances(fieldName))
+                .addNumericParamValidationRule(getNumericParamsInBalances(fieldName))
+                .addDateFormatValidationRule(getDateParamInBalance(fieldName))
+                .addCurrencyFormatValidationRule(getCurrencyParamInBalance(fieldName));
+    }
+
+    /**
+     * Method to get the validation engine for MT940 Transactions.
+     * @return ValidationEngine
+     */
+    public static synchronized ValidationEngine getMT940TransactionValidationEngine() {
+
+        return new ValidationEngine()
+                .addMandatoryParamValidationRule(mandatoryFieldsInTransaction)
+                .addParameterLengthValidationRule(fieldsInTransactionForLengthValidation,
+                        definedLengthFields)
+                .addAlphaNumericParamValidationRule(alphaNumericParamsInTransactions)
+                .addAlphaParamValidationRule(alphaParamsInTransactions)
+                .addNumericParamValidationRule(numericParamsInTransactions)
+                .addDateFormatValidationRule(dateParamInTransaction)
+                .addCurrencyFormatValidationRule(currencyParamInTransaction);
     }
 }

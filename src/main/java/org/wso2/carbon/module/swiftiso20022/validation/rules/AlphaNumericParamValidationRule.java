@@ -34,6 +34,7 @@ public class AlphaNumericParamValidationRule extends ValidationRule {
 
     private final List<ValidatorContext> validationParamList;
     private static final String RULE_NAME = "Alpha Numeric Param Validation";
+
     public AlphaNumericParamValidationRule(List<ValidatorContext> validationParamList) {
         this.validationParamList = validationParamList;
     }

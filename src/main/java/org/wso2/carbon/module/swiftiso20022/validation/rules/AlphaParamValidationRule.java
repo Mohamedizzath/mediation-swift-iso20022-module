@@ -34,6 +34,7 @@ public class AlphaParamValidationRule extends ValidationRule {
 
     private final List<ValidatorContext> validationParamList;
     private static final String RULE_NAME = "Alpha Param Validation";
+
     public AlphaParamValidationRule(List<ValidatorContext> validationParamList) {
         this.validationParamList = validationParamList;
     }
