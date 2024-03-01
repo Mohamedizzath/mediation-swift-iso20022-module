@@ -23,8 +23,8 @@
             <case regex="true">
                 <log level="custom">
                     <property name="AppHdr Checker" value="AppHdr present in XML input"/>
-                    <class name="org.wso2.carbon.module.swiftiso20022.ISO20022AppHead001Validator"/>
                 </log>
+                <class name="org.wso2.carbon.module.swiftiso20022.ISO20022AppHead001Validator"/>
             </case>
             <default>
                 <log level="custom">
@@ -32,6 +32,5 @@
                 </log>
             </default>
         </switch>
-
     </sequence>
 </template>

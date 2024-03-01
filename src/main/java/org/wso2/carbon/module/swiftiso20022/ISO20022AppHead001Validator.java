@@ -61,7 +61,7 @@ public class ISO20022AppHead001Validator extends AbstractConnector {
 
             this.log.error(e);
             ConnectorUtils.appendErrorToMessageContext(messageContext,
-                    ConnectorConstants.ERROR_INVALID_ISO_CAMT053_XML_MSG,
+                    ConnectorConstants.ERROR_INVALID_ISO_HEAD001_XML_MSG,
                     errMsg);
 
             throw new ConnectException(e, errMsg);
