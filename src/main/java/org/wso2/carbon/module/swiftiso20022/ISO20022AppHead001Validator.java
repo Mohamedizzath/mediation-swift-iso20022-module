@@ -49,8 +49,8 @@ public class ISO20022AppHead001Validator extends AbstractConnector {
         }
 
         try {
-            String appHdrStr = ISOMessageParser.extractISOMessage(messageContext,
-                    ConnectorConstants.XPATH_CAMT_053_APPHDR);
+            String xPathToAppHdr = ISOMessageParser.constructXPath(true, ConnectorConstants.XPATH_APPHDR);
+            String appHdrStr = ISOMessageParser.extractISOMessage(messageContext, xPathToAppHdr);
 
             XSDValidator appHdrValidator = new XSDValidator(ConnectorConstants.XSD_SCHEMA_HEAD_001_001);
             appHdrValidator.validateXMLContent(appHdrStr);

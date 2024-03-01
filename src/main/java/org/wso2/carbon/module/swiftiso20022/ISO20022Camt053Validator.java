@@ -24,7 +24,7 @@ import org.wso2.carbon.connector.core.AbstractConnector;
 import org.wso2.carbon.connector.core.ConnectException;
 import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
 import org.wso2.carbon.module.swiftiso20022.utils.ConnectorUtils;
-import org.wso2.carbon.module.swiftiso20022.utils.ISO20022camt053ValidatorUtils;
+import org.wso2.carbon.module.swiftiso20022.utils.ISO20022Camt053ValidatorUtils;
 import org.wso2.carbon.module.swiftiso20022.utils.ISOMessageParser;
 import org.wso2.carbon.module.swiftiso20022.utils.XSDValidator;
 import org.xml.sax.SAXException;
@@ -57,27 +57,20 @@ public class ISO20022Camt053Validator extends AbstractConnector {
 
         // Processing ISO20022.camt.053 message
         try {
-            String documentStr;
-
-            if (isBusinessMsg) {
-                documentStr = ISOMessageParser.extractISOMessage(messageContext,
-                        ConnectorConstants.XPATH_DOCUMENT_WITH_BUSINESS_HDR);
-            } else {
-                documentStr = ISOMessageParser.extractISOMessage(messageContext,
-                        ConnectorConstants.XPATH_DOCUMENT_WITHOUT_BUSINESS_HDR);
-            }
+            String xPath = ISOMessageParser.constructXPath(isBusinessMsg, ConnectorConstants.XPATH_DOCUMENT);
+            String documentStr = ISOMessageParser.extractISOMessage(messageContext, xPath);
 
             XSDValidator documentValidator = new XSDValidator(ConnectorConstants.XSD_SCHEMA_CAMT_053_001);
             documentValidator.validateXMLContent(documentStr);
 
             // Validate MT940 related ISO20022.camt.053 validations
-            if (!ISO20022camt053ValidatorUtils.isElectronicSequenceNumberExists(isBusinessMsg, messageContext)) {
+            if (!ISO20022Camt053ValidatorUtils.isElectronicSequenceNumberExists(isBusinessMsg, messageContext)) {
                 throw new ConnectException(ConnectorConstants.ERROR_MISSING_ELECTRONIC_SEQUENCE_NUMBER);
-            } else if (!ISO20022camt053ValidatorUtils.isLegalSequenceNumberExists(isBusinessMsg, messageContext)) {
+            } else if (!ISO20022Camt053ValidatorUtils.isLegalSequenceNumberExists(isBusinessMsg, messageContext)) {
                 throw new ConnectException(ConnectorConstants.ERROR_MISSING_LEGAL_SEQUENCE_NUMBER);
-            } else if (!ISO20022camt053ValidatorUtils.isOpeningBalanceExists(isBusinessMsg, messageContext)) {
+            } else if (!ISO20022Camt053ValidatorUtils.isOpeningBalanceExists(isBusinessMsg, messageContext)) {
                 throw new ConnectException(ConnectorConstants.ERROR_MISSING_OPENING_BALANCE);
-            } else if (!ISO20022camt053ValidatorUtils.isClosingBalanceExists(isBusinessMsg, messageContext)) {
+            } else if (!ISO20022Camt053ValidatorUtils.isClosingBalanceExists(isBusinessMsg, messageContext)) {
                 throw new ConnectException(ConnectorConstants.ERROR_MISSING_CLOSING_BALANCE);
             }
 

@@ -80,28 +80,17 @@ public class ConnectorConstants {
     public static final String XSD_SCHEMA_CAMT_053_001 = "schema/camt.053.001.11.xsd";
     public static final String XSD_SCHEMA_HEAD_001_001 = "schema/head.001.001.03.xsd";
     public static final String XML_INPUT_BUSINESS_ENV_TAG = "BizMsgEnvlp";
-    public static final String XML_INPUT_APPHDR_TAG = "AppHdr";
-    public static final String XPATH_APPHDR = "/soapenv:Body/app:AppHdr";
-    public static final String XPATH_CAMT_053_APPHDR = "/soapenv:Body/BizMsgEnvlp/app:AppHdr";
+    public static final String XPATH_APPHDR = "/app:AppHdr";
     public static final String APPHDR_PREFIX = "app";
     public static final String XML_INPUT_APPHDR_NAMESPACE = "urn:iso:std:iso:20022:tech:xsd:head.001.001.03";
     public static final String XML_INPUT_DOCUMENT_TAG = "Document";
-    public static final String XPATH_DOCUMENT_WITH_BUSINESS_HDR = "/soapenv:Body/BizMsgEnvlp/doc:Document";
-    public static final String XPATH_DOCUMENT_WITHOUT_BUSINESS_HDR = "/soapenv:Body/doc:Document";
+    public static final String XPATH_DOCUMENT = "/doc:Document";
     public static final String DOCUMENT_PREFIX = "doc";
     public static final String XML_INPUT_DOCUMENT_NAMESPACE = "urn:iso:std:iso:20022:tech:xsd:camt.053.001.11";
-    public static final String XPATH_ELECTSEQ_NUMBER_WITH_BUSINESS_HDR =
-            "/soapenv:Body/BizMsgEnvlp/doc:Document/doc:BkToCstmrStmt/doc:Stmt/doc:ElctrncSeqNb";
-    public static final String XPATH_ELECTSEQ_NUMBER_WITHOUT_BUSINESS_HDR =
-            "/soapenv:Body/doc:Document/doc:BkToCstmrStmt/doc:Stmt/doc:ElctrncSeqNb";
-    public static final String XPATH_LEGALSEQ_NUMBER_WITH_BUSINESS_HDR =
-            "/soapenv:Body/BizMsgEnvlp/doc:Document/doc:BkToCstmrStmt/doc:Stmt/doc:LglSeqNb";
-    public static final String XPATH_LEGALSEQ_NUMBER_WITHOUT_BUSINESS_HDR =
-            "/soapenv:Body/doc:Document/doc:BkToCstmrStmt/doc:Stmt/doc:LglSeqNb";
-    public static final String XPATH_BALANCE_ELEMENTS_WITH_BUSINESS_HDR =
-            "/soapenv:Body/BizMsgEnvlp/doc:Document/doc:BkToCstmrStmt/doc:Stmt/doc:Bal/doc:Tp/doc:CdOrPrtry/doc:Cd";
-    public static final String XPATH_BALANCE_ELEMENTS_WITHOUT_BUSINESS_HDR =
-            "/soapenv:Body/doc:Document/doc:BkToCstmrStmt/doc:Stmt/doc:Bal/doc:Tp/doc:CdOrPrtry/doc:Cd";
+    public static final String XPATH_ELECTSEQ_NUMBER = "/doc:Document/doc:BkToCstmrStmt/doc:Stmt/doc:ElctrncSeqNb";
+    public static final String XPATH_LEGALSEQ_NUMBER = "/doc:Document/doc:BkToCstmrStmt/doc:Stmt/doc:LglSeqNb";
+    public static final String XPATH_BALANCE_ELEMENTS =
+            "/doc:Document/doc:BkToCstmrStmt/doc:Stmt/doc:Bal/doc:Tp/doc:CdOrPrtry/doc:Cd";
     public static final String OPENING_BALANCE_CODE = "OPBD";
     public static final String CLOSING_BALANCE_CODE = "CLBD";
 

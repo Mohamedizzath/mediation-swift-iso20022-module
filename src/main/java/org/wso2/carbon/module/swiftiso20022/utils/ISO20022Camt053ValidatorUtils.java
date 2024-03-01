@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
 /**
  * Utils methods for ISO20022.camt.053 validations.
  */
-public class ISO20022camt053ValidatorUtils {
+public class ISO20022Camt053ValidatorUtils {
     /**
      * Check whether ISO20022.camt.053 message contains electronic sequence number XML element.
      *
@@ -41,11 +41,8 @@ public class ISO20022camt053ValidatorUtils {
      */
     public static boolean isElectronicSequenceNumberExists(boolean isBusinessMsg, MessageContext mc)
             throws JaxenException {
-            String xPathToSeqNumber = ConnectorConstants.XPATH_ELECTSEQ_NUMBER_WITHOUT_BUSINESS_HDR;
-
-            if (isBusinessMsg) {
-                xPathToSeqNumber = ConnectorConstants.XPATH_ELECTSEQ_NUMBER_WITH_BUSINESS_HDR;
-            }
+            String xPathToSeqNumber = ISOMessageParser.constructXPath(isBusinessMsg,
+                    ConnectorConstants.XPATH_ELECTSEQ_NUMBER);
 
             OMElement seqNumberElement = ISOMessageParser.getXMLElementByXPath(xPathToSeqNumber, mc);
 
@@ -61,11 +58,8 @@ public class ISO20022camt053ValidatorUtils {
      * @throws ConnectException
      */
     public static boolean isLegalSequenceNumberExists(boolean isBusinessMsg, MessageContext mc) throws JaxenException {
-        String xPathToLogicNumber = ConnectorConstants.XPATH_LEGALSEQ_NUMBER_WITHOUT_BUSINESS_HDR;
-
-        if (isBusinessMsg) {
-            xPathToLogicNumber = ConnectorConstants.XPATH_LEGALSEQ_NUMBER_WITH_BUSINESS_HDR;
-        }
+        String xPathToLogicNumber = ISOMessageParser.constructXPath(isBusinessMsg,
+                ConnectorConstants.XPATH_LEGALSEQ_NUMBER);
 
         OMElement logicNumberElement = ISOMessageParser.getXMLElementByXPath(xPathToLogicNumber, mc);
 
@@ -81,11 +75,8 @@ public class ISO20022camt053ValidatorUtils {
      * @throws ConnectException
      */
     public static boolean isOpeningBalanceExists(boolean isBusinessMsg, MessageContext mc) throws JaxenException {
-        String xPathToBalanceEle = ConnectorConstants.XPATH_BALANCE_ELEMENTS_WITHOUT_BUSINESS_HDR;
-
-        if (isBusinessMsg) {
-            xPathToBalanceEle = ConnectorConstants.XPATH_BALANCE_ELEMENTS_WITH_BUSINESS_HDR;
-        }
+        String xPathToBalanceEle = ISOMessageParser.constructXPath(isBusinessMsg,
+                ConnectorConstants.XPATH_BALANCE_ELEMENTS);
 
         List<OMElement> codeElements = ISOMessageParser.getXMLElementsByPath(xPathToBalanceEle, mc);
         List<String> codes = codeElements.stream().map(OMElement::getText).collect(Collectors.toList());
@@ -103,11 +94,8 @@ public class ISO20022camt053ValidatorUtils {
      * @throws ConnectException
      */
     public static boolean isClosingBalanceExists(boolean isBusinessMsg, MessageContext mc) throws JaxenException {
-        String xPathToBalanceEle = ConnectorConstants.XPATH_BALANCE_ELEMENTS_WITHOUT_BUSINESS_HDR;
-
-        if (isBusinessMsg) {
-            xPathToBalanceEle = ConnectorConstants.XPATH_BALANCE_ELEMENTS_WITH_BUSINESS_HDR;
-        }
+        String xPathToBalanceEle = ISOMessageParser.constructXPath(isBusinessMsg,
+                ConnectorConstants.XPATH_BALANCE_ELEMENTS);
 
         List<OMElement> codeElements = ISOMessageParser.getXMLElementsByPath(xPathToBalanceEle, mc);
         List<String> codes = codeElements.stream().map(OMElement::getText).collect(Collectors.toList());

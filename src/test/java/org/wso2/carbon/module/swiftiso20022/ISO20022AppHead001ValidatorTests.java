@@ -55,10 +55,14 @@ public class ISO20022AppHead001ValidatorTests extends PowerMockTestCase {
         PowerMockito.whenNew(XSDValidator.class).
                 withArguments(ConnectorConstants.XSD_SCHEMA_HEAD_001_001).thenReturn(validator);
 
+        String xPath = ISOMessageParser.constructXPath(true, ConnectorConstants.XPATH_APPHDR);
+
         PowerMockito.mockStatic(ISOMessageParser.class);
         PowerMockito.when(ISOMessageParser.getRootXMLElement(messageContext))
                 .thenReturn(ISOToMT940TestConstants.XML_INPUT_BUSINESS_ENV_TAG);
-        PowerMockito.when(ISOMessageParser.extractISOMessage(messageContext, ConnectorConstants.XPATH_CAMT_053_APPHDR))
+        PowerMockito.when(ISOMessageParser.constructXPath(true, ConnectorConstants.XPATH_APPHDR))
+                .thenReturn(xPath);
+        PowerMockito.when(ISOMessageParser.extractISOMessage(messageContext, xPath))
                 .thenReturn(ISOToMT940TestConstants.PAYLOAD_APPHDR);
 
         isoValidator.connect(messageContext);
@@ -69,10 +73,15 @@ public class ISO20022AppHead001ValidatorTests extends PowerMockTestCase {
         XSDValidator validator = Mockito.mock(XSDValidator.class);
         PowerMockito.whenNew(XSDValidator.class).
                 withArguments(ConnectorConstants.XSD_SCHEMA_HEAD_001_001).thenReturn(validator);
+
+        String xPath = ISOMessageParser.constructXPath(true, ConnectorConstants.XPATH_APPHDR);
+
         PowerMockito.mockStatic(ISOMessageParser.class);
         PowerMockito.when(ISOMessageParser.getRootXMLElement(messageContext))
                 .thenReturn(null);
-        PowerMockito.when(ISOMessageParser.extractISOMessage(messageContext, ConnectorConstants.XPATH_CAMT_053_APPHDR))
+        PowerMockito.when(ISOMessageParser.constructXPath(true, ConnectorConstants.XPATH_APPHDR))
+                .thenReturn(xPath);
+        PowerMockito.when(ISOMessageParser.extractISOMessage(messageContext, xPath))
                 .thenReturn(ISOToMT940TestConstants.PAYLOAD_EMPTY_APPHDR);
 
         isoValidator.connect(messageContext);
@@ -83,10 +92,15 @@ public class ISO20022AppHead001ValidatorTests extends PowerMockTestCase {
         XSDValidator validator = Mockito.mock(XSDValidator.class);
         PowerMockito.whenNew(XSDValidator.class).
                 withArguments(ConnectorConstants.XSD_SCHEMA_HEAD_001_001).thenReturn(validator);
+
+        String xPath = ISOMessageParser.constructXPath(true, ConnectorConstants.XPATH_APPHDR);
+
         PowerMockito.mockStatic(ISOMessageParser.class);
         PowerMockito.when(ISOMessageParser.getRootXMLElement(messageContext))
                 .thenReturn(ISOToMT940TestConstants.XML_INPUT_APPHDR_TAG);
-        PowerMockito.when(ISOMessageParser.extractISOMessage(messageContext, ConnectorConstants.XPATH_CAMT_053_APPHDR))
+        PowerMockito.when(ISOMessageParser.constructXPath(true, ConnectorConstants.XPATH_APPHDR))
+                .thenReturn(xPath);
+        PowerMockito.when(ISOMessageParser.extractISOMessage(messageContext, xPath))
                 .thenReturn(ISOToMT940TestConstants.PAYLOAD_EMPTY_APPHDR);
 
         isoValidator.connect(messageContext);
@@ -98,10 +112,15 @@ public class ISO20022AppHead001ValidatorTests extends PowerMockTestCase {
         XSDValidator validator = Mockito.mock(XSDValidator.class);
         PowerMockito.whenNew(XSDValidator.class).
                 withArguments(ConnectorConstants.XSD_SCHEMA_HEAD_001_001).thenReturn(validator);
+
+        String xPath = ISOMessageParser.constructXPath(true, ConnectorConstants.XPATH_APPHDR);
+
         PowerMockito.mockStatic(ISOMessageParser.class);
         PowerMockito.when(ISOMessageParser.getRootXMLElement(messageContext))
                 .thenReturn(ISOToMT940TestConstants.XML_INPUT_BUSINESS_ENV_TAG);
-        PowerMockito.when(ISOMessageParser.extractISOMessage(messageContext, ConnectorConstants.XPATH_CAMT_053_APPHDR))
+        PowerMockito.when(ISOMessageParser.constructXPath(true, ConnectorConstants.XPATH_APPHDR))
+                .thenReturn(xPath);
+        PowerMockito.when(ISOMessageParser.extractISOMessage(messageContext, xPath))
                 .thenReturn(payload);
 
         isoValidator.connect(messageContext);
@@ -113,10 +132,15 @@ public class ISO20022AppHead001ValidatorTests extends PowerMockTestCase {
         XSDValidator validator = Mockito.mock(XSDValidator.class);
         PowerMockito.whenNew(XSDValidator.class).
                 withArguments(ConnectorConstants.XSD_SCHEMA_HEAD_001_001).thenReturn(validator);
+
+        String xPath = ISOMessageParser.constructXPath(true, ConnectorConstants.XPATH_APPHDR);
+
         PowerMockito.mockStatic(ISOMessageParser.class);
         PowerMockito.when(ISOMessageParser.getRootXMLElement(messageContext))
                 .thenReturn(ISOToMT940TestConstants.XML_INPUT_BUSINESS_ENV_TAG);
-        PowerMockito.when(ISOMessageParser.extractISOMessage(messageContext, ConnectorConstants.XPATH_CAMT_053_APPHDR))
+        PowerMockito.when(ISOMessageParser.constructXPath(true, ConnectorConstants.XPATH_APPHDR))
+                .thenReturn(xPath);
+        PowerMockito.when(ISOMessageParser.extractISOMessage(messageContext, xPath))
                 .thenReturn(payload);
 
         isoValidator.connect(messageContext);
@@ -128,10 +152,15 @@ public class ISO20022AppHead001ValidatorTests extends PowerMockTestCase {
         XSDValidator validator = Mockito.mock(XSDValidator.class);
         PowerMockito.whenNew(XSDValidator.class).
                 withArguments(ConnectorConstants.XSD_SCHEMA_HEAD_001_001).thenReturn(validator);
+
+        String xPath = ISOMessageParser.constructXPath(true, ConnectorConstants.XPATH_APPHDR);
+
         PowerMockito.mockStatic(ISOMessageParser.class);
         PowerMockito.when(ISOMessageParser.getRootXMLElement(messageContext))
                 .thenReturn(ISOToMT940TestConstants.XML_INPUT_BUSINESS_ENV_TAG);
-        PowerMockito.when(ISOMessageParser.extractISOMessage(messageContext, ConnectorConstants.XPATH_CAMT_053_APPHDR))
+        PowerMockito.when(ISOMessageParser.constructXPath(true, ConnectorConstants.XPATH_APPHDR))
+                .thenReturn(xPath);
+        PowerMockito.when(ISOMessageParser.extractISOMessage(messageContext, xPath))
                 .thenReturn(payload);
 
         isoValidator.connect(messageContext);
@@ -143,10 +172,15 @@ public class ISO20022AppHead001ValidatorTests extends PowerMockTestCase {
         XSDValidator validator = Mockito.mock(XSDValidator.class);
         PowerMockito.whenNew(XSDValidator.class).
                 withArguments(ConnectorConstants.XSD_SCHEMA_HEAD_001_001).thenReturn(validator);
+
+        String xPath = ISOMessageParser.constructXPath(true, ConnectorConstants.XPATH_APPHDR);
+
         PowerMockito.mockStatic(ISOMessageParser.class);
         PowerMockito.when(ISOMessageParser.getRootXMLElement(messageContext))
                 .thenReturn(ISOToMT940TestConstants.XML_INPUT_BUSINESS_ENV_TAG);
-        PowerMockito.when(ISOMessageParser.extractISOMessage(messageContext, ConnectorConstants.XPATH_CAMT_053_APPHDR))
+        PowerMockito.when(ISOMessageParser.constructXPath(true, ConnectorConstants.XPATH_APPHDR))
+                .thenReturn(xPath);
+        PowerMockito.when(ISOMessageParser.extractISOMessage(messageContext, xPath))
                 .thenReturn(payload);
 
         isoValidator.connect(messageContext);
@@ -158,10 +192,15 @@ public class ISO20022AppHead001ValidatorTests extends PowerMockTestCase {
         XSDValidator validator = Mockito.mock(XSDValidator.class);
         PowerMockito.whenNew(XSDValidator.class).
                 withArguments(ConnectorConstants.XSD_SCHEMA_HEAD_001_001).thenReturn(validator);
+
+        String xPath = ISOMessageParser.constructXPath(true, ConnectorConstants.XPATH_APPHDR);
+
         PowerMockito.mockStatic(ISOMessageParser.class);
         PowerMockito.when(ISOMessageParser.getRootXMLElement(messageContext))
                 .thenReturn(ISOToMT940TestConstants.XML_INPUT_BUSINESS_ENV_TAG);
-        PowerMockito.when(ISOMessageParser.extractISOMessage(messageContext, ConnectorConstants.XPATH_CAMT_053_APPHDR))
+        PowerMockito.when(ISOMessageParser.constructXPath(true, ConnectorConstants.XPATH_APPHDR))
+                .thenReturn(xPath);
+        PowerMockito.when(ISOMessageParser.extractISOMessage(messageContext, xPath))
                 .thenReturn(payload);
 
         isoValidator.connect(messageContext);

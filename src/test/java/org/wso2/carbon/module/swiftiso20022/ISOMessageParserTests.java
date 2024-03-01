@@ -93,8 +93,8 @@ public class ISOMessageParserTests extends PowerMockTestCase {
         SOAPEnvelope soapEnvelope = getSOAPEnvelope(ISOToMT940TestConstants.PAYLOAD_APPHDR_AND_DOCUMENT);
         PowerMockito.doReturn(soapEnvelope).when(messageContext).getEnvelope();
 
-        String extractMsg = ISOMessageParser.extractISOMessage(messageContext,
-                ConnectorConstants.XPATH_CAMT_053_APPHDR);
+        String xPath = ISOMessageParser.constructXPath(true, ConnectorConstants.XPATH_APPHDR);
+        String extractMsg = ISOMessageParser.extractISOMessage(messageContext, xPath);
         Assert.assertEquals(ISOToMT940TestConstants.PAYLOAD_APPHDR, extractMsg);
     }
 
@@ -103,8 +103,8 @@ public class ISOMessageParserTests extends PowerMockTestCase {
         SOAPEnvelope soapEnvelope = getSOAPEnvelope(ISOToMT940TestConstants.PAYLOAD_APPHDR_AND_DOCUMENT);
         PowerMockito.doReturn(soapEnvelope).when(messageContext).getEnvelope();
 
-        String extractMsg = ISOMessageParser.extractISOMessage(messageContext,
-                ConnectorConstants.XPATH_DOCUMENT_WITH_BUSINESS_HDR);
+        String xPath = ISOMessageParser.constructXPath(true, ConnectorConstants.XPATH_DOCUMENT);
+        String extractMsg = ISOMessageParser.extractISOMessage(messageContext, xPath);
         Assert.assertEquals(ISOToMT940TestConstants.PAYLOAD_CAMT, extractMsg);
     }
 
@@ -113,8 +113,8 @@ public class ISOMessageParserTests extends PowerMockTestCase {
         SOAPEnvelope soapEnvelope = getSOAPEnvelope(ISOToMT940TestConstants.PAYLOAD_CAMT);
         PowerMockito.doReturn(soapEnvelope).when(messageContext).getEnvelope();
 
-        String extractMsg = ISOMessageParser.extractISOMessage(messageContext,
-                ConnectorConstants.XPATH_DOCUMENT_WITHOUT_BUSINESS_HDR);
+        String xPath = ISOMessageParser.constructXPath(false, ConnectorConstants.XPATH_DOCUMENT);
+        String extractMsg = ISOMessageParser.extractISOMessage(messageContext, xPath);
         Assert.assertEquals(ISOToMT940TestConstants.PAYLOAD_CAMT, extractMsg);
     }
 
@@ -123,8 +123,8 @@ public class ISOMessageParserTests extends PowerMockTestCase {
         SOAPEnvelope soapEnvelope = getSOAPEnvelope(ISOToMT940TestConstants.PAYLOAD_APPHDR_AND_DOCUMENT);
         PowerMockito.doReturn(soapEnvelope).when(messageContext).getEnvelope();
 
-        String extractMsg = ISOMessageParser.extractISOMessage(messageContext,
-                ConnectorConstants.XPATH_DOCUMENT_WITHOUT_BUSINESS_HDR);
+        String xPath = ISOMessageParser.constructXPath(false, ConnectorConstants.XPATH_DOCUMENT);
+        String extractMsg = ISOMessageParser.extractISOMessage(messageContext, xPath);
         Assert.assertEquals(ISOToMT940TestConstants.PAYLOAD_CAMT, extractMsg);
     }
 }

@@ -99,4 +99,18 @@ public class ISOMessageParser {
         OMElement rootElement = mc.getEnvelope().getBody().getFirstElement();
         return rootElement.getLocalName();
     }
+
+    /**
+     * Construct XPath conditionally if businessHdr present or not.
+     * @param isBusinessMsg Is the given XML message is a business message or not
+     * @param xPath         XPath which need an update according to the business message is present or not
+     * @return              Updated XPath
+     */
+    public static String constructXPath(boolean isBusinessMsg, String xPath) {
+        if (isBusinessMsg) {
+            return "/soapenv:Body/BizMsgEnvlp" + xPath;
+        } else {
+            return "/soapenv:Body" + xPath;
+        }
+    }
 }
