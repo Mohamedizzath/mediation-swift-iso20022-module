@@ -165,14 +165,10 @@ public class ConnectorConstants {
     public static final String ERROR_INVALID_ISO_HEAD001_XML_MSG = "XML message is not in the ISO20022.head.001 format";
     public static final String ERROR_INVALID_ISO_CAMT053_XML_MSG = "XML message is not in the ISO20022.camt.053 format";
     public static final String ERROR_INVALID_XML_ROOT_TAG = "XML msg should start with BizMsgEnvlp tag or Document tag";
-    public static final String ERROR_EMPTY_ELECTRONIC_SEQUENCE_NUMBER =
-            "To convert MT940 message Electronic Sequence number need to be present in ISO20022.camt.053 message";
-    public static final String ERROR_INVALID_ELECTRONIC_SEQUENCE_NUMBER =
-            "To convert MT940 message Electronic Sequence number need to be valid number";
-    public static final String ERROR_EMPTY_LEGAL_SEQUENCE_NUMBER =
-            "To convert MT940 message Legal Sequence number need to be present in ISO20022.camt.053 message";
-    public static final String ERROR_INVALID_LEGAL_SEQUENCE_NUMBER =
-            "To convert MT940 message Legal Sequence number need to be valid number";
+    public static final String ERROR_MISSING_ELECTRONIC_SEQUENCE_NUMBER =
+            "Electronic Sequence number not present in ISO20022.camt.053 message";
+    public static final String ERROR_MISSING_LEGAL_SEQUENCE_NUMBER =
+            "Legal Sequence number not present in ISO20022.camt.053 message";
     public static final String ERROR_MISSING_OPENING_BALANCE = "Missing Opening Balance in ISO20022.camt.053 message";
     public static final String ERROR_MISSING_CLOSING_BALANCE = "Missing Closing Balance in ISO20022.camt.053 message";
     public static final String ERROR_INVALID_BALANCE_TYPES =

@@ -32,14 +32,15 @@ import java.util.stream.Collectors;
  */
 public class ISO20022camt053ValidatorUtils {
     /**
-     * Check whether ISO20022.camt.053 message contains valid electronic sequence number.
-     * @param isBusinessMsg     Boolean value to indicate ISO20022 message is business message or not
-     * @param mc                MessageContext which contains the XML 20022 input
-     * @throws ConnectException
+     * Check whether ISO20022.camt.053 message contains electronic sequence number XML element.
+     *
+     * @param isBusinessMsg Boolean value to indicate ISO20022 message is business message or not
+     * @param mc            MessageContext which contains the XML 20022 input
+     * @return boolean
+     * @throws JaxenException
      */
-    public static void validateElectronicSequenceNumber(boolean isBusinessMsg, MessageContext mc)
-            throws ConnectException {
-        try {
+    public static boolean isElectronicSequenceNumberExists(boolean isBusinessMsg, MessageContext mc)
+            throws JaxenException {
             String xPathToSeqNumber = ConnectorConstants.XPATH_ELECTSEQ_NUMBER_WITHOUT_BUSINESS_HDR;
 
             if (isBusinessMsg) {
@@ -48,67 +49,69 @@ public class ISO20022camt053ValidatorUtils {
 
             OMElement seqNumberElement = ISOMessageParser.getXMLElementByXPath(xPathToSeqNumber, mc);
 
-            if (seqNumberElement == null) {
-                // Sequence number not present in the ISO20022 message
-                throw new ConnectException(ConnectorConstants.ERROR_EMPTY_ELECTRONIC_SEQUENCE_NUMBER);
-            }
-        } catch (JaxenException e) {
-            throw new ConnectException(ConnectorConstants.ERROR_INVALID_ELECTRONIC_SEQUENCE_NUMBER);
-        }
+            return seqNumberElement != null;
     }
 
     /**
-     * Check whether ISO20022.camt.053 message contains valid logic sequence number.
-     * @param isBusinessMsg     Boolean value to indicate ISO20022 message is business message or not
-     * @param mc                MessageContext which contains the XML 20022 input
+     * Check whether ISO20022.camt.053 message contains legal sequence number XML element.
+     *
+     * @param isBusinessMsg Boolean value to indicate ISO20022 message is business message or not
+     * @param mc            MessageContext which contains the XML 20022 input
+     * @return boolean
      * @throws ConnectException
      */
-    public static void validateLegalSequenceNumber(boolean isBusinessMsg, MessageContext mc) throws ConnectException {
-        try {
-            String xPathToLogicNumber = ConnectorConstants.XPATH_LEGALSEQ_NUMBER_WITHOUT_BUSINESS_HDR;
+    public static boolean isLegalSequenceNumberExists(boolean isBusinessMsg, MessageContext mc) throws JaxenException {
+        String xPathToLogicNumber = ConnectorConstants.XPATH_LEGALSEQ_NUMBER_WITHOUT_BUSINESS_HDR;
 
-            if (isBusinessMsg) {
-                xPathToLogicNumber = ConnectorConstants.XPATH_LEGALSEQ_NUMBER_WITH_BUSINESS_HDR;
-            }
-
-            OMElement logicNumberElement = ISOMessageParser.getXMLElementByXPath(xPathToLogicNumber, mc);
-
-            if (logicNumberElement == null) {
-                // Logic number not present in the ISO20022 message
-                throw new ConnectException(ConnectorConstants.ERROR_EMPTY_LEGAL_SEQUENCE_NUMBER);
-            }
-        } catch (JaxenException e) {
-            throw new ConnectException(ConnectorConstants.ERROR_INVALID_LEGAL_SEQUENCE_NUMBER);
+        if (isBusinessMsg) {
+            xPathToLogicNumber = ConnectorConstants.XPATH_LEGALSEQ_NUMBER_WITH_BUSINESS_HDR;
         }
+
+        OMElement logicNumberElement = ISOMessageParser.getXMLElementByXPath(xPathToLogicNumber, mc);
+
+        return logicNumberElement != null;
     }
 
     /**
-     * Check whether ISO20022.camt.053 message contains opening balance(OPBD) and closing balance(CLBD).
-     * @param isBusinessMsg     Boolean value to indicate ISO20022 message is business message or not
-     * @param mc                MessageContext which contains the XML 20022 input
+     * Check whether ISO20022.camt.053 message contains opening balance(OPBD).
+     *
+     * @param isBusinessMsg Boolean value to indicate ISO20022 message is business message or not
+     * @param mc            MessageContext which contains the XML 20022 input
+     * @return
      * @throws ConnectException
      */
-    public static void validateBalanceElements(boolean isBusinessMsg, MessageContext mc) throws ConnectException {
-        try {
-            String xPathToBalanceEle = ConnectorConstants.XPATH_BALANCE_ELEMENTS_WITHOUT_BUSINESS_HDR;
+    public static boolean isOpeningBalanceExists(boolean isBusinessMsg, MessageContext mc) throws JaxenException {
+        String xPathToBalanceEle = ConnectorConstants.XPATH_BALANCE_ELEMENTS_WITHOUT_BUSINESS_HDR;
 
-            if (isBusinessMsg) {
-                xPathToBalanceEle = ConnectorConstants.XPATH_BALANCE_ELEMENTS_WITH_BUSINESS_HDR;
-            }
-
-            List<OMElement> codeElements = ISOMessageParser.getXMLElementsByPath(xPathToBalanceEle, mc);
-            List<String> codes = codeElements.stream().map(OMElement::getText).collect(Collectors.toList());
-
-            if (!codes.contains(ConnectorConstants.OPENING_BALANCE_CODE)) {
-                // Opening balance not present in the message
-                throw new ConnectException(ConnectorConstants.ERROR_MISSING_OPENING_BALANCE);
-            }
-            if (!codes.contains(ConnectorConstants.CLOSING_BALANCE_CODE)) {
-                // Closing balance not present in the message
-                throw new ConnectException(ConnectorConstants.ERROR_MISSING_CLOSING_BALANCE);
-            }
-        } catch (JaxenException e) {
-            throw new ConnectException(ConnectorConstants.ERROR_INVALID_BALANCE_TYPES);
+        if (isBusinessMsg) {
+            xPathToBalanceEle = ConnectorConstants.XPATH_BALANCE_ELEMENTS_WITH_BUSINESS_HDR;
         }
+
+        List<OMElement> codeElements = ISOMessageParser.getXMLElementsByPath(xPathToBalanceEle, mc);
+        List<String> codes = codeElements.stream().map(OMElement::getText).collect(Collectors.toList());
+
+
+        return codes.stream().anyMatch(ConnectorConstants.OPENING_BALANCE_CODE::equals);
+    }
+
+    /**
+     * Check whether ISO20022.camt.053 message contains closing balance(CLBD).
+     *
+     * @param isBusinessMsg Boolean value to indicate ISO20022 message is business message or not
+     * @param mc            MessageContext which contains the XML 20022 input
+     * @return
+     * @throws ConnectException
+     */
+    public static boolean isClosingBalanceExists(boolean isBusinessMsg, MessageContext mc) throws JaxenException {
+        String xPathToBalanceEle = ConnectorConstants.XPATH_BALANCE_ELEMENTS_WITHOUT_BUSINESS_HDR;
+
+        if (isBusinessMsg) {
+            xPathToBalanceEle = ConnectorConstants.XPATH_BALANCE_ELEMENTS_WITH_BUSINESS_HDR;
+        }
+
+        List<OMElement> codeElements = ISOMessageParser.getXMLElementsByPath(xPathToBalanceEle, mc);
+        List<String> codes = codeElements.stream().map(OMElement::getText).collect(Collectors.toList());
+
+        return codes.stream().anyMatch(ConnectorConstants.CLOSING_BALANCE_CODE::equals);
     }
 }

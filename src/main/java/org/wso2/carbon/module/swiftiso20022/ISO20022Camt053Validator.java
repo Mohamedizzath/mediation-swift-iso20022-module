@@ -19,6 +19,7 @@
 package org.wso2.carbon.module.swiftiso20022;
 
 import org.apache.synapse.MessageContext;
+import org.jaxen.JaxenException;
 import org.wso2.carbon.connector.core.AbstractConnector;
 import org.wso2.carbon.connector.core.ConnectException;
 import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
@@ -26,7 +27,10 @@ import org.wso2.carbon.module.swiftiso20022.utils.ConnectorUtils;
 import org.wso2.carbon.module.swiftiso20022.utils.ISO20022camt053ValidatorUtils;
 import org.wso2.carbon.module.swiftiso20022.utils.ISOMessageParser;
 import org.wso2.carbon.module.swiftiso20022.utils.XSDValidator;
+import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
+
+import java.io.IOException;
 
 /**
  * Validate the ISO20022.camt.053 message.
@@ -66,30 +70,34 @@ public class ISO20022Camt053Validator extends AbstractConnector {
             XSDValidator documentValidator = new XSDValidator(ConnectorConstants.XSD_SCHEMA_CAMT_053_001);
             documentValidator.validateXMLContent(documentStr);
 
-            // Validate Electronic Seq number and Legal number
-            ISO20022camt053ValidatorUtils.validateElectronicSequenceNumber(isBusinessMsg, messageContext);
-            ISO20022camt053ValidatorUtils.validateLegalSequenceNumber(isBusinessMsg, messageContext);
-
-            // Validate Balance types
-            ISO20022camt053ValidatorUtils.validateBalanceElements(isBusinessMsg, messageContext);
+            // Validate MT940 related ISO20022.camt.053 validations
+            if (!ISO20022camt053ValidatorUtils.isElectronicSequenceNumberExists(isBusinessMsg, messageContext)) {
+                throw new ConnectException(ConnectorConstants.ERROR_MISSING_ELECTRONIC_SEQUENCE_NUMBER);
+            } else if (!ISO20022camt053ValidatorUtils.isLegalSequenceNumberExists(isBusinessMsg, messageContext)) {
+                throw new ConnectException(ConnectorConstants.ERROR_MISSING_LEGAL_SEQUENCE_NUMBER);
+            } else if (!ISO20022camt053ValidatorUtils.isOpeningBalanceExists(isBusinessMsg, messageContext)) {
+                throw new ConnectException(ConnectorConstants.ERROR_MISSING_OPENING_BALANCE);
+            } else if (!ISO20022camt053ValidatorUtils.isClosingBalanceExists(isBusinessMsg, messageContext)) {
+                throw new ConnectException(ConnectorConstants.ERROR_MISSING_CLOSING_BALANCE);
+            }
 
             this.log.debug("Valid camt.053.001.11 message");
         } catch (SAXParseException e) {
-            String errMsg = e.getMessage() + ", Line number: " +
-                    e.getLineNumber() + ", Column number: " + e.getColumnNumber();
-            this.log.error(errMsg);
+            String errMsg = String.format("%s, Line number: %d, Column number: %d",
+                    e.getMessage(), e.getLineNumber(), e.getColumnNumber());
+
+            this.log.error(e);
             ConnectorUtils.appendErrorToMessageContext(messageContext,
                     ConnectorConstants.ERROR_INVALID_ISO_CAMT053_XML_MSG,
                     errMsg);
 
-            throw new ConnectException(errMsg);
-        } catch (Exception e) {
-            this.log.error(e.getMessage());
+            throw new ConnectException(e, errMsg);
+        } catch (SAXException | JaxenException | IOException e) {
+            this.log.error(e);
             ConnectorUtils.appendErrorToMessageContext(messageContext,
                     ConnectorConstants.ERROR_VALIDATING_XML, e.getMessage());
 
-            throw new ConnectException(e.getMessage());
+            throw new ConnectException(e, e.getMessage());
         }
-
     }
 }

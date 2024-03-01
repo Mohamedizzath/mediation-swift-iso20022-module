@@ -78,19 +78,16 @@ public class ISOMessageParser {
      * @param xPath      Xpath for the XML contents which needs to be extracted
      * @return           Child contents as a String element
      */
-    public static String extractISOMessage(MessageContext mc, String xPath) throws ConnectException, JaxenException {
-        try {
-            OMElement element = getXMLElementByXPath(xPath, mc);
+    public static String extractISOMessage(MessageContext mc, String xPath) throws ConnectException,
+            OMException, JaxenException  {
+        OMElement element = getXMLElementByXPath(xPath, mc);
 
-            if (element == null) {
-                // No element to be extracted
-                throw new ConnectException("Error: " + xPath + " element not present in the XML");
-            }
-
-            return element.toString();
-        } catch (OMException e) {
-            throw new ConnectException(e, "Error: Parsing XML document");
+        if (element == null) {
+            // No element to be extracted
+            throw new ConnectException("Error: " + xPath + " element not present in the XML");
         }
+
+        return element.toString();
     }
 
     /**
@@ -102,6 +99,4 @@ public class ISOMessageParser {
         OMElement rootElement = mc.getEnvelope().getBody().getFirstElement();
         return rootElement.getLocalName();
     }
-
-
 }

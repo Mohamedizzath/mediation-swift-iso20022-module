@@ -18,15 +18,18 @@
 
 package org.wso2.carbon.module.swiftiso20022;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.synapse.MessageContext;
+import org.jaxen.JaxenException;
 import org.wso2.carbon.connector.core.AbstractConnector;
 import org.wso2.carbon.connector.core.ConnectException;
 import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
 import org.wso2.carbon.module.swiftiso20022.utils.ConnectorUtils;
 import org.wso2.carbon.module.swiftiso20022.utils.ISOMessageParser;
 import org.wso2.carbon.module.swiftiso20022.utils.XSDValidator;
+import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
+
+import java.io.IOException;
 
 /**
  * Validate the ISO20022.head.001 message.
@@ -36,8 +39,7 @@ public class ISO20022AppHead001Validator extends AbstractConnector {
     public void connect(MessageContext messageContext) throws ConnectException {
         String rootElementTag = ISOMessageParser.getRootXMLElement(messageContext);
 
-        if (StringUtils.isBlank(rootElementTag) ||
-                !rootElementTag.equals(ConnectorConstants.XML_INPUT_BUSINESS_ENV_TAG)) {
+        if (!ConnectorConstants.XML_INPUT_BUSINESS_ENV_TAG.equals(rootElementTag)) {
             // Invalid XML root tag
             this.log.error(ConnectorConstants.ERROR_INVALID_XML_ROOT_TAG);
             ConnectorUtils.appendErrorToMessageContext(messageContext,
@@ -54,16 +56,17 @@ public class ISO20022AppHead001Validator extends AbstractConnector {
             appHdrValidator.validateXMLContent(appHdrStr);
             this.log.debug("Valid business application header");
         } catch (SAXParseException e) {
-            String errMsg = e.getMessage() + ", Line number: " +
-                    e.getLineNumber() + ", Column number: " + e.getColumnNumber();
-            this.log.error(errMsg);
+            String errMsg = String.format("%s, Line number: %d, Column number: %d",
+                    e.getMessage(), e.getLineNumber(), e.getColumnNumber());
+
+            this.log.error(e);
             ConnectorUtils.appendErrorToMessageContext(messageContext,
-                    ConnectorConstants.ERROR_INVALID_ISO_HEAD001_XML_MSG,
+                    ConnectorConstants.ERROR_INVALID_ISO_CAMT053_XML_MSG,
                     errMsg);
 
-            throw new ConnectException(errMsg);
-        } catch (Exception e) {
-            this.log.error(e.getMessage());
+            throw new ConnectException(e, errMsg);
+        } catch (SAXException | JaxenException | IOException e) {
+            this.log.error(e);
             ConnectorUtils.appendErrorToMessageContext(messageContext,
                     ConnectorConstants.ERROR_VALIDATING_XML, e.getMessage());
 
