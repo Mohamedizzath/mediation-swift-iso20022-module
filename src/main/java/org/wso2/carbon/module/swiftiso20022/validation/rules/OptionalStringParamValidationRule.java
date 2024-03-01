@@ -30,16 +30,17 @@ import java.util.List;
 /**
  * Optional Param Validation Rule.
  */
-public class OptionalStringParamValidationRule extends ValidationRule {
+public class OptionalStringParamValidationRule implements ValidationRule {
 
     private final List<ValidatorContext> validationParamList;
-    private static final String RULE_NAME = "Optional Param Validation";
 
     public OptionalStringParamValidationRule(List<ValidatorContext> validationParamList) {
         this.validationParamList = validationParamList;
     }
     /**
-     * Validate whether the parameter is an optional param.
+     * Validate whether the string parameter is an optional param.
+     *
+     * @param payload    Payload to be validated.
      * @return Validation Result
      */
     @Override
@@ -55,10 +56,5 @@ public class OptionalStringParamValidationRule extends ValidationRule {
             }
         }
         return new ValidationResult();
-    }
-
-    @Override
-    public String getDisplayName() {
-        return RULE_NAME;
     }
 }

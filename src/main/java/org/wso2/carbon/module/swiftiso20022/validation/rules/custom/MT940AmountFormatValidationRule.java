@@ -30,10 +30,9 @@ import java.util.regex.Pattern;
  * Currency Format Validation Rule.
  * Validates whether amount is in xxx,xxx,xxx.xxx format.
  */
-public class MT940AmountFormatValidationRule extends ValidationRule {
+public class MT940AmountFormatValidationRule implements ValidationRule {
 
     ValidatorContext context;
-    private static final String RULE_NAME = "Amount Format Validation";
 
     public MT940AmountFormatValidationRule(ValidatorContext context) {
 
@@ -57,10 +56,5 @@ public class MT940AmountFormatValidationRule extends ValidationRule {
             }
         }
         return new ValidationResult();
-    }
-
-    @Override
-    public String getDisplayName() {
-        return RULE_NAME;
     }
 }

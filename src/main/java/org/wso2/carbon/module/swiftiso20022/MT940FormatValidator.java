@@ -102,7 +102,7 @@ public class MT940FormatValidator extends AbstractConnector {
      * @return        Validation Result with error details if there is an error, else empty Validation Result
      */
     private ValidationResult validateMT940(MessageContext messageContext, String[] lines) {
-        Map<String, Object> extractFields = extractFields(lines);
+        Map<String, Object> extractedFields = extractFields(lines);
 
         if (!MT940ValidationUtils.isValidC1Rule(lines)) {
             return new ValidationResult(ConnectorConstants.ERROR_C24,
@@ -114,12 +114,12 @@ public class MT940FormatValidator extends AbstractConnector {
                     ConnectorConstants.ERROR_BALANCES);
         }
 
-        ValidationResult errorModel = MT940ValidationUtils.validateMT940Format(extractFields);
-        if (!errorModel.isValid()) {
-            this.log.error(errorModel.getErrorMessage());
-            ConnectorUtils.appendErrorToMessageContext(messageContext, errorModel.getErrorCode(),
-                    errorModel.getErrorMessage());
-            this.handleException(errorModel.getErrorMessage(), messageContext);
+        ValidationResult validationResult = MT940ValidationUtils.validateMT940Format(extractedFields);
+        if (!validationResult.isValid()) {
+            this.log.error(validationResult.getErrorMessage());
+            ConnectorUtils.appendErrorToMessageContext(messageContext, validationResult.getErrorCode(),
+                    validationResult.getErrorMessage());
+            this.handleException(validationResult.getErrorMessage(), messageContext);
         }
         return new ValidationResult();
     }
@@ -136,6 +136,9 @@ public class MT940FormatValidator extends AbstractConnector {
 
         for (String line : lines) {
             if (line.startsWith(OPEN_BRACKET) || line.startsWith(DASH)) {
+                continue;
+            }
+            if (line.length() < 3) {
                 continue;
             }
             switch (line.substring(0, 3)) {

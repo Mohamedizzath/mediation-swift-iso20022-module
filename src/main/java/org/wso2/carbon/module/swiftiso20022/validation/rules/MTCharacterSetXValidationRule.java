@@ -28,14 +28,14 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 /**
- * MT Character Set X Validation Rule.
- * Can contain [a-zA-Z0-9\\n/-?:().,'+]
+ * MT Character Set X Validation Rule. ([a-zA-Z0-9\\n/-?:().,'+])
+ * Can contain simple and capital letters in the English alphabet, numbers from 0-9 and the following
+ * special characters \n - / ? : ( ) . , ' +
  */
-public class MTCharacterSetXValidationRule extends ValidationRule {
+public class MTCharacterSetXValidationRule implements ValidationRule {
 
     private final List<ValidatorContext> validationParamList;
-    private static final String RULE_NAME = "MT Character Set X Validation";
-    String regex = "[a-zA-Z0-9-/n?:().,'+/]{1,}";
+    String mtCharacterSetXRegex = "[a-zA-Z0-9-/n?:().,'+/]{1,}";
 
     public MTCharacterSetXValidationRule(List<ValidatorContext> validationParamList) {
         this.validationParamList = validationParamList;
@@ -43,6 +43,8 @@ public class MTCharacterSetXValidationRule extends ValidationRule {
 
     /**
      * Validate whether the parameter is an MT character set X param.
+     *
+     * @param payload    Payload to be validated.
      * @return Validation Result
      */
     @Override
@@ -50,7 +52,7 @@ public class MTCharacterSetXValidationRule extends ValidationRule {
         for (ValidatorContext ctx : validationParamList) {
             if (payload.has(ctx.getFieldName())) {
                 Object value = payload.get(ctx.getFieldName());
-                if (value instanceof String && !Pattern.matches(regex, (String) value)) {
+                if (value instanceof String && !Pattern.matches(mtCharacterSetXRegex, (String) value)) {
                     return new ValidationResult(ConnectorConstants.ERROR_CODE_INVALID_PARAM,
                             String.format(ConnectorConstants.ERROR_NOT_CHARACTER_SET_X,
                                     ctx.getFieldDisplayName()));
@@ -58,10 +60,5 @@ public class MTCharacterSetXValidationRule extends ValidationRule {
             }
         }
         return new ValidationResult();
-    }
-
-    @Override
-    public String getDisplayName() {
-        return RULE_NAME;
     }
 }

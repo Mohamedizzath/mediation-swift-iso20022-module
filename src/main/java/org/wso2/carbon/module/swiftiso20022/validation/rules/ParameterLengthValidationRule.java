@@ -29,11 +29,10 @@ import java.util.List;
 /**
  * Mandatory Param Validation Rule.
  */
-public class ParameterLengthValidationRule extends ValidationRule {
+public class ParameterLengthValidationRule implements ValidationRule {
 
     private final List<ValidatorContext> validationParamList;
     private final List<String> definedLengthFields;
-    private static final String RULE_NAME = "Parameter Length Validation";
 
     public ParameterLengthValidationRule(List<ValidatorContext> validationParamList,
                                          List<String> definedLengthFields) {
@@ -42,6 +41,8 @@ public class ParameterLengthValidationRule extends ValidationRule {
     }
     /**
      * Validate whether the parameter length is valid.
+     *
+     * @param payload    Payload to be validated.
      * @return Validation Result
      */
     @Override
@@ -68,10 +69,5 @@ public class ParameterLengthValidationRule extends ValidationRule {
         }
 
         return new ValidationResult();
-    }
-
-    @Override
-    public String getDisplayName() {
-        return RULE_NAME;
     }
 }

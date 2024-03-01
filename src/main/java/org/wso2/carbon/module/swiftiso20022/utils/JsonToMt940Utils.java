@@ -54,7 +54,7 @@ public class JsonToMt940Utils {
      *
      * @param balanceDetails   Balance Details
      * @param fieldName        Balance Field Name
-     * @return  Return ErrorModel if the balance is invalid.
+     * @return  Return validationResult if the balance is invalid.
      */
     public static ValidationResult validateBalanceDetails(JSONObject balanceDetails, String fieldName) {
 
@@ -76,35 +76,35 @@ public class JsonToMt940Utils {
      * @return              Validation Result if there is an error, else empty Validation Result
      */
     public static ValidationResult validateBalances(JSONObject requestPayload) {
-        ValidationResult errorModel = JsonToMt940Utils.validateBalanceDetails(requestPayload
+        ValidationResult validationResult = JsonToMt940Utils.validateBalanceDetails(requestPayload
                         .getJSONObject(MT940Constants.OPENING_BAL_DETAILS),
                 MT940Constants.DN_OPENING_BALANCE);
-        if (!errorModel.isValid()) {
-            return errorModel;
+        if (!validationResult.isValid()) {
+            return validationResult;
         }
 
-        errorModel = JsonToMt940Utils.validateBalanceDetails(requestPayload
+        validationResult = JsonToMt940Utils.validateBalanceDetails(requestPayload
                         .getJSONObject(MT940Constants.CLOSING_BALANCE_DETAILS),
                 MT940Constants.DN_CLOSING_BALANCE);
-        if (!errorModel.isValid()) {
-            return errorModel;
+        if (!validationResult.isValid()) {
+            return validationResult;
         }
 
         if (requestPayload.has(MT940Constants.CLOSING_AVAIL_BALANCE_DETAILS)) {
-            errorModel = JsonToMt940Utils.validateBalanceDetails(requestPayload
+            validationResult = JsonToMt940Utils.validateBalanceDetails(requestPayload
                             .getJSONObject(MT940Constants.CLOSING_BALANCE_DETAILS),
                     MT940Constants.DN_CLOSING_AVAIL_BALANCE);
-            if (!errorModel.isValid()) {
-                return errorModel;
+            if (!validationResult.isValid()) {
+                return validationResult;
             }
         }
 
         if (requestPayload.has(MT940Constants.FORWARD_CLOSING_AVAIL_BALANCE_DETAILS)) {
-            errorModel = JsonToMt940Utils.validateBalanceDetails(requestPayload.getJSONObject(
+            validationResult = JsonToMt940Utils.validateBalanceDetails(requestPayload.getJSONObject(
                             MT940Constants.FORWARD_CLOSING_AVAIL_BALANCE_DETAILS),
                     MT940Constants.DN_FORWARD_CLOSING_AVAIL_BALANCE);
-            if (!errorModel.isValid()) {
-                return errorModel;
+            if (!validationResult.isValid()) {
+                return validationResult;
             }
         }
 

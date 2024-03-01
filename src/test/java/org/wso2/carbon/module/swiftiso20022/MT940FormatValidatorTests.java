@@ -94,67 +94,67 @@ public class MT940FormatValidatorTests extends PowerMockTestCase {
     @Test(dataProvider = "invalidReferenceDataProvider",
             dataProviderClass = MT940FormatValidatorTestConstants.class)
     public void testValidateTransactionReference(String reference) {
-        ValidationResult error = MT940ValidationUtils.validateReference(reference,
+        ValidationResult validationResult = MT940ValidationUtils.validateReference(reference,
                 MT940Constants.DN_TRANSACTION_REFERENCE);
 
-        Assert.assertFalse(error.isValid());
+        Assert.assertFalse(validationResult.isValid());
     }
 
     @Test(dataProvider = "invalidReferenceDataProvider",
             dataProviderClass = MT940FormatValidatorTestConstants.class)
     public void testValidateRelatedReference(String reference) {
-        ValidationResult error = MT940ValidationUtils.validateReference(reference,
+        ValidationResult validationResult = MT940ValidationUtils.validateReference(reference,
                 MT940Constants.DN_RELATED_REF);
 
-        Assert.assertFalse(error.isValid());
+        Assert.assertFalse(validationResult.isValid());
     }
 
     @Test(dataProvider = "invalidAccountIdentifierDataProvider",
             dataProviderClass = MT940FormatValidatorTestConstants.class)
     public void testValidateAccountIdentifier(String account) {
-        ValidationResult error = MT940ValidationUtils.validateAccountIdentifier(account);
+        ValidationResult validationResult = MT940ValidationUtils.validateAccountIdentifier(account);
 
-        Assert.assertFalse(error.isValid());
+        Assert.assertFalse(validationResult.isValid());
     }
 
     @Test(dataProvider = "invalidStatementNumberDataProvider",
             dataProviderClass = MT940FormatValidatorTestConstants.class)
     public void testValidateStatementNumber(String statementNumber) {
-        ValidationResult error = MT940ValidationUtils.validateStatementNumber(statementNumber);
+        ValidationResult validationResult = MT940ValidationUtils.validateStatementNumber(statementNumber);
 
-        Assert.assertFalse(error.isValid());
+        Assert.assertFalse(validationResult.isValid());
     }
 
     @Test(dataProvider = "invalidBalanceDataProvider",
             dataProviderClass = MT940FormatValidatorTestConstants.class)
     public void testValidateOpeningBalance(String balance) {
-        ValidationResult error = MT940ValidationUtils.validateOpeningBalance(balance);
+        ValidationResult validationResult = MT940ValidationUtils.validateOpeningBalance(balance);
 
-        Assert.assertFalse(error.isValid());
+        Assert.assertFalse(validationResult.isValid());
     }
 
     @Test(dataProvider = "invalidBalanceDataProvider",
             dataProviderClass = MT940FormatValidatorTestConstants.class)
     public void testValidateClosingBalance(String balance) {
-        ValidationResult error = MT940ValidationUtils.validateClosingBalance(balance);
+        ValidationResult validationResult = MT940ValidationUtils.validateClosingBalance(balance);
 
-        Assert.assertFalse(error.isValid());
+        Assert.assertFalse(validationResult.isValid());
     }
 
     @Test(dataProvider = "invalidBalanceDataProvider",
             dataProviderClass = MT940FormatValidatorTestConstants.class)
     public void testValidateClosingAvailableBalance(String balance) {
-        ValidationResult error = MT940ValidationUtils.validateClosingAvailableBalance(balance);
+        ValidationResult validationResult = MT940ValidationUtils.validateClosingAvailableBalance(balance);
 
-        Assert.assertFalse(error.isValid());
+        Assert.assertFalse(validationResult.isValid());
     }
 
     @Test(dataProvider = "invalidBalanceDataProvider",
             dataProviderClass = MT940FormatValidatorTestConstants.class)
     public void testValidateForwardAvailableBalance(String balance) {
-        ValidationResult error = MT940ValidationUtils.validateForwardAvailableBalance(balance);
+        ValidationResult validationResult = MT940ValidationUtils.validateForwardAvailableBalance(balance);
 
-        Assert.assertFalse(error.isValid());
+        Assert.assertFalse(validationResult.isValid());
     }
 
 }

@@ -34,11 +34,10 @@ import java.util.List;
 /**
  * Date Format Validation Rule.
  */
-public class DateFormatValidationRule extends ValidationRule {
+public class DateFormatValidationRule implements ValidationRule {
 
     private static final Log log = LogFactory.getLog(DateFormatValidationRule.class);
     private final List<ValidatorContext> validationParamList;
-    private static final String RULE_NAME = "Date Format Validation";
 
     public DateFormatValidationRule(List<ValidatorContext> validationParamList) {
 
@@ -47,31 +46,26 @@ public class DateFormatValidationRule extends ValidationRule {
 
     /**
      * Validate whether the date is in the correct format.
+     *
+     * @param payload    Payload to be validated.
      * @return Validation Result
      */
     @Override
     public ValidationResult validate(JSONObject payload) {
+        DateFormat formatter = new SimpleDateFormat(ConnectorConstants.DATE_TIME_FORMAT);
         for (ValidatorContext ctx : validationParamList) {
             if (payload.has(ctx.getFieldName())) {
-                Object value = payload.get(ctx.getFieldName());
-                DateFormat formatter = new SimpleDateFormat(ConnectorConstants.DATE_TIME_FORMAT);
-                if (value instanceof String) {
-                    try {
-                        formatter.parse(value.toString());
-                        return new ValidationResult();
-                    } catch (ParseException e) {
-                        log.error("Error while parsing the date time", e);
-                        return new ValidationResult(ConnectorConstants.ERROR_CODE_INVALID_PARAM,
-                                String.format(ConnectorConstants.ERROR_DATE_INVALID, ctx.getFieldDisplayName()));
-                    }
+                String value = payload.getString(ctx.getFieldName());
+                try {
+                    formatter.parse(value);
+                    return new ValidationResult();
+                } catch (ParseException e) {
+                    log.error("Error while parsing the date time", e);
+                    return new ValidationResult(ConnectorConstants.ERROR_CODE_INVALID_PARAM,
+                            String.format(ConnectorConstants.ERROR_DATE_INVALID, ctx.getFieldDisplayName()));
                 }
             }
         }
         return new ValidationResult();
-    }
-
-    @Override
-    public String getDisplayName() {
-        return RULE_NAME;
     }
 }

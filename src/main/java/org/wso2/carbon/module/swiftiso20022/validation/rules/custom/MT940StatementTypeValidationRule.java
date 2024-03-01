@@ -31,10 +31,9 @@ import java.util.List;
 /**
  * MT940 Statement Type Validation Rule.
  */
-public class MT940StatementTypeValidationRule extends ValidationRule {
+public class MT940StatementTypeValidationRule implements ValidationRule {
 
     ValidatorContext context;
-    private static final String RULE_NAME = "MT940 Transaction Type Validation";
     private static final int INDEX = 1;
     private static final int START_VALUE = 99;
     private static final int END_VALUE = 1000;
@@ -61,26 +60,8 @@ public class MT940StatementTypeValidationRule extends ValidationRule {
                     return new ValidationResult(ConnectorConstants.ERROR_T53,
                             ConnectorConstants.ERROR_INVALID_STATEMENT_TYPE);
                 }
-                if (statementType.toString().startsWith(MT940Constants.SWIFT_TRANSFER)) {
-                    String identificationCode = statementType.toString().substring(INDEX);
-                    if (!StringUtils.isNumeric(identificationCode)) {
-                        return new ValidationResult(ConnectorConstants.ERROR_T53,
-                                ConnectorConstants.ERROR_INVALID_STATEMENT_TYPE);
-                    }
-
-                    if (!(Integer.parseInt(identificationCode) > START_VALUE &&
-                            Integer.parseInt(identificationCode) < END_VALUE)) {
-                        return new ValidationResult(ConnectorConstants.ERROR_T18,
-                                ConnectorConstants.ERROR_INVALID_STATEMENT_TYPE);
-                    }
-                }
             }
         }
         return new ValidationResult();
-    }
-
-    @Override
-    public String getDisplayName() {
-        return RULE_NAME;
     }
 }

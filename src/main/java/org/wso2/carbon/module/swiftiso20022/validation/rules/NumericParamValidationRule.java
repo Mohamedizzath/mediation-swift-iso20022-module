@@ -30,16 +30,17 @@ import java.util.List;
 /**
  * Numeric Param Validation Rule.
  */
-public class NumericParamValidationRule extends ValidationRule {
+public class NumericParamValidationRule implements ValidationRule {
 
     private final List<ValidatorContext> validationParamList;
-    private static final String RULE_NAME = "Numeric Param Validation";
 
     public NumericParamValidationRule(List<ValidatorContext> validationParamList) {
         this.validationParamList = validationParamList;
     }
     /**
      * Validate whether the parameter is a numeric param.
+     *
+     * @param payload    Payload to be validated.
      * @return Validation Result
      */
     @Override
@@ -55,10 +56,5 @@ public class NumericParamValidationRule extends ValidationRule {
             }
         }
         return new ValidationResult();
-    }
-
-    @Override
-    public String getDisplayName() {
-        return RULE_NAME;
     }
 }

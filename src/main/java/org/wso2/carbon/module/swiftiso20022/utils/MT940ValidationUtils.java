@@ -91,55 +91,55 @@ public class MT940ValidationUtils {
      * Method to validate the MT940 format.
      *
      * @param fields  Fields in MT940 format
-     * @return    ErrorModel MT940 format is invalid
+     * @return    ValidationResult MT940 format is invalid
      */
     public static ValidationResult validateMT940Format(Map<String, Object> fields) {
-        ValidationResult errorModel;
+        ValidationResult validationResult;
 
-        errorModel = validateReference((String) fields.get(MT940Constants.DN_TRANSACTION_REF),
+        validationResult = validateReference((String) fields.get(MT940Constants.DN_TRANSACTION_REF),
                 MT940Constants.DN_TRANSACTION_REF);
-        if (!errorModel.isValid()) {
-            return errorModel;
+        if (!validationResult.isValid()) {
+            return validationResult;
         }
 
         if (fields.containsKey(MT940Constants.DN_RELATED_REF)) {
-            errorModel = validateReference((String) fields.get(MT940Constants.DN_RELATED_REF),
+            validationResult = validateReference((String) fields.get(MT940Constants.DN_RELATED_REF),
                     MT940Constants.DN_RELATED_REF);
-            if (!errorModel.isValid()) {
-                return errorModel;
+            if (!validationResult.isValid()) {
+                return validationResult;
             }
         }
 
-        errorModel = validateAccountIdentifier((String) fields.get(MT940Constants.DN_ACC_IDENTIFICATION));
-        if (!errorModel.isValid()) {
-            return errorModel;
+        validationResult = validateAccountIdentifier((String) fields.get(MT940Constants.DN_ACC_IDENTIFICATION));
+        if (!validationResult.isValid()) {
+            return validationResult;
         }
 
-        errorModel = validateStatementNumber((String) fields.get(MT940Constants.DN_STATEMENT_NUMBER));
-        if (!errorModel.isValid()) {
-            return errorModel;
+        validationResult = validateStatementNumber((String) fields.get(MT940Constants.DN_STATEMENT_NUMBER));
+        if (!validationResult.isValid()) {
+            return validationResult;
         }
 
-        errorModel = validateOpeningBalance((String) fields.get(MT940Constants.DN_OPENING_BALANCE));
-        if (!errorModel.isValid()) {
-            return errorModel;
+        validationResult = validateOpeningBalance((String) fields.get(MT940Constants.DN_OPENING_BALANCE));
+        if (!validationResult.isValid()) {
+            return validationResult;
         }
 
-        errorModel = validateClosingBalance((String) fields.get(MT940Constants.DN_CLOSING_BALANCE));
-        if (!errorModel.isValid()) {
-            return errorModel;
+        validationResult = validateClosingBalance((String) fields.get(MT940Constants.DN_CLOSING_BALANCE));
+        if (!validationResult.isValid()) {
+            return validationResult;
         }
 
-        errorModel = validateClosingAvailableBalance((String) fields
+        validationResult = validateClosingAvailableBalance((String) fields
                 .get(MT940Constants.DN_CLOSING_AVAIL_BALANCE));
-        if (!errorModel.isValid()) {
-            return errorModel;
+        if (!validationResult.isValid()) {
+            return validationResult;
         }
 
-        errorModel = validateForwardAvailableBalance((String) fields
+        validationResult = validateForwardAvailableBalance((String) fields
                 .get(MT940Constants.DN_FORWARD_CLOSING_AVAIL_BALANCE));
-        if (!errorModel.isValid()) {
-            return errorModel;
+        if (!validationResult.isValid()) {
+            return validationResult;
         }
         return new ValidationResult();
     }
@@ -278,9 +278,9 @@ public class MT940ValidationUtils {
                             MT940Constants.DN_OPENING_BALANCE));
         }
 
-        ValidationResult errorModel = validateBalance(balance, MT940Constants.DN_OPENING_BALANCE);
-        if (!errorModel.isValid()) {
-            return errorModel;
+        ValidationResult validationResult = validateBalance(balance, MT940Constants.DN_OPENING_BALANCE);
+        if (!validationResult.isValid()) {
+            return validationResult;
         }
         return new ValidationResult();
     }
@@ -306,9 +306,9 @@ public class MT940ValidationUtils {
                             MT940Constants.DN_CLOSING_BALANCE));
         }
 
-        ValidationResult errorModel = validateBalance(balance, MT940Constants.DN_CLOSING_BALANCE);
-        if (!errorModel.isValid()) {
-            return errorModel;
+        ValidationResult validationResult = validateBalance(balance, MT940Constants.DN_CLOSING_BALANCE);
+        if (!validationResult.isValid()) {
+            return validationResult;
         }
         return new ValidationResult();
     }
@@ -327,10 +327,10 @@ public class MT940ValidationUtils {
                                 MT940Constants.DN_CLOSING_AVAIL_BALANCE));
             }
 
-            ValidationResult errorModel = validateBalance(closingBalanceDetails[2],
+            ValidationResult validationResult = validateBalance(closingBalanceDetails[2],
                     MT940Constants.DN_CLOSING_AVAIL_BALANCE);
-            if (!errorModel.isValid()) {
-                return errorModel;
+            if (!validationResult.isValid()) {
+                return validationResult;
             }
         }
         return new ValidationResult();
@@ -350,10 +350,10 @@ public class MT940ValidationUtils {
                                 MT940Constants.DN_FORWARD_CLOSING_AVAIL_BALANCE));
             }
 
-            ValidationResult errorModel = validateBalance(closingBalanceDetails[2],
+            ValidationResult validationResult = validateBalance(closingBalanceDetails[2],
                     MT940Constants.DN_FORWARD_CLOSING_AVAIL_BALANCE);
-            if (!errorModel.isValid()) {
-                return errorModel;
+            if (!validationResult.isValid()) {
+                return validationResult;
             }
         }
         return new ValidationResult();
@@ -365,7 +365,7 @@ public class MT940ValidationUtils {
      * @return     Whether balance is valid
      */
     private static ValidationResult validateBalance(String balance, String balanceName) {
-        ValidationResult errorModel;
+        ValidationResult validationResult;
         if (balance.length() > ConnectorConstants.BALANCE_LENGTH) {
             return new ValidationResult(ConnectorConstants.ERROR_M50,
                     String.format(ConnectorConstants.ERROR_PARAMETER_LENGTH,
@@ -378,14 +378,14 @@ public class MT940ValidationUtils {
                             balanceName));
         }
 
-        errorModel = ValidatorUtils.validateAmountLength(balance.substring(10), balanceName);
-        if (!errorModel.isValid()) {
-            return errorModel;
+        validationResult = ValidatorUtils.validateAmountLength(balance.substring(10), balanceName);
+        if (!validationResult.isValid()) {
+            return validationResult;
         }
 
-        errorModel = validateAmountFormat(balance.substring(10), balanceName);
-        if (!errorModel.isValid()) {
-            return errorModel;
+        validationResult = validateAmountFormat(balance.substring(10), balanceName);
+        if (!validationResult.isValid()) {
+            return validationResult;
         }
         return new ValidationResult();
     }

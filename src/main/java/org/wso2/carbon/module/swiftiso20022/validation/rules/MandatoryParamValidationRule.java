@@ -30,10 +30,9 @@ import java.util.List;
 /**
  * Mandatory Param Validation Rule.
  */
-public class MandatoryParamValidationRule extends ValidationRule {
+public class MandatoryParamValidationRule implements ValidationRule {
 
     private final List<ValidatorContext> validationParamList;
-    private static final String RULE_NAME = "Mandatory Param Validation";
 
     public MandatoryParamValidationRule(List<ValidatorContext> validationParamList) {
         this.validationParamList = validationParamList;
@@ -41,6 +40,8 @@ public class MandatoryParamValidationRule extends ValidationRule {
 
     /**
      * Validate whether the parameter is a mandatory param.
+     *
+     * @param payload    Payload to be validated.
      * @return Validation Result
      */
     @Override
@@ -62,10 +63,5 @@ public class MandatoryParamValidationRule extends ValidationRule {
             }
         }
         return new ValidationResult();
-    }
-
-    @Override
-    public String getDisplayName() {
-        return RULE_NAME;
     }
 }

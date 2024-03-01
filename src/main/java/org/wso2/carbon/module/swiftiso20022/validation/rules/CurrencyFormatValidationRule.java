@@ -30,10 +30,9 @@ import java.util.List;
 /**
  * Currency Format Validation Rule.
  */
-public class CurrencyFormatValidationRule extends ValidationRule {
+public class CurrencyFormatValidationRule implements ValidationRule {
 
     private final List<ValidatorContext> validationParamList;
-    private static final String RULE_NAME = "Currency Format Validation";
 
     public CurrencyFormatValidationRule(List<ValidatorContext> validationParamList) {
 
@@ -42,6 +41,8 @@ public class CurrencyFormatValidationRule extends ValidationRule {
 
     /**
      * Validate whether the value in currency code field is a valid currency code.
+     *
+     * @param payload    Payload to be validated.
      * @return Validation Result
      */
     @Override
@@ -59,10 +60,5 @@ public class CurrencyFormatValidationRule extends ValidationRule {
             }
         }
         return new ValidationResult();
-    }
-
-    @Override
-    public String getDisplayName() {
-        return RULE_NAME;
     }
 }

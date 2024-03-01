@@ -19,17 +19,15 @@
 package org.wso2.carbon.module.swiftiso20022.validation.common;
 
 /**
- * Class to hold the error details.
+ * Class to hold the result details of the validation.
  */
 public class ValidationResult {
-    private boolean isValid;
-    private String errorCode;
-    private String errorMessage;
+    private final boolean isValid;
+    private final String errorCode;
+    private final String errorMessage;
 
     public ValidationResult() {
-        this.isValid = true;
-        this.errorCode = null;
-        this.errorMessage = null;
+        this(true, null, null);
     }
 
     public ValidationResult(boolean isValid, String errorCode, String errorMessage) {

@@ -30,10 +30,9 @@ import java.util.List;
 /**
  * Alpha Numeric Param Validation Rule.
  */
-public class AlphaParamValidationRule extends ValidationRule {
+public class AlphaParamValidationRule implements ValidationRule {
 
     private final List<ValidatorContext> validationParamList;
-    private static final String RULE_NAME = "Alpha Param Validation";
 
     public AlphaParamValidationRule(List<ValidatorContext> validationParamList) {
         this.validationParamList = validationParamList;
@@ -41,6 +40,8 @@ public class AlphaParamValidationRule extends ValidationRule {
 
     /**
      * Validate whether the parameter is an alpha param.
+     *
+     * @param payload    Payload to be validated.
      * @return Validation Result
      */
     @Override
@@ -56,10 +57,5 @@ public class AlphaParamValidationRule extends ValidationRule {
 
         }
         return new ValidationResult();
-    }
-
-    @Override
-    public String getDisplayName() {
-        return RULE_NAME;
     }
 }

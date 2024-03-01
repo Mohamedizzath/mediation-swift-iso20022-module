@@ -30,10 +30,9 @@ import java.util.List;
 /**
  * MT940 Transaction Indicator Validation Rule.
  */
-public class MT940IndicatorValidationRule extends ValidationRule {
+public class MT940IndicatorValidationRule implements ValidationRule {
 
     ValidatorContext context;
-    private static final String RULE_NAME = "MT940 Transaction Indicator Validation";
     private static final List<String> supportedFieldsForBalances = List.of(ConnectorConstants.DEBIT,
             ConnectorConstants.CREDIT);
     private static final List<String> supportedFieldsForTransactions = List.of(ConnectorConstants.DEBIT,
@@ -69,10 +68,5 @@ public class MT940IndicatorValidationRule extends ValidationRule {
             }
         }
         return new ValidationResult();
-    }
-
-    @Override
-    public String getDisplayName() {
-        return RULE_NAME;
     }
 }

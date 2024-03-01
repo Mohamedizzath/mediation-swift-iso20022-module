@@ -41,60 +41,60 @@ public class ValidationEngine {
 
     private static final Logger logger = LoggerFactory.getLogger(ValidationEngine.class);
 
-    static List<ValidationRule> ruleList;
+    private final List<ValidationRule> ruleList;
 
     public ValidationEngine() {
         ruleList = new ArrayList<>();
     }
 
     public ValidationEngine addMandatoryParamValidationRule(List<ValidatorContext> validationParamList) {
-        ruleList.add(new MandatoryParamValidationRule(validationParamList));
+        this.ruleList.add(new MandatoryParamValidationRule(validationParamList));
         return this;
     }
 
     public ValidationEngine addOptionalStringParamValidationRule(List<ValidatorContext> validationParamList) {
-        ruleList.add(new OptionalStringParamValidationRule(validationParamList));
+        this.ruleList.add(new OptionalStringParamValidationRule(validationParamList));
         return this;
     }
 
     public ValidationEngine addAlphaNumericParamValidationRule(List<ValidatorContext> validationParamList) {
-        ruleList.add(new AlphaNumericParamValidationRule(validationParamList));
+        this.ruleList.add(new AlphaNumericParamValidationRule(validationParamList));
         return this;
     }
 
     public ValidationEngine addAlphaParamValidationRule(List<ValidatorContext> validationParamList) {
-        ruleList.add(new AlphaParamValidationRule(validationParamList));
+        this.ruleList.add(new AlphaParamValidationRule(validationParamList));
         return this;
     }
 
     public ValidationEngine addNumericParamValidationRule(List<ValidatorContext> validationParamList) {
-        ruleList.add(new NumericParamValidationRule(validationParamList));
+        this.ruleList.add(new NumericParamValidationRule(validationParamList));
         return this;
     }
 
     public ValidationEngine addMTCharacterSetXValidationRule(List<ValidatorContext> validationParamList) {
-        ruleList.add(new MTCharacterSetXValidationRule(validationParamList));
+        this.ruleList.add(new MTCharacterSetXValidationRule(validationParamList));
         return this;
     }
 
     public ValidationEngine addParameterLengthValidationRule(List<ValidatorContext> validationParamList,
                                                              List<String> definedLengthFields) {
-        ruleList.add(new ParameterLengthValidationRule(validationParamList, definedLengthFields));
+        this.ruleList.add(new ParameterLengthValidationRule(validationParamList, definedLengthFields));
         return this;
     }
 
     public ValidationEngine addDateFormatValidationRule(List<ValidatorContext> validationParamList) {
-        ruleList.add(new DateFormatValidationRule(validationParamList));
+        this.ruleList.add(new DateFormatValidationRule(validationParamList));
         return this;
     }
 
     public ValidationEngine addCurrencyFormatValidationRule(List<ValidatorContext> validationParamList) {
-        ruleList.add(new CurrencyFormatValidationRule(validationParamList));
+        this.ruleList.add(new CurrencyFormatValidationRule(validationParamList));
         return this;
     }
 
     public ValidationEngine addCustomRule(ValidationRule rule) {
-        ruleList.add(rule);
+        this.ruleList.add(rule);
         return this;
     }
 
@@ -105,18 +105,18 @@ public class ValidationEngine {
      */
     public ValidationResult validate(JSONObject payload) {
 
-        for (ValidationRule rule : ruleList) {
+        for (ValidationRule rule : this.ruleList) {
             ValidationResult validationResult = rule.validate(payload);
             if (logger.isDebugEnabled()) {
                 logger.debug(String.format("applicable validator %s invoked with context and returned %b",
-                        rule.getDisplayName(), validationResult.isValid()));
+                        rule.getClass().getSimpleName(), validationResult.isValid()));
             }
 
             if (!validationResult.isValid()) {
                 if (logger.isDebugEnabled()) {
                     logger.debug(String.format("Stop on failure validator %s returned unsuccessful" +
                                     " validation therefore stopping further validation",
-                            rule.getDisplayName()));
+                            rule.getClass().getSimpleName()));
                 }
                 return validationResult;
             }

@@ -23,19 +23,13 @@ import org.json.JSONObject;
 /**
  * Abstract Validation Rule.
  */
-public abstract class ValidationRule {
+public interface ValidationRule {
 
     /**
-     * Run validation rules for given context.
+     * Execute the validation for given context and return the result.
      *
+     * @param payload    Payload to be validated.
      * @return validation Validation Result.
      */
     public abstract ValidationResult validate(JSONObject payload);
-
-    /**
-     * Get Display Name Of Validation.
-     *
-     * @return display name string.
-     */
-    public abstract String getDisplayName();
 }
