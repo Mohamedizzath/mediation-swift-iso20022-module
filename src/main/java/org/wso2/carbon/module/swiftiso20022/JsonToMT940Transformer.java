@@ -43,26 +43,35 @@ public class JsonToMT940Transformer extends AbstractConnector {
 
     private static final Gson gson = new Gson();
 
+    /**
+     * This method will validate the input payload format and
+     * construct the fields required to generate the MT940 format.
+     *
+     * @param messageContext  Message Context
+     * @throws ConnectException  If an error occurs while processing the request
+     */
     public void connect(MessageContext messageContext) throws ConnectException {
         try {
             this.log.debug("Executing JsonToMT940Transformer to convert the JSON payload to MT940 format");
 
             org.apache.axis2.context.MessageContext axis2MessageContext = ((Axis2MessageContext) messageContext)
                     .getAxis2MessageContext();
-            Optional<String> payload = ConnectorUtils.buildMessagePayloadFromMessageContext(axis2MessageContext);
+            Optional<String> optionalPayload = ConnectorUtils
+                    .buildMessagePayloadFromMessageContext(axis2MessageContext);
 
-            if (payload.isPresent()) {
-                RequestPayloadModel requestPayload = gson.fromJson(payload.get(), RequestPayloadModel.class);
+            if (optionalPayload.isPresent()) {
+                RequestPayloadModel requestPayload = gson.fromJson(optionalPayload.get(), RequestPayloadModel.class);
 
-                ValidationResult validationResponse = validateRequestPayload(payload.get());
-                if (!validationResponse.isValid()) {
-                    this.log.error(validationResponse.getErrorMessage());
-                    ConnectorUtils.appendErrorToMessageContext(messageContext, validationResponse.getErrorCode(),
-                            validationResponse.getErrorMessage());
+                ValidationResult validationResult = validateRequestPayload(optionalPayload.get());
+                if (!validationResult.isValid()) {
+                    this.log.error(validationResult.getErrorMessage());
+                    ConnectorUtils.appendErrorToMessageContext(messageContext, validationResult.getErrorCode(),
+                            validationResult.getErrorMessage());
                     super.handleException(ConnectorConstants.ERROR_VALIDATION_FAILED, messageContext);
                 }
 
-                JSONObject mt940FormatJson = JsonToMt940Utils.appendConstructedFields(payload.get(), requestPayload);
+                JSONObject mt940FormatJson = JsonToMt940Utils.appendConstructedFields(optionalPayload.get(),
+                        requestPayload);
                 ConnectorUtils.appendJsonResponseToMessageContext(messageContext, mt940FormatJson.toString());
             } else {
                 this.log.error(ConnectorConstants.ERROR_MISSING_PAYLOAD);

@@ -38,6 +38,7 @@ public class ConnectorConstants {
     public static final String REV_DEBIT = "D";
     public static final String REV_CREDIT = "RC";
     public static final String LINE_BREAK = "\n";
+    public static final String SPACE = " ";
 
 
     public static final String COLON = ":";

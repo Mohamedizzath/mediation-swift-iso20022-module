@@ -18,7 +18,6 @@
 
 package org.wso2.carbon.module.swiftiso20022.utils;
 
-import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -61,12 +60,12 @@ public class JsonToMt940Utils {
 
         return JsonToMT940PayloadValidator.getMT940BalanceValidationEngine(fieldName)
                 .addCustomRule(new MT940IndicatorValidationRule(new ValidatorContext(MT940Constants.BAL_INDICATOR,
-                        StringUtils.join(fieldName, MT940Constants.DN_INDICATOR))))
+                        ConnectorUtils.concatFieldsWithSpaces(fieldName, MT940Constants.DN_INDICATOR))))
                 .addCustomRule(new MT940StatementTypeValidationRule(new ValidatorContext(
-                        MT940Constants.BAL_STATEMENT_TYPE, StringUtils.join(fieldName,
+                        MT940Constants.BAL_STATEMENT_TYPE, ConnectorUtils.concatFieldsWithSpaces(fieldName,
                         MT940Constants.DN_STATEMENT_TYPE))))
                 .addCustomRule(new MT940AmountFormatValidationRule(new ValidatorContext(MT940Constants.BAL_AMOUNT,
-                        StringUtils.join(fieldName, MT940Constants.DN_DATE))))
+                        ConnectorUtils.concatFieldsWithSpaces(fieldName, MT940Constants.DN_DATE))))
                 .validate(balanceDetails);
     }
 
@@ -124,8 +123,8 @@ public class JsonToMt940Utils {
                 .addCustomRule(new MT940TransactionTypeValidationRule(new ValidatorContext(
                                 MT940Constants.TRANSACTION_TYPE, MT940Constants.DN_TRANSACTION_TYPE)))
                 .addCustomRule(new MT940IndicatorValidationRule(new ValidatorContext(
-                                MT940Constants.TRANSACTION_INDICATOR, StringUtils.join(MT940Constants.DN_TRANSACTION,
-                        MT940Constants.DN_INDICATOR))));
+                                MT940Constants.TRANSACTION_INDICATOR, ConnectorUtils.concatFieldsWithSpaces(
+                                        MT940Constants.DN_TRANSACTION, MT940Constants.DN_INDICATOR))));
 
         for (int i = 0; i < transactions.length(); i++) {
             ValidationResult paramValidationResult = engine.validate(transactions.getJSONObject(i));

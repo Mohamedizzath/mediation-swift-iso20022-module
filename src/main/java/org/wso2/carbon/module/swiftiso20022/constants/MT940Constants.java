@@ -58,11 +58,11 @@ public class MT940Constants {
     public static final String DN_STATEMENT_NUMBER = "Statement Number";
     public static final String DN_OPENING_BALANCE = "Opening Balance";
     public static final String DN_TRANSACTION = "Transaction";
-    public static final String DN_AMOUNT = " Amount";
-    public static final String DN_CURRENCY = " Currency";
-    public static final String DN_DATE = " Date";
-    public static final String DN_INDICATOR = " Indicator";
-    public static final String DN_STATEMENT_TYPE = " Statement Type";
+    public static final String DN_AMOUNT = "Amount";
+    public static final String DN_CURRENCY = "Currency";
+    public static final String DN_DATE = "Date";
+    public static final String DN_INDICATOR = "Indicator";
+    public static final String DN_STATEMENT_TYPE = "Statement Type";
     public static final String DN_CLOSING_BALANCE = "Closing Balance";
     public static final String DN_CLOSING_AVAIL_BALANCE = "Closing Available Balance";
     public static final String DN_FORWARD_CLOSING_AVAIL_BALANCE = "Forward Available Balance";
@@ -98,7 +98,6 @@ public class MT940Constants {
     public static final String TRANSACTION_REFERENCE = "transactionReference";
     public static final String TRANSACTION_TYPE = "transactionType";
     public static final String TRANSACTION = "transaction";
-
 
     public static final String RESPONSE_OPENING_BAL = "openingBalance";
     public static final String RESPONSE_CLOSING_BAL = "closingBalance";

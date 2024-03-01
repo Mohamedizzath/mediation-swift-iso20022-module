@@ -98,8 +98,8 @@ public class MT940FormatValidator extends AbstractConnector {
      * Method to validate the MT940 format.
      *
      * @param messageContext  Message context
-     * @param lines           Payload lines
-     * @return                Validation Result
+     * @param lines           Payload lines containing the Mt940 fields
+     * @return        Validation Result with error details if there is an error, else empty Validation Result
      */
     private ValidationResult validateMT940(MessageContext messageContext, String[] lines) {
         Map<String, Object> extractFields = extractFields(lines);

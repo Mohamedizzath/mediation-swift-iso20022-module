@@ -400,7 +400,7 @@ public class MT940ValidationUtils {
         if (amount.contains(".")) {
             return new ValidationResult(ConnectorConstants.ERROR_T40,
                     String.format(ConnectorConstants.ERROR_PARAMETER_INVALID,
-                            fieldName + MT940Constants.DN_AMOUNT));
+                            ConnectorUtils.concatFieldsWithSpaces(fieldName, MT940Constants.DN_AMOUNT)));
         }
         return  new ValidationResult();
     }

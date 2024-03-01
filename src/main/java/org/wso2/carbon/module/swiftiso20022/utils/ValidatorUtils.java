@@ -47,7 +47,7 @@ public class ValidatorUtils {
         if (amount.length() > 16) {
             return new ValidationResult(ConnectorConstants.ERROR_M50,
                     String.format(ConnectorConstants.ERROR_PARAMETER_LENGTH,
-                            fieldName + MT940Constants.DN_AMOUNT, 15));
+                            ConnectorUtils.concatFieldsWithSpaces(fieldName, MT940Constants.DN_AMOUNT), 15));
         }
         return new ValidationResult();
     }

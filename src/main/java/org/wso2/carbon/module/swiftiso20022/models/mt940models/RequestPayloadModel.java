@@ -57,6 +57,7 @@ public class RequestPayloadModel {
     public void setBlock3(String block3) {
         this.block3 = block3;
     }
+
     public String getBlock3() {
         return this.block3;
     }

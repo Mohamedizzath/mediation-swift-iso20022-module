@@ -18,9 +18,9 @@
 
 package org.wso2.carbon.module.swiftiso20022.validation;
 
-import org.apache.commons.lang3.StringUtils;
 import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
 import org.wso2.carbon.module.swiftiso20022.constants.MT940Constants;
+import org.wso2.carbon.module.swiftiso20022.utils.ConnectorUtils;
 import org.wso2.carbon.module.swiftiso20022.validation.common.ValidationEngine;
 import org.wso2.carbon.module.swiftiso20022.validation.common.ValidatorContext;
 
@@ -87,13 +87,13 @@ public class JsonToMT940PayloadValidator {
      */
     private static List<ValidatorContext> getMandatoryParamsInBalances(String balanceName) {
         return List.of(
-                new ValidatorContext(MT940Constants.BAL_DATE, StringUtils.join(balanceName,
+                new ValidatorContext(MT940Constants.BAL_DATE, ConnectorUtils.concatFieldsWithSpaces(balanceName,
                         MT940Constants.DN_DATE)),
-                new ValidatorContext(MT940Constants.BAL_CURRENCY, StringUtils.join(balanceName,
+                new ValidatorContext(MT940Constants.BAL_CURRENCY, ConnectorUtils.concatFieldsWithSpaces(balanceName,
                         MT940Constants.DN_CURRENCY)),
-                new ValidatorContext(MT940Constants.BAL_AMOUNT, StringUtils.join(balanceName,
+                new ValidatorContext(MT940Constants.BAL_AMOUNT, ConnectorUtils.concatFieldsWithSpaces(balanceName,
                         MT940Constants.DN_AMOUNT)),
-                new ValidatorContext(MT940Constants.BAL_INDICATOR, StringUtils.join(balanceName,
+                new ValidatorContext(MT940Constants.BAL_INDICATOR, ConnectorUtils.concatFieldsWithSpaces(balanceName,
                         MT940Constants.DN_INDICATOR))
         );
     }
@@ -101,8 +101,8 @@ public class JsonToMT940PayloadValidator {
     // List of optional string fields from the payload for validation.
     private static List<ValidatorContext> getOptionalParamsInBalances(String balanceName) {
         return List.of(
-                new ValidatorContext(MT940Constants.BAL_STATEMENT_TYPE, StringUtils.join(balanceName,
-                        MT940Constants.DN_STATEMENT_TYPE))
+                new ValidatorContext(MT940Constants.BAL_STATEMENT_TYPE, ConnectorUtils.concatFieldsWithSpaces(
+                        balanceName, MT940Constants.DN_STATEMENT_TYPE))
         );
     }
 
@@ -113,13 +113,13 @@ public class JsonToMT940PayloadValidator {
      */
     public static List<ValidatorContext> getFieldsInBalanceForLengthValidation(String balanceName) {
         return List.of(
-                new ValidatorContext(MT940Constants.BAL_DATE, StringUtils.join(balanceName,
+                new ValidatorContext(MT940Constants.BAL_DATE, ConnectorUtils.concatFieldsWithSpaces(balanceName,
                         MT940Constants.DN_DATE), ConnectorConstants.DATE_LENGTH),
-                new ValidatorContext(MT940Constants.BAL_CURRENCY, StringUtils.join(balanceName,
+                new ValidatorContext(MT940Constants.BAL_CURRENCY, ConnectorUtils.concatFieldsWithSpaces(balanceName,
                         MT940Constants.DN_CURRENCY), ConnectorConstants.CURRENCY_LENGTH),
-                new ValidatorContext(MT940Constants.BAL_AMOUNT, StringUtils.join(balanceName,
+                new ValidatorContext(MT940Constants.BAL_AMOUNT, ConnectorUtils.concatFieldsWithSpaces(balanceName,
                         MT940Constants.DN_AMOUNT), ConnectorConstants.AMOUNT_LENGTH),
-                new ValidatorContext(MT940Constants.BAL_INDICATOR, StringUtils.join(balanceName,
+                new ValidatorContext(MT940Constants.BAL_INDICATOR, ConnectorUtils.concatFieldsWithSpaces(balanceName,
                         MT940Constants.DN_INDICATOR), ConnectorConstants.INDICATOR_LENGTH)
         );
     }
@@ -127,18 +127,18 @@ public class JsonToMT940PayloadValidator {
     // List of alpha fields from the payload for validation.
     private static List<ValidatorContext> getAlphaParamsInBalances(String balanceName) {
         return List.of(
-                new ValidatorContext(MT940Constants.BAL_INDICATOR, StringUtils.join(balanceName,
+                new ValidatorContext(MT940Constants.BAL_INDICATOR, ConnectorUtils.concatFieldsWithSpaces(balanceName,
                         MT940Constants.DN_INDICATOR)),
-                new ValidatorContext(MT940Constants.BAL_CURRENCY, StringUtils.join(balanceName,
+                new ValidatorContext(MT940Constants.BAL_CURRENCY, ConnectorUtils.concatFieldsWithSpaces(balanceName,
                         MT940Constants.DN_CURRENCY)),
-        new ValidatorContext(MT940Constants.BAL_STATEMENT_TYPE, StringUtils.join(balanceName,
+        new ValidatorContext(MT940Constants.BAL_STATEMENT_TYPE, ConnectorUtils.concatFieldsWithSpaces(balanceName,
                 MT940Constants.DN_STATEMENT_TYPE))
         );
     }
 
     private static List<ValidatorContext> getNumericParamsInBalances(String balanceName) {
         return List.of(
-                new ValidatorContext(MT940Constants.BAL_DATE, StringUtils.join(balanceName,
+                new ValidatorContext(MT940Constants.BAL_DATE, ConnectorUtils.concatFieldsWithSpaces(balanceName,
                         MT940Constants.DN_DATE))
         );
     }
@@ -146,7 +146,7 @@ public class JsonToMT940PayloadValidator {
     // List of date fields from the payload for validation.
     private static List<ValidatorContext> getDateParamInBalance(String balanceName) {
         return List.of(
-                new ValidatorContext(MT940Constants.BAL_DATE, StringUtils.join(balanceName,
+                new ValidatorContext(MT940Constants.BAL_DATE, ConnectorUtils.concatFieldsWithSpaces(balanceName,
                         MT940Constants.DN_DATE))
         );
     }
@@ -154,42 +154,44 @@ public class JsonToMT940PayloadValidator {
     // List of currency fields from the payload for validation.
     private static List<ValidatorContext> getCurrencyParamInBalance(String balanceName) {
         return List.of(
-                new ValidatorContext(MT940Constants.BAL_CURRENCY, StringUtils.join(balanceName,
+                new ValidatorContext(MT940Constants.BAL_CURRENCY, ConnectorUtils.concatFieldsWithSpaces(balanceName,
                         MT940Constants.DN_CURRENCY))
         );
     }
 
     // Method to construct list of fields in Transactions for Mandatory parameter validation.
     private static final List<ValidatorContext> mandatoryFieldsInTransaction = List.of(
-            new ValidatorContext(MT940Constants.TRANSACTION_DATE, StringUtils.join(
+            new ValidatorContext(MT940Constants.TRANSACTION_DATE, ConnectorUtils.concatFieldsWithSpaces(
                     MT940Constants.DN_TRANSACTION, MT940Constants.DN_DATE)),
-            new ValidatorContext(MT940Constants.TRANSACTION_CURRENCY, StringUtils.join(
+            new ValidatorContext(MT940Constants.TRANSACTION_CURRENCY, ConnectorUtils.concatFieldsWithSpaces(
                     MT940Constants.DN_TRANSACTION, MT940Constants.DN_CURRENCY)),
-            new ValidatorContext(MT940Constants.TRANSACTION_AMOUNT, StringUtils.join(
+            new ValidatorContext(MT940Constants.TRANSACTION_AMOUNT, ConnectorUtils.concatFieldsWithSpaces(
                     MT940Constants.DN_TRANSACTION, MT940Constants.DN_AMOUNT)),
-            new ValidatorContext(MT940Constants.TRANSACTION_INDICATOR, StringUtils.join(
+            new ValidatorContext(MT940Constants.TRANSACTION_INDICATOR, ConnectorUtils.concatFieldsWithSpaces(
                     MT940Constants.DN_TRANSACTION, MT940Constants.DN_INDICATOR)),
             new ValidatorContext(MT940Constants.TRANSACTION_REFERENCE,
                     MT940Constants.DN_TRANSACTION_REFERENCE),
-            new ValidatorContext(MT940Constants.CUSTOMER_REFERENCE, StringUtils.join(
+            new ValidatorContext(MT940Constants.CUSTOMER_REFERENCE, ConnectorUtils.concatFieldsWithSpaces(
                     MT940Constants.DN_TRANSACTION, MT940Constants.DN_CUSTOMER_REFERENCE)),
             new ValidatorContext(MT940Constants.TRANSACTION_TYPE, MT940Constants.DN_TRANSACTION_TYPE)
     );
 
     // Method to construct list of fields in Transactions for length validation.
     private static final List<ValidatorContext> fieldsInTransactionForLengthValidation = List.of(
-            new ValidatorContext(MT940Constants.TRANSACTION_DATE, StringUtils.join(MT940Constants.DN_TRANSACTION,
-                    MT940Constants.DN_DATE), ConnectorConstants.DATE_LENGTH),
-            new ValidatorContext(MT940Constants.TRANSACTION_CURRENCY, StringUtils.join(MT940Constants.DN_TRANSACTION,
-                    MT940Constants.DN_CURRENCY), ConnectorConstants.CURRENCY_LENGTH),
-            new ValidatorContext(MT940Constants.TRANSACTION_AMOUNT, StringUtils.join(MT940Constants.DN_TRANSACTION,
-                    MT940Constants.DN_AMOUNT), ConnectorConstants.AMOUNT_LENGTH),
-            new ValidatorContext(MT940Constants.TRANSACTION_INDICATOR, StringUtils.join(MT940Constants.DN_TRANSACTION,
-                    MT940Constants.DN_INDICATOR), ConnectorConstants.TRANSACTION_IND_LENGTH),
+            new ValidatorContext(MT940Constants.TRANSACTION_DATE, ConnectorUtils.concatFieldsWithSpaces(
+                    MT940Constants.DN_TRANSACTION, MT940Constants.DN_DATE), ConnectorConstants.DATE_LENGTH),
+            new ValidatorContext(MT940Constants.TRANSACTION_CURRENCY, ConnectorUtils.concatFieldsWithSpaces(
+                    MT940Constants.DN_TRANSACTION, MT940Constants.DN_CURRENCY), ConnectorConstants.CURRENCY_LENGTH),
+            new ValidatorContext(MT940Constants.TRANSACTION_AMOUNT, ConnectorUtils.concatFieldsWithSpaces(
+                    MT940Constants.DN_TRANSACTION, MT940Constants.DN_AMOUNT), ConnectorConstants.AMOUNT_LENGTH),
+            new ValidatorContext(MT940Constants.TRANSACTION_INDICATOR, ConnectorUtils.concatFieldsWithSpaces(
+                    MT940Constants.DN_TRANSACTION, MT940Constants.DN_INDICATOR),
+                    ConnectorConstants.TRANSACTION_IND_LENGTH),
             new ValidatorContext(MT940Constants.TRANSACTION_REFERENCE, MT940Constants.DN_TRANSACTION_REFERENCE,
                     ConnectorConstants.REFERENCE_LENGTH),
-            new ValidatorContext(MT940Constants.CUSTOMER_REFERENCE, StringUtils.join(MT940Constants.DN_TRANSACTION,
-                    MT940Constants.DN_CUSTOMER_REFERENCE), ConnectorConstants.REFERENCE_LENGTH),
+            new ValidatorContext(MT940Constants.CUSTOMER_REFERENCE, ConnectorUtils.concatFieldsWithSpaces(
+                    MT940Constants.DN_TRANSACTION, MT940Constants.DN_CUSTOMER_REFERENCE),
+                    ConnectorConstants.REFERENCE_LENGTH),
             new ValidatorContext(MT940Constants.TRANSACTION_TYPE, MT940Constants.DN_TRANSACTION_TYPE,
                     ConnectorConstants.TRANSACTION_TYPE_LENGTH)
     );
@@ -206,25 +208,25 @@ public class JsonToMT940PayloadValidator {
     private static final List<ValidatorContext> alphaParamsInTransactions = List.of(
             new ValidatorContext(MT940Constants.TRANSACTION_INDICATOR,
                     MT940Constants.DN_TRANSACTION_IND),
-            new ValidatorContext(MT940Constants.TRANSACTION_CURRENCY, StringUtils.join(
+            new ValidatorContext(MT940Constants.TRANSACTION_CURRENCY, ConnectorUtils.concatFieldsWithSpaces(
                     MT940Constants.DN_TRANSACTION, MT940Constants.DN_CURRENCY)),
             new ValidatorContext(MT940Constants.TRANSACTION_TYPE, MT940Constants.DN_TRANSACTION_TYPE)
     );
 
     private static final List<ValidatorContext> numericParamsInTransactions = List.of(
-            new ValidatorContext(MT940Constants.TRANSACTION_DATE, StringUtils.join(
+            new ValidatorContext(MT940Constants.TRANSACTION_DATE, ConnectorUtils.concatFieldsWithSpaces(
                     MT940Constants.DN_TRANSACTION, MT940Constants.DN_DATE))
     );
 
     // List of date fields from the payload for validation.
     private static final List<ValidatorContext> dateParamInTransaction = List.of(
-            new ValidatorContext(MT940Constants.BAL_DATE, StringUtils.join(
+            new ValidatorContext(MT940Constants.BAL_DATE, ConnectorUtils.concatFieldsWithSpaces(
                     MT940Constants.DN_TRANSACTION, MT940Constants.DN_DATE))
     );
 
     // List of currency fields from the payload for validation.
     private static final List<ValidatorContext> currencyParamInTransaction = List.of(
-            new ValidatorContext(MT940Constants.BAL_CURRENCY, StringUtils.join(
+            new ValidatorContext(MT940Constants.BAL_CURRENCY, ConnectorUtils.concatFieldsWithSpaces(
                     MT940Constants.DN_TRANSACTION, MT940Constants.DN_CURRENCY))
     );
 
