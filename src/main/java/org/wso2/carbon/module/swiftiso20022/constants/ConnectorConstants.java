@@ -40,7 +40,6 @@ public class ConnectorConstants {
     public static final String LINE_BREAK = "\n";
     public static final String SPACE = " ";
 
-
     public static final String COLON = ":";
     public static final String SLASH = "/";
     public static final String DOUBLE_SLASH = "//";
