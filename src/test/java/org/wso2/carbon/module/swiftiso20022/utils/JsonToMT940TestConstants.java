@@ -42,7 +42,7 @@ public class JsonToMT940TestConstants {
             "   \"reference\": \"20240105-4\",\n" +
             "   \"accountNumber\": \"BDN200000\",\n" +
             "   \"accountNumberIdentifier\": \"BDN200000\",\n" +
-            "   \"sequenceNumber\": \"14\",\n" +
+            "   \"sequenceNumber\": \"141\",\n" +
             "   \"transactions\": [\n" +
             "       {\n" +
             "           \"dateTime\": \"230405\",\n" +
