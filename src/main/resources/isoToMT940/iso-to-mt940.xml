@@ -29,12 +29,10 @@
 :21:${docElement["C:BkToCstmrStmt/C:Stmt/C:Id"]}
 :25:${docElement["C:BkToCstmrStmt/C:Stmt/C:Acct/C:Id/C:Othr/C:Id"]}
 <#assign firstStat = true>
-<#if docElement["C:BkToCstmrStmt/C:Stmt/C:ElctrncSeqNb"][0]?? && docElement["C:BkToCstmrStmt/C:GrpHdr/C:MsgPgntn/C:PgNb"][0]??>
-:28C:${docElement["C:BkToCstmrStmt/C:Stmt/C:ElctrncSeqNb"]}/${docElement["C:BkToCstmrStmt/C:GrpHdr/C:MsgPgntn/C:PgNb"]}
-  <#if docElement["C:BkToCstmrStmt/C:GrpHdr/C:MsgPgntn/C:PgNb"] gt 1>
+:28C:${docElement["C:BkToCstmrStmt/C:Stmt/C:ElctrncSeqNb"]}/${docElement["C:BkToCstmrStmt/C:Stmt/C:LglSeqNb "]}
+  <#if docElement["C:BkToCstmrStmt/C:GrpHdr/C:MsgPgntn/C:PgNb"]?has_content && docElement["C:BkToCstmrStmt/C:GrpHdr/C:MsgPgntn/C:PgNb"] gt 1>
      <#assign firstStat = false>
   </#if>
-</#if>
 <#-- Balance elements -->
 <#assign balances = docElement["C:BkToCstmrStmt/C:Stmt/C:Bal"]>
 <#list balances as balance>
