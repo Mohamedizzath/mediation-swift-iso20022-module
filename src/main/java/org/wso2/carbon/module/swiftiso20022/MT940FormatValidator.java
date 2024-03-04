@@ -135,10 +135,7 @@ public class MT940FormatValidator extends AbstractConnector {
         List<String> statementLine = new ArrayList<>();
 
         for (String line : lines) {
-            if (line.startsWith(OPEN_BRACKET) || line.startsWith(DASH)) {
-                continue;
-            }
-            if (line.length() < 3) {
+            if (line.startsWith(OPEN_BRACKET) || line.startsWith(DASH) || line.length() < 3) {
                 continue;
             }
             switch (line.substring(0, 3)) {
