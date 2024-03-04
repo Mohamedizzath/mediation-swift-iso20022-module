@@ -18,60 +18,37 @@
 
 package org.wso2.carbon.module.swiftiso20022.utils;
 
-import org.apache.commons.lang3.StringUtils;
 import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
-import org.wso2.carbon.module.swiftiso20022.model.ErrorModel;
+import org.wso2.carbon.module.swiftiso20022.constants.MT940Constants;
+import org.wso2.carbon.module.swiftiso20022.validation.common.ValidationResult;
 
-import java.util.Currency;
-import java.util.regex.Pattern;
 
 /**
  * Class to validate the request payload.
  */
 public class ValidatorUtils {
 
-    /** Method to validate whether currency is in ISO 4217 format.
-     *
-     * @param currency  Currency to be validated
-     * @return     Whether currency is valid
-     */
-    public static boolean isValidCurrency(String currency) {
-        if (StringUtils.isBlank(currency)) {
-            return false;
-        }
-        return Currency.getAvailableCurrencies().stream().anyMatch(c -> c.getCurrencyCode().equals(currency));
-    }
-
     /** Method to validate whether amount is valid.
      *
      * @param amount  Amount to be validated
      * @return     Whether amount is valid
      */
-    public static ErrorModel validateAmountLength(String amount, String fieldName) {
+    public static ValidationResult validateAmountLength(String amount, String fieldName) {
 
         if (amount == null) {
-            return new ErrorModel(ConnectorConstants.ERROR_T13,
+            return new ValidationResult(ConnectorConstants.ERROR_T13,
                     ConnectorConstants.ERROR_AMOUNT_NULL);
         }
         if (amount.isBlank()) {
-            return new ErrorModel(ConnectorConstants.ERROR_C03,
+            return new ValidationResult(ConnectorConstants.ERROR_C03,
                     ConnectorConstants.ERROR_AMOUNT_SIZE_INVALID);
         }
 
         if (amount.length() > 16) {
-            return new ErrorModel(ConnectorConstants.ERROR_M50,
+            return new ValidationResult(ConnectorConstants.ERROR_M50,
                     String.format(ConnectorConstants.ERROR_PARAMETER_LENGTH,
-                            fieldName + ConnectorConstants.AMOUNT, 15));
+                            ConnectorUtils.concatFieldsWithSpaces(fieldName, MT940Constants.DN_AMOUNT), 15));
         }
-        return new ErrorModel();
-    }
-
-    /** Method to validate whether a values is a number.
-     *
-     * @param number  Number to be validated
-     * @return     Whether the value is a number
-     */
-    public static boolean isNumber(String number) {
-        return Pattern.matches(ConnectorConstants.NUMBER_REGEX_PATTERN, number);
+        return new ValidationResult();
     }
 }

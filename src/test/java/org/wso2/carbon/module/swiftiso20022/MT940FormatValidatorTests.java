@@ -13,11 +13,11 @@ import org.powermock.modules.testng.PowerMockTestCase;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
-import org.wso2.carbon.module.swiftiso20022.model.ErrorModel;
+import org.wso2.carbon.module.swiftiso20022.constants.MT940Constants;
 import org.wso2.carbon.module.swiftiso20022.utils.ConnectorUtils;
 import org.wso2.carbon.module.swiftiso20022.utils.MT940FormatValidatorTestConstants;
 import org.wso2.carbon.module.swiftiso20022.utils.MT940ValidationUtils;
+import org.wso2.carbon.module.swiftiso20022.validation.common.ValidationResult;
 
 /**
  * Test class for MT940FormatValidator.
@@ -94,66 +94,67 @@ public class MT940FormatValidatorTests extends PowerMockTestCase {
     @Test(dataProvider = "invalidReferenceDataProvider",
             dataProviderClass = MT940FormatValidatorTestConstants.class)
     public void testValidateTransactionReference(String reference) {
-        ErrorModel error = MT940ValidationUtils.validateReference(reference,
-                ConnectorConstants.TRANSACTION_REF);
+        ValidationResult validationResult = MT940ValidationUtils.validateReference(reference,
+                MT940Constants.DN_TRANSACTION_REFERENCE);
 
-        Assert.assertTrue(error.isError());
+        Assert.assertFalse(validationResult.isValid());
     }
 
     @Test(dataProvider = "invalidReferenceDataProvider",
             dataProviderClass = MT940FormatValidatorTestConstants.class)
     public void testValidateRelatedReference(String reference) {
-        ErrorModel error = MT940ValidationUtils.validateReference(reference, ConnectorConstants.RELATED_REF);
+        ValidationResult validationResult = MT940ValidationUtils.validateReference(reference,
+                MT940Constants.DN_RELATED_REF);
 
-        Assert.assertTrue(error.isError());
+        Assert.assertFalse(validationResult.isValid());
     }
 
     @Test(dataProvider = "invalidAccountIdentifierDataProvider",
             dataProviderClass = MT940FormatValidatorTestConstants.class)
     public void testValidateAccountIdentifier(String account) {
-        ErrorModel error = MT940ValidationUtils.validateAccountIdentifier(account);
+        ValidationResult validationResult = MT940ValidationUtils.validateAccountIdentifier(account);
 
-        Assert.assertTrue(error.isError());
+        Assert.assertFalse(validationResult.isValid());
     }
 
     @Test(dataProvider = "invalidStatementNumberDataProvider",
             dataProviderClass = MT940FormatValidatorTestConstants.class)
     public void testValidateStatementNumber(String statementNumber) {
-        ErrorModel error = MT940ValidationUtils.validateStatementNumber(statementNumber);
+        ValidationResult validationResult = MT940ValidationUtils.validateStatementNumber(statementNumber);
 
-        Assert.assertTrue(error.isError());
+        Assert.assertFalse(validationResult.isValid());
     }
 
     @Test(dataProvider = "invalidBalanceDataProvider",
             dataProviderClass = MT940FormatValidatorTestConstants.class)
     public void testValidateOpeningBalance(String balance) {
-        ErrorModel error = MT940ValidationUtils.validateOpeningBalance(balance);
+        ValidationResult validationResult = MT940ValidationUtils.validateOpeningBalance(balance);
 
-        Assert.assertTrue(error.isError());
+        Assert.assertFalse(validationResult.isValid());
     }
 
     @Test(dataProvider = "invalidBalanceDataProvider",
             dataProviderClass = MT940FormatValidatorTestConstants.class)
     public void testValidateClosingBalance(String balance) {
-        ErrorModel error = MT940ValidationUtils.validateClosingBalance(balance);
+        ValidationResult validationResult = MT940ValidationUtils.validateClosingBalance(balance);
 
-        Assert.assertTrue(error.isError());
+        Assert.assertFalse(validationResult.isValid());
     }
 
     @Test(dataProvider = "invalidBalanceDataProvider",
             dataProviderClass = MT940FormatValidatorTestConstants.class)
     public void testValidateClosingAvailableBalance(String balance) {
-        ErrorModel error = MT940ValidationUtils.validateClosingAvailableBalance(balance);
+        ValidationResult validationResult = MT940ValidationUtils.validateClosingAvailableBalance(balance);
 
-        Assert.assertTrue(error.isError());
+        Assert.assertFalse(validationResult.isValid());
     }
 
     @Test(dataProvider = "invalidBalanceDataProvider",
             dataProviderClass = MT940FormatValidatorTestConstants.class)
     public void testValidateForwardAvailableBalance(String balance) {
-        ErrorModel error = MT940ValidationUtils.validateForwardAvailableBalance(balance);
+        ValidationResult validationResult = MT940ValidationUtils.validateForwardAvailableBalance(balance);
 
-        Assert.assertTrue(error.isError());
+        Assert.assertFalse(validationResult.isValid());
     }
 
 }

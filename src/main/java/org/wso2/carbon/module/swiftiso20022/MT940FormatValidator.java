@@ -26,9 +26,9 @@ import org.json.XML;
 import org.wso2.carbon.connector.core.AbstractConnector;
 import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
 import org.wso2.carbon.module.swiftiso20022.constants.MT940Constants;
-import org.wso2.carbon.module.swiftiso20022.model.ErrorModel;
 import org.wso2.carbon.module.swiftiso20022.utils.ConnectorUtils;
 import org.wso2.carbon.module.swiftiso20022.utils.MT940ValidationUtils;
+import org.wso2.carbon.module.swiftiso20022.validation.common.ValidationResult;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -78,9 +78,9 @@ public class MT940FormatValidator extends AbstractConnector {
         }
         if (StringUtils.isNotBlank(payload)) {
             String[] lines = payload.split(ConnectorConstants.LINE_BREAK);
-            ErrorModel validationResponse = validateMT940(messageContext, lines);
+            ValidationResult validationResponse = validateMT940(messageContext, lines);
 
-            if (validationResponse.isError()) {
+            if (!validationResponse.isValid()) {
                 this.log.error(validationResponse.getErrorMessage());
                 ConnectorUtils.appendErrorToMessageContext(messageContext, validationResponse.getErrorCode(),
                         validationResponse.getErrorMessage());
@@ -98,30 +98,30 @@ public class MT940FormatValidator extends AbstractConnector {
      * Method to validate the MT940 format.
      *
      * @param messageContext  Message context
-     * @param lines           Payload lines
-     * @return                Error model
+     * @param lines           Payload lines containing the Mt940 fields
+     * @return        Validation Result with error details if there is an error, else empty Validation Result
      */
-    private ErrorModel validateMT940(MessageContext messageContext, String[] lines) {
-        Map<String, Object> extractFields = extractFields(lines);
+    private ValidationResult validateMT940(MessageContext messageContext, String[] lines) {
+        Map<String, Object> extractedFields = extractFields(lines);
 
         if (!MT940ValidationUtils.isValidC1Rule(lines)) {
-            return new ErrorModel(ConnectorConstants.ERROR_C24,
+            return new ValidationResult(ConnectorConstants.ERROR_C24,
                     ConnectorConstants.ERROR_FIELD_86);
         }
 
         if (!MT940ValidationUtils.isValidC2Rule(lines)) {
-            return new ErrorModel(ConnectorConstants.ERROR_C27,
+            return new ValidationResult(ConnectorConstants.ERROR_C27,
                     ConnectorConstants.ERROR_BALANCES);
         }
 
-        ErrorModel errorModel = MT940ValidationUtils.validateMT940Format(extractFields);
-        if (errorModel.isError()) {
-            this.log.error(errorModel.getErrorMessage());
-            ConnectorUtils.appendErrorToMessageContext(messageContext, errorModel.getErrorCode(),
-                    errorModel.getErrorMessage());
-            this.handleException(errorModel.getErrorMessage(), messageContext);
+        ValidationResult validationResult = MT940ValidationUtils.validateMT940Format(extractedFields);
+        if (!validationResult.isValid()) {
+            this.log.error(validationResult.getErrorMessage());
+            ConnectorUtils.appendErrorToMessageContext(messageContext, validationResult.getErrorCode(),
+                    validationResult.getErrorMessage());
+            this.handleException(validationResult.getErrorMessage(), messageContext);
         }
-        return new ErrorModel();
+        return new ValidationResult();
     }
 
     /**
@@ -135,37 +135,37 @@ public class MT940FormatValidator extends AbstractConnector {
         List<String> statementLine = new ArrayList<>();
 
         for (String line : lines) {
-            if (line.startsWith(OPEN_BRACKET) || line.startsWith(DASH)) {
+            if (line.startsWith(OPEN_BRACKET) || line.startsWith(DASH) || line.length() < 3) {
                 continue;
             }
             switch (line.substring(0, 3)) {
-                case ConnectorConstants.MT940_TRANSACTION_REF :
-                    fields.put(ConnectorConstants.TRANSACTION_REF, line);
+                case MT940Constants.MT940_TRANSACTION_REF :
+                    fields.put(MT940Constants.DN_TRANSACTION_REF, line);
                     break;
-                case ConnectorConstants.MT940_RELATED_REF :
-                    fields.put(ConnectorConstants.RELATED_REF, line);
+                case MT940Constants.MT940_RELATED_REF :
+                    fields.put(MT940Constants.DN_RELATED_REF, line);
                     break;
-                case ConnectorConstants.MT940_ACCOUNT_NO :
-                    fields.put(ConnectorConstants.ACC_IDENTIFICATION, line);
+                case MT940Constants.MT940_ACCOUNT_NO :
+                    fields.put(MT940Constants.DN_ACC_IDENTIFICATION, line);
                     break;
-                case ConnectorConstants.MT940_STATEMENT_NO :
-                    fields.put(ConnectorConstants.STATEMENT_NUMBER, line);
+                case MT940Constants.MT940_STATEMENT_NO :
+                    fields.put(MT940Constants.DN_STATEMENT_NUMBER, line);
                     break;
-                case ConnectorConstants.MT940_OPENING_BAL :
-                    fields.put(ConnectorConstants.OPENING_BALANCE, line);
+                case MT940Constants.MT940_OPENING_BAL :
+                    fields.put(MT940Constants.DN_OPENING_BALANCE, line);
                     break;
-                case ConnectorConstants.MT940_STATEMENT_LINE :
+                case MT940Constants.MT940_STATEMENT_LINE :
                     statementLine.add(line);
-                    fields.put(ConnectorConstants.STATEMENT_LINE, statementLine);
+                    fields.put(MT940Constants.DN_STATEMENT_LINE, statementLine);
                     break;
-                case ConnectorConstants.MT940_CLOSING_BAL :
-                    fields.put(ConnectorConstants.CLOSING_BALANCE, line);
+                case MT940Constants.MT940_CLOSING_BAL :
+                    fields.put(MT940Constants.DN_CLOSING_BALANCE, line);
                     break;
-                case ConnectorConstants.MT940_CLOSING_AVAIL_BAL :
-                    fields.put(ConnectorConstants.CLOSING_AVAIL_BALANCE, line);
+                case MT940Constants.MT940_CLOSING_AVAIL_BAL :
+                    fields.put(MT940Constants.DN_CLOSING_AVAIL_BALANCE, line);
                     break;
-                case ConnectorConstants.MT940_FORWARD_AVAIL_BAL :
-                    fields.put(ConnectorConstants.FORWARD_CLOSING_AVAIL_BALANCE, line);
+                case MT940Constants.MT940_FORWARD_AVAIL_BAL :
+                    fields.put(MT940Constants.DN_FORWARD_CLOSING_AVAIL_BALANCE, line);
                     break;
                 default:
                     break;
