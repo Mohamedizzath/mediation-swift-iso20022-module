@@ -84,7 +84,9 @@ public class ISOMessageParser {
 
         if (element == null) {
             // No element to be extracted
-            throw new ConnectException("Error: " + xPath + " element not present in the XML");
+            String errMsg = String.format("Error: %s element not present in the XML", xPath);
+
+            throw new ConnectException(errMsg);
         }
 
         return element.toString();
