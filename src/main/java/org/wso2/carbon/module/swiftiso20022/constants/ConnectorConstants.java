@@ -87,6 +87,8 @@ public class ConnectorConstants {
     public static final String XPATH_DOCUMENT = "/doc:Document";
     public static final String DOCUMENT_PREFIX = "doc";
     public static final String XML_INPUT_DOCUMENT_NAMESPACE = "urn:iso:std:iso:20022:tech:xsd:camt.053.001.11";
+    public static final String XPATH_BUSINESS_MESSAGE_START = "/soapenv:Body/BizMsgEnvlp";
+    public static final String XPATH_CAMT_MESSAGE_START = "/soapenv:Body";
     public static final String XPATH_ELECTSEQ_NUMBER = "/doc:Document/doc:BkToCstmrStmt/doc:Stmt/doc:ElctrncSeqNb";
     public static final String XPATH_LEGALSEQ_NUMBER = "/doc:Document/doc:BkToCstmrStmt/doc:Stmt/doc:LglSeqNb";
     public static final String XPATH_BALANCE_ELEMENTS =

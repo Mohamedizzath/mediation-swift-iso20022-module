@@ -110,9 +110,9 @@ public class ISOMessageParser {
      */
     public static String constructXPath(boolean isBusinessMsg, String xPath) {
         if (isBusinessMsg) {
-            return "/soapenv:Body/BizMsgEnvlp" + xPath;
+            return ConnectorConstants.XPATH_BUSINESS_MESSAGE_START + xPath;
         } else {
-            return "/soapenv:Body" + xPath;
+            return ConnectorConstants.XPATH_CAMT_MESSAGE_START + xPath;
         }
     }
 }
