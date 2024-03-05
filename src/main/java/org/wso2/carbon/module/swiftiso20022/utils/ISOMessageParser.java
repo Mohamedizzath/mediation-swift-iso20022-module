@@ -84,7 +84,9 @@ public class ISOMessageParser {
 
         if (element == null) {
             // No element to be extracted
-            throw new ConnectException("Error: " + xPath + " element not present in the XML");
+            String errMsg = String.format("Error: %s element not present in the XML", xPath);
+
+            throw new ConnectException(errMsg);
         }
 
         return element.toString();
@@ -108,9 +110,9 @@ public class ISOMessageParser {
      */
     public static String constructXPath(boolean isBusinessMsg, String xPath) {
         if (isBusinessMsg) {
-            return "/soapenv:Body/BizMsgEnvlp" + xPath;
+            return ConnectorConstants.XPATH_BUSINESS_MESSAGE_START + xPath;
         } else {
-            return "/soapenv:Body" + xPath;
+            return ConnectorConstants.XPATH_CAMT_MESSAGE_START + xPath;
         }
     }
 }

@@ -44,9 +44,7 @@ public class ISO20022Camt053ValidatorUtils {
             String xPathToSeqNumber = ISOMessageParser.constructXPath(isBusinessMsg,
                     ConnectorConstants.XPATH_ELECTSEQ_NUMBER);
 
-            OMElement seqNumberElement = ISOMessageParser.getXMLElementByXPath(xPathToSeqNumber, mc);
-
-            return seqNumberElement != null;
+            return ISOMessageParser.getXMLElementByXPath(xPathToSeqNumber, mc) != null;
     }
 
     /**
@@ -61,9 +59,7 @@ public class ISO20022Camt053ValidatorUtils {
         String xPathToLogicNumber = ISOMessageParser.constructXPath(isBusinessMsg,
                 ConnectorConstants.XPATH_LEGALSEQ_NUMBER);
 
-        OMElement logicNumberElement = ISOMessageParser.getXMLElementByXPath(xPathToLogicNumber, mc);
-
-        return logicNumberElement != null;
+        return ISOMessageParser.getXMLElementByXPath(xPathToLogicNumber, mc) != null;
     }
 
     /**

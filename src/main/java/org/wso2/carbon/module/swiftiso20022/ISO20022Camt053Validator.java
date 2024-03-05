@@ -79,14 +79,14 @@ public class ISO20022Camt053Validator extends AbstractConnector {
             String errMsg = String.format("%s, Line number: %d, Column number: %d",
                     e.getMessage(), e.getLineNumber(), e.getColumnNumber());
 
-            this.log.error(e);
+            this.log.error(e.getMessage());
             ConnectorUtils.appendErrorToMessageContext(messageContext,
                     ConnectorConstants.ERROR_INVALID_ISO_CAMT053_XML_MSG,
                     errMsg);
 
             throw new ConnectException(e, errMsg);
         } catch (SAXException | JaxenException | IOException e) {
-            this.log.error(e);
+            this.log.error(e.getMessage());
             ConnectorUtils.appendErrorToMessageContext(messageContext,
                     ConnectorConstants.ERROR_VALIDATING_XML, e.getMessage());
 
