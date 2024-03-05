@@ -35,6 +35,7 @@ import java.io.IOException;
  * Validate the ISO20022.head.001 message.
  */
 public class ISO20022AppHead001Validator extends AbstractConnector {
+
     @Override
     public void connect(MessageContext messageContext) throws ConnectException {
         String rootElementTag = ISOMessageParser.getRootXMLElement(messageContext);
