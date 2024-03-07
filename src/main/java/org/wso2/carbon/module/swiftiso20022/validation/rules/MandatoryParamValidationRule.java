@@ -60,6 +60,9 @@ public class MandatoryParamValidationRule implements ValidationRule {
                                         ctx.getFieldDisplayName()));
                     }
                 }
+            } else {
+                return new ValidationResult(ConnectorConstants.ERROR_CODE_MISSING_PARAM,
+                        String.format(ConnectorConstants.ERROR_MANDATORY_PARAM_MISSING, ctx.getFieldDisplayName()));
             }
         }
         return new ValidationResult();

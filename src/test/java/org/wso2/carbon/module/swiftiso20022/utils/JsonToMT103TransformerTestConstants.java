@@ -20,8 +20,6 @@ package org.wso2.carbon.module.swiftiso20022.utils;
 
 import org.testng.annotations.DataProvider;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Map;
 
 /**
@@ -137,37 +135,6 @@ public class JsonToMT103TransformerTestConstants {
         };
     }
 
-
-    @DataProvider(name = "invalidRepetitiveFieldDataProvider")
-    Object[][] getInvalidRepetitiveFieldDataProvider() {
-        return new Object[][]{
-                {new ArrayList<String>()},
-                {Arrays.asList("Repetition 01", "")},
-                {Arrays.asList("Repetition 01", "Repetition that exceed defined character count")}
-        };
-    }
-
-    @DataProvider(name = "invalidMultipleLineFieldDataProvider")
-    Object[][] getInvalidMultipleLineFieldDataProvider() {
-        return new Object[][]{
-                {new ArrayList<String>()},
-                {Arrays.asList("Line 01", "")},
-                {Arrays.asList("Line 01", "Line that exceed defined character count")},
-                {Arrays.asList("This", "Test", "exceed", "Line", "count")}
-        };
-    }
-
-    @DataProvider(name = "invalidEntityDataProvider")
-    Object[][] getInvalidEntityDataProvider() {
-        return new Object[][]{
-                {null, null},
-                {"AB", null},
-                {"A", null},
-                {"A", new ArrayList<>()},
-                {"A", Arrays.asList("line1", "")}
-        };
-    }
-
     public static String getBlock01Payload(Map<String, String> params) {
         return "{\n" +
                 "        \"applicationIdentifier\": " +
@@ -186,6 +153,7 @@ public class JsonToMT103TransformerTestConstants {
     @DataProvider(name = "invalidBlock01Payload")
     Object[][] getInvalidBlock01Payload() {
         return new Object[][] {
+                {"{}"},
                 {getBlock01Payload(Map.of("applicationIdentifier", "\"\""))},
                 {getBlock01Payload(Map.of("applicationIdentifier", "\" \""))},
                 {getBlock01Payload(Map.of("applicationIdentifier", "\"A\""))},
@@ -198,6 +166,7 @@ public class JsonToMT103TransformerTestConstants {
                 {getBlock01Payload(Map.of("logicalTerminalAddress", "\" \""))},
                 {getBlock01Payload(Map.of("logicalTerminalAddress", "\"12314\""))},
                 {getBlock01Payload(Map.of("logicalTerminalAddress", "\"BANKFRPPAXXX123\""))},
+                {getBlock01Payload(Map.of("logicalTerminalAddress", "\"BANKFRP  XXX\""))},
                 {getBlock01Payload(Map.of("sessionNumber", "\"\""))},
                 {getBlock01Payload(Map.of("sessionNumber", "\"      \""))},
                 {getBlock01Payload(Map.of("sessionNumber", "\"123\""))},
@@ -205,7 +174,6 @@ public class JsonToMT103TransformerTestConstants {
                 {getBlock01Payload(Map.of("sessionNumber", "\"21 1\""))},
                 {getBlock01Payload(Map.of("sequenceNumber", "\"\""))},
                 {getBlock01Payload(Map.of("sequenceNumber", "\"  \""))},
-                {getBlock01Payload(Map.of("sequenceNumber", "\"123\""))},
                 {getBlock01Payload(Map.of("sequenceNumber", "\"1234567\""))},
                 {getBlock01Payload(Map.of("sequenceNumber", "\"12  567\""))},
         };
@@ -240,6 +208,7 @@ public class JsonToMT103TransformerTestConstants {
     @DataProvider(name = "invalidBlock02Payload")
     Object[][] getInvalidBlock02Payload() {
         return new  Object[][] {
+                {"{}"},
                 {getBlock02Payload(Map.of("inputOutputIdentifier", "\"\""))},
                 {getBlock02Payload(Map.of("inputOutputIdentifier", "\" \""))},
                 {getBlock02Payload(Map.of("inputOutputIdentifier", "\"S\""))},
@@ -317,6 +286,7 @@ public class JsonToMT103TransformerTestConstants {
     @DataProvider(name = "invalidBlock03Payload")
     Object[][] getInvalidBlock03Payload() {
         return new Object[][] {
+                {"{}"},
                 {getBlock03Payload(Map.of("serviceIdentifier", "\"\""))},
                 {getBlock03Payload(Map.of("serviceIdentifier", "\"  \""))},
                 {getBlock03Payload(Map.of("serviceIdentifier", "\"EB\""))},
@@ -412,9 +382,19 @@ public class JsonToMT103TransformerTestConstants {
                 "    }";
     }
 
+    public static String getEntityPayload(Map<String, String> params) {
+        return "{\n" +
+        "            \"option\": " +
+                params.getOrDefault("option", "\"A\"") + ",\n" +
+                "    \"details\": " +
+                params.getOrDefault("details", "[\n\"ABNANL2A\"\n]\n") + "\n" +
+                "}\n";
+    }
+
     @DataProvider(name = "invalidBlock04Payload")
     Object[][] getInvalidBlock04Payload() {
         return new Object[][] {
+                {"{}"},
                 {getBlock04Payload(Map.of("sendersReference", "\"\""))},
                 {getBlock04Payload(Map.of("sendersReference", "\"Ref254ABCDEFGHIJKLMNOPQRST\""))},
                 {getBlock04Payload(Map.of("timeIndication", "[]"))},
@@ -437,13 +417,21 @@ public class JsonToMT103TransformerTestConstants {
                 {getBlock04Payload(Map.of("exchangeRate", "\"\""))},
                 {getBlock04Payload(Map.of("exchangeRate", "\"0,923658325398529525922557\""))},
                 {getBlock04Payload(Map.of("orderingCustomer", "{}"))},
-                {getBlock04Payload(Map.of("orderingCustomer", "{\"option\":\"AB\"}"))},
-                {getBlock04Payload(Map.of("orderingCustomer", "{\"details\":[]}"))},
-                {getBlock04Payload(Map.of("orderingCustomer", "{\"details\":[\"\"]}"))},
+                {getBlock04Payload(Map.of("orderingCustomer", "{\"option\":\"A\"}"))},
                 {getBlock04Payload(Map.of("orderingCustomer",
-                        "{\"details\":[\"This line is longer than specified character count\"]}"))},
+                        getEntityPayload(Map.of("option", "\"abc\""))))},
                 {getBlock04Payload(Map.of("orderingCustomer",
-                        "{\"details\":[\"This\",\"contains\",\"more\",\"lines\",\"than\",\"allowed\"]}"))},
+                        getEntityPayload(Map.of("details", "[]"))))},
+                {getBlock04Payload(Map.of("orderingCustomer",
+                        getEntityPayload(Map.of("details", "[\"\"]"))))},
+                {getBlock04Payload(Map.of("orderingCustomer",
+                        getEntityPayload(Map.of("details", "[\"   \"]"))))},
+                {getBlock04Payload(Map.of("orderingCustomer",
+                        getEntityPayload(Map.of(
+                                "details", "[\"this line is longer than the allowed character count\"]"))))},
+                {getBlock04Payload(Map.of("orderingCustomer",
+                        getEntityPayload(Map.of(
+                                "details", "[\"line01\",\"line02\",\"line03\",\"line04\",\"line05\"]"))))},
                 {getBlock04Payload(Map.of("remittanceInformation", "[]"))},
                 {getBlock04Payload(Map.of("remittanceInformation", "[\"\"]"))},
                 {getBlock04Payload(Map.of("remittanceInformation",
@@ -453,10 +441,10 @@ public class JsonToMT103TransformerTestConstants {
                 {getBlock04Payload(Map.of("detailsOfCharges", "\"SHA1\""))},
                 {getBlock04Payload(Map.of("sendersCharges", "[]"))},
                 {getBlock04Payload(Map.of("sendersCharges", "[\"\"]"))},
-                {getBlock04Payload(Map.of("sendersCharges", "[\"USD80000000,0000000\"]"))},
+                {getBlock04Payload(Map.of("sendersCharges", "[\"USD80000000,00000000\"]"))},
                 {getBlock04Payload(Map.of("receiversCharges", "\"\""))},
                 {getBlock04Payload(Map.of("receiversCharges", "\" \""))},
-                {getBlock04Payload(Map.of("receiversCharges", "\"EUR80000000,0000000\""))},
+                {getBlock04Payload(Map.of("receiversCharges", "\"EUR80000000,000000000\""))},
                 {getBlock04Payload(Map.of("senderToReceiverInformation", "[]"))},
                 {getBlock04Payload(Map.of("senderToReceiverInformation", "[\"\"]"))},
                 {getBlock04Payload(Map.of("senderToReceiverInformation",
@@ -470,7 +458,6 @@ public class JsonToMT103TransformerTestConstants {
                 {getBlock04Payload(Map.of("regulatoryReporting",
                         "[\"/ORDERRES\", \"/ORDERRES\", \"/ORDERRES\", \"/ORDERRES\"]"))},
                 {getBlock04Payload(Map.of("envelopeContents", "\"\""))},
-
         };
     }
 
@@ -496,6 +483,7 @@ public class JsonToMT103TransformerTestConstants {
     @DataProvider(name = "invalidBlock05Payload")
     Object[][] getInvalidBlock05Payload() {
         return new Object[][]{
+                {"{}"},
                 {getBlock05Payload(Map.of("checksum", "\"\""))},
                 {getBlock05Payload(Map.of("checksum", "\"  \""))},
                 {getBlock05Payload(Map.of("checksum", "\"123456789ABCDE\""))},

@@ -18,10 +18,10 @@
 
 package org.wso2.carbon.module.swiftiso20022;
 
-import com.google.gson.Gson;
 import org.apache.axis2.context.MessageContext;
 import org.apache.synapse.SynapseException;
 import org.apache.synapse.core.axis2.Axis2MessageContext;
+import org.json.JSONObject;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
@@ -30,18 +30,11 @@ import org.powermock.modules.testng.PowerMockTestCase;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-import org.wso2.carbon.module.swiftiso20022.model.ErrorModel;
-import org.wso2.carbon.module.swiftiso20022.mt103models.transformer.Entity;
-import org.wso2.carbon.module.swiftiso20022.mt103models.transformer.blocks.Block01;
-import org.wso2.carbon.module.swiftiso20022.mt103models.transformer.blocks.Block02;
-import org.wso2.carbon.module.swiftiso20022.mt103models.transformer.blocks.Block03;
-import org.wso2.carbon.module.swiftiso20022.mt103models.transformer.blocks.Block04;
-import org.wso2.carbon.module.swiftiso20022.mt103models.transformer.blocks.Block05;
 import org.wso2.carbon.module.swiftiso20022.utils.ConnectorUtils;
 import org.wso2.carbon.module.swiftiso20022.utils.JsonToMT103TransformerTestConstants;
 import org.wso2.carbon.module.swiftiso20022.utils.JsonToMt103Utils;
+import org.wso2.carbon.module.swiftiso20022.validation.common.ValidationResult;
 
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -89,75 +82,43 @@ public class JsonToMT103TransformerTests extends PowerMockTestCase {
         jsonToMT103Transformer.connect(msgCxt);
     }
 
-    @Test(dataProvider = "invalidRepetitiveFieldDataProvider",
-            dataProviderClass = JsonToMT103TransformerTestConstants.class)
-    public void testValidateRepetitiveField(List<String> repetitiveFieldValues) {
-        ErrorModel errorResponse =
-                JsonToMt103Utils.validateRepetitiveField(repetitiveFieldValues,
-                        JsonToMT103TransformerTestConstants.DEFAULT_FIELD_NAME, 15);
-
-        Assert.assertTrue(errorResponse.isError());
-    }
-
-    @Test(dataProvider = "invalidMultipleLineFieldDataProvider",
-            dataProviderClass = JsonToMT103TransformerTestConstants.class)
-    public void testValidateFieldLines(List<String> fieldLines) {
-        ErrorModel errorResponse =
-                JsonToMt103Utils.validateFieldLines(fieldLines,
-                        JsonToMT103TransformerTestConstants.DEFAULT_FIELD_NAME, 35, 3);
-
-        Assert.assertTrue(errorResponse.isError());
-    }
-
-    @Test(dataProvider = "invalidEntityDataProvider",
-            dataProviderClass = JsonToMT103TransformerTestConstants.class)
-    public void testValidateEntityField(String option, List<String> details) {
-        Entity entity = new Entity();
-        entity.setDetails(details);
-        entity.setOption(option);
-        ErrorModel errorResponse =
-                JsonToMt103Utils.validateEntityField(entity, JsonToMT103TransformerTestConstants.DEFAULT_FIELD_NAME);
-
-        Assert.assertTrue(errorResponse.isError());
-    }
-
     @Test(dataProvider = "invalidBlock01Payload", dataProviderClass = JsonToMT103TransformerTestConstants.class)
     public void testValidateBlock01(String block01PayloadString) {
-        Block01 block01 = (new Gson()).fromJson(block01PayloadString, Block01.class);
-        ErrorModel errorResponse = JsonToMt103Utils.validateBlock01(block01);
+        JSONObject block01 = new JSONObject(block01PayloadString);
+        ValidationResult validationResult = JsonToMt103Utils.validateBlock01(block01);
 
-        Assert.assertTrue(errorResponse.isError());
+        Assert.assertFalse(validationResult.isValid());
     }
 
     @Test(dataProvider = "invalidBlock02Payload", dataProviderClass = JsonToMT103TransformerTestConstants.class)
     public void testValidateBlock02(String block02PayloadString) {
-        Block02 block02 = (new Gson()).fromJson(block02PayloadString, Block02.class);
-        ErrorModel errorResponse = JsonToMt103Utils.validateBlock02(block02);
+        JSONObject block02 = new JSONObject(block02PayloadString);
+        ValidationResult validationResult = JsonToMt103Utils.validateBlock02(block02);
 
-        Assert.assertTrue(errorResponse.isError());
+        Assert.assertFalse(validationResult.isValid());
     }
 
     @Test(dataProvider = "invalidBlock03Payload", dataProviderClass = JsonToMT103TransformerTestConstants.class)
     public void testValidateBlock03(String block03PayloadString) {
-        Block03 block03 = (new Gson()).fromJson(block03PayloadString, Block03.class);
-        ErrorModel errorResponse = JsonToMt103Utils.validateBlock03(block03);
+        JSONObject block03 = new JSONObject(block03PayloadString);
+        ValidationResult validationResult = JsonToMt103Utils.validateBlock03(block03);
 
-        Assert.assertTrue(errorResponse.isError());
+        Assert.assertFalse(validationResult.isValid());
     }
 
     @Test(dataProvider = "invalidBlock04Payload", dataProviderClass = JsonToMT103TransformerTestConstants.class)
     public void testValidateBlock04(String block04PayloadString) {
-        Block04 block04 = (new Gson()).fromJson(block04PayloadString, Block04.class);
-        ErrorModel errorResponse = JsonToMt103Utils.validateBlock04(block04);
+        JSONObject block04 = new JSONObject(block04PayloadString);
+        ValidationResult validationResult = JsonToMt103Utils.validateBlock04(block04);
 
-        Assert.assertTrue(errorResponse.isError());
+        Assert.assertFalse(validationResult.isValid());
     }
 
     @Test(dataProvider = "invalidBlock05Payload", dataProviderClass = JsonToMT103TransformerTestConstants.class)
     public void testValidateBlock05(String block05PayloadString) {
-        Block05 block05 = (new Gson()).fromJson(block05PayloadString, Block05.class);
-        ErrorModel errorResponse = JsonToMt103Utils.validateBlock05(block05);
+        JSONObject block05 = new JSONObject(block05PayloadString);
+        ValidationResult validationResult = JsonToMt103Utils.validateBlock05(block05);
 
-        Assert.assertTrue(errorResponse.isError());
+        Assert.assertFalse(validationResult.isValid());
     }
 }

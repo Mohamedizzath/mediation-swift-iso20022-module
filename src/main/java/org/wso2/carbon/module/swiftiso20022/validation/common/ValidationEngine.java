@@ -30,9 +30,11 @@ import org.wso2.carbon.module.swiftiso20022.validation.rules.MandatoryParamValid
 import org.wso2.carbon.module.swiftiso20022.validation.rules.NumericParamValidationRule;
 import org.wso2.carbon.module.swiftiso20022.validation.rules.OptionalStringParamValidationRule;
 import org.wso2.carbon.module.swiftiso20022.validation.rules.ParameterLengthValidationRule;
+import org.wso2.carbon.module.swiftiso20022.validation.rules.StringValueMatchValidationRule;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Validation Engine class to perform validation rules.
@@ -90,6 +92,12 @@ public class ValidationEngine {
 
     public ValidationEngine addCurrencyFormatValidationRule(List<ValidatorContext> validationParamList) {
         this.ruleList.add(new CurrencyFormatValidationRule(validationParamList));
+        return this;
+    }
+
+    public ValidationEngine addStringValueMatchValidationRule(List<ValidatorContext> validationParamList,
+                                                              Map<String, List<String>> definedValueList) {
+        this.ruleList.add(new StringValueMatchValidationRule(validationParamList, definedValueList));
         return this;
     }
 

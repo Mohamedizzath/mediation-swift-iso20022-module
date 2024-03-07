@@ -16,14 +16,22 @@
  * under the License.
  */
 
-package org.wso2.carbon.module.swiftiso20022.mt103models.transformer.blocks;
+package org.wso2.carbon.module.swiftiso20022.models.mt103models;
 
-import org.wso2.carbon.module.swiftiso20022.model.ErrorModel;
+import org.wso2.carbon.module.swiftiso20022.models.mt103models.blocks.Block01;
+import org.wso2.carbon.module.swiftiso20022.models.mt103models.blocks.Block02;
+import org.wso2.carbon.module.swiftiso20022.models.mt103models.blocks.Block03;
+import org.wso2.carbon.module.swiftiso20022.models.mt103models.blocks.Block04;
+import org.wso2.carbon.module.swiftiso20022.models.mt103models.blocks.Block05;
 
 /**
- * Interface that represent a single block in the request payload.
+ * Class that models the request payload.
  */
-public interface RequestPayloadBlock {
-    String BLOCK_NAME = "RequestPayloadBlock";
-    public ErrorModel validate();
+public class MT103Message {
+    Block01 block01;
+    Block02 block02;
+    Block03 block03;
+    Block04 block04;
+    Block05 block05;
+
 }
