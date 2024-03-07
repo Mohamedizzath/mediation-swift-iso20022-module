@@ -16,7 +16,7 @@
  * under the License.
  */
 
-package org.wso2.carbon.module.swiftiso20022.mt940models;
+package org.wso2.carbon.module.swiftiso20022.models.mt940models;
 
 import java.util.List;
 
@@ -56,6 +56,10 @@ public class RequestPayloadModel {
 
     public void setBlock3(String block3) {
         this.block3 = block3;
+    }
+
+    public String getBlock3() {
+        return this.block3;
     }
 
     public String getUserHeader() {

@@ -16,14 +16,20 @@
  * under the License.
  */
 
-package org.wso2.carbon.module.swiftiso20022.mt103models.transformer.blocks;
+package org.wso2.carbon.module.swiftiso20022.validation.common;
 
-import org.wso2.carbon.module.swiftiso20022.model.ErrorModel;
+import org.json.JSONObject;
 
 /**
- * Interface that represent a single block in the request payload.
+ * Abstract Validation Rule.
  */
-public interface RequestPayloadBlock {
-    String BLOCK_NAME = "RequestPayloadBlock";
-    public ErrorModel validate();
+public interface ValidationRule {
+
+    /**
+     * Execute the validation for given context and return the result.
+     *
+     * @param payload    Payload to be validated.
+     * @return validation Validation Result.
+     */
+    public abstract ValidationResult validate(JSONObject payload);
 }

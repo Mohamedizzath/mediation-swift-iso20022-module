@@ -22,16 +22,15 @@ import com.google.gson.Gson;
 import org.apache.synapse.MessageContext;
 import org.apache.synapse.core.axis2.Axis2MessageContext;
 import org.json.JSONException;
+import org.json.JSONObject;
 import org.wso2.carbon.connector.core.AbstractConnector;
 import org.wso2.carbon.connector.core.ConnectException;
 import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
-import org.wso2.carbon.module.swiftiso20022.model.ErrorModel;
-import org.wso2.carbon.module.swiftiso20022.mt103models.transformer.RequestPayload;
-import org.wso2.carbon.module.swiftiso20022.mt103models.transformer.blocks.Block01;
-import org.wso2.carbon.module.swiftiso20022.mt103models.transformer.blocks.Block03;
-import org.wso2.carbon.module.swiftiso20022.mt103models.transformer.blocks.Block04;
+import org.wso2.carbon.module.swiftiso20022.constants.MT103Constants;
+import org.wso2.carbon.module.swiftiso20022.models.mt103models.MT103Message;
 import org.wso2.carbon.module.swiftiso20022.utils.ConnectorUtils;
 import org.wso2.carbon.module.swiftiso20022.utils.JsonToMt103Utils;
+import org.wso2.carbon.module.swiftiso20022.validation.common.ValidationResult;
 
 import java.util.Optional;
 
@@ -40,6 +39,7 @@ import java.util.Optional;
  * Class to convert JSON Object to MT103 format.
  */
 public class JsonToMT103Transformer extends AbstractConnector {
+
     @Override
     public void connect(MessageContext messageContext) throws ConnectException {
         try {
@@ -47,9 +47,9 @@ public class JsonToMT103Transformer extends AbstractConnector {
                     .getAxis2MessageContext();
             Optional<String> payload = ConnectorUtils.buildMessagePayloadFromMessageContext(axis2MessageContext);
             if (payload.isPresent()) {
-                RequestPayload requestPayload = (new Gson()).fromJson(payload.get(), RequestPayload.class);
-                ErrorModel validationResponse = validateRequestPayload(requestPayload);
-                if (validationResponse.isError()) {
+                MT103Message requestPayload = (new Gson()).fromJson(payload.get(), MT103Message.class);
+                ValidationResult validationResponse = validateRequestPayload(payload.get());
+                if (!validationResponse.isValid()) {
                     this.log.error(validationResponse.getErrorMessage());
                     ConnectorUtils.appendErrorToMessageContext(messageContext, validationResponse.getErrorCode(),
                             validationResponse.getErrorMessage());
@@ -69,47 +69,32 @@ public class JsonToMT103Transformer extends AbstractConnector {
         }
     }
 
-    private ErrorModel validateRequestPayload(RequestPayload requestPayload) {
-        ErrorModel blockValidationResponse;
-        if (requestPayload.getBlock01() == null) {
-            return new ErrorModel(ConnectorConstants.ERROR_H01,
-                    String.format(ConnectorConstants.ERROR_BLOCK_MISSING, Block01.getBlockName()));
-        } else {
-            blockValidationResponse = JsonToMt103Utils.validateBlock01(requestPayload.getBlock01());
-            if (blockValidationResponse.isError()) {
-                return blockValidationResponse;
-            }
+    private ValidationResult validateRequestPayload(String payloadString) {
+
+        JSONObject requestPayload = new JSONObject(payloadString);
+
+        ValidationResult blockValidationResult =
+                JsonToMt103Utils.validateBlock01(requestPayload.optJSONObject(MT103Constants.BLOCK01));
+        if (!blockValidationResult.isValid()) {
+            return blockValidationResult;
         }
-        if (requestPayload.getBlock02() != null) {
-            blockValidationResponse = JsonToMt103Utils.validateBlock02(requestPayload.getBlock02());
-            if (blockValidationResponse.isError()) {
-                return blockValidationResponse;
-            }
+        blockValidationResult = JsonToMt103Utils.validateBlock02(requestPayload.optJSONObject(MT103Constants.BLOCK02));
+        if (!blockValidationResult.isValid()) {
+            return blockValidationResult;
         }
-        if (requestPayload.getBlock03() == null) {
-            return new ErrorModel(ConnectorConstants.ERROR_U00,
-                    String.format(ConnectorConstants.ERROR_BLOCK_MISSING, Block03.getBlockName()));
-        } else {
-            blockValidationResponse = JsonToMt103Utils.validateBlock03(requestPayload.getBlock03());
-            if (blockValidationResponse.isError()) {
-                return blockValidationResponse;
-            }
+        blockValidationResult = JsonToMt103Utils.validateBlock03(requestPayload.optJSONObject(MT103Constants.BLOCK03));
+        if (!blockValidationResult.isValid()) {
+            return blockValidationResult;
         }
-        if (requestPayload.getBlock04() ==  null) {
-            return new ErrorModel(ConnectorConstants.ERROR_V01,
-                    String.format(ConnectorConstants.ERROR_BLOCK_MISSING, Block04.getBlockName()));
-        } else {
-            blockValidationResponse = JsonToMt103Utils.validateBlock04(requestPayload.getBlock04());
-            if (blockValidationResponse.isError()) {
-                return blockValidationResponse;
-            }
+        blockValidationResult = JsonToMt103Utils.validateBlock04(requestPayload.optJSONObject(MT103Constants.BLOCK04));
+        if (!blockValidationResult.isValid()) {
+            return blockValidationResult;
         }
-        if (requestPayload.getBlock05() != null) {
-            blockValidationResponse = JsonToMt103Utils.validateBlock05(requestPayload.getBlock05());
-            if (blockValidationResponse.isError()) {
-                return blockValidationResponse;
-            }
+        blockValidationResult = JsonToMt103Utils.validateBlock05(requestPayload.optJSONObject(MT103Constants.BLOCK05));
+        if (!blockValidationResult.isValid()) {
+            return blockValidationResult;
         }
-        return new ErrorModel();
+
+        return new ValidationResult();
     }
 }
