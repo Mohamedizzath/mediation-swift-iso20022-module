@@ -25,7 +25,7 @@ import java.util.Map;
 /**
  * Test constants for JsonToMT103TransformerTest.
  */
-public class JsonToMT103TransformerTestConstants {
+public class JsonToMT103ValidatorTestConstants {
 
     public static final String DEFAULT_FIELD_NAME = "field name";
     public static final String VALID_BLOCK01_PAYLOAD = "{\n" +

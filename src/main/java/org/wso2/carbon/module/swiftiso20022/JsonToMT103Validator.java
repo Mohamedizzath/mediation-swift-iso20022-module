@@ -38,7 +38,7 @@ import java.util.Optional;
 /**
  * Class to convert JSON Object to MT103 format.
  */
-public class JsonToMT103Transformer extends AbstractConnector {
+public class JsonToMT103Validator extends AbstractConnector {
 
     @Override
     public void connect(MessageContext messageContext) throws ConnectException {
@@ -90,11 +90,6 @@ public class JsonToMT103Transformer extends AbstractConnector {
         if (!blockValidationResult.isValid()) {
             return blockValidationResult;
         }
-        blockValidationResult = JsonToMt103Utils.validateBlock05(requestPayload.optJSONObject(MT103Constants.BLOCK05));
-        if (!blockValidationResult.isValid()) {
-            return blockValidationResult;
-        }
-
-        return new ValidationResult();
+        return JsonToMt103Utils.validateBlock05(requestPayload.optJSONObject(MT103Constants.BLOCK05));
     }
 }

@@ -31,7 +31,7 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.wso2.carbon.module.swiftiso20022.utils.ConnectorUtils;
-import org.wso2.carbon.module.swiftiso20022.utils.JsonToMT103TransformerTestConstants;
+import org.wso2.carbon.module.swiftiso20022.utils.JsonToMT103ValidatorTestConstants;
 import org.wso2.carbon.module.swiftiso20022.utils.JsonToMt103Utils;
 import org.wso2.carbon.module.swiftiso20022.validation.common.ValidationResult;
 
@@ -42,11 +42,11 @@ import java.util.Optional;
  */
 @PowerMockIgnore("jdk.internal.reflect.*")
 @PrepareForTest({ConnectorUtils.class})
-public class JsonToMT103TransformerTests extends PowerMockTestCase {
+public class JsonToMT103ValidatorTests extends PowerMockTestCase {
 
     private MessageContext messageContext;
 
-    JsonToMT103Transformer jsonToMT103Transformer = new JsonToMT103Transformer();
+    JsonToMT103Validator jsonToMT103Transformer = new JsonToMT103Validator();
 
     @BeforeClass
     public void init() {
@@ -60,7 +60,7 @@ public class JsonToMT103TransformerTests extends PowerMockTestCase {
 
         PowerMockito.mockStatic(ConnectorUtils.class);
         PowerMockito.when(ConnectorUtils.buildMessagePayloadFromMessageContext(messageContext))
-                .thenReturn(Optional.of(JsonToMT103TransformerTestConstants.VALID_PAYLOAD));
+                .thenReturn(Optional.of(JsonToMT103ValidatorTestConstants.VALID_PAYLOAD));
         PowerMockito.doNothing().when(ConnectorUtils.class, "appendErrorToMessageContext",
                 Mockito.any(), Mockito.anyString(), Mockito.anyString());
 
@@ -68,7 +68,7 @@ public class JsonToMT103TransformerTests extends PowerMockTestCase {
     }
 
     @Test(expectedExceptions = SynapseException.class, dataProvider = "emptyMandatoryBlockDataProvider",
-            dataProviderClass = JsonToMT103TransformerTestConstants.class)
+            dataProviderClass = JsonToMT103ValidatorTestConstants.class)
     public void testEmptyMandatoryBlock(String payload) throws Exception {
         Axis2MessageContext msgCxt = Mockito.mock(Axis2MessageContext.class);
         Mockito.doReturn(messageContext).when(msgCxt).getAxis2MessageContext();
@@ -82,7 +82,7 @@ public class JsonToMT103TransformerTests extends PowerMockTestCase {
         jsonToMT103Transformer.connect(msgCxt);
     }
 
-    @Test(dataProvider = "invalidBlock01Payload", dataProviderClass = JsonToMT103TransformerTestConstants.class)
+    @Test(dataProvider = "invalidBlock01Payload", dataProviderClass = JsonToMT103ValidatorTestConstants.class)
     public void testValidateBlock01(String block01PayloadString) {
         JSONObject block01 = new JSONObject(block01PayloadString);
         ValidationResult validationResult = JsonToMt103Utils.validateBlock01(block01);
@@ -90,7 +90,7 @@ public class JsonToMT103TransformerTests extends PowerMockTestCase {
         Assert.assertFalse(validationResult.isValid());
     }
 
-    @Test(dataProvider = "invalidBlock02Payload", dataProviderClass = JsonToMT103TransformerTestConstants.class)
+    @Test(dataProvider = "invalidBlock02Payload", dataProviderClass = JsonToMT103ValidatorTestConstants.class)
     public void testValidateBlock02(String block02PayloadString) {
         JSONObject block02 = new JSONObject(block02PayloadString);
         ValidationResult validationResult = JsonToMt103Utils.validateBlock02(block02);
@@ -98,7 +98,7 @@ public class JsonToMT103TransformerTests extends PowerMockTestCase {
         Assert.assertFalse(validationResult.isValid());
     }
 
-    @Test(dataProvider = "invalidBlock03Payload", dataProviderClass = JsonToMT103TransformerTestConstants.class)
+    @Test(dataProvider = "invalidBlock03Payload", dataProviderClass = JsonToMT103ValidatorTestConstants.class)
     public void testValidateBlock03(String block03PayloadString) {
         JSONObject block03 = new JSONObject(block03PayloadString);
         ValidationResult validationResult = JsonToMt103Utils.validateBlock03(block03);
@@ -106,7 +106,7 @@ public class JsonToMT103TransformerTests extends PowerMockTestCase {
         Assert.assertFalse(validationResult.isValid());
     }
 
-    @Test(dataProvider = "invalidBlock04Payload", dataProviderClass = JsonToMT103TransformerTestConstants.class)
+    @Test(dataProvider = "invalidBlock04Payload", dataProviderClass = JsonToMT103ValidatorTestConstants.class)
     public void testValidateBlock04(String block04PayloadString) {
         JSONObject block04 = new JSONObject(block04PayloadString);
         ValidationResult validationResult = JsonToMt103Utils.validateBlock04(block04);
@@ -114,7 +114,7 @@ public class JsonToMT103TransformerTests extends PowerMockTestCase {
         Assert.assertFalse(validationResult.isValid());
     }
 
-    @Test(dataProvider = "invalidBlock05Payload", dataProviderClass = JsonToMT103TransformerTestConstants.class)
+    @Test(dataProvider = "invalidBlock05Payload", dataProviderClass = JsonToMT103ValidatorTestConstants.class)
     public void testValidateBlock05(String block05PayloadString) {
         JSONObject block05 = new JSONObject(block05PayloadString);
         ValidationResult validationResult = JsonToMt103Utils.validateBlock05(block05);

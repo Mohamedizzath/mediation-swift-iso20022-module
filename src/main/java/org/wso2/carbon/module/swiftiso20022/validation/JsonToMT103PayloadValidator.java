@@ -65,7 +65,7 @@ public class JsonToMT103PayloadValidator {
                     ConnectorConstants.BLOCK01_LOGICAL_TERMINAL_ADDRESS)
     );
 
-    public static synchronized ValidationEngine getMT103Block01ValidationEngine() {
+    public static ValidationEngine getMT103Block01ValidationEngine() {
         return new ValidationEngine()
                 .addStringValueMatchValidationRule(block01DefinedValueFields, block01DefinedValues)
                 .addMandatoryParamValidationRule(block01MandatoryFieldValidationParamList)
@@ -125,7 +125,7 @@ public class JsonToMT103PayloadValidator {
                     ConnectorConstants.BLOCK02_DESTINATION_LOGICAL_TERMINAL_ADDRESS)
     );
 
-    public static synchronized ValidationEngine getMT103InputBlock02ValidationEngine() {
+    public static ValidationEngine getMT103InputBlock02ValidationEngine() {
         return new ValidationEngine()
                 .addStringValueMatchValidationRule(block02DefinedValueFields, block02DefinedValues)
                 .addMandatoryParamValidationRule(inputBlock02MandatoryFieldValidationParamsList)
@@ -183,7 +183,7 @@ public class JsonToMT103PayloadValidator {
                     ConnectorConstants.BLOCK02_MESSAGE_INPUT_REFERENCE)
     );
 
-    public static synchronized ValidationEngine getMT103OutputBlock02ValidationEngine() {
+    public static ValidationEngine getMT103OutputBlock02ValidationEngine() {
         return new ValidationEngine()
                 .addStringValueMatchValidationRule(block02DefinedValueFields, block02DefinedValues)
                 .addMandatoryParamValidationRule(outputBlock02MandatoryFieldValidationParamsList)
@@ -247,7 +247,7 @@ public class JsonToMT103PayloadValidator {
                     ConnectorConstants.BLOCK03_MESSAGE_USER_REFERENCE)
     );
 
-    public static synchronized ValidationEngine getMT103Block03ValidationEngine() {
+    public static ValidationEngine getMT103Block03ValidationEngine() {
         return new ValidationEngine()
                 .addStringValueMatchValidationRule(block03DefinedValueFields, block03DefinedValues)
                 .addMandatoryParamValidationRule(block03MandatoryFieldValidationParamsList)
@@ -309,90 +309,50 @@ public class JsonToMT103PayloadValidator {
             new ValidatorContext(MT103Constants.DETAILS_OF_CHARGES_KEY, MT103Constants.DETAILS_OF_CHARGES)
     );
 
-    private static ValidationEngine appendRepetitiveFieldsValidationRules(ValidationEngine validationEngine) {
-        return validationEngine
-                .addCustomRule(new MT103RepetitiveFieldValidationRule(
-                        new ValidatorContext(MT103Constants.TIME_INDICATION_KEY, MT103Constants.TIME_INDICATION,
-                                MT103Constants.TIME_INDICATION_LENGTH)
-                ))
-                .addCustomRule(new MT103RepetitiveFieldValidationRule(
-                        new ValidatorContext(MT103Constants.INSTRUCTION_CODES_KEY, MT103Constants.INSTRUCTION_CODE,
-                                MT103Constants.INSTRUCTION_CODE_LENGTH)
-                ))
-                .addCustomRule(new MT103RepetitiveFieldValidationRule(
-                        new ValidatorContext(MT103Constants.SENDERS_CHARGES_KEY, MT103Constants.SENDERS_CHARGES,
-                                MT103Constants.SENDERS_CHARGES_LENGTH)
-                ));
-    }
+    private static final List<ValidatorContext> block04RepetitiveFieldValidationParamsList = List.of(
+            new ValidatorContext(MT103Constants.TIME_INDICATION_KEY, MT103Constants.TIME_INDICATION,
+                    MT103Constants.TIME_INDICATION_LENGTH),
+            new ValidatorContext(MT103Constants.INSTRUCTION_CODES_KEY, MT103Constants.INSTRUCTION_CODE,
+                    MT103Constants.INSTRUCTION_CODE_LENGTH),
+            new ValidatorContext(MT103Constants.SENDERS_CHARGES_KEY, MT103Constants.SENDERS_CHARGES,
+                    MT103Constants.SENDERS_CHARGES_LENGTH)
+    );
 
-    private static ValidationEngine appendEntityFieldsValidationRules(ValidationEngine validationEngine) {
-        return validationEngine
-                .addCustomRule(new MT103EntityFieldValidationRule(
-                        new ValidatorContext(MT103Constants.ORDERING_CUSTOMER_KEY, MT103Constants.ORDERING_CUSTOMER)
-                ))
-                .addCustomRule(new MT103EntityFieldValidationRule(
-                        new ValidatorContext(MT103Constants.SENDING_INSTITUTION_KEY, MT103Constants.SENDING_INSTITUTION)
-                ))
-                .addCustomRule(new MT103EntityFieldValidationRule(
-                        new ValidatorContext(
-                                MT103Constants.ORDERING_INSTITUTION_KEY, MT103Constants.ORDERING_INSTITUTION)
-                ))
-                .addCustomRule(new MT103EntityFieldValidationRule(
-                        new ValidatorContext(
-                                MT103Constants.SENDERS_CORRESPONDENT_KEY, MT103Constants.SENDERS_CORRESPONDENT)
-                ))
-                .addCustomRule(new MT103EntityFieldValidationRule(
-                        new ValidatorContext(
-                                MT103Constants.RECEIVERS_CORRESPONDENT_KEY, MT103Constants.RECEIVERS_CORRESPONDENT)
-                ))
-                .addCustomRule(new MT103EntityFieldValidationRule(
-                        new ValidatorContext(MT103Constants.THIRD_REIMBURSEMENT_INSTITUTION_KEY,
-                                MT103Constants.THIRD_REIMBURSEMENT_INSTITUTION)
-                ))
-                .addCustomRule(new MT103EntityFieldValidationRule(
-                        new ValidatorContext(
-                                MT103Constants.INTERMEDIARY_INSTITUTION_KEY, MT103Constants.INTERMEDIARY_INSTITUTION)
-                ))
-                .addCustomRule(new MT103EntityFieldValidationRule(
-                        new ValidatorContext(
-                                MT103Constants.ACCOUNT_WITH_INSTITUTION_KEY, MT103Constants.ACCOUNT_WITH_INSTITUTION)
-                ))
-                .addCustomRule(new MT103EntityFieldValidationRule(
-                        new ValidatorContext(
-                                MT103Constants.BENEFICIARY_CUSTOMER_KEY, MT103Constants.BENEFICIARY_CUSTOMER)
-                ));
-    }
+    private static final List<ValidatorContext> block04EntityFieldValidationParamsList = List.of(
+            new ValidatorContext(MT103Constants.ORDERING_CUSTOMER_KEY, MT103Constants.ORDERING_CUSTOMER),
+            new ValidatorContext(MT103Constants.SENDING_INSTITUTION_KEY, MT103Constants.SENDING_INSTITUTION),
+            new ValidatorContext(MT103Constants.ORDERING_INSTITUTION_KEY, MT103Constants.ORDERING_INSTITUTION),
+            new ValidatorContext(MT103Constants.SENDERS_CORRESPONDENT_KEY, MT103Constants.SENDERS_CORRESPONDENT),
+            new ValidatorContext(MT103Constants.RECEIVERS_CORRESPONDENT_KEY, MT103Constants.RECEIVERS_CORRESPONDENT),
+            new ValidatorContext(
+                    MT103Constants.THIRD_REIMBURSEMENT_INSTITUTION_KEY, MT103Constants.THIRD_REIMBURSEMENT_INSTITUTION),
+            new ValidatorContext(MT103Constants.INTERMEDIARY_INSTITUTION_KEY, MT103Constants.INTERMEDIARY_INSTITUTION),
+            new ValidatorContext(MT103Constants.ACCOUNT_WITH_INSTITUTION_KEY, MT103Constants.ACCOUNT_WITH_INSTITUTION),
+            new ValidatorContext(MT103Constants.BENEFICIARY_CUSTOMER_KEY, MT103Constants.BENEFICIARY_CUSTOMER)
+    );
 
-    private static ValidationEngine appendMultilineFieldsValidationRules(ValidationEngine validationEngine) {
-        return validationEngine
-                .addCustomRule(new MT103MultilineFieldValidationRule(
-                        new ValidatorContext(MT103Constants.REMITTANCE_INFORMATION_KEY,
-                                MT103Constants.REMITTANCE_INFORMATION, MT103Constants.MT103_TEXT_LINE_LENGTH),
-                        MT103Constants.REMITTANCE_INFORMATION_LINE_COUNT
-                ))
-                .addCustomRule(new MT103MultilineFieldValidationRule(
-                        new ValidatorContext(MT103Constants.SENDER_TO_RECEIVER_INFORMATION_KEY,
-                                MT103Constants.SENDER_TO_RECEIVER_INFORMATION, MT103Constants.MT103_TEXT_LINE_LENGTH),
-                        MT103Constants.SENDER_TO_RECEIVER_INFORMATION_LINE_COUNT
-                ))
-                .addCustomRule(new MT103MultilineFieldValidationRule(
-                        new ValidatorContext(MT103Constants.REGULATORY_REPORTING_KEY,
-                                MT103Constants.REGULATORY_REPORTING, MT103Constants.MT103_TEXT_LINE_LENGTH),
-                        MT103Constants.REGULATORY_REPORTING_LINE_COUNT
-                ));
-    }
+    private static final List<ValidatorContext> block04MultilineFieldValidationParamsList = List.of(
+            new ValidatorContext(MT103Constants.REMITTANCE_INFORMATION_KEY, MT103Constants.REMITTANCE_INFORMATION,
+                    Map.of(MT103Constants.LINES_ALLOWED_KEY, MT103Constants.REMITTANCE_INFORMATION_LINE_COUNT)),
+            new ValidatorContext(MT103Constants.SENDER_TO_RECEIVER_INFORMATION_KEY,
+                    MT103Constants.SENDER_TO_RECEIVER_INFORMATION,
+                    Map.of(MT103Constants.LINES_ALLOWED_KEY, MT103Constants.SENDER_TO_RECEIVER_INFORMATION_LINE_COUNT)),
+            new ValidatorContext(MT103Constants.REGULATORY_REPORTING_KEY, MT103Constants.REGULATORY_REPORTING,
+                    Map.of(MT103Constants.LINES_ALLOWED_KEY, MT103Constants.REGULATORY_REPORTING_LINE_COUNT))
+    );
 
-    public static synchronized ValidationEngine getMT103Block04ValidationEngine() {
-        ValidationEngine block04ValidationEngine = new ValidationEngine()
+    public static ValidationEngine getMT103Block04ValidationEngine() {
+        return new ValidationEngine()
                 .addMandatoryParamValidationRule(block04MandatoryFieldValidationParamsList)
                 .addOptionalStringParamValidationRule(block04OptionalFieldValidationParamsList)
                 .addParameterLengthValidationRule(
                         block04LengthValidationParamsList, block04DefinedLengthFields)
                 .addAlphaNumericParamValidationRule(block04AlphaNumericValidationParamsList)
-                .addAlphaParamValidationRule(block04AlphaValidationParamsList);
-        return appendEntityFieldsValidationRules(
-                appendMultilineFieldsValidationRules(
-                        appendRepetitiveFieldsValidationRules(block04ValidationEngine)));
+                .addAlphaParamValidationRule(block04AlphaValidationParamsList)
+                .addCustomRule(new MT103RepetitiveFieldValidationRule(block04RepetitiveFieldValidationParamsList))
+                .addCustomRule(new MT103MultilineFieldValidationRule(block04MultilineFieldValidationParamsList))
+                .addCustomRule(new MT103EntityFieldValidationRule(block04EntityFieldValidationParamsList));
+
     }
 
     private static final List<ValidatorContext> block05MandatoryFieldValidationParamsList = List.of(
@@ -435,7 +395,7 @@ public class JsonToMT103PayloadValidator {
                     ConnectorConstants.BLOCK05_SYSTEM_ORIGINATED_MESSAGE)
     );
 
-    public static synchronized ValidationEngine getMT103Block05ValidationEngine() {
+    public static ValidationEngine getMT103Block05ValidationEngine() {
         return new ValidationEngine()
                 .addMandatoryParamValidationRule(block05MandatoryFieldValidationParamsList)
                 .addParameterLengthValidationRule(

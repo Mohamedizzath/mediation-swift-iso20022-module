@@ -17,7 +17,7 @@
 -->
 <template xmlns="http://ws.apache.org/ns/synapse" name="jsonToMT103">
     <sequence>
-        <class name="org.wso2.carbon.module.swiftiso20022.JsonToMT103Transformer" />
+        <class name="org.wso2.carbon.module.swiftiso20022.JsonToMT103Validator" />
         <payloadFactory media-type="json" template-type="freemarker">
             <format><![CDATA[<#macro printIfAvailable var tag><#if var?length != 0 >{${tag}:${var}}</#if></#macro>
 <#macro printEntity var=false tag=""><#if var?is_hash_ex >${"\n"}:${tag}${var.option}:<#list var.details as dt><#if dt?index != 0 >${"\n"}</#if>${dt}</#list></#if></#macro>

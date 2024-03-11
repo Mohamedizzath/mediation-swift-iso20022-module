@@ -18,6 +18,8 @@
 
 package org.wso2.carbon.module.swiftiso20022.validation.common;
 
+import java.util.Map;
+
 /**
  * Context class to hold the request attributes for validation.
  */
@@ -26,6 +28,7 @@ public class ValidatorContext {
     private final String fieldName;
     private final String fieldDisplayName;
     private int fieldLength;
+    private Map<String, Object> additionalProperties;
 
     public ValidatorContext(String fieldName, String fieldDisplayName) {
         this.fieldName = fieldName;
@@ -36,6 +39,12 @@ public class ValidatorContext {
         this.fieldName = fieldName;
         this.fieldDisplayName = fieldDisplayName;
         this.fieldLength = fieldLength;
+    }
+
+    public ValidatorContext(String fieldName, String fieldDisplayName, Map<String, Object> additionalProperties) {
+        this.fieldName = fieldName;
+        this.fieldDisplayName = fieldDisplayName;
+        this.additionalProperties = additionalProperties;
     }
 
     public String getFieldName() {
@@ -49,4 +58,6 @@ public class ValidatorContext {
     public int getFieldLength() {
         return fieldLength;
     }
+
+    public Object getProperty(String key) { return additionalProperties.get(key); }
 }

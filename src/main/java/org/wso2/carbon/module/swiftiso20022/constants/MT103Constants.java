@@ -34,6 +34,7 @@ public class MT103Constants {
     public static final String MT103_REMIT_VALIDATION_FLAG = "REMIT";
     public static final String MT103_ENTITY_OPTION = "option";
     public static final String MT103_ENTITY_DETAILS = "details";
+    public static final String LINES_ALLOWED_KEY = "linesAllowed";
     public static final int MT103_ENTITY_DETAILS_LINE_COUNT = 4;
     public static final int MT103_TEXT_LINE_LENGTH = 35;
 
