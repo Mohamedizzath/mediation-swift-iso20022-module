@@ -152,7 +152,6 @@ public class ConnectorConstants {
 
     // ISO 20022 Error Constants
     public static final String ERROR_VALIDATING_XML = "XML validation failed";
-    public static final String ERROR_INVALID_ISO_BUSINESS_MSG = "XML message is not valid ISO business message";
     public static final String ERROR_INVALID_ISO_HEAD001_XML_MSG = "XML message is not in the ISO20022.head.001 format";
     public static final String ERROR_INVALID_ISO_CAMT053_XML_MSG = "XML message is not in the ISO20022.camt.053 format";
     public static final String ERROR_INVALID_XML_ROOT_TAG = "XML msg should start with BizMsgEnvlp tag or Document tag";
@@ -162,7 +161,5 @@ public class ConnectorConstants {
             "Legal Sequence number not present in ISO20022.camt.053 message";
     public static final String ERROR_MISSING_OPENING_BALANCE = "Missing Opening Balance in ISO20022.camt.053 message";
     public static final String ERROR_MISSING_CLOSING_BALANCE = "Missing Closing Balance in ISO20022.camt.053 message";
-    public static final String ERROR_INVALID_BALANCE_TYPES =
-            "Error in parsing balance type from ISO20022.camt.053 message";
 
 }
