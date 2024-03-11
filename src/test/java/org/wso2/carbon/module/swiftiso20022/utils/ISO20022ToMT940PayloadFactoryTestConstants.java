@@ -1,5 +1,7 @@
 package org.wso2.carbon.module.swiftiso20022.utils;
 
+import org.testng.annotations.DataProvider;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 

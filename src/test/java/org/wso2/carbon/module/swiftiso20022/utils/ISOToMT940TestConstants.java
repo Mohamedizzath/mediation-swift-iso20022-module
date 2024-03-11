@@ -27,7 +27,6 @@ import java.util.Map;
 public class ISOToMT940TestConstants {
     public static final String XML_INPUT_BUSINESS_ENV_TAG = "BizMsgEnvlp";
     public static final String XML_INPUT_APPHDR_TAG = "AppHdr";
-    public static final String XML_INPUT_DOCUMENT_TAG = "Document";
 
     public static final String PAYLOAD_APPHDR = "<AppHdr xmlns=\"urn:iso:std:iso:20022:tech:xsd:head.001.001.03\">\n" +
             "\t<Fr>\n" +

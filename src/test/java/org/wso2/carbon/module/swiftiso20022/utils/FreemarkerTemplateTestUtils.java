@@ -24,7 +24,7 @@ public class FreemarkerTemplateTestUtils {
     /**
      * Return HashMap which build against given XML data for freemarker validation.
      * @param content XML message content which need to parse
-     * @return
+     * @return        HashMap which constructed according to the XML content
      * @throws IOException
      * @throws ParserConfigurationException
      * @throws SAXException
@@ -42,8 +42,8 @@ public class FreemarkerTemplateTestUtils {
     /**
      * Construct freemarker template from ftl file located in the resources' folder.
      * @param fTemplateStream  Ftl template contain as inputStream
-     * @param templateName          Name of the template and this can be any name. Eg:- ISOtoMT940
-     * @return
+     * @param templateName     Name of the template and this can be any name. Eg:- ISOtoMT940
+     * @return                 Template which loaded according to ftl file given
      * @throws IOException
      */
     public static Template getFreemarkerTemplate(InputStream fTemplateStream, String templateName) throws IOException {
