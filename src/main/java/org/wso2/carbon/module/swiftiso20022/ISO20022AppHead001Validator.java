@@ -38,17 +38,6 @@ public class ISO20022AppHead001Validator extends AbstractConnector {
 
     @Override
     public void connect(MessageContext messageContext) throws ConnectException {
-        String rootElementTag = ISOMessageParser.getRootXMLElement(messageContext);
-
-        if (!ConnectorConstants.XML_INPUT_BUSINESS_ENV_TAG.equals(rootElementTag)) {
-            // Invalid XML root tag
-            this.log.error(ConnectorConstants.ERROR_INVALID_XML_ROOT_TAG);
-            ConnectorUtils.appendErrorToMessageContext(messageContext,
-                    ConnectorConstants.ERROR_INVALID_XML_ROOT_TAG, ConnectorConstants.ERROR_INVALID_XML_ROOT_TAG);
-
-            super.handleException(ConnectorConstants.ERROR_INVALID_XML_ROOT_TAG, messageContext);
-        }
-
         try {
             String xPathToAppHdr = ISOMessageParser.constructXPath(true, ConnectorConstants.XPATH_APPHDR);
             String appHdrStr = ISOMessageParser.extractISOMessage(messageContext, xPathToAppHdr);
