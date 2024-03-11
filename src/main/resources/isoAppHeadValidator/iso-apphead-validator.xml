@@ -21,16 +21,8 @@
         <property expression="boolean($body//BizMsgEnvlp/app:AppHdr)" name="uri.var.IsAppHdrExists" action="set" scope="default" type="BOOLEAN" xmlns:app="urn:iso:std:iso:20022:tech:xsd:head.001.001.03"/>
         <switch source="$ctx:uri.var.IsAppHdrExists">
             <case regex="true">
-                <log level="custom">
-                    <property name="AppHdr Checker" value="AppHdr present in XML input"/>
-                </log>
                 <class name="org.wso2.carbon.module.swiftiso20022.ISO20022AppHead001Validator"/>
             </case>
-            <default>
-                <log level="custom">
-                    <property name="AppHdr Checker" value="AppHdr not present in XML input"/>
-                </log>
-            </default>
         </switch>
     </sequence>
 </template>
