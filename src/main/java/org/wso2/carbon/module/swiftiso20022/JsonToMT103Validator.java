@@ -47,7 +47,7 @@ public class JsonToMT103Validator extends AbstractConnector {
                     .getAxis2MessageContext();
             Optional<String> payload = ConnectorUtils.buildMessagePayloadFromMessageContext(axis2MessageContext);
             if (payload.isPresent()) {
-                MT103Message requestPayload = (new Gson()).fromJson(payload.get(), MT103Message.class);
+                (new Gson()).fromJson(payload.get(), MT103Message.class);
                 ValidationResult validationResponse = validateRequestPayload(payload.get());
                 if (!validationResponse.isValid()) {
                     this.log.error(validationResponse.getErrorMessage());
