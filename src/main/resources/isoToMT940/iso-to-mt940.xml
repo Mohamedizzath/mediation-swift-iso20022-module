@@ -149,27 +149,59 @@
 			<#assign row=[] />
 			<#if (rowDetails["C:TxDtls"]?size > 1)>
 				<#list rowDetails["C:TxDtls"] as detail>
+					<#assign rowUpdated = false>
 					<#if detail["C:Refs/C:EndToEndId"]?has_content>
-						<#assign row = row + ["EREF/" + detail["C:Refs/C:EndToEndId"]] />
+						<#if rowUpdated>
+							<#assign row = row + ["/EREF/" + detail["C:Refs/C:EndToEndId"]] />
+						<#else>
+							<#assign row = row + ["EREF/" + detail["C:Refs/C:EndToEndId"]] />
+							<#assign rowUpdated = true>
+						</#if>
 					</#if>
 					<#if detail["C:Refs/C:InstrId"]?has_content>
-						<#assign row = row + ["IREF/" + detail["C:Refs/C:InstrId"]] />
+						<#if rowUpdated>
+							<#assign row = row + ["/IREF/" + detail["C:Refs/C:InstrId"]] />
+						<#else>
+							<#assign row = row + ["IREF/" + detail["C:Refs/C:InstrId"]] />
+							<#assign rowUpdated = true>
+						</#if>
 					</#if>
 					<#if detail["C:Refs/C:PmtInfId"]?has_content>
-						<#assign row = row + ["PREF/" + detail["C:Refs/C:PmtInfId"]] />
+						<#if rowUpdated>
+							<#assign row = row + ["/PREF/" + detail["C:Refs/C:PmtInfId"]] />
+						<#else>
+							<#assign row = row + ["PREF/" + detail["C:Refs/C:PmtInfId"]] />
+							<#assign rowUpdated = true>
+						</#if>
 					</#if>
 					<#assign row = row + ["\n"] />
 				</#list>
 				<#assign entryDetails = entryDetails + [row] />
 			<#else>
+				<#assign rowUpdated = false>
 				<#if rowDetails["C:TxDtls/C:Refs/C:EndToEndId"]?has_content>
-					<#assign row = row + ["EREF/" + rowDetails["C:TxDtls/C:Refs/C:EndToEndId"]] />
+					<#if rowUpdated>
+						<#assign row = row + ["/EREF/" + rowDetails["C:TxDtls/C:Refs/C:EndToEndId"]] />
+					<#else>
+						<#assign row = row + ["EREF/" + rowDetails["C:TxDtls/C:Refs/C:EndToEndId"]] />
+						<#assign rowUpdated = true>
+					</#if>
 				</#if>
 				<#if rowDetails["C:TxDtls/C:Refs/C:InstrId"]?has_content>
-					<#assign row = row + ["IREF/" + rowDetails["C:TxDtls/C:Refs/C:InstrId"]] />
+					<#if rowUpdated>
+						<#assign row = row + ["/IREF/" + rowDetails["C:TxDtls/C:Refs/C:InstrId"]] />
+					<#else>
+						<#assign row = row + ["IREF/" + rowDetails["C:TxDtls/C:Refs/C:InstrId"]] />
+						<#assign rowUpdated = true>
+					</#if>
 				</#if>
 				<#if rowDetails["C:TxDtls/C:Refs/C:PmtInfId"]?has_content>
-					<#assign row = row + ["PREF/" + rowDetails["C:TxDtls/C:Refs/C:PmtInfId"]] />
+					<#if rowUpdated>
+						<#assign row = row + ["/PREF/" + rowDetails["C:TxDtls/C:Refs/C:PmtInfId"]] />
+					<#else>
+						<#assign row = row + ["PREF/" + rowDetails["C:TxDtls/C:Refs/C:PmtInfId"]] />
+						<#assign rowUpdated = true>
+					</#if>
 				</#if>
 				<#assign row = row + ["\n"] />
 				<#assign entryDetails = entryDetails + [row] />
@@ -181,27 +213,59 @@
 		<#assign row=[] />
 		<#if (entry["C:NtryDtls/C:TxDtls"]?size > 1)>
 			<#list entry["C:NtryDtls/C:TxDtls"] as detail>
+				<#assign rowUpdated = false>
 				<#if detail["C:Refs/C:EndToEndId"]?has_content>
-					<#assign row = row + ["EREF/" + detail["C:Refs/C:EndToEndId"]] />
+					<#if rowUpdated>
+						<#assign row = row + ["/EREF/" + detail["C:Refs/C:EndToEndId"]] />
+					<#else>
+						<#assign row = row + ["EREF/" + detail["C:Refs/C:EndToEndId"]] />
+						<#assign rowUpdated = true>
+					</#if>
 				</#if>
 				<#if detail["C:Refs/C:InstrId"]?has_content>
-					<#assign row = row + ["IREF/" + detail["C:Refs/C:InstrId"]] />
+					<#if rowUpdated>
+						<#assign row = row + ["/IREF/" + detail["C:Refs/C:InstrId"]] />
+					<#else>
+						<#assign row = row + ["IREF/" + detail["C:Refs/C:InstrId"]] />
+						<#assign rowUpdated = true>
+					</#if>
 				</#if>
 				<#if detail["C:Refs/C:PmtInfId"]?has_content>
-					<#assign row = row + ["PREF/" + detail["C:Refs/C:PmtInfId"]] />
+					<#if rowUpdated>
+						<#assign row = row + ["/PREF/" + detail["C:Refs/C:PmtInfId"]] />
+					<#else>
+						<#assign row = row + ["PREF/" + detail["C:Refs/C:PmtInfId"]] />
+						<#assign rowUpdated = true>
+					</#if>
 				</#if>
 				<#assign row = row + ["\n"] />
 			</#list>
 			<#assign entryDetails = entryDetails + [row] />
 		<#else>
+			<#assign rowUpdated = false>
 			<#if entry["C:NtryDtls/C:TxDtls/C:Refs/C:EndToEndId"]?has_content>
-				<#assign row = row + ["EREF/" + entry["C:NtryDtls/C:TxDtls/C:Refs/C:EndToEndId"]] />
+				<#if rowUpdated>
+					<#assign row = row + ["/EREF/" + entry["C:NtryDtls/C:TxDtls/C:Refs/C:EndToEndId"]] />
+				<#else>
+					<#assign row = row + ["EREF/" + entry["C:NtryDtls/C:TxDtls/C:Refs/C:EndToEndId"]] />
+					<#assign rowUpdated = true>
+				</#if>
 			</#if>
 			<#if entry["C:NtryDtls/C:TxDtls/C:Refs/C:InstrId"]?has_content>
-				<#assign row = row + ["IREF/" + entry["C:NtryDtls/C:TxDtls/C:Refs/C:InstrId"]] />
+				<#if rowUpdated>
+					<#assign row = row + ["/IREF/" + entry["C:NtryDtls/C:TxDtls/C:Refs/C:InstrId"]] />
+				<#else>
+					<#assign row = row + ["IREF/" + entry["C:NtryDtls/C:TxDtls/C:Refs/C:InstrId"]] />
+					<#assign rowUpdated = true>
+				</#if>
 			</#if>
 			<#if entry["C:NtryDtls/C:TxDtls/C:Refs/C:PmtInfId"]?has_content>
-				<#assign row = row + ["PREF/" + entry["C:NtryDtls/C:TxDtls/C:Refs/C:PmtInfId"]] />
+				<#if rowUpdated>
+					<#assign row = row + ["/PREF/" + entry["C:NtryDtls/C:TxDtls/C:Refs/C:PmtInfId"]] />
+				<#else>
+					<#assign row = row + ["PREF/" + entry["C:NtryDtls/C:TxDtls/C:Refs/C:PmtInfId"]] />
+					<#assign rowUpdated = true>
+				</#if>
 			</#if>
 			<#assign row = row + ["\n"] />
 			<#assign entryDetails = entryDetails + [row] />

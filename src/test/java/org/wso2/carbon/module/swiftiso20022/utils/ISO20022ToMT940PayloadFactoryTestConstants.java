@@ -1,7 +1,5 @@
 package org.wso2.carbon.module.swiftiso20022.utils;
 
-import org.testng.annotations.DataProvider;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -565,11 +563,11 @@ public class ISO20022ToMT940PayloadFactoryTestConstants {
             ":28C:1/1\n" +
             ":60F:D230930USD843686,20\n" +
             ":61:2301011001RCD10,00ACHPGSGWGDNCTAHQM8\n" +
-            ":86:EREF/GSGWGDNCTAHQM8PREF/RP/GS/CTFILERP0002/CTBA0003\n" +
+            ":86:EREF/GSGWGDNCTAHQM8/PREF/RP/GS/CTFILERP0002/CTBA0003\n" +
             ":61:2301011001DD10,00ACHBNONREF\n" +
             ":86:PREF/RP/GS/CTFILERP0002/CTBA0003\n" +
             ":61:2301011001CD10,00ASPH20230928LTERMID2000003\n" +
-            ":86:EREF/20230928LTERMID2000003PREF/RP/GS/CTFILERP0002/CTBA0003\n" +
+            ":86:EREF/20230928LTERMID2000003/PREF/RP/GS/CTFILERP0002/CTBA0003\n" +
             ":62F:D230930USD846665,15\n" +
             ":64:C231002USD334432401,27\n" +
             "-}";
@@ -589,11 +587,11 @@ public class ISO20022ToMT940PayloadFactoryTestConstants {
                 ":28C:1/1\n" +
                 ":60F:D230930USD843686,20\n" +
                 ":61:2301011001RCD10,00ACHPGSGWGDNCTAHQM8\n" +
-                ":86:EREF/GSGWGDNCTAHQM8PREF/RP/GS/CTFILERP0002/CTBA0003\n" +
+                ":86:EREF/GSGWGDNCTAHQM8/PREF/RP/GS/CTFILERP0002/CTBA0003\n" +
                 ":61:2301011001DD10,00ACHBNONREF\n" +
                 ":86:PREF/RP/GS/CTFILERP0002/CTBA0003\n" +
                 ":61:2301011001CD10,00ASPH20230928LTERMID2000003\n" +
-                ":86:EREF/20230928LTERMID2000003PREF/RP/GS/CTFILERP0002/CTBA0003\n" +
+                ":86:EREF/20230928LTERMID2000003/PREF/RP/GS/CTFILERP0002/CTBA0003\n" +
                 ":62F:D230930USD846665,15\n" +
                 ":64:C231002USD334432401,27\n" +
                 "-}";
