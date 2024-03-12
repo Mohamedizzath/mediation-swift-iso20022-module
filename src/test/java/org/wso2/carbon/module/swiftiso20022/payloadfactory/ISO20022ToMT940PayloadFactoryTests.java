@@ -60,4 +60,5 @@ public class ISO20022ToMT940PayloadFactoryTests extends PowerMockTestCase {
         Assert.assertEquals(ISO20022ToMT940PayloadFactoryTestConstants.MT940_MAPPING_FOR_VALID_CAMT,
                 freemarkerOutput);
     }
+
 }

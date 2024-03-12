@@ -6,7 +6,7 @@
 :21:${docElement["C:BkToCstmrStmt/C:Stmt/C:Id"]}
 :25:${docElement["C:BkToCstmrStmt/C:Stmt/C:Acct/C:Id/C:Othr/C:Id"]}
 <#assign firstStat = true>
-:28C:${docElement["C:BkToCstmrStmt/C:Stmt/C:ElctrncSeqNb"]}/${docElement["C:BkToCstmrStmt/C:Stmt/C:LglSeqNb "]}
+:28C:${docElement["C:BkToCstmrStmt/C:Stmt/C:ElctrncSeqNb"]}/${docElement["C:BkToCstmrStmt/C:Stmt/C:LglSeqNb"]}
   <#if docElement["C:BkToCstmrStmt/C:GrpHdr/C:MsgPgntn/C:PgNb"]?has_content && docElement["C:BkToCstmrStmt/C:GrpHdr/C:MsgPgntn/C:PgNb"] gt 1>
      <#assign firstStat = false>
   </#if>
@@ -38,13 +38,13 @@
 <#elseif entry["C:NtryDtls/C:Batch/C:PmtInfId"]?has_content>
 	<#assign accOwnerRef = entry["C:NtryDtls/C:Batch/C:PmtInfId"]/>
 <#elseif entry["C:NtryDtls/C:TxDtls/C:Refs/C:InstrId"]?has_content>
-	<#if entry["C:NtryDtls/C:TxDtls/C:Refs/C:InstrId"]?size > 1>
+	<#if (entry["C:NtryDtls/C:TxDtls/C:Refs/C:InstrId"]?size > 1)>
 		<#assign accOwnerRef = entry["C:NtryDtls/C:TxDtls/C:Refs/C:InstrId"][0] />
 	<#else>
 		<#assign accOwnerRef = entry["C:NtryDtls/C:TxDtls/C:Refs/C:InstrId"] />
 	</#if>
 <#elseif entry["C:NtryDtls/C:TxDtls/C:Refs/C:TxId"]?has_content>
-	<#if entry["C:NtryDtls/C:TxDtls/C:Refs/C:TxId"]?size > 1>
+	<#if (entry["C:NtryDtls/C:TxDtls/C:Refs/C:TxId"]?size > 1)>
 		<#assign accOwnerRef = entry["C:NtryDtls/C:TxDtls/C:Refs/C:TxId"][0] />
 	<#else>
 		<#assign accOwnerRef = entry["C:NtryDtls/C:TxDtls/C:Refs/C:TxId"] />
