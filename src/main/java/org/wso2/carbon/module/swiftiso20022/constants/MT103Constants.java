@@ -1,13 +1,13 @@
 /**
  * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
- *
+ * <p>
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -38,6 +38,7 @@ public class MT103Constants {
         STP,
         REMIT;
     }
+
     public static final String MT103_STP_VALIDATION_FLAG = "STP";
     public static final String MT103_REMIT_VALIDATION_FLAG = "REMIT";
     public static final String MT103_ENTITY_OPTION = "option";
@@ -90,16 +91,16 @@ public class MT103Constants {
     public static final String BLOCK01_SESSION_NUMBER_KEY = "sessionNumber";
     public static final String BLOCK01_SEQUENCE_NUMBER_KEY = "sequenceNumber";
     public static final String BLOCK02 = "block02";
-    public static  final String BLOCK02_INPUT_OUTPUT_ID_KEY = "inputOutputIdentifier";
-    public static  final String BLOCK02_MESSAGE_TYPE_KEY = "messageType";
-    public static  final String BLOCK02_DESTINATION_LOGICAL_TERMINAL_ADDRESS_KEY = "destinationLogicalTerminalAddress";
-    public static  final String BLOCK02_INPUT_TIME_KEY = "inputTime";
-    public static  final String BLOCK02_MESSAGE_INPUT_REFERENCE_KEY = "messageInputReference";
-    public static  final String BLOCK02_OUTPUT_DATE_KEY = "outputDate";
-    public static  final String BLOCK02_OUTPUT_TIME_KEY = "outputTime";
-    public static  final String BLOCK02_PRIORITY_KEY = "priority";
-    public static  final String BLOCK02_DELIVERY_MONITORING_CODE_KEY = "deliveryMonitoringCode";
-    public static  final String BLOCK02_OBSOLESCENCE_PERIOD_CODE_KEY = "obsolescencePeriodCode";
+    public static final String BLOCK02_INPUT_OUTPUT_ID_KEY = "inputOutputIdentifier";
+    public static final String BLOCK02_MESSAGE_TYPE_KEY = "messageType";
+    public static final String BLOCK02_DESTINATION_LOGICAL_TERMINAL_ADDRESS_KEY = "destinationLogicalTerminalAddress";
+    public static final String BLOCK02_INPUT_TIME_KEY = "inputTime";
+    public static final String BLOCK02_MESSAGE_INPUT_REFERENCE_KEY = "messageInputReference";
+    public static final String BLOCK02_OUTPUT_DATE_KEY = "outputDate";
+    public static final String BLOCK02_OUTPUT_TIME_KEY = "outputTime";
+    public static final String BLOCK02_PRIORITY_KEY = "priority";
+    public static final String BLOCK02_DELIVERY_MONITORING_CODE_KEY = "deliveryMonitoringCode";
+    public static final String BLOCK02_OBSOLESCENCE_PERIOD_CODE_KEY = "obsolescencePeriodCode";
     public static final String BLOCK03 = "block03";
     public static final String BLOCK03_SERVICE_IDENTIFIER_KEY = "serviceIdentifier";
     public static final String BLOCK03_BANKING_PRIORITY_KEY = "bankingPriority";

@@ -34,6 +34,12 @@ public class JsonToMt103Utils {
 
     private static final Log logger = LogFactory.getLog(JsonToMt103Utils.class);
 
+    /**
+     * Method to validate block 01 of the JSON payload.
+     *
+     * @param block01Json JSON object of block 01. Can be null
+     * @return empty or validation result with error message
+     */
     public static ValidationResult validateBlock01(JSONObject block01Json) {
 
         logger.debug("Validating block 01");
@@ -68,6 +74,12 @@ public class JsonToMt103Utils {
         return JsonToMT103PayloadValidator.getMT103Block01ValidationEngine().validate(block01Json);
     }
 
+    /**
+     * Method to validate block 02 of the JSON payload.
+     *
+     * @param block02 JSON object of block 02. Can be null
+     * @return empty or validation result with error message
+     */
     public static ValidationResult validateBlock02(JSONObject block02) {
 
         logger.debug("Validating block 02");
@@ -117,6 +129,12 @@ public class JsonToMt103Utils {
         }
     }
 
+    /**
+     * Method to validate block 03 of the JSON payload.
+     *
+     * @param block03 JSON object of block 03. Can be null
+     * @return empty or validation result with error message
+     */
     public static ValidationResult validateBlock03(JSONObject block03) {
 
         logger.debug("Validating block 03");
@@ -131,6 +149,12 @@ public class JsonToMt103Utils {
         return JsonToMT103PayloadValidator.getMT103Block03ValidationEngine().validate(block03);
     }
 
+    /**
+     * Method to validate block 04 of the JSON payload.
+     *
+     * @param block04 JSON object of block 04. Can be null
+     * @return empty or validation result with error message
+     */
     public static ValidationResult validateBlock04(JSONObject block04) {
 
         logger.debug("Validating block 04");
@@ -145,6 +169,12 @@ public class JsonToMt103Utils {
         return JsonToMT103PayloadValidator.getMT103Block04ValidationEngine().validate(block04);
     }
 
+    /**
+     * Method to validate block 05 of the JSON payload.
+     *
+     * @param block05 JSON object of block 05. Can be null
+     * @return empty or validation result with error message
+     */
     public static ValidationResult validateBlock05(JSONObject block05) {
 
         logger.debug("Validating block 05");

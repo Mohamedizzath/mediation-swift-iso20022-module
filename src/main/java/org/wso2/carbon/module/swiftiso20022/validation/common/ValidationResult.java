@@ -44,7 +44,7 @@ public class ValidationResult {
         return this.isValid;
     }
 
-    public boolean isInvalid() {
+    public boolean isNotValid() {
         return !this.isValid;
     }
 

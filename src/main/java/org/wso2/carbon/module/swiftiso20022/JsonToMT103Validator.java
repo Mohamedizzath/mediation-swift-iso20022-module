@@ -68,7 +68,7 @@ public class JsonToMT103Validator extends AbstractConnector {
             // validate values of the JSON object
             this.log.debug("Validating payload parameters");
             ValidationResult validationResponse = validateRequestPayload(payload.get());
-            if (validationResponse.isInvalid()) {
+            if (validationResponse.isNotValid()) {
                 this.log.error(validationResponse.getErrorMessage());
                 ConnectorUtils.appendErrorToMessageContext(messageContext, validationResponse.getErrorCode(),
                         validationResponse.getErrorMessage());
@@ -82,6 +82,12 @@ public class JsonToMT103Validator extends AbstractConnector {
         }
     }
 
+    /**
+     * Method to validate each block in the request payload.
+     *
+     * @param payloadString string containing JSON payload.
+     * @return empty or validation result with an error message.
+     */
     private ValidationResult validateRequestPayload(String payloadString) {
 
         // build JSONObject from the payload string
@@ -90,25 +96,25 @@ public class JsonToMT103Validator extends AbstractConnector {
         // validate block 01
         ValidationResult blockValidationResult =
                 JsonToMt103Utils.validateBlock01(requestPayload.optJSONObject(MT103Constants.BLOCK01));
-        if (blockValidationResult.isInvalid()) {
+        if (blockValidationResult.isNotValid()) {
             return blockValidationResult;
         }
 
         // validate block 02
         blockValidationResult = JsonToMt103Utils.validateBlock02(requestPayload.optJSONObject(MT103Constants.BLOCK02));
-        if (blockValidationResult.isInvalid()) {
+        if (blockValidationResult.isNotValid()) {
             return blockValidationResult;
         }
 
         // validate block 03
         blockValidationResult = JsonToMt103Utils.validateBlock03(requestPayload.optJSONObject(MT103Constants.BLOCK03));
-        if (blockValidationResult.isInvalid()) {
+        if (blockValidationResult.isNotValid()) {
             return blockValidationResult;
         }
 
         // validate block 04
         blockValidationResult = JsonToMt103Utils.validateBlock04(requestPayload.optJSONObject(MT103Constants.BLOCK04));
-        if (blockValidationResult.isInvalid()) {
+        if (blockValidationResult.isNotValid()) {
             return blockValidationResult;
         }
 
@@ -117,7 +123,13 @@ public class JsonToMT103Validator extends AbstractConnector {
         return JsonToMt103Utils.validateBlock05(requestPayload.optJSONObject(MT103Constants.BLOCK05));
     }
 
-    // validate JSON object with the defined request model
+
+    /**
+     * Method to validate the JSON object with the request model.
+     *
+     * @param payload JSON payload as a string
+     * @throws JsonSyntaxException if the JSON object doesn't match the defined model
+     */
     private void validatePayloadWithMT103JsonModel(String payload) throws JsonSyntaxException {
         this.log.debug("Validating JSON payload with the request model");
         gson.fromJson(payload, MT103JsonRequestPayload.class);

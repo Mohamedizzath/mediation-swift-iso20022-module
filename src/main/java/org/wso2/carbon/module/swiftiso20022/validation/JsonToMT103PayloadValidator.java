@@ -22,9 +22,9 @@ import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
 import org.wso2.carbon.module.swiftiso20022.constants.MT103Constants;
 import org.wso2.carbon.module.swiftiso20022.validation.common.ValidationEngine;
 import org.wso2.carbon.module.swiftiso20022.validation.common.ValidatorContext;
+import org.wso2.carbon.module.swiftiso20022.validation.rules.custom.MT103ArrayFieldValidationRule;
 import org.wso2.carbon.module.swiftiso20022.validation.rules.custom.MT103EntityFieldValidationRule;
-import org.wso2.carbon.module.swiftiso20022.validation.rules.custom.MT103MultilineFieldValidationRule;
-import org.wso2.carbon.module.swiftiso20022.validation.rules.custom.MT103RepetitiveFieldValidationRule;
+
 
 import java.util.List;
 import java.util.Map;
@@ -341,8 +341,8 @@ public class JsonToMT103PayloadValidator {
                         block04LengthValidationParamsList, block04DefinedLengthFields)
                 .addAlphaNumericParamValidationRule(block04AlphaNumericValidationParamsList)
                 .addAlphaParamValidationRule(block04AlphaValidationParamsList)
-                .addCustomRule(new MT103RepetitiveFieldValidationRule(block04RepetitiveFieldValidationParamsList))
-                .addCustomRule(new MT103MultilineFieldValidationRule(block04MultilineFieldValidationParamsList))
+                .addCustomRule(new MT103ArrayFieldValidationRule(block04RepetitiveFieldValidationParamsList))
+                .addCustomRule(new MT103ArrayFieldValidationRule(block04MultilineFieldValidationParamsList, true))
                 .addCustomRule(new MT103EntityFieldValidationRule(block04EntityFieldValidationParamsList));
 
     }
