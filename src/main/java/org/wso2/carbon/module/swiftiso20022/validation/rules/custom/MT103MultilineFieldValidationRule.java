@@ -21,51 +21,71 @@ package org.wso2.carbon.module.swiftiso20022.validation.rules.custom;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
+import org.wso2.carbon.module.swiftiso20022.constants.MT103Constants;
 import org.wso2.carbon.module.swiftiso20022.validation.common.ValidationResult;
 import org.wso2.carbon.module.swiftiso20022.validation.common.ValidationRule;
 import org.wso2.carbon.module.swiftiso20022.validation.common.ValidatorContext;
 
+import java.util.List;
+
 /**
  * Validate multiline fields.
+ * Multiline fields are accepted as an array of strings.
  * Check whether the value is String and String length.
  */
 public class MT103MultilineFieldValidationRule implements ValidationRule {
 
-    private final ValidatorContext context;
-    private final int linesAllowed;
+    private final List<ValidatorContext> contexts;
 
-    public MT103MultilineFieldValidationRule(ValidatorContext context, int linesAllowed) {
-        this.context = context;
-        this.linesAllowed = linesAllowed;
+    public MT103MultilineFieldValidationRule(List<ValidatorContext> contexts) {
+        this.contexts = contexts;
     }
 
     @Override
     public ValidationResult validate(JSONObject payload) {
-        if (payload.has(context.getFieldName())) {
-            JSONArray lines = payload.getJSONArray(context.getFieldName());
-            if (lines.length() == 0) {
-                return new ValidationResult(ConnectorConstants.ERROR_CODE_INVALID_PARAM,
-                        String.format(ConnectorConstants.ERROR_PARAMETER_EMPTY, context.getFieldDisplayName()));
-            }
-            if (lines.length() > linesAllowed) {
-                return new ValidationResult(ConnectorConstants.ERROR_CODE_INVALID_PARAM,
-                        String.format(
-                                ConnectorConstants.ERROR_LINE_COUNT, context.getFieldDisplayName(), linesAllowed));
-            }
-            for (int i = 0; i < lines.length(); i++) {
-                String line = lines.getString(i);
-                if (line.isBlank()) {
-                    return new ValidationResult(ConnectorConstants.ERROR_CODE_INVALID_LINE,
-                            String.format(ConnectorConstants.ERROR_LINE_EMPTY,
-                                    ++i, context.getFieldDisplayName()));
-                }
-                if (line.length() > context.getFieldLength()) {
-                    return new ValidationResult(ConnectorConstants.ERROR_CODE_INVALID_LINE,
-                            String.format(ConnectorConstants.ERROR_LINE_LENGTH,
-                                    ++i, context.getFieldDisplayName(), context.getFieldLength()));
-                }
-            }
+        for (ValidatorContext context : this.contexts) {
 
+            // validation happens only if the key is present
+            if (payload.has(context.getFieldName())) {
+                JSONArray lines = payload.getJSONArray(context.getFieldName());
+
+                // if the key is present there should be at least one value
+                if (lines.length() == 0) {
+                    return new ValidationResult(ConnectorConstants.ERROR_CODE_INVALID_PARAM,
+                            String.format(ConnectorConstants.ERROR_PARAMETER_EMPTY, context.getFieldDisplayName()));
+                }
+
+                // allowed lines count should be available as a property in validation context
+                int linesAllowed = (int) context.getProperty(MT103Constants.LINES_ALLOWED_KEY);
+
+                // check whether provided lines count exceed the defined line count
+                if (lines.length() > linesAllowed) {
+                    return new ValidationResult(ConnectorConstants.ERROR_CODE_INVALID_PARAM,
+                            String.format(
+                                    ConnectorConstants.ERROR_LINE_COUNT, context.getFieldDisplayName(), linesAllowed));
+                }
+
+                // each value is validated
+                for (int i = 0; i < lines.length(); i++) {
+                    String line = lines.getString(i);
+
+                    // value cannot be blank
+                    if (line.isBlank()) {
+                        return new ValidationResult(ConnectorConstants.ERROR_CODE_INVALID_PARAM,
+                                String.format(ConnectorConstants.ERROR_LINE_EMPTY,
+                                        ++i, context.getFieldDisplayName()));
+                    }
+
+                    // value length cannot be longer than defined text line length
+                    // all multiline fields in MT103 has the same length
+                    if (line.length() > MT103Constants.MT103_TEXT_LINE_LENGTH) {
+                        return new ValidationResult(ConnectorConstants.ERROR_CODE_INVALID_PARAM,
+                                String.format(ConnectorConstants.ERROR_LINE_LENGTH,
+                                        ++i, context.getFieldDisplayName(), context.getFieldLength()));
+                    }
+                }
+
+            }
         }
         return new ValidationResult();
     }

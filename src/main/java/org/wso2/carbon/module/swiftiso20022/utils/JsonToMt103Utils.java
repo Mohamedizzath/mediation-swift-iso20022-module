@@ -18,30 +18,78 @@
 
 package org.wso2.carbon.module.swiftiso20022.utils;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.json.JSONObject;
 import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
 import org.wso2.carbon.module.swiftiso20022.constants.MT103Constants;
 import org.wso2.carbon.module.swiftiso20022.validation.JsonToMT103PayloadValidator;
 import org.wso2.carbon.module.swiftiso20022.validation.common.ValidationResult;
 
+
 /**
  * Class with Json to Mt103 utility methods.
  */
 public class JsonToMt103Utils {
 
+    private static final Log logger = LogFactory.getLog(JsonToMt103Utils.class);
+
     public static ValidationResult validateBlock01(JSONObject block01Json) {
+
+        logger.debug("Validating block 01");
+
+        // block 01 is mandatory block
         if (block01Json == null) {
             return new ValidationResult(ConnectorConstants.ERROR_CODE_MISSING_BLOCK,
                     String.format(ConnectorConstants.ERROR_MANDATORY_BLOCK_MISSING, MT103Constants.BLOCK01));
         }
 
+        // if application identifier is present can only contain value "F"
+        if (block01Json.has(MT103Constants.BLOCK01_APPLICATION_ID_KEY)) {
+            if (!MT103Constants.MT103_APPLICATION_ID.equals(
+                    block01Json.getString(MT103Constants.BLOCK01_APPLICATION_ID_KEY))) {
+                return new ValidationResult(ConnectorConstants.ERROR_CODE_INVALID_PARAM,
+                        String.format(ConnectorConstants.ERROR_PARAMETER_INVALID,
+                                ConnectorConstants.BLOCK01_APPLICATION_ID));
+            }
+        }
+
+        // if service identifier is present can only contain value "01"
+        if (block01Json.has(MT103Constants.BLOCK01_SERVICE_ID_KEY)) {
+            if (!MT103Constants.MT103_SERVICE_ID.equals(
+                    block01Json.getString(MT103Constants.BLOCK01_SERVICE_ID_KEY))) {
+                return new ValidationResult(ConnectorConstants.ERROR_CODE_INVALID_PARAM,
+                        String.format(ConnectorConstants.ERROR_PARAMETER_INVALID,
+                                ConnectorConstants.BLOCK01_SERVICE_ID));
+            }
+        }
+
+        // validate remaining fields using common validation rules
         return JsonToMT103PayloadValidator.getMT103Block01ValidationEngine().validate(block01Json);
     }
 
     public static ValidationResult validateBlock02(JSONObject block02) {
+
+        logger.debug("Validating block 02");
+
+        // block 02 is an optional block
         if (block02 == null) {
+            logger.debug("Optional block 02 is absent");
             return new ValidationResult();
         }
+
+        // if message type is present can only contain value "103"
+        if (block02.has(MT103Constants.BLOCK02_MESSAGE_TYPE_KEY)) {
+            if (!MT103Constants.MT103_MESSAGE_TYPE.equals(
+                    block02.getString(MT103Constants.BLOCK02_MESSAGE_TYPE_KEY))) {
+                return new ValidationResult(ConnectorConstants.ERROR_CODE_INVALID_PARAM,
+                        String.format(ConnectorConstants.ERROR_PARAMETER_INVALID,
+                                ConnectorConstants.BLOCK02_MESSAGE_TYPE));
+            }
+        }
+
+        // variable to store input output identifier
+        // it is a mandatory parameter
         String inputOutputID;
         if (block02.has(MT103Constants.BLOCK02_INPUT_OUTPUT_ID_KEY)) {
             inputOutputID = block02.getString(MT103Constants.BLOCK02_INPUT_OUTPUT_ID_KEY);
@@ -50,12 +98,19 @@ public class JsonToMt103Utils {
                     String.format(ConnectorConstants.ERROR_PARAMETER_MISSING,
                             ConnectorConstants.BLOCK02_INPUT_OUTPUT_ID));
         }
+
+        // input output identifier can only be either "I" or "O"
         switch (inputOutputID) {
+
             case ConnectorConstants.BLOCK02_INPUT_ID:
+                // validate input block 02 header
                 return JsonToMT103PayloadValidator.getMT103InputBlock02ValidationEngine().validate(block02);
+
             case ConnectorConstants.BLOCK02_OUTPUT_ID:
+                // validate output block 02 header
                 return JsonToMT103PayloadValidator.getMT103OutputBlock02ValidationEngine().validate(block02);
             default:
+                // any other character is invalid
                 return new ValidationResult(ConnectorConstants.ERROR_CODE_INVALID_PARAM,
                         String.format(ConnectorConstants.ERROR_PARAMETER_INVALID,
                                 ConnectorConstants.BLOCK02_INPUT_OUTPUT_ID));
@@ -63,29 +118,44 @@ public class JsonToMt103Utils {
     }
 
     public static ValidationResult validateBlock03(JSONObject block03) {
+
+        logger.debug("Validating block 03");
+
+        // block 03 is a mandatory block
         if (block03 == null) {
             return new ValidationResult(ConnectorConstants.ERROR_CODE_MISSING_BLOCK,
                     String.format(ConnectorConstants.ERROR_MANDATORY_BLOCK_MISSING, MT103Constants.BLOCK03));
         }
 
+        // validate remaining fields using common validation rules
         return JsonToMT103PayloadValidator.getMT103Block03ValidationEngine().validate(block03);
     }
 
     public static ValidationResult validateBlock04(JSONObject block04) {
+
+        logger.debug("Validating block 04");
+
+        // block 04 is a mandatory block
         if (block04 == null) {
             return new ValidationResult(ConnectorConstants.ERROR_CODE_MISSING_BLOCK,
                     String.format(ConnectorConstants.ERROR_MANDATORY_BLOCK_MISSING, MT103Constants.BLOCK04));
         }
 
+        // validate remaining fields using common validation rules
         return JsonToMT103PayloadValidator.getMT103Block04ValidationEngine().validate(block04);
     }
 
     public static ValidationResult validateBlock05(JSONObject block05) {
+
+        logger.debug("Validating block 05");
+
+        // block 05 is an optional block
         if (block05 == null) {
+            logger.debug("Optional block 05 is absent");
             return new ValidationResult();
         }
 
+        // validate remaining fields using common validation rules
         return JsonToMT103PayloadValidator.getMT103Block05ValidationEngine().validate(block05);
     }
-
 }

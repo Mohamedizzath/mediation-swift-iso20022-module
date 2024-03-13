@@ -43,6 +43,7 @@ public class ConnectorConstants {
     public static final String COLON = ":";
     public static final String SLASH = "/";
     public static final String DOUBLE_SLASH = "//";
+    public static final String ENUM_KEY = "enumClassName";
 
     // Block01 (Basic Header) Related Constants
     public static final String BLOCK01_APPLICATION_ID = "Application Identifier";
@@ -88,6 +89,7 @@ public class ConnectorConstants {
     public static final String SERVER_ERROR = "server_error";
     public static final String ERROR_VALIDATION_FAILED = "Validation failed";
     public static final String ERROR_MISSING_PAYLOAD = "Missing Request Payload";
+    public static final String ERROR_INVALID_PAYLOAD = "Invalid Request Payload";
     public static final String PROCESSING_ERROR = "Error while processing the request";
     public static final String ERROR_MANDATORY_BLOCK_MISSING = "Mandatory block %s cannot be null";
     public static final String ERROR_MANDATORY_PARAM_MISSING = "Mandatory parameter %s cannot be null or empty";
@@ -117,12 +119,9 @@ public class ConnectorConstants {
     public static final String ERROR_LINE_COUNT = "Field %s should not contain more than %s lines";
 
     //Common Error Codes
-    public static final String ERROR_CODE_MISSING_BLOCK = "T0001";
-    public static final String ERROR_CODE_MISSING_PARAM = "T0002";
-    public static final String ERROR_CODE_INVALID_PARAM = "T0003";
-    public static final String ERROR_CODE_LINE_COUNT = "T0004";
-    public static final String ERROR_CODE_INVALID_LINE = "T0005";
-    public static final String ERROR_CODE_INVALID_OPTION = "T0006";
+    public static final String ERROR_CODE_MISSING_BLOCK = "missing_block";
+    public static final String ERROR_CODE_MISSING_PARAM = "missing_parameter";
+    public static final String ERROR_CODE_INVALID_PARAM = "invalid_parameter";
 
     // MT  Error Constants
     public static final String ERROR_C03 = "C03";
@@ -160,8 +159,8 @@ public class ConnectorConstants {
     public static final int BLOCK02_OBSOLESCENCE_PERIOD_LENGTH = 3;
     public static final int BLOCK02_MESSAGE_INPUT_REFERENCE_LENGTH = 28;
     public static final int BLOCK03_SERVICE_IDENTIFIER_LENGTH = 3;
-    public static final int BLOCK03_BANKING_PRIORITY_LENGTH = 3;
-    public static final int MESSAGE_USER_REFERENCE_LENGTH = 3;
+    public static final int BLOCK03_BANKING_PRIORITY_LENGTH = 4;
+    public static final int MESSAGE_USER_REFERENCE_LENGTH = 16;
     public static final int END_TO_END_REFERENCE_LENGTH = 36;
     public static final int BLOCK03_SERVICE_TYPE_IDENTIFIER_LENGTH = 3;
     public static final int CHECKSUM_LENGTH = 12;

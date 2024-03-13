@@ -1,13 +1,13 @@
 /**
  * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
- *
+ * <p>
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -26,62 +26,93 @@ import org.wso2.carbon.module.swiftiso20022.validation.common.ValidationResult;
 import org.wso2.carbon.module.swiftiso20022.validation.common.ValidationRule;
 import org.wso2.carbon.module.swiftiso20022.validation.common.ValidatorContext;
 
+import java.util.List;
+
 /**
- * Validate entity fields.
- * Check option and details of the entity.
+ * Entity field refers to fields which identifies an entity e.x: institution, individual
+ * Entity fields are accepted as an object with option and details keys.
+ * option is a string.
+ * details is an array of strings.
  */
 public class MT103EntityFieldValidationRule implements ValidationRule {
 
-    private final ValidatorContext context;
+    private final List<ValidatorContext> contexts;
 
-    public MT103EntityFieldValidationRule(ValidatorContext context) {
-        this.context = context;
+    public MT103EntityFieldValidationRule(List<ValidatorContext> contexts) {
+        this.contexts = contexts;
     }
 
     @Override
     public ValidationResult validate(JSONObject payload) {
-        if (payload.has(context.getFieldName())) {
-            JSONObject entity = payload.getJSONObject(context.getFieldName());
-            if (entity.has(MT103Constants.MT103_ENTITY_OPTION)) {
-                String option = entity.getString(MT103Constants.MT103_ENTITY_OPTION);
-                if (option.length() > 1) {
-                    return new ValidationResult(ConnectorConstants.ERROR_CODE_INVALID_OPTION,
-                            String.format(
-                                    MT103Constants.ERROR_INVALID_ENTITY_OPTION, context.getFieldDisplayName()));
-                }
-            } else {
-                return new ValidationResult(ConnectorConstants.ERROR_CODE_INVALID_OPTION,
-                        String.format(MT103Constants.ERROR_EMPTY_ENTITY_OPTION, context.getFieldDisplayName()));
-            }
-            if (entity.has(MT103Constants.MT103_ENTITY_DETAILS)) {
-                JSONArray details = entity.getJSONArray(MT103Constants.MT103_ENTITY_DETAILS);
-                if (details.length() == 0) {
-                    return new ValidationResult(ConnectorConstants.ERROR_CODE_INVALID_PARAM,
-                            String.format(
-                                    MT103Constants.ERROR_EMPTY_ENTITY_DETAILS, context.getFieldDisplayName()));
-                }
-                if (details.length() > MT103Constants.MT103_ENTITY_DETAILS_LINE_COUNT) {
-                    return new ValidationResult(ConnectorConstants.ERROR_CODE_LINE_COUNT,
-                            String.format(MT103Constants.ERROR_ENTITY_DETAIL_LINE_COUNT,
-                                    context.getFieldDisplayName()));
-                }
-                for (int i = 0; i < details.length(); i++) {
-                    String line = details.getString(i);
-                    if (line.isBlank()) {
-                        return new ValidationResult(ConnectorConstants.ERROR_CODE_INVALID_LINE,
-                                String.format(MT103Constants.ERROR_EMPTY_ENTITY_DETAIL_LINE,
-                                        ++i, context.getFieldDisplayName()));
+        for (ValidatorContext context : contexts) {
+
+            // validation happens only if the key is present
+            if (payload.has(context.getFieldName())) {
+
+                // entity is accepted as a JSON object
+                JSONObject entity = payload.getJSONObject(context.getFieldName());
+
+                // check whether the option is provided
+                if (entity.has(MT103Constants.MT103_ENTITY_OPTION)) {
+
+                    // option is a string
+                    String option = entity.getString(MT103Constants.MT103_ENTITY_OPTION);
+
+                    // option can either be an empty string or a single character
+                    if (option.length() > 1) {
+                        return new ValidationResult(ConnectorConstants.ERROR_CODE_INVALID_PARAM,
+                                String.format(
+                                        MT103Constants.ERROR_INVALID_ENTITY_OPTION, context.getFieldDisplayName()));
                     }
-                    if (line.length() > MT103Constants.MT103_TEXT_LINE_LENGTH) {
-                        return new ValidationResult(ConnectorConstants.ERROR_CODE_INVALID_LINE,
-                                String.format(MT103Constants.ERROR_ENTITY_DETAIL_LINE_LENGTH,
-                                        ++i, context.getFieldDisplayName()));
+                } else {
+                    return new ValidationResult(ConnectorConstants.ERROR_CODE_INVALID_PARAM,
+                            String.format(MT103Constants.ERROR_EMPTY_ENTITY_OPTION, context.getFieldDisplayName()));
+                }
+
+                // check whether the details are provided
+                if (entity.has(MT103Constants.MT103_ENTITY_DETAILS)) {
+
+                    // details is an array of strings
+                    JSONArray details = entity.getJSONArray(MT103Constants.MT103_ENTITY_DETAILS);
+
+                    // if the key is present there should be at least one value
+                    if (details.length() == 0) {
+                        return new ValidationResult(ConnectorConstants.ERROR_CODE_INVALID_PARAM,
+                                String.format(
+                                        MT103Constants.ERROR_EMPTY_ENTITY_DETAILS, context.getFieldDisplayName()));
                     }
 
+                    // line count should not exceed defined line count
+                    if (details.length() > MT103Constants.MT103_ENTITY_DETAILS_LINE_COUNT) {
+                        return new ValidationResult(ConnectorConstants.ERROR_CODE_INVALID_PARAM,
+                                String.format(MT103Constants.ERROR_ENTITY_DETAIL_LINE_COUNT,
+                                        context.getFieldDisplayName()));
+                    }
+
+                    // each value is validated
+                    for (int i = 0; i < details.length(); i++) {
+                        String line = details.getString(i);
+
+                        // value cannot be blank
+                        if (line.isBlank()) {
+                            return new ValidationResult(ConnectorConstants.ERROR_CODE_INVALID_PARAM,
+                                    String.format(MT103Constants.ERROR_EMPTY_ENTITY_DETAIL_LINE,
+                                            ++i, context.getFieldDisplayName()));
+                        }
+
+                        // value length cannot be longer than defined text line length
+                        // all entity details line in MT103 has the same length
+                        if (line.length() > MT103Constants.MT103_TEXT_LINE_LENGTH) {
+                            return new ValidationResult(ConnectorConstants.ERROR_CODE_INVALID_PARAM,
+                                    String.format(MT103Constants.ERROR_ENTITY_DETAIL_LINE_LENGTH,
+                                            ++i, context.getFieldDisplayName()));
+                        }
+
+                    }
+                } else {
+                    return new ValidationResult(ConnectorConstants.ERROR_CODE_MISSING_PARAM,
+                            String.format(MT103Constants.ERROR_EMPTY_ENTITY_DETAILS, context.getFieldDisplayName()));
                 }
-            } else {
-                return new ValidationResult(ConnectorConstants.ERROR_CODE_MISSING_PARAM,
-                        String.format(MT103Constants.ERROR_EMPTY_ENTITY_DETAILS, context.getFieldDisplayName()));
             }
         }
         return new ValidationResult();

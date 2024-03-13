@@ -30,10 +30,19 @@ public class MT103Constants {
     public static final String MT103_APPLICATION_ID = "F";
     public static final String MT103_SERVICE_ID = "01";
     public static final String MT103_MESSAGE_TYPE = "103";
+
+    /**
+     * Enum with allowed values for block03 validation flag field.
+     */
+    public enum ValidationFlag {
+        STP,
+        REMIT;
+    }
     public static final String MT103_STP_VALIDATION_FLAG = "STP";
     public static final String MT103_REMIT_VALIDATION_FLAG = "REMIT";
     public static final String MT103_ENTITY_OPTION = "option";
     public static final String MT103_ENTITY_DETAILS = "details";
+    public static final String LINES_ALLOWED_KEY = "linesAllowed";
     public static final int MT103_ENTITY_DETAILS_LINE_COUNT = 4;
     public static final int MT103_TEXT_LINE_LENGTH = 35;
 
