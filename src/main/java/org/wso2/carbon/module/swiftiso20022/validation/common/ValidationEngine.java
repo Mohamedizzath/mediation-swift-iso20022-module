@@ -25,16 +25,15 @@ import org.wso2.carbon.module.swiftiso20022.validation.rules.AlphaNumericParamVa
 import org.wso2.carbon.module.swiftiso20022.validation.rules.AlphaParamValidationRule;
 import org.wso2.carbon.module.swiftiso20022.validation.rules.CurrencyFormatValidationRule;
 import org.wso2.carbon.module.swiftiso20022.validation.rules.DateFormatValidationRule;
+import org.wso2.carbon.module.swiftiso20022.validation.rules.EnumValueMatchValidationRule;
 import org.wso2.carbon.module.swiftiso20022.validation.rules.MTCharacterSetXValidationRule;
 import org.wso2.carbon.module.swiftiso20022.validation.rules.MandatoryParamValidationRule;
 import org.wso2.carbon.module.swiftiso20022.validation.rules.NumericParamValidationRule;
 import org.wso2.carbon.module.swiftiso20022.validation.rules.OptionalStringParamValidationRule;
 import org.wso2.carbon.module.swiftiso20022.validation.rules.ParameterLengthValidationRule;
-import org.wso2.carbon.module.swiftiso20022.validation.rules.StringValueMatchValidationRule;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Validation Engine class to perform validation rules.
@@ -95,9 +94,8 @@ public class ValidationEngine {
         return this;
     }
 
-    public ValidationEngine addStringValueMatchValidationRule(List<ValidatorContext> validationParamList,
-                                                              Map<String, List<String>> definedValueList) {
-        this.ruleList.add(new StringValueMatchValidationRule(validationParamList, definedValueList));
+    public ValidationEngine addEnumValueMatchValidationRule(List<ValidatorContext> validationParamList) {
+        this.ruleList.add(new EnumValueMatchValidationRule(validationParamList));
         return this;
     }
 

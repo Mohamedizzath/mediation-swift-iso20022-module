@@ -1,13 +1,13 @@
 /**
  * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
- *
+ * <p>
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -38,7 +38,9 @@ public class MT103EntityFieldValidationRule implements ValidationRule {
 
     private final List<ValidatorContext> contexts;
 
-    public MT103EntityFieldValidationRule(List<ValidatorContext> context) { this.contexts = context; }
+    public MT103EntityFieldValidationRule(List<ValidatorContext> contexts) {
+        this.contexts = contexts;
+    }
 
     @Override
     public ValidationResult validate(JSONObject payload) {
@@ -58,12 +60,12 @@ public class MT103EntityFieldValidationRule implements ValidationRule {
 
                     // option can either be an empty string or a single character
                     if (option.length() > 1) {
-                        return new ValidationResult(ConnectorConstants.ERROR_CODE_INVALID_OPTION,
+                        return new ValidationResult(ConnectorConstants.ERROR_CODE_INVALID_PARAM,
                                 String.format(
                                         MT103Constants.ERROR_INVALID_ENTITY_OPTION, context.getFieldDisplayName()));
                     }
                 } else {
-                    return new ValidationResult(ConnectorConstants.ERROR_CODE_INVALID_OPTION,
+                    return new ValidationResult(ConnectorConstants.ERROR_CODE_INVALID_PARAM,
                             String.format(MT103Constants.ERROR_EMPTY_ENTITY_OPTION, context.getFieldDisplayName()));
                 }
 
@@ -82,7 +84,7 @@ public class MT103EntityFieldValidationRule implements ValidationRule {
 
                     // line count should not exceed defined line count
                     if (details.length() > MT103Constants.MT103_ENTITY_DETAILS_LINE_COUNT) {
-                        return new ValidationResult(ConnectorConstants.ERROR_CODE_LINE_COUNT,
+                        return new ValidationResult(ConnectorConstants.ERROR_CODE_INVALID_PARAM,
                                 String.format(MT103Constants.ERROR_ENTITY_DETAIL_LINE_COUNT,
                                         context.getFieldDisplayName()));
                     }
@@ -93,7 +95,7 @@ public class MT103EntityFieldValidationRule implements ValidationRule {
 
                         // value cannot be blank
                         if (line.isBlank()) {
-                            return new ValidationResult(ConnectorConstants.ERROR_CODE_INVALID_LINE,
+                            return new ValidationResult(ConnectorConstants.ERROR_CODE_INVALID_PARAM,
                                     String.format(MT103Constants.ERROR_EMPTY_ENTITY_DETAIL_LINE,
                                             ++i, context.getFieldDisplayName()));
                         }
@@ -101,7 +103,7 @@ public class MT103EntityFieldValidationRule implements ValidationRule {
                         // value length cannot be longer than defined text line length
                         // all entity details line in MT103 has the same length
                         if (line.length() > MT103Constants.MT103_TEXT_LINE_LENGTH) {
-                            return new ValidationResult(ConnectorConstants.ERROR_CODE_INVALID_LINE,
+                            return new ValidationResult(ConnectorConstants.ERROR_CODE_INVALID_PARAM,
                                     String.format(MT103Constants.ERROR_ENTITY_DETAIL_LINE_LENGTH,
                                             ++i, context.getFieldDisplayName()));
                         }

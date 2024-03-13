@@ -297,7 +297,6 @@ public class JsonToMT103ValidatorTestConstants {
                 {getBlock03Payload(Map.of("bankingPriority", "\"xxxxxx\""))},
                 {getBlock03Payload(Map.of("messageUserReference", "\"\""))},
                 {getBlock03Payload(Map.of("messageUserReference", "\"   \""))},
-                {getBlock03Payload(Map.of("messageUserReference", "\"REF014086/015\""))},
                 {getBlock03Payload(Map.of("messageUserReference", "\"REF014086252/015ABC\""))},
                 {getBlock03Payload(Map.of("validationFlag", "\"\""))},
                 {getBlock03Payload(Map.of("validationFlag", "\"FLAG\""))},

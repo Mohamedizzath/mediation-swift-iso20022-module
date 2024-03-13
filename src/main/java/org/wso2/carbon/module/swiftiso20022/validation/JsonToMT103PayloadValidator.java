@@ -35,10 +35,6 @@ import java.util.Map;
 public class JsonToMT103PayloadValidator {
 
     private static final List<ValidatorContext> block01MandatoryFieldValidationParamList = List.of(
-            new ValidatorContext(MT103Constants.BLOCK01_APPLICATION_ID_KEY,
-                    ConnectorConstants.BLOCK01_APPLICATION_ID),
-            new ValidatorContext(MT103Constants.BLOCK01_SERVICE_ID_KEY,
-                    ConnectorConstants.BLOCK01_SERVICE_ID),
             new ValidatorContext(MT103Constants.BLOCK01_LOGICAL_TERMINAL_ADDRESS_KEY,
                     ConnectorConstants.BLOCK01_LOGICAL_TERMINAL_ADDRESS),
             new ValidatorContext(MT103Constants.BLOCK01_SESSION_NUMBER_KEY,
@@ -68,16 +64,6 @@ public class JsonToMT103PayloadValidator {
             List.of(MT103Constants.BLOCK01_LOGICAL_TERMINAL_ADDRESS_KEY,
             MT103Constants.BLOCK01_SESSION_NUMBER_KEY, ConnectorConstants.BLOCK01_SEQUENCE_NUMBER);
 
-    private static final List<ValidatorContext> block01DefinedValueFields = List.of(
-            new ValidatorContext(MT103Constants.BLOCK01_APPLICATION_ID_KEY, ConnectorConstants.BLOCK01_APPLICATION_ID),
-            new ValidatorContext(MT103Constants.BLOCK01_SERVICE_ID_KEY, ConnectorConstants.BLOCK01_SERVICE_ID)
-    );
-
-    private static final Map<String, List<String>> block01DefinedValues = Map.of(
-            MT103Constants.BLOCK01_APPLICATION_ID_KEY, List.of(MT103Constants.MT103_APPLICATION_ID),
-            MT103Constants.BLOCK01_SERVICE_ID_KEY, List.of(MT103Constants.MT103_SERVICE_ID)
-    );
-
     private static final List<ValidatorContext> block02AlphanumericValidationParamsList = List.of(
             new ValidatorContext(MT103Constants.BLOCK01_LOGICAL_TERMINAL_ADDRESS_KEY,
                     ConnectorConstants.BLOCK01_LOGICAL_TERMINAL_ADDRESS)
@@ -85,20 +71,11 @@ public class JsonToMT103PayloadValidator {
 
     public static ValidationEngine getMT103Block01ValidationEngine() {
         return new ValidationEngine()
-                .addStringValueMatchValidationRule(block01DefinedValueFields, block01DefinedValues)
                 .addMandatoryParamValidationRule(block01MandatoryFieldValidationParamList)
                 .addNumericParamValidationRule(block01NumericFieldValidationParamList)
                 .addAlphaNumericParamValidationRule(block02AlphanumericValidationParamsList)
                 .addParameterLengthValidationRule(block01FieldsLengthValidationParamList, block01DefinedLengthFields);
     }
-
-    private static final List<ValidatorContext> block02DefinedValueFields = List.of(
-            new ValidatorContext(MT103Constants.BLOCK02_MESSAGE_TYPE_KEY, ConnectorConstants.BLOCK02_MESSAGE_TYPE)
-    );
-
-    private static final Map<String, List<String>> block02DefinedValues = Map.of(
-            MT103Constants.BLOCK02_MESSAGE_TYPE_KEY, List.of(MT103Constants.MT103_MESSAGE_TYPE)
-    );
 
     private static final List<ValidatorContext> inputBlock02MandatoryFieldValidationParamsList = List.of(
             new ValidatorContext(MT103Constants.BLOCK02_DESTINATION_LOGICAL_TERMINAL_ADDRESS_KEY,
@@ -145,7 +122,6 @@ public class JsonToMT103PayloadValidator {
 
     public static ValidationEngine getMT103InputBlock02ValidationEngine() {
         return new ValidationEngine()
-                .addStringValueMatchValidationRule(block02DefinedValueFields, block02DefinedValues)
                 .addMandatoryParamValidationRule(inputBlock02MandatoryFieldValidationParamsList)
                 .addParameterLengthValidationRule(
                         inputBlock02LengthValidationParamsList, inputBlock02DefinedLengthFields)
@@ -203,7 +179,6 @@ public class JsonToMT103PayloadValidator {
 
     public static ValidationEngine getMT103OutputBlock02ValidationEngine() {
         return new ValidationEngine()
-                .addStringValueMatchValidationRule(block02DefinedValueFields, block02DefinedValues)
                 .addMandatoryParamValidationRule(outputBlock02MandatoryFieldValidationParamsList)
                 .addParameterLengthValidationRule(
                         outputBlock02LengthValidationParamsList, outputBlock02DefinedLengthFields)
@@ -213,13 +188,8 @@ public class JsonToMT103PayloadValidator {
     }
 
     private static final List<ValidatorContext> block03DefinedValueFields = List.of(
-            new ValidatorContext(MT103Constants.BLOCK03_VALIDATION_FLAG_KEY,
-                    ConnectorConstants.BLOCK03_VALIDATION_FLAG)
-    );
-
-    private static final Map<String, List<String>> block03DefinedValues = Map.of(
-            MT103Constants.BLOCK03_VALIDATION_FLAG_KEY,
-            List.of(MT103Constants.MT103_REMIT_VALIDATION_FLAG, MT103Constants.MT103_STP_VALIDATION_FLAG)
+            new ValidatorContext(MT103Constants.BLOCK03_VALIDATION_FLAG_KEY, ConnectorConstants.BLOCK03_VALIDATION_FLAG,
+                    Map.of(ConnectorConstants.ENUM_KEY, MT103Constants.ValidationFlag.class))
     );
 
     private static final List<ValidatorContext> block03MandatoryFieldValidationParamsList = List.of(
@@ -227,6 +197,15 @@ public class JsonToMT103PayloadValidator {
                     ConnectorConstants.BLOCK03_SERVICE_IDENTIFIER),
             new ValidatorContext(MT103Constants.BLOCK03_END_TO_END_REFERENCE_KEY,
                     ConnectorConstants.BLOCK03_END_TO_END_REFERENCE)
+    );
+
+    private static final List<ValidatorContext> block03OptionalFieldValidationParamsList = List.of(
+            new ValidatorContext(MT103Constants.BLOCK03_MESSAGE_USER_REFERENCE_KEY,
+                    ConnectorConstants.BLOCK03_MESSAGE_USER_REFERENCE),
+            new ValidatorContext(MT103Constants.BLOCK03_SERVICE_TYPE_IDENTIFIER_KEY,
+                    ConnectorConstants.BLOCK03_SERVICE_TYPE_IDENTIFIER),
+            new ValidatorContext(MT103Constants.BLOCK03_BANKING_PRIORITY_KEY,
+                    ConnectorConstants.BLOCK03_BANKING_PRIORITY)
     );
 
     private static final List<ValidatorContext> block03LengthValidationParamsList = List.of(
@@ -260,20 +239,15 @@ public class JsonToMT103PayloadValidator {
                     ConnectorConstants.BLOCK03_SERVICE_IDENTIFIER)
     );
 
-    private static final List<ValidatorContext> block03AlphaNumericFieldValidationParamsList = List.of(
-            new ValidatorContext(MT103Constants.BLOCK03_MESSAGE_USER_REFERENCE_KEY,
-                    ConnectorConstants.BLOCK03_MESSAGE_USER_REFERENCE)
-    );
-
     public static ValidationEngine getMT103Block03ValidationEngine() {
         return new ValidationEngine()
-                .addStringValueMatchValidationRule(block03DefinedValueFields, block03DefinedValues)
+                .addEnumValueMatchValidationRule(block03DefinedValueFields)
                 .addMandatoryParamValidationRule(block03MandatoryFieldValidationParamsList)
+                .addOptionalStringParamValidationRule(block03OptionalFieldValidationParamsList)
                 .addParameterLengthValidationRule(
                         block03LengthValidationParamsList, block03DefinedLengthFields)
                 .addNumericParamValidationRule(block03NumericFieldValidationParamsList)
-                .addAlphaParamValidationRule(block03AlphaFieldValidationParamsList)
-                .addAlphaNumericParamValidationRule(block03AlphaNumericFieldValidationParamsList);
+                .addAlphaParamValidationRule(block03AlphaFieldValidationParamsList);
     }
 
     private static final List<ValidatorContext> block04MandatoryFieldValidationParamsList = List.of(

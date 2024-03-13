@@ -21,7 +21,7 @@
         <payloadFactory media-type="text" template-type="freemarker">
             <format><![CDATA[<#macro printIfAvailable var tag><#if var?length != 0 >{${tag}:${var}}</#if></#macro>
 <#macro printEntity var=false tag=""><#if var?is_hash_ex >${"\n"}:${tag}${var.option}:<#list var.details as dt><#if dt?index != 0 >${"\n"}</#if>${dt}</#list></#if></#macro>
-{1:f01${payload.block01.logicalTerminalAddress}${payload.block01.sessionNumber}${payload.block01.sequenceNumber}}<#if payload.block02?? >{2:${payload.block02.inputOutputIdentifier}103<#if payload.block02.inputOutputIdentifier == "I">${payload.block02.destinationLogicalTerminalAddress}${payload.block02.priority!}${payload.block02.deliveryMonitoringCode!}${payload.block02.obsolescenePeriodCode!}<#else>${payload.block02.inputTime}${payload.block02.messageInputReference}${payload.block02.outputDate}${payload.block02.outputTime}${payload.block02.priority!}</#if>}</#if>{3:{103:${payload.block03.serviceIdentifier}}<@printIfAvailable payload.block03.bankingPriority!"" "113"/><@printIfAvailable payload.block03.messageUserReference!"" "108"/><@printIfAvailable payload.block03.validationFlag!"" "119"/><@printIfAvailable payload.block03.serviceTypeIdentifier!"" "111"/>{121:${payload.block03.endToEndReference}}}{4:
+{1:F01${payload.block01.logicalTerminalAddress}${payload.block01.sessionNumber}${payload.block01.sequenceNumber}}<#if payload.block02?? >{2:${payload.block02.inputOutputIdentifier}103<#if payload.block02.inputOutputIdentifier == "I">${payload.block02.destinationLogicalTerminalAddress}${payload.block02.priority!}${payload.block02.deliveryMonitoringCode!}${payload.block02.obsolescenePeriodCode!}<#else>${payload.block02.inputTime}${payload.block02.messageInputReference}${payload.block02.outputDate}${payload.block02.outputTime}${payload.block02.priority!}</#if>}</#if>{3:{103:${payload.block03.serviceIdentifier}}<@printIfAvailable payload.block03.bankingPriority!"" "113"/><@printIfAvailable payload.block03.messageUserReference!"" "108"/><@printIfAvailable payload.block03.validationFlag!"" "119"/><@printIfAvailable payload.block03.serviceTypeIdentifier!"" "111"/>{121:${payload.block03.endToEndReference}}}{4:
 <#compress>
 :20:${payload.block04.sendersReference}
 <#if payload.block04.timeIndication?? >
@@ -56,7 +56,7 @@
 </#if>
 <#if payload.block04.envelopeContents??>${"\n:77T:"}${payload.block04.envelopeContents}</#if>
 </#compress>
-${"\n"}-}<#if payload.block05?? >{5:{CHK:${payload.block05.checksum}}<#if payload.block05.testNTrainingMessage??>{TNG:}</#if><@printIfAvailable payload.block05.possibleDuplicateEmission!"" "PDE"/><@printIfAvailable payload.block05.messageReference "MRF"/><#if payload.block05.delayedMessage??>{DLM:}</#if><@printIfAvailable payload.block05.possibleDuplicateMessage!"" "PDM"/><@printIfAvailable payload.block05.systemOriginatedMessage!"" "SYS"/></#if>]]></format>
+${"\n"}-}<#if payload.block05?? >{5:{CHK:${payload.block05.checksum}}<#if payload.block05.testNTrainingMessage??>{TNG:}</#if><@printIfAvailable payload.block05.possibleDuplicateEmission!"" "PDE"/><@printIfAvailable payload.block05.messageReference "MRF"/><#if payload.block05.delayedMessage??>{DLM:}</#if><@printIfAvailable payload.block05.possibleDuplicateMessage!"" "PDM"/><@printIfAvailable payload.block05.systemOriginatedMessage!"" "SYS"/>}</#if>]]></format>
             <args/>
         </payloadFactory>
     </sequence>

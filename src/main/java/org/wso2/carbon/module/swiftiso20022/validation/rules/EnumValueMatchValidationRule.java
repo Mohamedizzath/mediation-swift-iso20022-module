@@ -1,13 +1,13 @@
 /**
  * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
- *
+ * <p>
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -25,21 +25,19 @@ import org.wso2.carbon.module.swiftiso20022.validation.common.ValidationRule;
 import org.wso2.carbon.module.swiftiso20022.validation.common.ValidatorContext;
 
 import java.util.List;
-import java.util.Map;
 
 
 /**
- * Checks whether value matches with a predefined value set.
+ * Checks whether value matches with the provided in enum in the validation list.
  */
-public class StringValueMatchValidationRule implements ValidationRule {
+public class EnumValueMatchValidationRule implements ValidationRule {
 
     private final List<ValidatorContext> validationParamList;
-    private final Map<String, List<String>> definedValueList;
 
-    public StringValueMatchValidationRule(List<ValidatorContext> validationParamList,
-                                          Map<String, List<String>> definedValueList) {
+    // Validation context must include enum class as a property.
+    // Key to store enum name is "enumClassName"
+    public EnumValueMatchValidationRule(List<ValidatorContext> validationParamList) {
         this.validationParamList = validationParamList;
-        this.definedValueList = definedValueList;
     }
 
     /**
@@ -50,14 +48,26 @@ public class StringValueMatchValidationRule implements ValidationRule {
      */
     @Override
     public ValidationResult validate(JSONObject payload) {
-        for (ValidatorContext ctx: validationParamList) {
+        for (ValidatorContext ctx : validationParamList) {
+
+            // validation happens only if the key is present
             if (payload.has(ctx.getFieldName())) {
-                Object value = payload.get(ctx.getFieldName());
-                List<String> definedValues = definedValueList.get(ctx.getFieldName());
-                if (value instanceof String && definedValues.stream().noneMatch((value.toString()::equals))) {
-                    return new ValidationResult(ConnectorConstants.ERROR_CODE_INVALID_PARAM,
-                            String.format(ConnectorConstants.ERROR_PARAMETER_INVALID, ctx.getFieldDisplayName()));
+                String stringValue = payload.getString(ctx.getFieldName());
+
+                // getting enum class from the validation context
+                // invalid class will fail the process
+                Class<?> enumClass = (Class<?>) ctx.getProperty(ConnectorConstants.ENUM_KEY);
+
+                // iterate each enum value
+                for (Object enumValue : enumClass.getEnumConstants()) {
+
+                    // checks equality with enum value after converting it to a string
+                    if (enumValue.toString().equals(stringValue)) {
+                        return new ValidationResult();
+                    }
                 }
+                return new ValidationResult(ConnectorConstants.ERROR_CODE_INVALID_PARAM,
+                        String.format(ConnectorConstants.ERROR_PARAMETER_INVALID, ctx.getFieldDisplayName()));
             }
         }
         return new ValidationResult();

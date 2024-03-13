@@ -34,15 +34,15 @@ import java.util.List;
  */
 public class MT103RepetitiveFieldValidationRule implements ValidationRule {
 
-    private final List<ValidatorContext> context;
+    private final List<ValidatorContext> contexts;
 
-    public MT103RepetitiveFieldValidationRule(List<ValidatorContext> context) {
-        this.context = context;
+    public MT103RepetitiveFieldValidationRule(List<ValidatorContext> contexts) {
+        this.contexts = contexts;
     }
 
     @Override
     public ValidationResult validate(JSONObject payload) {
-        for (ValidatorContext context : this.context) {
+        for (ValidatorContext context : this.contexts) {
 
             // validation happens only if the key is present
             if (payload.has(context.getFieldName())) {

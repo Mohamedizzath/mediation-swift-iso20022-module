@@ -71,7 +71,7 @@ public class MT103MultilineFieldValidationRule implements ValidationRule {
 
                     // value cannot be blank
                     if (line.isBlank()) {
-                        return new ValidationResult(ConnectorConstants.ERROR_CODE_INVALID_LINE,
+                        return new ValidationResult(ConnectorConstants.ERROR_CODE_INVALID_PARAM,
                                 String.format(ConnectorConstants.ERROR_LINE_EMPTY,
                                         ++i, context.getFieldDisplayName()));
                     }
@@ -79,7 +79,7 @@ public class MT103MultilineFieldValidationRule implements ValidationRule {
                     // value length cannot be longer than defined text line length
                     // all multiline fields in MT103 has the same length
                     if (line.length() > MT103Constants.MT103_TEXT_LINE_LENGTH) {
-                        return new ValidationResult(ConnectorConstants.ERROR_CODE_INVALID_LINE,
+                        return new ValidationResult(ConnectorConstants.ERROR_CODE_INVALID_PARAM,
                                 String.format(ConnectorConstants.ERROR_LINE_LENGTH,
                                         ++i, context.getFieldDisplayName(), context.getFieldLength()));
                     }
