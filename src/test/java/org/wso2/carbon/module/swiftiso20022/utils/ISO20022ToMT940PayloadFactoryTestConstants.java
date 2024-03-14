@@ -1418,7 +1418,8 @@ public class ISO20022ToMT940PayloadFactoryTestConstants {
                 "-}";
     }
 
-    public static final String ISO_BUSINESS_MSG_WITH_ADDITIONAL_ENTRY_INFO = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n" +
+    public static final String ISO_BUSINESS_MSG_WITH_ADDITIONAL_ENTRY_INFO =
+            "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n" +
             "<BizMsgEnvlp>\n" +
             "<AppHdr xmlns=\"urn:iso:std:iso:20022:tech:xsd:head.001.001.03\">\n" +
             "\t<Fr>\n" +
@@ -1596,7 +1597,7 @@ public class ISO20022ToMT940PayloadFactoryTestConstants {
             "                        </RtrInf>\n" +
             "                    </TxDtls>\n" +
             "                </NtryDtls>\n" +
-            "\t\t        <AddtlNtryInf>Sample Unstructured Remittance 123 Sample Unstructured Remittance 123</AddtlNtryInf>\n" +
+            "\t\t<AddtlNtryInf>Sample Unstructured Remittance 123 Sample Unstructured Remittance 123</AddtlNtryInf>\n" +
             "            </Ntry>\n" +
             "        </Stmt>\n" +
             "    </BkToCstmrStmt>\n" +
