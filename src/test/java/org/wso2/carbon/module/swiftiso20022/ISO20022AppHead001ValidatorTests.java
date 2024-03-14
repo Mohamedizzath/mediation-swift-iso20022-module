@@ -19,7 +19,6 @@
 package org.wso2.carbon.module.swiftiso20022;
 
 import org.apache.synapse.MessageContext;
-import org.apache.synapse.SynapseException;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
@@ -68,7 +67,7 @@ public class ISO20022AppHead001ValidatorTests extends PowerMockTestCase {
         isoValidator.connect(messageContext);
     }
 
-    @Test(expectedExceptions = SynapseException.class)
+    @Test(expectedExceptions = ConnectException.class)
     public void testEmptyPayloadScenario() throws Exception {
         XSDValidator validator = Mockito.mock(XSDValidator.class);
         PowerMockito.whenNew(XSDValidator.class).
@@ -87,7 +86,7 @@ public class ISO20022AppHead001ValidatorTests extends PowerMockTestCase {
         isoValidator.connect(messageContext);
     }
 
-    @Test(expectedExceptions = SynapseException.class)
+    @Test(expectedExceptions = ConnectException.class)
     public void testInvalidRootTagScenario() throws Exception {
         XSDValidator validator = Mockito.mock(XSDValidator.class);
         PowerMockito.whenNew(XSDValidator.class).

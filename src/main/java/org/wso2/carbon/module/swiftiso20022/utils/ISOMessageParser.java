@@ -98,8 +98,12 @@ public class ISOMessageParser {
      * @return           Root XML tag name
      */
     public static String getRootXMLElement(MessageContext mc) {
-        OMElement rootElement = mc.getEnvelope().getBody().getFirstElement();
-        return rootElement.getLocalName();
+        try {
+            OMElement rootElement = mc.getEnvelope().getBody().getFirstElement();
+            return rootElement.getLocalName();
+        } catch (NullPointerException e) {
+            return null;
+        }
     }
 
     /**
