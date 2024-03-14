@@ -1,27 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!--
- ~ Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
- ~
- ~ WSO2 LLC. licenses this file to you under the Apache License,
- ~ Version 2.0 (the "License"); you may not use this file except
- ~ in compliance with the License.
- ~ You may obtain a copy of the License at
- ~
- ~     http://www.apache.org/licenses/LICENSE-2.0
- ~
- ~ Unless required by applicable law or agreed to in writing,
- ~ software distributed under the License is distributed on an
- ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- ~ KIND, either express or implied. See the License for the
- ~ specific language governing permissions and limitations
- ~ under the License.
- -->
-<template xmlns="http://ws.apache.org/ns/synapse" name="isoToMT940">
-    <sequence>
-        <class name="org.wso2.carbon.module.swiftiso20022.ISO20022Camt053Validator"/>
-        <payloadFactory media-type="text" template-type="freemarker">
-            <format>
-                <![CDATA[<#ftl ns_prefixes={"A": "urn:iso:std:iso:20022:tech:xsd:head.001.001.03", "C": "urn:iso:std:iso:20022:tech:xsd:camt.053.001.11" }>
+<#ftl ns_prefixes={"A": "urn:iso:std:iso:20022:tech:xsd:head.001.001.03", "C": "urn:iso:std:iso:20022:tech:xsd:camt.053.001.11" }>
 <#macro dateTimeFormat dateTimeInd input format><#if dateTimeInd>${input?datetime.iso?string[format]}<#else>${input?datetime("yyyy-MM-dd")?string(format)}</#if></#macro><#macro appendBranch bicCode><#if bicCode?length == 8>${bicCode + "XXX"}<#else>${bicCode}</#if></#macro><#if payload.BizMsgEnvlp?has_content><#assign docElement=payload["BizMsgEnvlp/C:Document"] /><#assign appHdrElement=payload["BizMsgEnvlp/A:AppHdr"] /><#else><#assign docElement=payload["C:Document"] /></#if>
 {1:F01<#if appHdrElement?has_content><@appendBranch bicCode=appHdrElement["A:To/A:FIId/A:FinInstnId/A:BICFI"]/><#else><@appendBranch bicCode=docElement["C:BkToCstmrStmt/C:Stmt/C:Acct/C:Svcr/C:FinInstnId/C:BICFI"]/></#if>0000000000}<#if appHdrElement?has_content>{2:O940${appHdrElement["A:CreDt"]?datetime.iso?string.hh}${appHdrElement["A:CreDt"]?datetime.iso?string.mm}<@dateTimeFormat dateTimeInd=true input=appHdrElement["A:CreDt"] format="yyMMdd"/><@appendBranch bicCode=appHdrElement["A:Fr/A:FIId/A:FinInstnId/A:BICFI"]/>0000000000${.now?string["yyMMdd"]}${.now?string["HHmm"]}}</#if>{4:
 :20:${docElement["C:BkToCstmrStmt/C:Stmt/C:Id"]}
@@ -279,8 +256,4 @@
 <#if forwardAvlFunds??>
 :65:<#if forwardAvlFunds["C:CdtDbtInd"]=="CRDT">C<#else>D</#if><#if forwardAvlFunds["C:Dt/C:DtTm"]?has_content><@dateTimeFormat dateTimeInd=true input=forwardAvlFunds["C:Dt/C:DtTm"] format="yyMMdd"/><#else><@dateTimeFormat dateTimeInd=false input=forwardAvlFunds["C:Dt/C:Dt"] format="yyMMdd"/></#if>${forwardAvlFunds["C:Amt/@Ccy"]}${forwardAvlFunds["C:Amt"]?split(".")[0]},${forwardAvlFunds["C:Amt"]?split(".")[1]}
 </#if>
--}]]>
-            </format>
-        </payloadFactory>
-    </sequence>
-</template>
+-}

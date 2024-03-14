@@ -65,12 +65,32 @@ public class ISO20022Camt053Validator extends AbstractConnector {
 
             // Validate MT940 related ISO20022.camt.053 validations
             if (!ISO20022Camt053ValidatorUtils.isElectronicSequenceNumberExists(isBusinessMsg, messageContext)) {
+                this.log.error(ConnectorConstants.ERROR_MISSING_ELECTRONIC_SEQUENCE_NUMBER);
+                ConnectorUtils.appendErrorToMessageContext(messageContext,
+                        ConnectorConstants.ERROR_INVALID_ISO_CAMT053_XML_MSG,
+                        ConnectorConstants.ERROR_MISSING_ELECTRONIC_SEQUENCE_NUMBER);
+
                 throw new ConnectException(ConnectorConstants.ERROR_MISSING_ELECTRONIC_SEQUENCE_NUMBER);
             } else if (!ISO20022Camt053ValidatorUtils.isLegalSequenceNumberExists(isBusinessMsg, messageContext)) {
+                this.log.error(ConnectorConstants.ERROR_MISSING_LEGAL_SEQUENCE_NUMBER);
+                ConnectorUtils.appendErrorToMessageContext(messageContext,
+                        ConnectorConstants.ERROR_INVALID_ISO_CAMT053_XML_MSG,
+                        ConnectorConstants.ERROR_MISSING_LEGAL_SEQUENCE_NUMBER);
+
                 throw new ConnectException(ConnectorConstants.ERROR_MISSING_LEGAL_SEQUENCE_NUMBER);
             } else if (!ISO20022Camt053ValidatorUtils.isOpeningBalanceExists(isBusinessMsg, messageContext)) {
+                this.log.error(ConnectorConstants.ERROR_MISSING_OPENING_BALANCE);
+                ConnectorUtils.appendErrorToMessageContext(messageContext,
+                        ConnectorConstants.ERROR_INVALID_ISO_CAMT053_XML_MSG,
+                        ConnectorConstants.ERROR_MISSING_OPENING_BALANCE);
+
                 throw new ConnectException(ConnectorConstants.ERROR_MISSING_OPENING_BALANCE);
             } else if (!ISO20022Camt053ValidatorUtils.isClosingBalanceExists(isBusinessMsg, messageContext)) {
+                this.log.error(ConnectorConstants.ERROR_MISSING_CLOSING_BALANCE);
+                ConnectorUtils.appendErrorToMessageContext(messageContext,
+                        ConnectorConstants.ERROR_INVALID_ISO_CAMT053_XML_MSG,
+                        ConnectorConstants.ERROR_MISSING_CLOSING_BALANCE);
+
                 throw new ConnectException(ConnectorConstants.ERROR_MISSING_CLOSING_BALANCE);
             }
 
