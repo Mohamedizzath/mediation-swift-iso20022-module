@@ -1,5 +1,5 @@
 <#ftl ns_prefixes={"A": "urn:iso:std:iso:20022:tech:xsd:head.001.001.03", "C": "urn:iso:std:iso:20022:tech:xsd:camt.053.001.11" }>
-<#macro dateTimeFormat dateTimeInd input format><#if dateTimeInd>${input?datetime.iso?string[format]}<#else>${input?date("YYYY-MM-DD")?string[format]}</#if></#macro><#macro appendBranch bicCode><#if bicCode?length == 8>${bicCode + "XXX"}<#else>${bicCode}</#if></#macro><#if payload.BizMsgEnvlp?has_content><#assign docElement=payload["BizMsgEnvlp/C:Document"] /><#assign appHdrElement=payload["BizMsgEnvlp/A:AppHdr"] /><#else><#assign docElement=payload["C:Document"] /></#if>
+<#macro dateTimeFormat dateTimeInd input format><#if dateTimeInd>${input?datetime.iso?string[format]}<#else>${input?datetime("yyyy-MM-dd")?string(format)}</#if></#macro><#macro appendBranch bicCode><#if bicCode?length == 8>${bicCode + "XXX"}<#else>${bicCode}</#if></#macro><#if payload.BizMsgEnvlp?has_content><#assign docElement=payload["BizMsgEnvlp/C:Document"] /><#assign appHdrElement=payload["BizMsgEnvlp/A:AppHdr"] /><#else><#assign docElement=payload["C:Document"] /></#if>
 {1:F01<#if appHdrElement?has_content><@appendBranch bicCode=appHdrElement["A:To/A:FIId/A:FinInstnId/A:BICFI"]/><#else><@appendBranch bicCode=docElement["C:BkToCstmrStmt/C:Stmt/C:Acct/C:Svcr/C:FinInstnId/C:BICFI"]/></#if>0000000000}<#if appHdrElement?has_content>{2:O940${appHdrElement["A:CreDt"]?datetime.iso?string.hh}${appHdrElement["A:CreDt"]?datetime.iso?string.mm}<@dateTimeFormat dateTimeInd=true input=appHdrElement["A:CreDt"] format="yyMMdd"/><@appendBranch bicCode=appHdrElement["A:Fr/A:FIId/A:FinInstnId/A:BICFI"]/>0000000000${.now?string["yyMMdd"]}${.now?string["HHmm"]}}</#if>{4:
 :20:${docElement["C:BkToCstmrStmt/C:Stmt/C:Id"]}
 <#-- 21 Tag will added when MT message triggered MT940 message -->
@@ -28,7 +28,7 @@
       <#break>
   </#switch>
 </#list>
-<#if firstStat>:60F:<#else>:60M:</#if><#if openingBal["C:CdtDbtInd"]=="CRDT">C<#else>D</#if><#if (openingBal["C:Dt/C:DtTm"])??><@dateTimeFormat dateTimeInd=true input=openingBal["C:Dt/C:DtTm"] format="yyMMdd"/><#else><@dateTimeFormat dateTimeInd=false input=openingBal["C:Dt/C:Dt"] format="yyMMdd"/></#if>${openingBal["C:Amt/@Ccy"]}${openingBal["C:Amt"]?split(".")[0]},${openingBal["C:Amt"]?split(".")[1]?left_pad(2,"0")}
+<#if firstStat>:60F:<#else>:60M:</#if><#if openingBal["C:CdtDbtInd"]=="CRDT">C<#else>D</#if><#if openingBal["C:Dt/C:DtTm"]?has_content><@dateTimeFormat dateTimeInd=true input=openingBal["C:Dt/C:DtTm"] format="yyMMdd"/><#else><@dateTimeFormat dateTimeInd=false input=openingBal["C:Dt/C:Dt"] format="yyMMdd"/></#if>${openingBal["C:Amt/@Ccy"]}${openingBal["C:Amt"]?split(".")[0]},${openingBal["C:Amt"]?split(".")[1]?left_pad(2,"0")}
 <#assign entries = docElement["C:BkToCstmrStmt/C:Stmt/C:Ntry"]>
 <#list entries as entry>
 <#-- Constructing account owner references -->
@@ -249,11 +249,11 @@
 		</#if>
 	</#if>
 </#if>
-:86:<#list entryDetails as row><#assign firstElement=true/><#list row as element><#if !firstElement>/</#if>${element}</#list></#list><#if entry["C:AddtlNtryInf"]?has_content><#if prevElement>/</#if>${entry["C:AddtlNtryInf"]}</#if></#if></#list><#if firstStat>:62F:<#else>:62M:</#if><#if closingBal["C:CdtDbtInd"]=="CRDT">C<#else>D</#if><#if (closingBal["C:Dt/C:DtTm"])??><@dateTimeFormat dateTimeInd=true input=closingBal["C:Dt/C:DtTm"] format="yyMMdd"/><#else><@dateTimeFormat dateTimeInd=false input=closingBal["C:Dt/C:Dt"] format="yyMMdd"/></#if>${closingBal["C:Amt/@Ccy"]}${closingBal["C:Amt"]?split(".")[0]},${closingBal["C:Amt"]?split(".")[1]}
+:86:<#list entryDetails as row><#assign firstElement=true/><#list row as element><#if !firstElement>/</#if>${element}</#list></#list><#if entry["C:AddtlNtryInf"]?has_content><#if !firstElement>/</#if>${entry["C:AddtlNtryInf"] + "\n"}</#if></#if></#list><#if firstStat>:62F:<#else>:62M:</#if><#if closingBal["C:CdtDbtInd"]=="CRDT">C<#else>D</#if><#if closingBal["C:Dt/C:DtTm"]?has_content><@dateTimeFormat dateTimeInd=true input=closingBal["C:Dt/C:DtTm"] format="yyMMdd"/><#else><@dateTimeFormat dateTimeInd=false input=closingBal["C:Dt/C:Dt"] format="yyMMdd"/></#if>${closingBal["C:Amt/@Ccy"]}${closingBal["C:Amt"]?split(".")[0]},${closingBal["C:Amt"]?split(".")[1]}
 <#if closingAvlBal??>
-:64:<#if closingAvlBal["C:CdtDbtInd"]=="CRDT">C<#else>D</#if><#if (closingAvlBal["C:Dt/C:DtTm"])??><@dateTimeFormat dateTimeInd=true input=closingAvlBal["C:Dt/C:DtTm"] format="yyMMdd"/><#else><@dateTimeFormat dateTimeInd=false input=closingAvlBal["C:Dt/C:Dt"] format="yyMMdd"/></#if>${closingAvlBal["C:Amt/@Ccy"]}${closingAvlBal["C:Amt"]?split(".")[0]},${closingAvlBal["C:Amt"]?split(".")[1]}
+:64:<#if closingAvlBal["C:CdtDbtInd"]=="CRDT">C<#else>D</#if><#if closingAvlBal["C:Dt/C:DtTm"]?has_content><@dateTimeFormat dateTimeInd=true input=closingAvlBal["C:Dt/C:DtTm"] format="yyMMdd"/><#else><@dateTimeFormat dateTimeInd=false input=closingAvlBal["C:Dt/C:Dt"] format="yyMMdd"/></#if>${closingAvlBal["C:Amt/@Ccy"]}${closingAvlBal["C:Amt"]?split(".")[0]},${closingAvlBal["C:Amt"]?split(".")[1]}
 </#if>
 <#if forwardAvlFunds??>
-:65:<#if forwardAvlFunds["C:CdtDbtInd"]=="CRDT">C<#else>D</#if><#if (forwardAvlFunds["C:Dt/C:DtTm"])??><@dateTimeFormat dateTimeInd=true input=forwardAvlFunds["C:Dt/C:DtTm"] format="yyMMdd"/><#else><@dateTimeFormat dateTimeInd=false input=forwardAvlFunds["C:Dt/C:Dt"] format="yyMMdd"/></#if>${forwardAvlFunds["C:Amt/@Ccy"]}${forwardAvlFunds["C:Amt"]?split(".")[0]},${forwardAvlFunds["C:Amt"]?split(".")[1]}
+:65:<#if forwardAvlFunds["C:CdtDbtInd"]=="CRDT">C<#else>D</#if><#if forwardAvlFunds["C:Dt/C:DtTm"]?has_content><@dateTimeFormat dateTimeInd=true input=forwardAvlFunds["C:Dt/C:DtTm"] format="yyMMdd"/><#else><@dateTimeFormat dateTimeInd=false input=forwardAvlFunds["C:Dt/C:Dt"] format="yyMMdd"/></#if>${forwardAvlFunds["C:Amt/@Ccy"]}${forwardAvlFunds["C:Amt"]?split(".")[0]},${forwardAvlFunds["C:Amt"]?split(".")[1]}
 </#if>
 -}
