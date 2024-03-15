@@ -34,7 +34,6 @@ import org.wso2.carbon.module.swiftiso20022.validation.common.ValidationResult;
 
 import java.util.Optional;
 
-
 /**
  * Class to convert JSON Object to MT103 format.
  */
@@ -67,11 +66,12 @@ public class JsonToMT103Validator extends AbstractConnector {
 
             // validate values of the JSON object
             this.log.debug("Validating payload parameters");
-            ValidationResult validationResponse = validateRequestPayload(payload.get());
-            if (validationResponse.isNotValid()) {
-                this.log.error(validationResponse.getErrorMessage());
-                ConnectorUtils.appendErrorToMessageContext(messageContext, validationResponse.getErrorCode(),
-                        validationResponse.getErrorMessage());
+            ValidationResult validationResult = validateRequestPayload(payload.get());
+            if (validationResult.isNotValid()) {
+                this.log.error(
+                        "Request payload validation failed. Caused by, " + validationResult.getErrorMessage());
+                ConnectorUtils.appendErrorToMessageContext(messageContext, validationResult.getErrorCode(),
+                        validationResult.getErrorMessage());
                 super.handleException(ConnectorConstants.ERROR_VALIDATION_FAILED, messageContext);
             }
         } else {
@@ -86,7 +86,8 @@ public class JsonToMT103Validator extends AbstractConnector {
      * Method to validate each block in the request payload.
      *
      * @param payloadString string containing JSON payload.
-     * @return empty or validation result with an error message.
+     * @return A {@link ValidationResult} object. Empty if all validations pass, otherwise containing the
+     * first encountered error message.
      */
     private ValidationResult validateRequestPayload(String payloadString) {
 
@@ -97,30 +98,43 @@ public class JsonToMT103Validator extends AbstractConnector {
         ValidationResult blockValidationResult =
                 JsonToMt103Utils.validateBlock01(requestPayload.optJSONObject(MT103Constants.BLOCK01));
         if (blockValidationResult.isNotValid()) {
+            this.log.error(String.format(MT103Constants.INVALID_BLOCK_ERROR_LOG,
+                    MT103Constants.BLOCK01, blockValidationResult.getErrorMessage()));
             return blockValidationResult;
         }
 
         // validate block 02
         blockValidationResult = JsonToMt103Utils.validateBlock02(requestPayload.optJSONObject(MT103Constants.BLOCK02));
         if (blockValidationResult.isNotValid()) {
+            this.log.error(String.format(MT103Constants.INVALID_BLOCK_ERROR_LOG,
+                    MT103Constants.BLOCK02, blockValidationResult.getErrorMessage()));
             return blockValidationResult;
         }
 
         // validate block 03
         blockValidationResult = JsonToMt103Utils.validateBlock03(requestPayload.optJSONObject(MT103Constants.BLOCK03));
         if (blockValidationResult.isNotValid()) {
+            this.log.error(String.format(MT103Constants.INVALID_BLOCK_ERROR_LOG,
+                    MT103Constants.BLOCK03, blockValidationResult.getErrorMessage()));
             return blockValidationResult;
         }
 
         // validate block 04
         blockValidationResult = JsonToMt103Utils.validateBlock04(requestPayload.optJSONObject(MT103Constants.BLOCK04));
         if (blockValidationResult.isNotValid()) {
+            this.log.error(String.format(MT103Constants.INVALID_BLOCK_ERROR_LOG,
+                    MT103Constants.BLOCK04, blockValidationResult.getErrorMessage()));
             return blockValidationResult;
         }
 
         // validate block 05
-        // validation result is returned since block 05 is the last block
-        return JsonToMt103Utils.validateBlock05(requestPayload.optJSONObject(MT103Constants.BLOCK05));
+        blockValidationResult = JsonToMt103Utils.validateBlock05(requestPayload.optJSONObject(MT103Constants.BLOCK05));
+        if (blockValidationResult.isNotValid()) {
+            this.log.error(String.format(MT103Constants.INVALID_BLOCK_ERROR_LOG,
+                    MT103Constants.BLOCK05, blockValidationResult.getErrorMessage()));
+            return blockValidationResult;
+        }
+        return new ValidationResult();
     }
 
 

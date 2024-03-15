@@ -38,7 +38,8 @@ public class JsonToMt103Utils {
      * Method to validate block 01 of the JSON payload.
      *
      * @param block01Json JSON object of block 01. Can be null
-     * @return empty or validation result with error message
+     * @return A {@link ValidationResult} object. Empty if all validations pass, otherwise containing the
+     * first encountered error message.
      */
     public static ValidationResult validateBlock01(JSONObject block01Json) {
 
@@ -78,7 +79,8 @@ public class JsonToMt103Utils {
      * Method to validate block 02 of the JSON payload.
      *
      * @param block02 JSON object of block 02. Can be null
-     * @return empty or validation result with error message
+     * @return A {@link ValidationResult} object. Empty if all validations pass, otherwise containing the
+     * first encountered error message.
      */
     public static ValidationResult validateBlock02(JSONObject block02) {
 
@@ -133,7 +135,8 @@ public class JsonToMt103Utils {
      * Method to validate block 03 of the JSON payload.
      *
      * @param block03 JSON object of block 03. Can be null
-     * @return empty or validation result with error message
+     * @return A {@link ValidationResult} object. Empty if all validations pass, otherwise containing the
+     * first encountered error message.
      */
     public static ValidationResult validateBlock03(JSONObject block03) {
 
@@ -153,7 +156,8 @@ public class JsonToMt103Utils {
      * Method to validate block 04 of the JSON payload.
      *
      * @param block04 JSON object of block 04. Can be null
-     * @return empty or validation result with error message
+     * @return A {@link ValidationResult} object. Empty if all validations pass, otherwise containing the
+     * first encountered error message.
      */
     public static ValidationResult validateBlock04(JSONObject block04) {
 
@@ -173,7 +177,8 @@ public class JsonToMt103Utils {
      * Method to validate block 05 of the JSON payload.
      *
      * @param block05 JSON object of block 05. Can be null
-     * @return empty or validation result with error message
+     * @return A {@link ValidationResult} object. Empty if all validations pass, otherwise containing the
+     * first encountered error message.
      */
     public static ValidationResult validateBlock05(JSONObject block05) {
 

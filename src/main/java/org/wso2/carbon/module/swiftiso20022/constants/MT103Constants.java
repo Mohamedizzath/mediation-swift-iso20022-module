@@ -57,6 +57,8 @@ public class MT103Constants {
     public static final String ERROR_ENTITY_DETAIL_LINE_COUNT =
             "Details of field %s should not contain more than 4 lines";
 
+    public static final String INVALID_BLOCK_ERROR_LOG = "%s validation failed. Caused by %s";
+
     // MT103 Text Fields
     public static final String SENDERS_REFERENCE = "Sender's Reference";
     public static final String TIME_INDICATION = "Time Indication";
