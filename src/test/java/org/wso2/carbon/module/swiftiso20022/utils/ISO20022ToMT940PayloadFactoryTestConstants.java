@@ -556,7 +556,7 @@ public class ISO20022ToMT940PayloadFactoryTestConstants {
                     "    </BkToCstmrStmt>\n" +
                     "</Document>\n";
 
-    public static final String MT940_MAPPING_FOR_VALID_CAMT = "{1:F01GSCRUS30XXX0000000000}{4:\n" +
+    public static final String MT940_MAPPING_FOR_VALID_CAMT = "{1:F01GSCRUS30XXXX0000000000}{4:\n" +
             ":20:258158850\n" +
             ":21:258158850\n" +
             ":25:DD01100056869\n" +
@@ -581,7 +581,7 @@ public class ISO20022ToMT940PayloadFactoryTestConstants {
         SimpleDateFormat hourFormat = new SimpleDateFormat("HHmm");
         String hourStr = hourFormat.format(currentDate);
 
-        return "{1:F01GSCRUS30XXX0000000000}{2:O9400400190425GSCRUS30XXX0000000000" + dateStr + hourStr + "}{4:\n" +
+        return "{1:F01GSCRUS30XXXX0000000000}{2:O9400400190425GSCRUS30XXX0000000000" + dateStr + hourStr + "}{4:\n" +
                 ":20:258158850\n" +
                 ":21:258158850\n" +
                 ":25:DD01100056869\n" +
@@ -762,7 +762,7 @@ public class ISO20022ToMT940PayloadFactoryTestConstants {
         SimpleDateFormat hourFormat = new SimpleDateFormat("HHmm");
         String hourStr = hourFormat.format(currentDate);
 
-        return "{1:F01GSCRUS301020000000000}{2:O9400400190425GSCRUS30XXX0000000000" + dateStr + hourStr + "}{4:\n" +
+        return "{1:F01GSCRUS30X1020000000000}{2:O9400400190425GSCRUS30XXX0000000000" + dateStr + hourStr + "}{4:\n" +
                 ":20:258158850\n" +
                 ":21:258158850\n" +
                 ":25:DD01100056869\n" +
@@ -938,7 +938,7 @@ public class ISO20022ToMT940PayloadFactoryTestConstants {
         SimpleDateFormat hourFormat = new SimpleDateFormat("HHmm");
         String hourStr = hourFormat.format(currentDate);
 
-        return "{1:F01GSCRUS30XXX0000000000}{2:O9400400190425GSCRUS30XXX0000000000" + dateStr + hourStr + "}{4:\n" +
+        return "{1:F01GSCRUS30XXXX0000000000}{2:O9400400190425GSCRUS30XXX0000000000" + dateStr + hourStr + "}{4:\n" +
                 ":20:258158850\n" +
                 ":21:258158850\n" +
                 ":25:DD01100056869\n" +
@@ -1114,7 +1114,7 @@ public class ISO20022ToMT940PayloadFactoryTestConstants {
         SimpleDateFormat hourFormat = new SimpleDateFormat("HHmm");
         String hourStr = hourFormat.format(currentDate);
 
-        return "{1:F01GSCRUS30XXX0000000000}{2:O9400400190425GSCRUS30XXX0000000000" + dateStr + hourStr + "}{4:\n" +
+        return "{1:F01GSCRUS30XXXX0000000000}{2:O9400400190425GSCRUS30XXX0000000000" + dateStr + hourStr + "}{4:\n" +
                 ":20:258158850\n" +
                 ":21:258158850\n" +
                 ":25:DD01100056869\n" +
@@ -1402,7 +1402,7 @@ public class ISO20022ToMT940PayloadFactoryTestConstants {
         SimpleDateFormat hourFormat = new SimpleDateFormat("HHmm");
         String hourStr = hourFormat.format(currentDate);
 
-        return "{1:F01GSCRUS30XXX0000000000}{2:O9400400190425GSCRUS30XXX0000000000" + dateStr + hourStr + "}{4:\n" +
+        return "{1:F01GSCRUS30XXXX0000000000}{2:O9400400190425GSCRUS30XXX0000000000" + dateStr + hourStr + "}{4:\n" +
                 ":20:258158850\n" +
                 ":21:258158850\n" +
                 ":25:DD01100056869\n" +
@@ -1612,7 +1612,7 @@ public class ISO20022ToMT940PayloadFactoryTestConstants {
         SimpleDateFormat hourFormat = new SimpleDateFormat("HHmm");
         String hourStr = hourFormat.format(currentDate);
 
-        return "{1:F01GSCRUS30XXX0000000000}{2:O9400400190425GSCRUS30XXX0000000000" + dateStr + hourStr + "}{4:\n" +
+        return "{1:F01GSCRUS30XXXX0000000000}{2:O9400400190425GSCRUS30XXX0000000000" + dateStr + hourStr + "}{4:\n" +
                 ":20:258158850\n" +
                 ":21:258158850\n" +
                 ":25:DD01100056869\n" +
