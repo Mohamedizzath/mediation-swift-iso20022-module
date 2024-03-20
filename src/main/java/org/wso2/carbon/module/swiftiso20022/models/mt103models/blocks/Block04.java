@@ -1,13 +1,13 @@
 /**
  * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
- *
+ * <p>
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -26,6 +26,7 @@ import java.util.List;
  * Class that models request payload block04.
  */
 public class Block04 {
+
     private String sendersReference;
     private List<String> timeIndication;
     private String bankOperationCode;
@@ -50,5 +51,4 @@ public class Block04 {
     private List<String> senderToReceiverInformation;
     private List<String> regulatoryReporting;
     private String envelopeContents;
-
 }

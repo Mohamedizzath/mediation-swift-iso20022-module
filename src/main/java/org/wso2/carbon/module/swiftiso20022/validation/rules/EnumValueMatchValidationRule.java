@@ -26,7 +26,6 @@ import org.wso2.carbon.module.swiftiso20022.validation.common.ValidatorContext;
 
 import java.util.List;
 
-
 /**
  * Checks whether value matches with the provided in enum in the validation list.
  */

@@ -1,13 +1,13 @@
 /**
  * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
- *
+ * <p>
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -127,7 +127,7 @@ public class JsonToMT103ValidatorTestConstants {
 
     @DataProvider(name = "emptyMandatoryBlockDataProvider")
     Object[][] getEmptyMandatoryBlockDataProvider() {
-        return new Object[][] {
+        return new Object[][]{
                 {"{}"},
                 {"{\"block01\": " + VALID_BLOCK01_PAYLOAD + "}"},
                 {"{\"block01\": " + VALID_BLOCK01_PAYLOAD + ",\n" + "\"block03\":" + VALID_BLOCK03_PAYLOAD + "}"},
@@ -151,7 +151,7 @@ public class JsonToMT103ValidatorTestConstants {
 
     @DataProvider(name = "invalidBlock01Payload")
     Object[][] getInvalidBlock01Payload() {
-        return new Object[][] {
+        return new Object[][]{
                 {"{}"},
                 {getBlock01Payload(Map.of("applicationIdentifier", "\"\""))},
                 {getBlock01Payload(Map.of("applicationIdentifier", "\" \""))},
@@ -206,7 +206,7 @@ public class JsonToMT103ValidatorTestConstants {
 
     @DataProvider(name = "invalidBlock02Payload")
     Object[][] getInvalidBlock02Payload() {
-        return new  Object[][] {
+        return new Object[][]{
                 {"{}"},
                 {getBlock02Payload(Map.of("inputOutputIdentifier", "\"\""))},
                 {getBlock02Payload(Map.of("inputOutputIdentifier", "\" \""))},
@@ -251,7 +251,7 @@ public class JsonToMT103ValidatorTestConstants {
                 {getBlock02Payload(Map.of("inputOutputIdentifier", "\"I\"",
                         "deliveryMonitoringCode", "\"A\""))},
                 {getBlock02Payload(Map.of("inputOutputIdentifier", "\"I\"",
-                "deliveryMonitoringCode", "\"12\""))},
+                        "deliveryMonitoringCode", "\"12\""))},
                 {getBlock02Payload(Map.of("inputOutputIdentifier", "\"I\"",
                         "obsolescencePeriodCode", "\"\""))},
                 {getBlock02Payload(Map.of("inputOutputIdentifier", "\"I\"",
@@ -268,7 +268,7 @@ public class JsonToMT103ValidatorTestConstants {
     public static String getBlock03Payload(Map<String, String> params) {
         return "{\n" +
                 "        \"serviceIdentifier\": " +
-                params.getOrDefault("serviceIdentifier", "\"EBA\"") + ",\n"  +
+                params.getOrDefault("serviceIdentifier", "\"EBA\"") + ",\n" +
                 "        \"bankingPriority\": " +
                 params.getOrDefault("bankingPriority", "\"xxxx\"") + ",\n" +
                 "        \"messageUserReference\": " +
@@ -282,9 +282,10 @@ public class JsonToMT103ValidatorTestConstants {
                 params.getOrDefault("serviceTypeIdentifier", "\"325\"") + "\n" +
                 "    }";
     }
+
     @DataProvider(name = "invalidBlock03Payload")
     Object[][] getInvalidBlock03Payload() {
-        return new Object[][] {
+        return new Object[][]{
                 {"{}"},
                 {getBlock03Payload(Map.of("serviceIdentifier", "\"\""))},
                 {getBlock03Payload(Map.of("serviceIdentifier", "\"  \""))},
@@ -382,7 +383,7 @@ public class JsonToMT103ValidatorTestConstants {
 
     public static String getEntityPayload(Map<String, String> params) {
         return "{\n" +
-        "            \"option\": " +
+                "            \"option\": " +
                 params.getOrDefault("option", "\"A\"") + ",\n" +
                 "    \"details\": " +
                 params.getOrDefault("details", "[\n\"ABNANL2A\"\n]\n") + "\n" +
@@ -391,7 +392,7 @@ public class JsonToMT103ValidatorTestConstants {
 
     @DataProvider(name = "invalidBlock04Payload")
     Object[][] getInvalidBlock04Payload() {
-        return new Object[][] {
+        return new Object[][]{
                 {"{}"},
                 {getBlock04Payload(Map.of("sendersReference", "\"\""))},
                 {getBlock04Payload(Map.of("sendersReference", "\"Ref254ABCDEFGHIJKLMNOPQRST\""))},

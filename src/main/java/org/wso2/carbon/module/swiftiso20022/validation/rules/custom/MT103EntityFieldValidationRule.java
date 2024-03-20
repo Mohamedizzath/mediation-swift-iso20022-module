@@ -80,7 +80,7 @@ public class MT103EntityFieldValidationRule implements ValidationRule {
     /**
      * Method to validate the entity option.
      *
-     * @param entity JSONObject containing entity object
+     * @param entity  JSONObject containing entity object
      * @param context validation context with validation details
      * @return A {@link ValidationResult} object. Empty if all validations pass, otherwise containing the
      * first encountered error message.
@@ -108,9 +108,9 @@ public class MT103EntityFieldValidationRule implements ValidationRule {
     }
 
     /**
-     *  Method to validate the entity details.
+     * Method to validate the entity details.
      *
-     * @param entity JSONObject containing entity object
+     * @param entity  JSONObject containing entity object
      * @param context validation context with validation details
      * @return A {@link ValidationResult} object. Empty if all validations pass, otherwise containing the
      * first encountered error message.

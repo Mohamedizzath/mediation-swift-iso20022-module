@@ -1,13 +1,13 @@
 /**
  * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
- *
+ * <p>
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -69,7 +69,7 @@ public class JsonToMT103PayloadValidator {
 
     private static final List<String> block01DefinedLengthFields =
             List.of(MT103Constants.BLOCK01_LOGICAL_TERMINAL_ADDRESS_KEY,
-            MT103Constants.BLOCK01_SESSION_NUMBER_KEY, ConnectorConstants.BLOCK01_SEQUENCE_NUMBER);
+                    MT103Constants.BLOCK01_SESSION_NUMBER_KEY, ConnectorConstants.BLOCK01_SEQUENCE_NUMBER);
 
     private static final List<ValidatorContext> block02AlphanumericValidationParamsList = List.of(
             new ValidatorContext(MT103Constants.BLOCK01_LOGICAL_TERMINAL_ADDRESS_KEY,
@@ -124,8 +124,8 @@ public class JsonToMT103PayloadValidator {
     );
 
     private static final List<ValidatorContext> inputBlock02AlphaFieldValidationParamsList = List.of(
-      new ValidatorContext(MT103Constants.BLOCK02_PRIORITY_KEY,
-              ConnectorConstants.BLOCK02_PRIORITY)
+            new ValidatorContext(MT103Constants.BLOCK02_PRIORITY_KEY,
+                    ConnectorConstants.BLOCK02_PRIORITY)
     );
 
     private static final List<ValidatorContext> inputBlock02AlphaNumericFieldValidationParamsList = List.of(
@@ -378,8 +378,8 @@ public class JsonToMT103PayloadValidator {
                     ConnectorConstants.BLOCK05_MESSAGE_REFERENCE,
                     ConnectorConstants.MESSAGE_REFERENCE_LENGTH_WITH_DATE),
             new ValidatorContext(MT103Constants.BLOCK05_POSSIBLE_DUPLICATE_MESSAGE_KEY,
-                                 ConnectorConstants.BLOCK05_POSSIBLE_DUPLICATE_MESSAGE,
-                                 ConnectorConstants.MESSAGE_REFERENCE_LENGTH),
+                    ConnectorConstants.BLOCK05_POSSIBLE_DUPLICATE_MESSAGE,
+                    ConnectorConstants.MESSAGE_REFERENCE_LENGTH),
             new ValidatorContext(MT103Constants.BLOCK05_SYSTEM_ORIGINATED_MESSAGE_KEY,
                     ConnectorConstants.BLOCK05_SYSTEM_ORIGINATED_MESSAGE,
                     ConnectorConstants.MESSAGE_REFERENCE_LENGTH)

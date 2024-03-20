@@ -27,7 +27,7 @@ public class FixedValueParamValidationRule implements ValidationRule {
     @Override
     public ValidationResult validate(JSONObject payload) {
 
-        for (ValidatorContext context: this.contexts) {
+        for (ValidatorContext context : this.contexts) {
 
             // validation happens only if the field is present
             if (payload.has(context.getFieldName())) {

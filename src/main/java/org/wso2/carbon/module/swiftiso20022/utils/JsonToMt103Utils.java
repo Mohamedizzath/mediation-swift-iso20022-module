@@ -26,7 +26,6 @@ import org.wso2.carbon.module.swiftiso20022.constants.MT103Constants;
 import org.wso2.carbon.module.swiftiso20022.validation.JsonToMT103PayloadValidator;
 import org.wso2.carbon.module.swiftiso20022.validation.common.ValidationResult;
 
-
 /**
  * Class with Json to Mt103 utility methods.
  */
