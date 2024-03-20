@@ -44,6 +44,7 @@ public class ConnectorConstants {
     public static final String SLASH = "/";
     public static final String DOUBLE_SLASH = "//";
     public static final String ENUM_KEY = "enumClassName";
+    public static final String FIXED_VALUE_KEY = "fixedValue";
 
     // Block01 (Basic Header) Related Constants
     public static final String BLOCK01_APPLICATION_ID = "Application Identifier";

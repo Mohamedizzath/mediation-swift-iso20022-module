@@ -22,13 +22,12 @@ package org.wso2.carbon.module.swiftiso20022.models.mt103models.blocks;
  * Class that models request payload block05.
  */
 public class Block05 {
-    static final String BLOCK_NAME = "block05";
-    String checksum;
-    String testNTrainingMessage;
-    String possibleDuplicateEmission;
-    String delayedMessage;
-    String messageReference;
-    String possibleDuplicateMessage;
-    String systemOriginatedMessage;
+    private String checksum;
+    private String testNTrainingMessage;
+    private String possibleDuplicateEmission;
+    private String delayedMessage;
+    private String messageReference;
+    private String possibleDuplicateMessage;
+    private String systemOriginatedMessage;
 
 }

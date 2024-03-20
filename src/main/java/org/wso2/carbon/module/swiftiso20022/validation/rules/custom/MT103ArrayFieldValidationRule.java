@@ -37,16 +37,30 @@ import java.util.List;
 public class MT103ArrayFieldValidationRule implements ValidationRule {
 
     private final List<ValidatorContext> contexts;
-
     private final boolean isMultilineField;
 
-    // for repetitive fields
+
+    /**
+     * Constructor for repetitive field validation rule.
+     *
+     * @param contexts list of validation contexts
+     *                  each validation context should contain the field length
+     */
     public MT103ArrayFieldValidationRule(List<ValidatorContext> contexts) {
-        this.contexts = contexts;
-        this.isMultilineField = false;
+        this(contexts, false);
     }
 
-    // For multiline fields
+
+    /**
+     * Constructor for multiline field validation rule.
+     *
+     * @param contexts list of validation contexts
+     *                 each validation context should contain the field length
+     *                 use {@link MT103Constants#MT103_TEXT_LINE_LENGTH} as length
+     *                 each validation should contain the maximum lines allowed as a property
+     *                 use {@link MT103Constants#LINES_ALLOWED_KEY} as the key to property
+     * @param isMultilineField specifying whether the validations are done on multiline fields
+     */
     public MT103ArrayFieldValidationRule(List<ValidatorContext> contexts, boolean isMultilineField) {
         this.contexts = contexts;
         this.isMultilineField = isMultilineField;
@@ -67,8 +81,10 @@ public class MT103ArrayFieldValidationRule implements ValidationRule {
                 }
 
                 if (isMultilineField) {
+                    // multiline fields have defined number of allowed lines
                     int linesAllowed = (int) context.getProperty(MT103Constants.LINES_ALLOWED_KEY);
 
+                    // validating each value
                     if (values.length() > linesAllowed) {
                         return new ValidationResult(ConnectorConstants.ERROR_CODE_INVALID_PARAM,
                                 String.format(ConnectorConstants.ERROR_LINE_COUNT,
@@ -76,39 +92,27 @@ public class MT103ArrayFieldValidationRule implements ValidationRule {
                     }
                 }
 
-                // each value is validated
                 for (int i = 0; i < values.length(); i++) {
+
                     String stringValue = values.getString(i);
 
-                    // value cannot be blank
                     if (stringValue.isBlank()) {
                         return new ValidationResult(ConnectorConstants.ERROR_CODE_INVALID_PARAM,
                                 String.format(isMultilineField ? ConnectorConstants.ERROR_LINE_EMPTY
-                                                : ConnectorConstants.ERROR_REPETITION_EMPTY,
-                                        ++i, context.getFieldDisplayName()));
+                                                : ConnectorConstants.ERROR_REPETITION_EMPTY, ++i,
+                                        context.getFieldDisplayName()));
                     }
 
-                    // value length cannot be longer than defined length
-                    if (isMultilineField) {
-
-                        // multiline field line is compared against maximum line length
-                        if (stringValue.length() > MT103Constants.MT103_TEXT_LINE_LENGTH) {
-                            return new ValidationResult(ConnectorConstants.ERROR_CODE_INVALID_PARAM,
-                                    String.format(ConnectorConstants.ERROR_LINE_LENGTH,
-                                            ++i, context.getFieldDisplayName(), context.getFieldLength()));
-                        }
-                    } else {
-
-                        // repetitive field length is compared against defined length for that field
-                        if (stringValue.length() > context.getFieldLength()) {
-                            return new ValidationResult(ConnectorConstants.ERROR_CODE_INVALID_PARAM,
-                                    String.format(ConnectorConstants.ERROR_REPETITION_LENGTH,
-                                            ++i, context.getFieldDisplayName(), context.getFieldLength()));
-                        }
+                    if (stringValue.length() > context.getFieldLength()) {
+                        return new ValidationResult(ConnectorConstants.ERROR_CODE_INVALID_PARAM,
+                                String.format(isMultilineField ? ConnectorConstants.ERROR_LINE_LENGTH
+                                                : ConnectorConstants.ERROR_REPETITION_LENGTH, ++i,
+                                        context.getFieldDisplayName(), context.getFieldLength()));
                     }
                 }
             }
         }
+
         return new ValidationResult();
     }
 }

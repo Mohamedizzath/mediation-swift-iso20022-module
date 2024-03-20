@@ -26,6 +26,7 @@ import org.wso2.carbon.module.swiftiso20022.validation.rules.AlphaParamValidatio
 import org.wso2.carbon.module.swiftiso20022.validation.rules.CurrencyFormatValidationRule;
 import org.wso2.carbon.module.swiftiso20022.validation.rules.DateFormatValidationRule;
 import org.wso2.carbon.module.swiftiso20022.validation.rules.EnumValueMatchValidationRule;
+import org.wso2.carbon.module.swiftiso20022.validation.rules.FixedValueParamValidationRule;
 import org.wso2.carbon.module.swiftiso20022.validation.rules.MTCharacterSetXValidationRule;
 import org.wso2.carbon.module.swiftiso20022.validation.rules.MandatoryParamValidationRule;
 import org.wso2.carbon.module.swiftiso20022.validation.rules.NumericParamValidationRule;
@@ -96,6 +97,11 @@ public class ValidationEngine {
 
     public ValidationEngine addEnumValueMatchValidationRule(List<ValidatorContext> validationParamList) {
         this.ruleList.add(new EnumValueMatchValidationRule(validationParamList));
+        return this;
+    }
+
+    public ValidationEngine addFixedValueParamValidationRule(List<ValidatorContext> validationParamList) {
+        this.ruleList.add(new FixedValueParamValidationRule(validationParamList));
         return this;
     }
 

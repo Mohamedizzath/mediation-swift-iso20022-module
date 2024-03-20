@@ -43,6 +43,13 @@ public class JsonToMT103PayloadValidator {
                     ConnectorConstants.BLOCK01_SEQUENCE_NUMBER)
     );
 
+    private static final List<ValidatorContext> block01FixedValueFieldValidationParamsList = List.of(
+            new ValidatorContext(MT103Constants.BLOCK01_APPLICATION_ID_KEY, ConnectorConstants.BLOCK01_APPLICATION_ID,
+                    Map.of(ConnectorConstants.FIXED_VALUE_KEY, MT103Constants.MT103_APPLICATION_ID)),
+            new ValidatorContext(MT103Constants.BLOCK01_SERVICE_ID_KEY, ConnectorConstants.BLOCK01_SERVICE_ID,
+                    Map.of(ConnectorConstants.FIXED_VALUE_KEY, MT103Constants.MT103_SERVICE_ID))
+    );
+
     private static final List<ValidatorContext> block01NumericFieldValidationParamList = List.of(
             new ValidatorContext(MT103Constants.BLOCK01_SESSION_NUMBER_KEY,
                     ConnectorConstants.BLOCK01_SESSION_NUMBER),
@@ -72,6 +79,7 @@ public class JsonToMT103PayloadValidator {
     public static ValidationEngine getMT103Block01ValidationEngine() {
         return new ValidationEngine()
                 .addMandatoryParamValidationRule(block01MandatoryFieldValidationParamList)
+                .addFixedValueParamValidationRule(block01FixedValueFieldValidationParamsList)
                 .addNumericParamValidationRule(block01NumericFieldValidationParamList)
                 .addAlphaNumericParamValidationRule(block02AlphanumericValidationParamsList)
                 .addParameterLengthValidationRule(block01FieldsLengthValidationParamList, block01DefinedLengthFields);
@@ -80,6 +88,11 @@ public class JsonToMT103PayloadValidator {
     private static final List<ValidatorContext> inputBlock02MandatoryFieldValidationParamsList = List.of(
             new ValidatorContext(MT103Constants.BLOCK02_DESTINATION_LOGICAL_TERMINAL_ADDRESS_KEY,
                     ConnectorConstants.BLOCK02_DESTINATION_LOGICAL_TERMINAL_ADDRESS)
+    );
+
+    private static final List<ValidatorContext> block02FixedValueFieldValidationParamsList = List.of(
+            new ValidatorContext(MT103Constants.BLOCK02_MESSAGE_TYPE_KEY, ConnectorConstants.BLOCK02_MESSAGE_TYPE,
+                    Map.of(ConnectorConstants.FIXED_VALUE_KEY, MT103Constants.MT103_MESSAGE_TYPE))
     );
 
     private static final List<ValidatorContext> inputBlock02LengthValidationParamsList = List.of(
@@ -123,6 +136,7 @@ public class JsonToMT103PayloadValidator {
     public static ValidationEngine getMT103InputBlock02ValidationEngine() {
         return new ValidationEngine()
                 .addMandatoryParamValidationRule(inputBlock02MandatoryFieldValidationParamsList)
+                .addFixedValueParamValidationRule(block02FixedValueFieldValidationParamsList)
                 .addParameterLengthValidationRule(
                         inputBlock02LengthValidationParamsList, inputBlock02DefinedLengthFields)
                 .addNumericParamValidationRule(inputBlock02NumericFieldValidationParamsList)
@@ -180,6 +194,7 @@ public class JsonToMT103PayloadValidator {
     public static ValidationEngine getMT103OutputBlock02ValidationEngine() {
         return new ValidationEngine()
                 .addMandatoryParamValidationRule(outputBlock02MandatoryFieldValidationParamsList)
+                .addFixedValueParamValidationRule(block02FixedValueFieldValidationParamsList)
                 .addParameterLengthValidationRule(
                         outputBlock02LengthValidationParamsList, outputBlock02DefinedLengthFields)
                 .addNumericParamValidationRule(outputBlock02NumericFieldValidationParamsList)
@@ -325,11 +340,13 @@ public class JsonToMT103PayloadValidator {
 
     private static final List<ValidatorContext> block04MultilineFieldValidationParamsList = List.of(
             new ValidatorContext(MT103Constants.REMITTANCE_INFORMATION_KEY, MT103Constants.REMITTANCE_INFORMATION,
+                    MT103Constants.MT103_TEXT_LINE_LENGTH,
                     Map.of(MT103Constants.LINES_ALLOWED_KEY, MT103Constants.REMITTANCE_INFORMATION_LINE_COUNT)),
             new ValidatorContext(MT103Constants.SENDER_TO_RECEIVER_INFORMATION_KEY,
-                    MT103Constants.SENDER_TO_RECEIVER_INFORMATION,
+                    MT103Constants.SENDER_TO_RECEIVER_INFORMATION, MT103Constants.MT103_TEXT_LINE_LENGTH,
                     Map.of(MT103Constants.LINES_ALLOWED_KEY, MT103Constants.SENDER_TO_RECEIVER_INFORMATION_LINE_COUNT)),
             new ValidatorContext(MT103Constants.REGULATORY_REPORTING_KEY, MT103Constants.REGULATORY_REPORTING,
+                    MT103Constants.MT103_TEXT_LINE_LENGTH,
                     Map.of(MT103Constants.LINES_ALLOWED_KEY, MT103Constants.REGULATORY_REPORTING_LINE_COUNT))
     );
 

@@ -6,7 +6,7 @@ import java.util.List;
  * Class to represent entity in the request payload.
  */
 public class Entity {
-    String option;
-    List<String> details;
 
+    private String option;
+    private List<String> details;
 }

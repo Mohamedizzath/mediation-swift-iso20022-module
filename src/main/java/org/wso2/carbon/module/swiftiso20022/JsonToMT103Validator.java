@@ -35,7 +35,7 @@ import org.wso2.carbon.module.swiftiso20022.validation.common.ValidationResult;
 import java.util.Optional;
 
 /**
- * Class to convert JSON Object to MT103 format.
+ * Class to validate JSON Object format before converting to MT103 message format.
  */
 public class JsonToMT103Validator extends AbstractConnector {
 

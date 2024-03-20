@@ -44,8 +44,11 @@ public class ValidationResult {
         return this.isValid;
     }
 
+    /**
+     * @return A boolean specifying whether the validation is failed.
+     */
     public boolean isNotValid() {
-        return !this.isValid;
+        return !this.isValid();
     }
 
     public String getErrorCode() {

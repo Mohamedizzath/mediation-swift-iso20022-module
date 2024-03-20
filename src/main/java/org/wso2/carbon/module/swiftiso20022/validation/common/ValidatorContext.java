@@ -30,7 +30,7 @@ public class ValidatorContext {
     private int fieldLength;
 
     // to store any additional property to be used in custom validators
-    private Map<String, Object> additionalProperties;
+    private Map<String, Object> properties;
 
     public ValidatorContext(String fieldName, String fieldDisplayName) {
         this.fieldName = fieldName;
@@ -43,10 +43,16 @@ public class ValidatorContext {
         this.fieldLength = fieldLength;
     }
 
-    public ValidatorContext(String fieldName, String fieldDisplayName, Map<String, Object> additionalProperties) {
+    public ValidatorContext(String fieldName,
+                            String fieldDisplayName, int fieldLength, Map<String, Object> properties) {
+        this(fieldName, fieldDisplayName, fieldLength);
+        this.properties = properties;
+    }
+
+    public ValidatorContext(String fieldName, String fieldDisplayName, Map<String, Object> properties) {
         this.fieldName = fieldName;
         this.fieldDisplayName = fieldDisplayName;
-        this.additionalProperties = additionalProperties;
+        this.properties = properties;
     }
 
     public String getFieldName() {
@@ -63,6 +69,6 @@ public class ValidatorContext {
 
     // method to directly access stored property
     public Object getProperty(String key) {
-        return additionalProperties.get(key);
+        return properties.get(key);
     }
 }

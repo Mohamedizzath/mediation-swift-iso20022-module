@@ -28,10 +28,10 @@ import org.wso2.carbon.module.swiftiso20022.models.mt103models.blocks.Block05;
  * Class that models the request payload.
  */
 public class MT103JsonRequestPayload {
-    Block01 block01;
-    Block02 block02;
-    Block03 block03;
-    Block04 block04;
-    Block05 block05;
+    private Block01 block01;
+    private Block02 block02;
+    private Block03 block03;
+    private Block04 block04;
+    private Block05 block05;
 
 }

@@ -51,26 +51,6 @@ public class JsonToMt103Utils {
                     String.format(ConnectorConstants.ERROR_MANDATORY_BLOCK_MISSING, MT103Constants.BLOCK01));
         }
 
-        // if application identifier is present can only contain value "F"
-        if (block01Json.has(MT103Constants.BLOCK01_APPLICATION_ID_KEY)) {
-            if (!MT103Constants.MT103_APPLICATION_ID.equals(
-                    block01Json.getString(MT103Constants.BLOCK01_APPLICATION_ID_KEY))) {
-                return new ValidationResult(ConnectorConstants.ERROR_CODE_INVALID_PARAM,
-                        String.format(ConnectorConstants.ERROR_PARAMETER_INVALID,
-                                ConnectorConstants.BLOCK01_APPLICATION_ID));
-            }
-        }
-
-        // if service identifier is present can only contain value "01"
-        if (block01Json.has(MT103Constants.BLOCK01_SERVICE_ID_KEY)) {
-            if (!MT103Constants.MT103_SERVICE_ID.equals(
-                    block01Json.getString(MT103Constants.BLOCK01_SERVICE_ID_KEY))) {
-                return new ValidationResult(ConnectorConstants.ERROR_CODE_INVALID_PARAM,
-                        String.format(ConnectorConstants.ERROR_PARAMETER_INVALID,
-                                ConnectorConstants.BLOCK01_SERVICE_ID));
-            }
-        }
-
         // validate remaining fields using common validation rules
         return JsonToMT103PayloadValidator.getMT103Block01ValidationEngine().validate(block01Json);
     }
@@ -90,16 +70,6 @@ public class JsonToMt103Utils {
         if (block02 == null) {
             logger.debug("Optional block 02 is absent");
             return new ValidationResult();
-        }
-
-        // if message type is present can only contain value "103"
-        if (block02.has(MT103Constants.BLOCK02_MESSAGE_TYPE_KEY)) {
-            if (!MT103Constants.MT103_MESSAGE_TYPE.equals(
-                    block02.getString(MT103Constants.BLOCK02_MESSAGE_TYPE_KEY))) {
-                return new ValidationResult(ConnectorConstants.ERROR_CODE_INVALID_PARAM,
-                        String.format(ConnectorConstants.ERROR_PARAMETER_INVALID,
-                                ConnectorConstants.BLOCK02_MESSAGE_TYPE));
-            }
         }
 
         // variable to store input output identifier

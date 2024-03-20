@@ -22,16 +22,15 @@ package org.wso2.carbon.module.swiftiso20022.models.mt103models.blocks;
  * Class that models request payload block02.
  */
 public class Block02 {
-    static final String BLOCK_NAME = "block02";
-    String inputOutputIdentifier;
-    String messageType;
-    String destinationLogicalTerminalAddress;
-    String inputTime;
-    String messageInputReference;
-    String outputDate;
-    String outputTime;
-    String priority;
-    String deliveryMonitoringCode;
-    String obsolescencePeriodCode;
+    private String inputOutputIdentifier;
+    private String messageType;
+    private String destinationLogicalTerminalAddress;
+    private String inputTime;
+    private String messageInputReference;
+    private String outputDate;
+    private String outputTime;
+    private String priority;
+    private String deliveryMonitoringCode;
+    private String obsolescencePeriodCode;
 
 }

@@ -26,30 +26,29 @@ import java.util.List;
  * Class that models request payload block04.
  */
 public class Block04 {
-    static final String BLOCK_NAME = "block04";
-    String sendersReference;
-    List<String> timeIndication;
-    String bankOperationCode;
-    List<String> instructionCodes;
-    String transactionTypeCode;
-    String value;
-    String instructedAmount;
-    String exchangeRate;
-    Entity orderingCustomer;
-    Entity sendingInstitution;
-    Entity orderingInstitution;
-    Entity sendersCorrespondent;
-    Entity receiversCorrespondent;
-    Entity thirdReimbursementInstitution;
-    Entity intermediaryInstitution;
-    Entity accountWithInstitution;
-    Entity beneficiaryCustomer;
-    List<String> remittanceInformation;
-    String detailsOfCharges;
-    List<String> sendersCharges;
-    String receiversCharges;
-    List<String> senderToReceiverInformation;
-    List<String> regulatoryReporting;
-    String envelopeContents;
+    private String sendersReference;
+    private List<String> timeIndication;
+    private String bankOperationCode;
+    private List<String> instructionCodes;
+    private String transactionTypeCode;
+    private String value;
+    private String instructedAmount;
+    private String exchangeRate;
+    private Entity orderingCustomer;
+    private Entity sendingInstitution;
+    private Entity orderingInstitution;
+    private Entity sendersCorrespondent;
+    private Entity receiversCorrespondent;
+    private Entity thirdReimbursementInstitution;
+    private Entity intermediaryInstitution;
+    private Entity accountWithInstitution;
+    private Entity beneficiaryCustomer;
+    private List<String> remittanceInformation;
+    private String detailsOfCharges;
+    private List<String> sendersCharges;
+    private String receiversCharges;
+    private List<String> senderToReceiverInformation;
+    private List<String> regulatoryReporting;
+    private String envelopeContents;
 
 }
