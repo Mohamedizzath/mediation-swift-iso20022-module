@@ -49,18 +49,18 @@ public class ISO20022AppHead001Validator extends AbstractConnector {
             String errMsg = String.format("%s, Line number: %d, Column number: %d",
                     e.getMessage(), e.getLineNumber(), e.getColumnNumber());
 
-            this.log.error(e.getMessage());
+            this.log.error(e.getMessage(), e);
             ConnectorUtils.appendErrorToMessageContext(messageContext,
                     ConnectorConstants.ERROR_INVALID_ISO_HEAD001_XML_MSG,
                     errMsg);
 
             throw new ConnectException(e, errMsg);
         } catch (SAXException | JaxenException | IOException e) {
-            this.log.error(e.getMessage());
+            this.log.error(e.getMessage(), e);
             ConnectorUtils.appendErrorToMessageContext(messageContext,
                     ConnectorConstants.ERROR_VALIDATING_XML, e.getMessage());
 
-            throw new ConnectException(e, e.getMessage());
+            throw new ConnectException(e, ConnectorConstants.ERROR_VALIDATING_HEAD_XML_MSG);
         }
     }
 }

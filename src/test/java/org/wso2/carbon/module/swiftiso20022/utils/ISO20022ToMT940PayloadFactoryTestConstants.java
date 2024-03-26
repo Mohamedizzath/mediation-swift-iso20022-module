@@ -571,7 +571,7 @@ public class ISO20022ToMT940PayloadFactoryTestConstants {
             "PREF/RP/GS/CTFILERP0002/CTBA0003\n" +
             ":62F:D230930USD846665,15\n" +
             ":64:C231002USD334432401,27\n" +
-            "-}";
+            "-}\n";
 
     public static String getValidMT940ForISOBusinessMsg() {
         Date currentDate = new Date();
@@ -595,7 +595,7 @@ public class ISO20022ToMT940PayloadFactoryTestConstants {
                 ":86:EREF/20230928LTERMID2000003/PREF/RP/GS/CTFILERP0002/CTBA0003\n" +
                 ":62F:D230930USD846665,15\n" +
                 ":64:C231002USD334432401,27\n" +
-                "-}";
+                "-}\n";
     }
 
     public static final String ISO_BUSINESS_MSG_WITH_MULTIPLE_BIC_CODE_LENGTH =
@@ -771,7 +771,7 @@ public class ISO20022ToMT940PayloadFactoryTestConstants {
                 ":61:2310011001RCD10,00ACHPNONREF\n" +
                 ":62F:D231001USD846665,15\n" +
                 ":64:C231001USD334432401,27\n" +
-                "-}";
+                "-}\n";
     }
 
     public static final String ISO_BUSINESS_MSG_WITH_MULTIPLE_DATETIME_FORMAT =
@@ -947,7 +947,7 @@ public class ISO20022ToMT940PayloadFactoryTestConstants {
                 ":61:2310011001RCD10,00ACHPNONREF\n" +
                 ":62F:D231001USD846665,15\n" +
                 ":64:C231001USD334432401,27\n" +
-                "-}";
+                "-}\n";
     }
 
     public static final String ISO_BUSINESS_MSG_WITH_EMPTY_ENTRY_DETAILS =
@@ -1123,7 +1123,7 @@ public class ISO20022ToMT940PayloadFactoryTestConstants {
                 ":61:2310011001RCD10,00ACHPNONREF\n" +
                 ":62F:D230930USD846665,15\n" +
                 ":64:C231002USD334432401,27\n" +
-                "-}";
+                "-}\n";
     }
 
     public static final String ISO_BUSINESS_MSG_WITH_MULTIPLE_ENTRY_DETAILS =
@@ -1415,7 +1415,7 @@ public class ISO20022ToMT940PayloadFactoryTestConstants {
                 "EREF/GSGWGDNCTAHQM8/PREF/RP/GS/CTFILERP0002/CTBA0003\n" +
                 ":62F:D230930USD846665,15\n" +
                 ":64:C231002USD334432401,27\n" +
-                "-}";
+                "-}\n";
     }
 
     public static final String ISO_BUSINESS_MSG_WITH_ADDITIONAL_ENTRY_INFO =
@@ -1624,6 +1624,6 @@ public class ISO20022ToMT940PayloadFactoryTestConstants {
                 "Sample Unstructured Remittance 123 Sample Unstructured Remittance 123\n" +
                 ":62F:D230930USD846665,15\n" +
                 ":64:C231002USD334432401,27\n" +
-                "-}";
+                "-}\n";
     }
 }
