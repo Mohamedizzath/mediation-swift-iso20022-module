@@ -152,6 +152,8 @@ public class ConnectorConstants {
 
     // ISO 20022 Error Constants
     public static final String ERROR_VALIDATING_XML = "validation_failed";
+    public static final String ERROR_VALIDATING_HEAD_XML_MSG = "Error occurred in validating ISO20022.head.001 XML";
+    public static final String ERROR_VALIDATING_CAMT_XML_MSG = "Error occurred in validating ISO20022.camt.053 XML";
     public static final String ERROR_INVALID_ISO_HEAD001_XML_MSG = "invalid_head_001_payload";
     public static final String ERROR_INVALID_ISO_CAMT053_XML_MSG = "invalid_camt_053_payload";
     public static final String ERROR_INVALID_XML_ROOT_TAG = "invalid_root_tag";

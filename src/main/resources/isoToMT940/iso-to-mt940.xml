@@ -279,7 +279,8 @@
 <#if forwardAvlFunds??>
 :65:<#if forwardAvlFunds["C:CdtDbtInd"]=="CRDT">C<#else>D</#if><#if forwardAvlFunds["C:Dt/C:DtTm"]?has_content><@dateTimeFormat dateTimeInd=true input=forwardAvlFunds["C:Dt/C:DtTm"] format="yyMMdd"/><#else><@dateTimeFormat dateTimeInd=false input=forwardAvlFunds["C:Dt/C:Dt"] format="yyMMdd"/></#if>${forwardAvlFunds["C:Amt/@Ccy"]}${forwardAvlFunds["C:Amt"]?split(".")[0]},${forwardAvlFunds["C:Amt"]?split(".")[1]}
 </#if>
--}]]>
+-}
+]]>
             </format>
         </payloadFactory>
     </sequence>
