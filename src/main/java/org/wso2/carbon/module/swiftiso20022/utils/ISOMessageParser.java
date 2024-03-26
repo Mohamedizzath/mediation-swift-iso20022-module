@@ -22,12 +22,14 @@ import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMException;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.xpath.AXIOMXPath;
+import org.apache.axiom.soap.SOAPEnvelope;
 import org.apache.synapse.MessageContext;
 import org.jaxen.JaxenException;
 import org.wso2.carbon.connector.core.ConnectException;
 import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Extract part of the ISO 20022 XML message from message context.
@@ -98,12 +100,11 @@ public class ISOMessageParser {
      * @return           Root XML tag name
      */
     public static String getRootXMLElement(MessageContext mc) {
-        try {
-            OMElement rootElement = mc.getEnvelope().getBody().getFirstElement();
-            return rootElement.getLocalName();
-        } catch (NullPointerException e) {
-            return null;
-        }
+        return Optional.ofNullable(mc.getEnvelope())
+                .map(SOAPEnvelope::getBody)
+                .map(OMElement::getFirstElement)
+                .map(OMElement::getLocalName)
+                .orElse(null);
     }
 
     /**
