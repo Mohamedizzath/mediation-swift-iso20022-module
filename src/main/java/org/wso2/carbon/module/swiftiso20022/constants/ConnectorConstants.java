@@ -38,6 +38,12 @@ public class ConnectorConstants {
     public static final String REV_CREDIT = "RC";
     public static final String LINE_BREAK = "\n";
 
+    public static final String BASIC_HEADER_BLOCK_CODE = "basic-header-block";
+    public static final String APPLICATION_HEADER_BLOCK_CODE = "application-header-block";
+    public static final String USER_HEADER_BLOCK_CODE = "user-header-block";
+    public static final String TEXT_BLOCK_CODE = "text-block";
+    public static final String TRAILER_BLOCK_CODE = "trailer-block";
+
     //MT940 Related Constants
     public static final String MT940_TRANSACTION_REF = ":20";
     public static final String MT940_RELATED_REF = ":21";
