@@ -18,6 +18,8 @@
 
 package org.wso2.carbon.module.swiftiso20022;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.synapse.MessageContext;
 import org.jaxen.JaxenException;
 import org.wso2.carbon.connector.core.AbstractConnector;
@@ -35,6 +37,7 @@ import java.io.IOException;
  * Validate the ISO20022.head.001 message.
  */
 public class ISO20022AppHead001Validator extends AbstractConnector {
+    private static Log log = LogFactory.getLog(ISO20022Camt053Validator.class);
 
     @Override
     public void connect(MessageContext messageContext) throws ConnectException {
@@ -44,19 +47,19 @@ public class ISO20022AppHead001Validator extends AbstractConnector {
 
             XSDValidator appHdrValidator = new XSDValidator(ConnectorConstants.XSD_SCHEMA_HEAD_001_001);
             appHdrValidator.validateXMLContent(appHdrStr);
-            this.log.debug("Valid business application header");
+            log.debug("Valid business application header");
         } catch (SAXParseException e) {
             String errMsg = String.format("%s, Line number: %d, Column number: %d",
                     e.getMessage(), e.getLineNumber(), e.getColumnNumber());
 
-            this.log.error(e.getMessage(), e);
+            log.error(e.getMessage(), e);
             ConnectorUtils.appendErrorToMessageContext(messageContext,
                     ConnectorConstants.ERROR_INVALID_ISO_HEAD001_XML_MSG,
                     errMsg);
 
             throw new ConnectException(e, errMsg);
         } catch (SAXException | JaxenException | IOException e) {
-            this.log.error(e.getMessage(), e);
+            log.error(e.getMessage(), e);
             ConnectorUtils.appendErrorToMessageContext(messageContext,
                     ConnectorConstants.ERROR_VALIDATING_XML, e.getMessage());
 
