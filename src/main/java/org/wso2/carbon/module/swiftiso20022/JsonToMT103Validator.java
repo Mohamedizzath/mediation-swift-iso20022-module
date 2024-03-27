@@ -20,6 +20,8 @@ package org.wso2.carbon.module.swiftiso20022;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.synapse.MessageContext;
 import org.apache.synapse.core.axis2.Axis2MessageContext;
 import org.json.JSONObject;
@@ -39,12 +41,13 @@ import java.util.Optional;
  */
 public class JsonToMT103Validator extends AbstractConnector {
 
+    private static final Log log = LogFactory.getLog(JsonToMT103Validator.class);
     private static final Gson gson = new Gson();
 
     @Override
     public void connect(MessageContext messageContext) throws ConnectException {
 
-        this.log.debug("Executing JsonToMT103Transformer to convert the JSON payload to MT103 format");
+        log.debug("Executing JsonToMT103Transformer to convert the JSON payload to MT103 format");
         org.apache.axis2.context.MessageContext axis2MessageContext = ((Axis2MessageContext) messageContext)
                 .getAxis2MessageContext();
 
@@ -58,24 +61,24 @@ public class JsonToMT103Validator extends AbstractConnector {
             try {
                 validatePayloadWithMT103JsonModel(payload.get());
             } catch (JsonSyntaxException e) {
-                this.log.error(ConnectorConstants.ERROR_INVALID_PAYLOAD, e);
+                log.error(ConnectorConstants.ERROR_INVALID_PAYLOAD, e);
                 ConnectorUtils.appendErrorToMessageContext(
                         messageContext, ConnectorConstants.INVALID_REQUEST_PAYLOAD, e.getMessage());
                 super.handleException(ConnectorConstants.ERROR_INVALID_PAYLOAD, messageContext);
             }
 
             // validate values of the JSON object
-            this.log.debug("Validating payload parameters");
+            log.debug("Validating payload parameters");
             ValidationResult validationResult = validateRequestPayload(payload.get());
             if (validationResult.isNotValid()) {
-                this.log.error(
+                log.error(
                         "Request payload validation failed. Caused by, " + validationResult.getErrorMessage());
                 ConnectorUtils.appendErrorToMessageContext(messageContext, validationResult.getErrorCode(),
                         validationResult.getErrorMessage());
                 super.handleException(ConnectorConstants.ERROR_VALIDATION_FAILED, messageContext);
             }
         } else {
-            this.log.error(ConnectorConstants.ERROR_MISSING_PAYLOAD);
+            log.error(ConnectorConstants.ERROR_MISSING_PAYLOAD);
             ConnectorUtils.appendErrorToMessageContext(messageContext, ConnectorConstants.MISSING_REQUEST_PAYLOAD,
                     ConnectorConstants.ERROR_MISSING_PAYLOAD);
             super.handleException(ConnectorConstants.ERROR_MISSING_PAYLOAD, messageContext);
@@ -98,7 +101,7 @@ public class JsonToMT103Validator extends AbstractConnector {
         ValidationResult blockValidationResult =
                 JsonToMt103Utils.validateBlock01(requestPayload.optJSONObject(MT103Constants.BLOCK01));
         if (blockValidationResult.isNotValid()) {
-            this.log.error(String.format(MT103Constants.INVALID_BLOCK_ERROR_LOG,
+            log.error(String.format(MT103Constants.INVALID_BLOCK_ERROR_LOG,
                     MT103Constants.BLOCK01, blockValidationResult.getErrorMessage()));
             return blockValidationResult;
         }
@@ -106,7 +109,7 @@ public class JsonToMT103Validator extends AbstractConnector {
         // validate block 02
         blockValidationResult = JsonToMt103Utils.validateBlock02(requestPayload.optJSONObject(MT103Constants.BLOCK02));
         if (blockValidationResult.isNotValid()) {
-            this.log.error(String.format(MT103Constants.INVALID_BLOCK_ERROR_LOG,
+            log.error(String.format(MT103Constants.INVALID_BLOCK_ERROR_LOG,
                     MT103Constants.BLOCK02, blockValidationResult.getErrorMessage()));
             return blockValidationResult;
         }
@@ -114,7 +117,7 @@ public class JsonToMT103Validator extends AbstractConnector {
         // validate block 03
         blockValidationResult = JsonToMt103Utils.validateBlock03(requestPayload.optJSONObject(MT103Constants.BLOCK03));
         if (blockValidationResult.isNotValid()) {
-            this.log.error(String.format(MT103Constants.INVALID_BLOCK_ERROR_LOG,
+            log.error(String.format(MT103Constants.INVALID_BLOCK_ERROR_LOG,
                     MT103Constants.BLOCK03, blockValidationResult.getErrorMessage()));
             return blockValidationResult;
         }
@@ -122,7 +125,7 @@ public class JsonToMT103Validator extends AbstractConnector {
         // validate block 04
         blockValidationResult = JsonToMt103Utils.validateBlock04(requestPayload.optJSONObject(MT103Constants.BLOCK04));
         if (blockValidationResult.isNotValid()) {
-            this.log.error(String.format(MT103Constants.INVALID_BLOCK_ERROR_LOG,
+            log.error(String.format(MT103Constants.INVALID_BLOCK_ERROR_LOG,
                     MT103Constants.BLOCK04, blockValidationResult.getErrorMessage()));
             return blockValidationResult;
         }
@@ -130,7 +133,7 @@ public class JsonToMT103Validator extends AbstractConnector {
         // validate block 05
         blockValidationResult = JsonToMt103Utils.validateBlock05(requestPayload.optJSONObject(MT103Constants.BLOCK05));
         if (blockValidationResult.isNotValid()) {
-            this.log.error(String.format(MT103Constants.INVALID_BLOCK_ERROR_LOG,
+            log.error(String.format(MT103Constants.INVALID_BLOCK_ERROR_LOG,
                     MT103Constants.BLOCK05, blockValidationResult.getErrorMessage()));
             return blockValidationResult;
         }
@@ -145,7 +148,7 @@ public class JsonToMT103Validator extends AbstractConnector {
      * @throws JsonSyntaxException if the JSON object doesn't match the defined model
      */
     private void validatePayloadWithMT103JsonModel(String payload) throws JsonSyntaxException {
-        this.log.debug("Validating JSON payload with the request model");
+        log.debug("Validating JSON payload with the request payload model");
         gson.fromJson(payload, MT103JsonRequestPayload.class);
     }
 }
