@@ -967,113 +967,264 @@ public class ISOToMT940TestConstants {
         };
     }
 
-    @DataProvider(name = "invalidOpeningBal")
-    Object[][] getInvalidOpeningBal() {
+    @DataProvider(name = "invalidOpeningBalCd")
+    Object[][] getInvalidOpeningBalCode() {
 
         return new Object[][]{
-            {getDocumentPayload(Map.of("OpeningBalCd", ""))},
-            {getDocumentPayload(Map.of("OpeningBalCd", "BAC123"))},
-            {getDocumentPayload(Map.of("OpeningBalCCY", ""))},
-            {getDocumentPayload(Map.of("OpeningBalCCY", "US"))},
-            {getDocumentPayload(Map.of("OpeningBalCCY", "USDF"))},
-            {getDocumentPayload(Map.of("OpeningBalAmt", "BCEFIHJ"))},
-            {getDocumentPayload(Map.of("OpeningBalInd", ""))},
-            {getDocumentPayload(Map.of("OpeningBalInd", "DB"))},
-            {getDocumentPayload(Map.of("OpeningBalInd", "DBIT24"))},
-            {getDocumentPayload(Map.of("OpeningBalDt", ""))},
-            {getDocumentPayload(Map.of("OpeningBalDt", "2023-09-30"))},
-            {getDocumentPayload(Map.of("OpeningBalDt", "20:00:00.000"))},
-            {getDocumentPayload(Map.of("OpeningBalDt", "2023-09-30E20:00:00.000"))},
-            {getDocumentPayload(Map.of("OpeningBalDt", "WEESS1000001123"))},
+                {getDocumentPayload(Map.of("OpeningBalCd", ""))},
+                {getDocumentPayload(Map.of("OpeningBalCd", "BAC123"))}
         };
     }
 
-    @DataProvider(name = "invalidColsingBal")
-    Object[][] getInvalidColsingBal() {
+    @DataProvider(name = "invalidOpeningBalCCY")
+    Object[][] getInvalidOpeningBalCCY() {
+
+        return new Object[][]{
+                {getDocumentPayload(Map.of("OpeningBalCCY", ""))},
+                {getDocumentPayload(Map.of("OpeningBalCCY", "US"))},
+                {getDocumentPayload(Map.of("OpeningBalCCY", "USDF"))}
+        };
+    }
+
+    @DataProvider(name = "invalidOpeningBalAmt")
+    Object[][] getInvalidOpeningBalAmt() {
+
+        return new Object[][]{
+                {getDocumentPayload(Map.of("OpeningBalAmt", "BCEFIHJ"))}
+        };
+    }
+
+    @DataProvider(name = "invalidOpeningBalInd")
+    Object[][] getInvalidOpeningBalInd() {
+
+        return new Object[][]{
+                {getDocumentPayload(Map.of("OpeningBalInd", ""))},
+                {getDocumentPayload(Map.of("OpeningBalInd", "DB"))},
+                {getDocumentPayload(Map.of("OpeningBalInd", "DBIT24"))}
+        };
+    }
+
+    @DataProvider(name = "invalidOpeningBalDt")
+    Object[][] getInvalidOpeningBalDt() {
+
+        return new Object[][]{
+                {getDocumentPayload(Map.of("OpeningBalDt", ""))},
+                {getDocumentPayload(Map.of("OpeningBalDt", "2023-09-30"))},
+                {getDocumentPayload(Map.of("OpeningBalDt", "20:00:00.000"))},
+                {getDocumentPayload(Map.of("OpeningBalDt", "2023-09-30E20:00:00.000"))},
+                {getDocumentPayload(Map.of("OpeningBalDt", "WEESS1000001123"))}
+        };
+    }
+
+    @DataProvider(name = "invalidClosingBalCd")
+    Object[][] getInvalidClosingBalCode() {
 
         return new Object[][]{
             {getDocumentPayload(Map.of("ClosingBalCd", ""))},
-            {getDocumentPayload(Map.of("ClosingBalCd", "BAC123"))},
-            {getDocumentPayload(Map.of("ClosingBalCCY", ""))},
-            {getDocumentPayload(Map.of("ClosingBalCCY", "US"))},
-            {getDocumentPayload(Map.of("ClosingBalCCY", "USDF"))},
-            {getDocumentPayload(Map.of("ClosingBalAmt", ""))},
-            {getDocumentPayload(Map.of("ClosingBalAmt", "BCEFIHJ"))},
-            {getDocumentPayload(Map.of("ClosingBalInd", ""))},
-            {getDocumentPayload(Map.of("ClosingBalInd", "DB"))},
-            {getDocumentPayload(Map.of("ClosingBalInd", "DBIT24"))},
-            {getDocumentPayload(Map.of("ClosingBalDt", ""))},
-            {getDocumentPayload(Map.of("ClosingBalDt", "2023-09-30"))},
-            {getDocumentPayload(Map.of("ClosingBalDt", "20:00:00.000"))},
-            {getDocumentPayload(Map.of("ClosingBalDt", "2023-09-30E20:00:00.000"))},
-            {getDocumentPayload(Map.of("ClosingBalDt", "WEESS1000001123"))},
+            {getDocumentPayload(Map.of("ClosingBalCd", "BAC123"))}
         };
     }
 
-    @DataProvider(name = "invalidClosingAvailBal")
-    Object[][] getInvalidClosingAvlBal() {
+    @DataProvider(name = "invalidClosingBalCCY")
+    Object[][] getInvalidClosingBalCCY() {
 
         return new Object[][]{
-            {getDocumentPayload(Map.of("ClosingAvlBalCd", ""))},
-            {getDocumentPayload(Map.of("ClosingAvlBalCd", "BAC123"))},
-            {getDocumentPayload(Map.of("ClosingAvlBalCCY", ""))},
-            {getDocumentPayload(Map.of("ClosingAvlBalCCY", "US"))},
-            {getDocumentPayload(Map.of("ClosingAvlBalCCY", "USDF"))},
-            {getDocumentPayload(Map.of("ClosingAvlBalAmt", ""))},
-            {getDocumentPayload(Map.of("ClosingAvlBalAmt", "BCEFIHJ"))},
-            {getDocumentPayload(Map.of("ClosingAvlBalInd", ""))},
-            {getDocumentPayload(Map.of("ClosingAvlBalInd", "DB"))},
-            {getDocumentPayload(Map.of("ClosingAvlBalInd", "DBIT24"))},
-            {getDocumentPayload(Map.of("ClosingAvlBalDt", ""))},
-            {getDocumentPayload(Map.of("ClosingAvlBalDt", "2023-09-30"))},
-            {getDocumentPayload(Map.of("ClosingAvlBalDt", "20:00:00.000"))},
-            {getDocumentPayload(Map.of("ClosingAvlBalDt", "2023-09-30E20:00:00.000"))},
-            {getDocumentPayload(Map.of("ClosingAvlBalDt", "WEESS1000001123"))},
+                {getDocumentPayload(Map.of("ClosingBalCCY", ""))},
+                {getDocumentPayload(Map.of("ClosingBalCCY", "US"))},
+                {getDocumentPayload(Map.of("ClosingBalCCY", "USDF"))}
         };
     }
 
-    @DataProvider(name = "invalidForwardAvailBal")
-    Object[][] getInvalidForwardAvailBal() {
+    @DataProvider(name = "invalidClosingBalAmt")
+    Object[][] getInvalidClosingBalAmt() {
 
         return new Object[][]{
-            {getDocumentPayload(Map.of("ForwardAvlBalCd", ""))},
-            {getDocumentPayload(Map.of("ForwardAvlBalCd", "BAC123"))},
-            {getDocumentPayload(Map.of("ForwardAvlBalCCY", ""))},
-            {getDocumentPayload(Map.of("ForwardAvlBalCCY", "US"))},
-            {getDocumentPayload(Map.of("ForwardAvlBalCCY", "USDF"))},
-            {getDocumentPayload(Map.of("ForwardAvlBalAmt", ""))},
-            {getDocumentPayload(Map.of("ForwardAvlBalAmt", "BCEFIHJ"))},
-            {getDocumentPayload(Map.of("ForwardAvlBalInd", ""))},
-            {getDocumentPayload(Map.of("ForwardAvlBalInd", "DB"))},
-            {getDocumentPayload(Map.of("ForwardAvlBalInd", "DBIT24"))},
-            {getDocumentPayload(Map.of("ForwardAvlBalDt", ""))},
-            {getDocumentPayload(Map.of("ForwardAvlBalDt", "2023-09-30"))},
-            {getDocumentPayload(Map.of("ForwardAvlBalDt", "20:00:00.000"))},
-            {getDocumentPayload(Map.of("ForwardAvlBalDt", "2023-09-30E20:00:00.000"))},
-            {getDocumentPayload(Map.of("ForwardAvlBalDt", "WEESS1000001123"))},
+                {getDocumentPayload(Map.of("ClosingBalAmt", "BCEFIHJ"))}
         };
     }
 
-    @DataProvider(name = "invalidTransEntry")
-    Object[][] getInvalidTransEntry() {
+    @DataProvider(name = "invalidClosingBalInd")
+    Object[][] getInvalidClosingBalInd() {
+
+        return new Object[][]{
+                {getDocumentPayload(Map.of("ClosingBalInd", ""))},
+                {getDocumentPayload(Map.of("ClosingBalInd", "DB"))},
+                {getDocumentPayload(Map.of("ClosingBalInd", "DBIT24"))}
+        };
+    }
+
+    @DataProvider(name = "invalidClosingBalDt")
+    Object[][] getInvalidClosingBalDt() {
+
+        return new Object[][]{
+                {getDocumentPayload(Map.of("ClosingBalDt", ""))},
+                {getDocumentPayload(Map.of("ClosingBalDt", "2023-09-30"))},
+                {getDocumentPayload(Map.of("ClosingBalDt", "20:00:00.000"))},
+                {getDocumentPayload(Map.of("ClosingBalDt", "2023-09-30E20:00:00.000"))},
+                {getDocumentPayload(Map.of("ClosingBalDt", "WEESS1000001123"))}
+        };
+    }
+
+    @DataProvider(name = "invalidClosingAvlBalCd")
+    Object[][] getInvalidClosingAvlBalCode() {
+
+        return new Object[][]{
+                {getDocumentPayload(Map.of("ClosingAvlBalCd", ""))},
+                {getDocumentPayload(Map.of("ClosingAvlBalCd", "BAC123"))}
+        };
+    }
+
+    @DataProvider(name = "invalidClosingAvlBalCCY")
+    Object[][] getInvalidClosingAvlBalCCY() {
+
+        return new Object[][]{
+                {getDocumentPayload(Map.of("ClosingAvlBalCCY", ""))},
+                {getDocumentPayload(Map.of("ClosingAvlBalCCY", "US"))},
+                {getDocumentPayload(Map.of("ClosingAvlBalCCY", "USDF"))}
+        };
+    }
+
+    @DataProvider(name = "invalidClosingAvlBalAmt")
+    Object[][] getInvalidClosingAvlBalAmt() {
+
+        return new Object[][]{
+                {getDocumentPayload(Map.of("ClosingAvlBalAmt", "BCEFIHJ"))}
+        };
+    }
+
+    @DataProvider(name = "invalidClosingAvlBalInd")
+    Object[][] getInvalidClosingAvlBalInd() {
+
+        return new Object[][]{
+                {getDocumentPayload(Map.of("ClosingAvlBalInd", ""))},
+                {getDocumentPayload(Map.of("ClosingAvlBalInd", "DB"))},
+                {getDocumentPayload(Map.of("ClosingAvlBalInd", "DBIT24"))}
+        };
+    }
+
+    @DataProvider(name = "invalidClosingAvlBalDt")
+    Object[][] getInvalidClosingAvlBalDt() {
+
+        return new Object[][]{
+                {getDocumentPayload(Map.of("ClosingAvlBalDt", ""))},
+                {getDocumentPayload(Map.of("ClosingAvlBalDt", "2023-09-30"))},
+                {getDocumentPayload(Map.of("ClosingAvlBalDt", "20:00:00.000"))},
+                {getDocumentPayload(Map.of("ClosingAvlBalDt", "2023-09-30E20:00:00.000"))},
+                {getDocumentPayload(Map.of("ClosingAvlBalDt", "WEESS1000001123"))}
+        };
+    }
+
+    @DataProvider(name = "invalidForwardAvlBalCd")
+    Object[][] getInvalidForwardAvlBalCode() {
+
+        return new Object[][]{
+                {getDocumentPayload(Map.of("ForwardAvlBalCd", ""))},
+                {getDocumentPayload(Map.of("ForwardAvlBalCd", "BAC123"))}
+        };
+    }
+
+    @DataProvider(name = "invalidForwardAvlBalCCY")
+    Object[][] getInvalidForwardAvlBalCCY() {
+
+        return new Object[][]{
+                {getDocumentPayload(Map.of("ForwardAvlBalCCY", ""))},
+                {getDocumentPayload(Map.of("ForwardAvlBalCCY", "US"))},
+                {getDocumentPayload(Map.of("ForwardAvlBalCCY", "USDF"))}
+        };
+    }
+
+    @DataProvider(name = "invalidForwardAvlBalAmt")
+    Object[][] getInvalidForwardAvlBalAmt() {
+
+        return new Object[][]{
+                {getDocumentPayload(Map.of("ForwardAvlBalAmt", "BCEFIHJ"))}
+        };
+    }
+
+    @DataProvider(name = "invalidForwardAvlBalInd")
+    Object[][] getInvalidForwardAvlBalInd() {
+
+        return new Object[][]{
+                {getDocumentPayload(Map.of("ForwardAvlBalInd", ""))},
+                {getDocumentPayload(Map.of("ForwardAvlBalInd", "DB"))},
+                {getDocumentPayload(Map.of("ForwardAvlBalInd", "DBIT24"))}
+        };
+    }
+
+    @DataProvider(name = "invalidForwardAvlBalDt")
+    Object[][] getInvalidForwardAvlBalDt() {
+
+        return new Object[][]{
+                {getDocumentPayload(Map.of("ForwardAvlBalDt", ""))},
+                {getDocumentPayload(Map.of("ForwardAvlBalDt", "2023-09-30"))},
+                {getDocumentPayload(Map.of("ForwardAvlBalDt", "20:00:00.000"))},
+                {getDocumentPayload(Map.of("ForwardAvlBalDt", "2023-09-30E20:00:00.000"))},
+                {getDocumentPayload(Map.of("ForwardAvlBalDt", "WEESS1000001123"))}
+        };
+    }
+
+    @DataProvider(name = "invalidTransCCYEntry")
+    Object[][] getInvalidTransCCYEntry() {
 
         return new Object[][] {
                 {getDocumentPayload(Map.of("TransCCY", ""))},
                 {getDocumentPayload(Map.of("TransCCY", "US"))},
-                {getDocumentPayload(Map.of("TransCCY", "USDF"))},
+                {getDocumentPayload(Map.of("TransCCY", "USDF"))}
+        };
+    }
+
+    @DataProvider(name = "invalidTransAmtEntry")
+    Object[][] getInvalidTransAmtEntry() {
+
+        return new Object[][] {
                 {getDocumentPayload(Map.of("TransAmt", ""))},
-                {getDocumentPayload(Map.of("TransAmt", "BCEFIHJ"))},
+                {getDocumentPayload(Map.of("TransAmt", "BCEFIHJ"))}
+        };
+    }
+
+    @DataProvider(name = "invalidTransIndEntry")
+    Object[][] getInvalidTransIndEntry() {
+
+        return new Object[][] {
                 {getDocumentPayload(Map.of("TransInd", ""))},
-                {getDocumentPayload(Map.of("TransInd", "CRTY"))},
+                {getDocumentPayload(Map.of("TransInd", "CRTY"))}
+        };
+    }
+
+    @DataProvider(name = "invalidTransRvslIndEntry")
+    Object[][] getInvalidTransRvslIndEntry() {
+
+        return new Object[][] {
                 {getDocumentPayload(Map.of("TransRvslInd", ""))},
-                {getDocumentPayload(Map.of("TransRvslInd", "CDIT"))},
+                {getDocumentPayload(Map.of("TransRvslInd", "CDIT"))}
+        };
+    }
+
+    @DataProvider(name = "invalidTransBkDtEntry")
+    Object[][] getInvalidTransBkDtEntry() {
+
+        return new Object[][] {
                 {getDocumentPayload(Map.of("TransBkDt", ""))},
                 {getDocumentPayload(Map.of("TransBkDt", "2023-10-01"))},
                 {getDocumentPayload(Map.of("TransBkDt", "13:37:14.000"))},
-                {getDocumentPayload(Map.of("TransBkDt", "2023-10-01E13:37:14.000"))},
+                {getDocumentPayload(Map.of("TransBkDt", "2023-10-01E13:37:14.000"))}
+        };
+    }
+
+    @DataProvider(name = "invalidTransDtEntry")
+    Object[][] getInvalidTransDtEntry() {
+
+        return new Object[][] {
                 {getDocumentPayload(Map.of("TransDt", ""))},
                 {getDocumentPayload(Map.of("TransDt", "2023"))},
-                {getDocumentPayload(Map.of("TransDt", "2023-10"))},
+                {getDocumentPayload(Map.of("TransDt", "2023-10"))}
+        };
+    }
+
+    @DataProvider(name = "invalidTransAcctSvcrRefEntry")
+    Object[][] getInvalidTransAcctSvcrRefEntry() {
+
+        return new Object[][] {
                 {getDocumentPayload(Map.of("TxAcctSvcrRef", ""))},
                 {getDocumentPayload(Map.of("TxAcctSvcrRef", "B20092800002225B20092800002225B20092800002225"))}
         };

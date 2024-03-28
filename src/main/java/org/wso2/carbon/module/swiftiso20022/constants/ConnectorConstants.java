@@ -157,6 +157,7 @@ public class ConnectorConstants {
     public static final String ERROR_INVALID_ISO_HEAD001_XML_MSG = "invalid_head_001_payload";
     public static final String ERROR_INVALID_ISO_CAMT053_XML_MSG = "invalid_camt_053_payload";
     public static final String ERROR_INVALID_XML_ROOT_TAG = "invalid_root_tag";
+    public static final String ERROR_INVALID_XML_ROOT_TAG_MESSAGE = "Invalid ISO XML root tag element";
     public static final String ERROR_MISSING_ELECTRONIC_SEQUENCE_NUMBER =
             "Electronic Sequence number not present in ISO20022.camt.053 message";
     public static final String ERROR_MISSING_LEGAL_SEQUENCE_NUMBER =
