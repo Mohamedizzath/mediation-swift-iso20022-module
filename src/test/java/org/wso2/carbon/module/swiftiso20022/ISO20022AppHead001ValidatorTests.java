@@ -67,27 +67,9 @@ public class ISO20022AppHead001ValidatorTests extends PowerMockTestCase {
         isoValidator.connect(messageContext);
     }
 
-    @Test(expectedExceptions = ConnectException.class)
+    @Test(expectedExceptions = ConnectException.class,
+          expectedExceptionsMessageRegExp = ".*The content of element 'AppHdr' is not complete.*")
     public void testEmptyPayloadScenario() throws Exception {
-        XSDValidator validator = Mockito.mock(XSDValidator.class);
-        PowerMockito.whenNew(XSDValidator.class).
-                withArguments(ConnectorConstants.XSD_SCHEMA_HEAD_001_001).thenReturn(validator);
-
-        String xPath = ISOMessageParser.constructXPath(true, ConnectorConstants.XPATH_APPHDR);
-
-        PowerMockito.mockStatic(ISOMessageParser.class);
-        PowerMockito.when(ISOMessageParser.getRootXMLElement(messageContext))
-                .thenReturn(null);
-        PowerMockito.when(ISOMessageParser.constructXPath(true, ConnectorConstants.XPATH_APPHDR))
-                .thenReturn(xPath);
-        PowerMockito.when(ISOMessageParser.extractISOMessage(messageContext, xPath))
-                .thenReturn(ISOToMT940TestConstants.PAYLOAD_EMPTY_APPHDR);
-
-        isoValidator.connect(messageContext);
-    }
-
-    @Test(expectedExceptions = ConnectException.class)
-    public void testInvalidRootTagScenario() throws Exception {
         XSDValidator validator = Mockito.mock(XSDValidator.class);
         PowerMockito.whenNew(XSDValidator.class).
                 withArguments(ConnectorConstants.XSD_SCHEMA_HEAD_001_001).thenReturn(validator);
@@ -105,8 +87,9 @@ public class ISO20022AppHead001ValidatorTests extends PowerMockTestCase {
         isoValidator.connect(messageContext);
     }
 
-    @Test(expectedExceptions = ConnectException.class, dataProvider = "invalidReceiverBIC",
-            dataProviderClass = ISOToMT940TestConstants.class)
+    @Test(expectedExceptions = ConnectException.class, expectedExceptionsMessageRegExp =
+            ".*Value '.*' is not facet-valid with respect to pattern .* for type 'BICFIDec2014Identifier'.*",
+            dataProvider = "invalidReceiverBIC", dataProviderClass = ISOToMT940TestConstants.class)
     public void testInvalidReceiverBICScenario(String payload) throws Exception {
         XSDValidator validator = Mockito.mock(XSDValidator.class);
         PowerMockito.whenNew(XSDValidator.class).
@@ -125,8 +108,9 @@ public class ISO20022AppHead001ValidatorTests extends PowerMockTestCase {
         isoValidator.connect(messageContext);
     }
 
-    @Test(expectedExceptions = ConnectException.class, dataProvider = "invalidSenderBIC",
-            dataProviderClass = ISOToMT940TestConstants.class)
+    @Test(expectedExceptions = ConnectException.class, expectedExceptionsMessageRegExp =
+            ".*Value '.*' is not facet-valid with respect to pattern .* for type 'BICFIDec2014Identifier'.*",
+            dataProvider = "invalidSenderBIC", dataProviderClass = ISOToMT940TestConstants.class)
     public void testInvalidSenderBICScenario(String payload) throws Exception {
         XSDValidator validator = Mockito.mock(XSDValidator.class);
         PowerMockito.whenNew(XSDValidator.class).
@@ -145,8 +129,9 @@ public class ISO20022AppHead001ValidatorTests extends PowerMockTestCase {
         isoValidator.connect(messageContext);
     }
 
-    @Test(expectedExceptions = ConnectException.class, dataProvider = "invalidCreationDate",
-            dataProviderClass = ISOToMT940TestConstants.class)
+    @Test(expectedExceptions = ConnectException.class, expectedExceptionsMessageRegExp =
+            ".*'.*' is not a valid value for 'dateTime'.*",
+            dataProvider = "invalidCreationDate", dataProviderClass = ISOToMT940TestConstants.class)
     public void testInvalidCreationDateScenario(String payload) throws Exception {
         XSDValidator validator = Mockito.mock(XSDValidator.class);
         PowerMockito.whenNew(XSDValidator.class).
@@ -165,8 +150,9 @@ public class ISO20022AppHead001ValidatorTests extends PowerMockTestCase {
         isoValidator.connect(messageContext);
     }
 
-    @Test(expectedExceptions = ConnectException.class, dataProvider = "invalidBusinessMsgId",
-            dataProviderClass = ISOToMT940TestConstants.class)
+    @Test(expectedExceptions = ConnectException.class, expectedExceptionsMessageRegExp =
+   ".*Value '.*' with length = '.*' is not facet-valid with respect to (min|max)Length '(1|35)' for type 'Max35Text'.*",
+            dataProvider = "invalidBusinessMsgId", dataProviderClass = ISOToMT940TestConstants.class)
     public void testInvalidBusinessMsgId(String payload) throws Exception {
         XSDValidator validator = Mockito.mock(XSDValidator.class);
         PowerMockito.whenNew(XSDValidator.class).
@@ -185,8 +171,9 @@ public class ISO20022AppHead001ValidatorTests extends PowerMockTestCase {
         isoValidator.connect(messageContext);
     }
 
-    @Test(expectedExceptions = ConnectException.class, dataProvider = "invalidMessageDefId",
-            dataProviderClass = ISOToMT940TestConstants.class)
+    @Test(expectedExceptions = ConnectException.class, expectedExceptionsMessageRegExp =
+   ".*Value '.*' with length = '.*' is not facet-valid with respect to (min|max)Length '(1|35)' for type 'Max35Text'.*",
+            dataProvider = "invalidMessageDefId", dataProviderClass = ISOToMT940TestConstants.class)
     public void testInvalidMessageDefinitionId(String payload) throws Exception {
         XSDValidator validator = Mockito.mock(XSDValidator.class);
         PowerMockito.whenNew(XSDValidator.class).

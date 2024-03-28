@@ -91,7 +91,8 @@ public class ISO20022Camt053ValidatorTests extends PowerMockTestCase {
         isoValidator.connect(messageContext);
     }
 
-    @Test(expectedExceptions = SynapseException.class)
+    @Test(expectedExceptions = SynapseException.class,
+            expectedExceptionsMessageRegExp = "Invalid ISO XML root tag element")
     public void testInvalidRootElementWithoutAppHdrScenario() throws Exception {
         XSDValidator validator = Mockito.mock(XSDValidator.class);
         PowerMockito.whenNew(XSDValidator.class).
@@ -103,7 +104,8 @@ public class ISO20022Camt053ValidatorTests extends PowerMockTestCase {
         isoValidator.connect(messageContext);
     }
 
-    @Test(expectedExceptions = SynapseException.class)
+    @Test(expectedExceptions = SynapseException.class,
+            expectedExceptionsMessageRegExp = "Invalid ISO XML root tag element")
     public void testInvalidRootElementWithAppHdrScenario() throws Exception {
         XSDValidator appHdrValidator = Mockito.mock(XSDValidator.class);
         XSDValidator documentValidator = Mockito.mock(XSDValidator.class);
@@ -118,7 +120,8 @@ public class ISO20022Camt053ValidatorTests extends PowerMockTestCase {
         isoValidator.connect(messageContext);
     }
 
-    @Test(expectedExceptions = ConnectException.class)
+    @Test(expectedExceptions = ConnectException.class,
+            expectedExceptionsMessageRegExp =  ".*The content of element 'Document' is not complete.*")
     public void testEmptyPayloadScenario() throws Exception {
         XSDValidator validator = Mockito.mock(XSDValidator.class);
         PowerMockito.whenNew(XSDValidator.class).
@@ -131,7 +134,8 @@ public class ISO20022Camt053ValidatorTests extends PowerMockTestCase {
     }
 
 
-    @Test(expectedExceptions = ConnectException.class)
+    @Test(expectedExceptions = ConnectException.class,
+            expectedExceptionsMessageRegExp =  ".*The content of element 'Document' is not complete.*")
     public void testEmptyDocumentPayloadWithAppHdrScenario() throws Exception {
         XSDValidator appHdrValidator = Mockito.mock(XSDValidator.class);
         XSDValidator documentValidator = Mockito.mock(XSDValidator.class);
@@ -146,8 +150,10 @@ public class ISO20022Camt053ValidatorTests extends PowerMockTestCase {
         isoValidator.connect(messageContext);
     }
 
-    @Test(expectedExceptions = ConnectException.class, dataProvider = "invalidStmtId",
-            dataProviderClass = ISOToMT940TestConstants.class)
+    @Test(expectedExceptions = ConnectException.class, expectedExceptionsMessageRegExp =
+            ".*Value '.*' with length = '.*' is not facet-valid with respect to (min|max)Length '(1|35)' for type " +
+            "'Max35Text'.*",
+            dataProvider = "invalidStmtId", dataProviderClass = ISOToMT940TestConstants.class)
     public void testInvalidStmtIdScenario(String payload) throws Exception {
         XSDValidator appHdrValidator = Mockito.mock(XSDValidator.class);
         XSDValidator documentValidator = Mockito.mock(XSDValidator.class);
@@ -162,8 +168,9 @@ public class ISO20022Camt053ValidatorTests extends PowerMockTestCase {
         isoValidator.connect(messageContext);
     }
 
-    @Test(expectedExceptions = ConnectException.class, dataProvider = "invalidElectSeqNumber",
-            dataProviderClass = ISOToMT940TestConstants.class)
+    @Test(expectedExceptions = ConnectException.class, expectedExceptionsMessageRegExp =
+            "(Electronic Sequence number not present.*|.*'.*' is not a valid value for 'decimal'.*)",
+            dataProvider = "invalidElectSeqNumber", dataProviderClass = ISOToMT940TestConstants.class)
     public void testInvalidElectSeqNumScenario(String payload) throws Exception {
         XSDValidator appHdrValidator = Mockito.mock(XSDValidator.class);
         XSDValidator documentValidator = Mockito.mock(XSDValidator.class);
@@ -178,8 +185,9 @@ public class ISO20022Camt053ValidatorTests extends PowerMockTestCase {
         isoValidator.connect(messageContext);
     }
 
-    @Test(expectedExceptions = ConnectException.class, dataProvider = "invalidLogSeqNumber",
-            dataProviderClass = ISOToMT940TestConstants.class)
+    @Test(expectedExceptions = ConnectException.class, expectedExceptionsMessageRegExp =
+            "(Legal Sequence number not present.*|.*Invalid content was found starting with element 'LogSeqNum'.*)",
+            dataProvider = "invalidLogSeqNumber", dataProviderClass = ISOToMT940TestConstants.class)
     public void testInvalidLogicSeqNumScenario(String payload) throws Exception {
         XSDValidator appHdrValidator = Mockito.mock(XSDValidator.class);
         XSDValidator documentValidator = Mockito.mock(XSDValidator.class);
@@ -194,8 +202,9 @@ public class ISO20022Camt053ValidatorTests extends PowerMockTestCase {
         isoValidator.connect(messageContext);
     }
 
-    @Test(expectedExceptions = ConnectException.class, dataProvider = "invalidCreatedDateTime",
-            dataProviderClass = ISOToMT940TestConstants.class)
+    @Test(expectedExceptions = ConnectException.class, expectedExceptionsMessageRegExp =
+            ".*'.*' is not a valid value for 'dateTime'.*",
+            dataProvider = "invalidCreatedDateTime", dataProviderClass = ISOToMT940TestConstants.class)
     public void testInvalidCreatedTimeScenario(String payload) throws Exception {
         XSDValidator appHdrValidator = Mockito.mock(XSDValidator.class);
         XSDValidator documentValidator = Mockito.mock(XSDValidator.class);
@@ -210,9 +219,11 @@ public class ISO20022Camt053ValidatorTests extends PowerMockTestCase {
         isoValidator.connect(messageContext);
     }
 
-    @Test(expectedExceptions = ConnectException.class, dataProvider = "invalidOpeningBal",
-            dataProviderClass = ISOToMT940TestConstants.class)
-    public void testInvalidOpeningBalanceScenario(String payload) throws Exception {
+    @Test(expectedExceptions = ConnectException.class, expectedExceptionsMessageRegExp =
+            ".*Value '.*' with length = '.*' is not facet-valid with respect to (min|max)Length '[14]' for type " +
+            "'ExternalBalanceType1Code'.*",
+            dataProvider = "invalidOpeningBalCd", dataProviderClass = ISOToMT940TestConstants.class)
+    public void testInvalidOpeningBalanceCdScenario(String payload) throws Exception {
         XSDValidator appHdrValidator = Mockito.mock(XSDValidator.class);
         XSDValidator documentValidator = Mockito.mock(XSDValidator.class);
         PowerMockito.whenNew(XSDValidator.class).
@@ -226,9 +237,11 @@ public class ISO20022Camt053ValidatorTests extends PowerMockTestCase {
         isoValidator.connect(messageContext);
     }
 
-    @Test(expectedExceptions = ConnectException.class, dataProvider = "invalidColsingBal",
-            dataProviderClass = ISOToMT940TestConstants.class)
-    public void testInvalidClosingBalanceScenario(String payload) throws Exception {
+    @Test(expectedExceptions = ConnectException.class, expectedExceptionsMessageRegExp =
+            ".*Value '.*' is not facet-valid with respect to pattern '\\[A-Z]\\{3,3}' for type " +
+            "'ActiveOrHistoricCurrencyCode'.*",
+            dataProvider = "invalidOpeningBalCCY", dataProviderClass = ISOToMT940TestConstants.class)
+    public void testInvalidOpeningBalanceCCYScenario(String payload) throws Exception {
         XSDValidator appHdrValidator = Mockito.mock(XSDValidator.class);
         XSDValidator documentValidator = Mockito.mock(XSDValidator.class);
         PowerMockito.whenNew(XSDValidator.class).
@@ -242,9 +255,10 @@ public class ISO20022Camt053ValidatorTests extends PowerMockTestCase {
         isoValidator.connect(messageContext);
     }
 
-    @Test(expectedExceptions = ConnectException.class, dataProvider = "invalidClosingAvailBal",
-            dataProviderClass = ISOToMT940TestConstants.class)
-    public void testInvalidClosingAvailableBalanceScenario(String payload) throws Exception {
+    @Test(expectedExceptions = ConnectException.class, expectedExceptionsMessageRegExp =
+            ".*'.*' is not a valid value for 'decimal'.*",
+            dataProvider = "invalidOpeningBalAmt", dataProviderClass = ISOToMT940TestConstants.class)
+    public void testInvalidOpeningBalanceAmtScenario(String payload) throws Exception {
         XSDValidator appHdrValidator = Mockito.mock(XSDValidator.class);
         XSDValidator documentValidator = Mockito.mock(XSDValidator.class);
         PowerMockito.whenNew(XSDValidator.class).
@@ -258,9 +272,11 @@ public class ISO20022Camt053ValidatorTests extends PowerMockTestCase {
         isoValidator.connect(messageContext);
     }
 
-    @Test(expectedExceptions = ConnectException.class, dataProvider = "invalidForwardAvailBal",
-            dataProviderClass = ISOToMT940TestConstants.class)
-    public void testInvalidForwardAvailableBalanceScenario(String payload) throws Exception {
+    @Test(expectedExceptions = ConnectException.class, expectedExceptionsMessageRegExp =
+            ".* Value '.*' is not facet-valid with respect to enumeration '\\[CRDT, DBIT]'. " +
+            "It must be a value from the enumeration.*",
+            dataProvider = "invalidOpeningBalInd", dataProviderClass = ISOToMT940TestConstants.class)
+    public void testInvalidOpeningBalanceIndScenario(String payload) throws Exception {
         XSDValidator appHdrValidator = Mockito.mock(XSDValidator.class);
         XSDValidator documentValidator = Mockito.mock(XSDValidator.class);
         PowerMockito.whenNew(XSDValidator.class).
@@ -274,9 +290,10 @@ public class ISO20022Camt053ValidatorTests extends PowerMockTestCase {
         isoValidator.connect(messageContext);
     }
 
-    @Test(expectedExceptions = ConnectException.class, dataProvider = "invalidTransEntry",
-            dataProviderClass = ISOToMT940TestConstants.class)
-    public void testInvalidTransactionEntryScenario(String payload) throws Exception {
+    @Test(expectedExceptions = ConnectException.class, expectedExceptionsMessageRegExp =
+            ".*'.*' is not a valid value for 'dateTime'.*",
+            dataProvider = "invalidOpeningBalDt", dataProviderClass = ISOToMT940TestConstants.class)
+    public void testInvalidOpeningBalanceDtScenario(String payload) throws Exception {
         XSDValidator appHdrValidator = Mockito.mock(XSDValidator.class);
         XSDValidator documentValidator = Mockito.mock(XSDValidator.class);
         PowerMockito.whenNew(XSDValidator.class).
@@ -290,8 +307,395 @@ public class ISO20022Camt053ValidatorTests extends PowerMockTestCase {
         isoValidator.connect(messageContext);
     }
 
-    @Test(expectedExceptions = ConnectException.class, dataProvider = "invalidBalance",
-            dataProviderClass = ISOToMT940TestConstants.class)
+    @Test(expectedExceptions = ConnectException.class, expectedExceptionsMessageRegExp =
+            ".*Value '.*' with length = '.*' is not facet-valid with respect to (min|max)Length '[14]' for type " +
+                    "'ExternalBalanceType1Code'.*",
+            dataProvider = "invalidClosingBalCd", dataProviderClass = ISOToMT940TestConstants.class)
+    public void testInvalidClosingBalanceCdScenario(String payload) throws Exception {
+        XSDValidator appHdrValidator = Mockito.mock(XSDValidator.class);
+        XSDValidator documentValidator = Mockito.mock(XSDValidator.class);
+        PowerMockito.whenNew(XSDValidator.class).
+                withArguments(ConnectorConstants.XSD_SCHEMA_HEAD_001_001).thenReturn(appHdrValidator);
+        PowerMockito.whenNew(XSDValidator.class).
+                withArguments(ConnectorConstants.XSD_SCHEMA_CAMT_053_001).thenReturn(documentValidator);
+
+        SOAPEnvelope soapEnvelope = getSOAPEnvelope(payload);
+        PowerMockito.doReturn(soapEnvelope).when(messageContext).getEnvelope();
+
+        isoValidator.connect(messageContext);
+    }
+
+    @Test(expectedExceptions = ConnectException.class, expectedExceptionsMessageRegExp =
+            ".*Value '.*' is not facet-valid with respect to pattern '\\[A-Z]\\{3,3}' for type " +
+                    "'ActiveOrHistoricCurrencyCode'.*",
+            dataProvider = "invalidClosingBalCCY", dataProviderClass = ISOToMT940TestConstants.class)
+    public void testInvalidClosingBalanceCCYScenario(String payload) throws Exception {
+        XSDValidator appHdrValidator = Mockito.mock(XSDValidator.class);
+        XSDValidator documentValidator = Mockito.mock(XSDValidator.class);
+        PowerMockito.whenNew(XSDValidator.class).
+                withArguments(ConnectorConstants.XSD_SCHEMA_HEAD_001_001).thenReturn(appHdrValidator);
+        PowerMockito.whenNew(XSDValidator.class).
+                withArguments(ConnectorConstants.XSD_SCHEMA_CAMT_053_001).thenReturn(documentValidator);
+
+        SOAPEnvelope soapEnvelope = getSOAPEnvelope(payload);
+        PowerMockito.doReturn(soapEnvelope).when(messageContext).getEnvelope();
+
+        isoValidator.connect(messageContext);
+    }
+
+    @Test(expectedExceptions = ConnectException.class, expectedExceptionsMessageRegExp =
+            ".*'.*' is not a valid value for 'decimal'.*",
+            dataProvider = "invalidClosingBalAmt", dataProviderClass = ISOToMT940TestConstants.class)
+    public void testInvalidClosingBalanceAmtScenario(String payload) throws Exception {
+        XSDValidator appHdrValidator = Mockito.mock(XSDValidator.class);
+        XSDValidator documentValidator = Mockito.mock(XSDValidator.class);
+        PowerMockito.whenNew(XSDValidator.class).
+                withArguments(ConnectorConstants.XSD_SCHEMA_HEAD_001_001).thenReturn(appHdrValidator);
+        PowerMockito.whenNew(XSDValidator.class).
+                withArguments(ConnectorConstants.XSD_SCHEMA_CAMT_053_001).thenReturn(documentValidator);
+
+        SOAPEnvelope soapEnvelope = getSOAPEnvelope(payload);
+        PowerMockito.doReturn(soapEnvelope).when(messageContext).getEnvelope();
+
+        isoValidator.connect(messageContext);
+    }
+
+    @Test(expectedExceptions = ConnectException.class, expectedExceptionsMessageRegExp =
+            ".*Value '.*' is not facet-valid with respect to enumeration '\\[CRDT, DBIT]'. " +
+                    "It must be a value from the enumeration.*",
+            dataProvider = "invalidClosingBalInd", dataProviderClass = ISOToMT940TestConstants.class)
+    public void testInvalidClosingBalanceIndScenario(String payload) throws Exception {
+        XSDValidator appHdrValidator = Mockito.mock(XSDValidator.class);
+        XSDValidator documentValidator = Mockito.mock(XSDValidator.class);
+        PowerMockito.whenNew(XSDValidator.class).
+                withArguments(ConnectorConstants.XSD_SCHEMA_HEAD_001_001).thenReturn(appHdrValidator);
+        PowerMockito.whenNew(XSDValidator.class).
+                withArguments(ConnectorConstants.XSD_SCHEMA_CAMT_053_001).thenReturn(documentValidator);
+
+        SOAPEnvelope soapEnvelope = getSOAPEnvelope(payload);
+        PowerMockito.doReturn(soapEnvelope).when(messageContext).getEnvelope();
+
+        isoValidator.connect(messageContext);
+    }
+
+    @Test(expectedExceptions = ConnectException.class, expectedExceptionsMessageRegExp =
+            ".*'.*' is not a valid value for 'dateTime'.*",
+            dataProvider = "invalidOpeningBalDt", dataProviderClass = ISOToMT940TestConstants.class)
+    public void testInvalidClosingBalanceDtScenario(String payload) throws Exception {
+        XSDValidator appHdrValidator = Mockito.mock(XSDValidator.class);
+        XSDValidator documentValidator = Mockito.mock(XSDValidator.class);
+        PowerMockito.whenNew(XSDValidator.class).
+                withArguments(ConnectorConstants.XSD_SCHEMA_HEAD_001_001).thenReturn(appHdrValidator);
+        PowerMockito.whenNew(XSDValidator.class).
+                withArguments(ConnectorConstants.XSD_SCHEMA_CAMT_053_001).thenReturn(documentValidator);
+
+        SOAPEnvelope soapEnvelope = getSOAPEnvelope(payload);
+        PowerMockito.doReturn(soapEnvelope).when(messageContext).getEnvelope();
+
+        isoValidator.connect(messageContext);
+    }
+
+    @Test(expectedExceptions = ConnectException.class, expectedExceptionsMessageRegExp =
+            ".*Value '.*' with length = '.*' is not facet-valid with respect to (min|max)Length '[14]' for type " +
+                    "'ExternalBalanceType1Code'.*",
+            dataProvider = "invalidClosingAvlBalCd", dataProviderClass = ISOToMT940TestConstants.class)
+    public void testInvalidClosingAvlBalanceCdScenario(String payload) throws Exception {
+        XSDValidator appHdrValidator = Mockito.mock(XSDValidator.class);
+        XSDValidator documentValidator = Mockito.mock(XSDValidator.class);
+        PowerMockito.whenNew(XSDValidator.class).
+                withArguments(ConnectorConstants.XSD_SCHEMA_HEAD_001_001).thenReturn(appHdrValidator);
+        PowerMockito.whenNew(XSDValidator.class).
+                withArguments(ConnectorConstants.XSD_SCHEMA_CAMT_053_001).thenReturn(documentValidator);
+
+        SOAPEnvelope soapEnvelope = getSOAPEnvelope(payload);
+        PowerMockito.doReturn(soapEnvelope).when(messageContext).getEnvelope();
+
+        isoValidator.connect(messageContext);
+    }
+
+    @Test(expectedExceptions = ConnectException.class, expectedExceptionsMessageRegExp =
+            ".*Value '.*' is not facet-valid with respect to pattern '\\[A-Z]\\{3,3}' for type " +
+                    "'ActiveOrHistoricCurrencyCode'.*",
+            dataProvider = "invalidClosingAvlBalCCY", dataProviderClass = ISOToMT940TestConstants.class)
+    public void testInvalidClosingAvlBalanceCCYScenario(String payload) throws Exception {
+        XSDValidator appHdrValidator = Mockito.mock(XSDValidator.class);
+        XSDValidator documentValidator = Mockito.mock(XSDValidator.class);
+        PowerMockito.whenNew(XSDValidator.class).
+                withArguments(ConnectorConstants.XSD_SCHEMA_HEAD_001_001).thenReturn(appHdrValidator);
+        PowerMockito.whenNew(XSDValidator.class).
+                withArguments(ConnectorConstants.XSD_SCHEMA_CAMT_053_001).thenReturn(documentValidator);
+
+        SOAPEnvelope soapEnvelope = getSOAPEnvelope(payload);
+        PowerMockito.doReturn(soapEnvelope).when(messageContext).getEnvelope();
+
+        isoValidator.connect(messageContext);
+    }
+
+    @Test(expectedExceptions = ConnectException.class, expectedExceptionsMessageRegExp =
+            ".*'.*' is not a valid value for 'decimal'.*",
+            dataProvider = "invalidClosingAvlBalAmt", dataProviderClass = ISOToMT940TestConstants.class)
+    public void testInvalidClosingAvlBalanceAmtScenario(String payload) throws Exception {
+        XSDValidator appHdrValidator = Mockito.mock(XSDValidator.class);
+        XSDValidator documentValidator = Mockito.mock(XSDValidator.class);
+        PowerMockito.whenNew(XSDValidator.class).
+                withArguments(ConnectorConstants.XSD_SCHEMA_HEAD_001_001).thenReturn(appHdrValidator);
+        PowerMockito.whenNew(XSDValidator.class).
+                withArguments(ConnectorConstants.XSD_SCHEMA_CAMT_053_001).thenReturn(documentValidator);
+
+        SOAPEnvelope soapEnvelope = getSOAPEnvelope(payload);
+        PowerMockito.doReturn(soapEnvelope).when(messageContext).getEnvelope();
+
+        isoValidator.connect(messageContext);
+    }
+
+    @Test(expectedExceptions = ConnectException.class, expectedExceptionsMessageRegExp =
+            ".*Value '.*' is not facet-valid with respect to enumeration '\\[CRDT, DBIT]'. " +
+                    "It must be a value from the enumeration.*",
+            dataProvider = "invalidClosingAvlBalInd", dataProviderClass = ISOToMT940TestConstants.class)
+    public void testInvalidClosingAvlBalanceIndScenario(String payload) throws Exception {
+        XSDValidator appHdrValidator = Mockito.mock(XSDValidator.class);
+        XSDValidator documentValidator = Mockito.mock(XSDValidator.class);
+        PowerMockito.whenNew(XSDValidator.class).
+                withArguments(ConnectorConstants.XSD_SCHEMA_HEAD_001_001).thenReturn(appHdrValidator);
+        PowerMockito.whenNew(XSDValidator.class).
+                withArguments(ConnectorConstants.XSD_SCHEMA_CAMT_053_001).thenReturn(documentValidator);
+
+        SOAPEnvelope soapEnvelope = getSOAPEnvelope(payload);
+        PowerMockito.doReturn(soapEnvelope).when(messageContext).getEnvelope();
+
+        isoValidator.connect(messageContext);
+    }
+
+    @Test(expectedExceptions = ConnectException.class, expectedExceptionsMessageRegExp =
+            ".*'.*' is not a valid value for 'dateTime'.*",
+            dataProvider = "invalidClosingAvlBalDt", dataProviderClass = ISOToMT940TestConstants.class)
+    public void testInvalidClosingAvlBalanceDtScenario(String payload) throws Exception {
+        XSDValidator appHdrValidator = Mockito.mock(XSDValidator.class);
+        XSDValidator documentValidator = Mockito.mock(XSDValidator.class);
+        PowerMockito.whenNew(XSDValidator.class).
+                withArguments(ConnectorConstants.XSD_SCHEMA_HEAD_001_001).thenReturn(appHdrValidator);
+        PowerMockito.whenNew(XSDValidator.class).
+                withArguments(ConnectorConstants.XSD_SCHEMA_CAMT_053_001).thenReturn(documentValidator);
+
+        SOAPEnvelope soapEnvelope = getSOAPEnvelope(payload);
+        PowerMockito.doReturn(soapEnvelope).when(messageContext).getEnvelope();
+
+        isoValidator.connect(messageContext);
+    }
+
+    @Test(expectedExceptions = ConnectException.class, expectedExceptionsMessageRegExp =
+            ".*Value '.*' with length = '.*' is not facet-valid with respect to (min|max)Length '[14]' for type " +
+                    "'ExternalBalanceType1Code'.*",
+            dataProvider = "invalidForwardAvlBalCd", dataProviderClass = ISOToMT940TestConstants.class)
+    public void testInvalidForwardAvlBalanceCdScenario(String payload) throws Exception {
+        XSDValidator appHdrValidator = Mockito.mock(XSDValidator.class);
+        XSDValidator documentValidator = Mockito.mock(XSDValidator.class);
+        PowerMockito.whenNew(XSDValidator.class).
+                withArguments(ConnectorConstants.XSD_SCHEMA_HEAD_001_001).thenReturn(appHdrValidator);
+        PowerMockito.whenNew(XSDValidator.class).
+                withArguments(ConnectorConstants.XSD_SCHEMA_CAMT_053_001).thenReturn(documentValidator);
+
+        SOAPEnvelope soapEnvelope = getSOAPEnvelope(payload);
+        PowerMockito.doReturn(soapEnvelope).when(messageContext).getEnvelope();
+
+        isoValidator.connect(messageContext);
+    }
+
+    @Test(expectedExceptions = ConnectException.class, expectedExceptionsMessageRegExp =
+            ".*Value '.*' is not facet-valid with respect to pattern '\\[A-Z]\\{3,3}' for type " +
+                    "'ActiveOrHistoricCurrencyCode'.*",
+            dataProvider = "invalidForwardAvlBalCCY", dataProviderClass = ISOToMT940TestConstants.class)
+    public void testInvalidForwardAvlBalanceCCYScenario(String payload) throws Exception {
+        XSDValidator appHdrValidator = Mockito.mock(XSDValidator.class);
+        XSDValidator documentValidator = Mockito.mock(XSDValidator.class);
+        PowerMockito.whenNew(XSDValidator.class).
+                withArguments(ConnectorConstants.XSD_SCHEMA_HEAD_001_001).thenReturn(appHdrValidator);
+        PowerMockito.whenNew(XSDValidator.class).
+                withArguments(ConnectorConstants.XSD_SCHEMA_CAMT_053_001).thenReturn(documentValidator);
+
+        SOAPEnvelope soapEnvelope = getSOAPEnvelope(payload);
+        PowerMockito.doReturn(soapEnvelope).when(messageContext).getEnvelope();
+
+        isoValidator.connect(messageContext);
+    }
+
+    @Test(expectedExceptions = ConnectException.class, expectedExceptionsMessageRegExp =
+            ".*'.*' is not a valid value for 'decimal'.*",
+            dataProvider = "invalidForwardAvlBalAmt", dataProviderClass = ISOToMT940TestConstants.class)
+    public void testInvalidForwardAvlBalanceAmtScenario(String payload) throws Exception {
+        XSDValidator appHdrValidator = Mockito.mock(XSDValidator.class);
+        XSDValidator documentValidator = Mockito.mock(XSDValidator.class);
+        PowerMockito.whenNew(XSDValidator.class).
+                withArguments(ConnectorConstants.XSD_SCHEMA_HEAD_001_001).thenReturn(appHdrValidator);
+        PowerMockito.whenNew(XSDValidator.class).
+                withArguments(ConnectorConstants.XSD_SCHEMA_CAMT_053_001).thenReturn(documentValidator);
+
+        SOAPEnvelope soapEnvelope = getSOAPEnvelope(payload);
+        PowerMockito.doReturn(soapEnvelope).when(messageContext).getEnvelope();
+
+        isoValidator.connect(messageContext);
+    }
+
+    @Test(expectedExceptions = ConnectException.class, expectedExceptionsMessageRegExp =
+            ".*Value '.*' is not facet-valid with respect to enumeration '\\[CRDT, DBIT]'. " +
+                    "It must be a value from the enumeration.*",
+            dataProvider = "invalidForwardAvlBalInd", dataProviderClass = ISOToMT940TestConstants.class)
+    public void testInvalidForwardAvlBalanceIndScenario(String payload) throws Exception {
+        XSDValidator appHdrValidator = Mockito.mock(XSDValidator.class);
+        XSDValidator documentValidator = Mockito.mock(XSDValidator.class);
+        PowerMockito.whenNew(XSDValidator.class).
+                withArguments(ConnectorConstants.XSD_SCHEMA_HEAD_001_001).thenReturn(appHdrValidator);
+        PowerMockito.whenNew(XSDValidator.class).
+                withArguments(ConnectorConstants.XSD_SCHEMA_CAMT_053_001).thenReturn(documentValidator);
+
+        SOAPEnvelope soapEnvelope = getSOAPEnvelope(payload);
+        PowerMockito.doReturn(soapEnvelope).when(messageContext).getEnvelope();
+
+        isoValidator.connect(messageContext);
+    }
+
+    @Test(expectedExceptions = ConnectException.class, expectedExceptionsMessageRegExp =
+            ".*'.*' is not a valid value for 'dateTime'.*",
+            dataProvider = "invalidForwardAvlBalDt", dataProviderClass = ISOToMT940TestConstants.class)
+    public void testInvalidForwardAvlBalanceDtScenario(String payload) throws Exception {
+        XSDValidator appHdrValidator = Mockito.mock(XSDValidator.class);
+        XSDValidator documentValidator = Mockito.mock(XSDValidator.class);
+        PowerMockito.whenNew(XSDValidator.class).
+                withArguments(ConnectorConstants.XSD_SCHEMA_HEAD_001_001).thenReturn(appHdrValidator);
+        PowerMockito.whenNew(XSDValidator.class).
+                withArguments(ConnectorConstants.XSD_SCHEMA_CAMT_053_001).thenReturn(documentValidator);
+
+        SOAPEnvelope soapEnvelope = getSOAPEnvelope(payload);
+        PowerMockito.doReturn(soapEnvelope).when(messageContext).getEnvelope();
+
+        isoValidator.connect(messageContext);
+    }
+
+    @Test(expectedExceptions = ConnectException.class, expectedExceptionsMessageRegExp =
+            ".*Value '.*' is not facet-valid with respect to pattern '\\[A-Z]\\{3,3}' for type " +
+            "'ActiveOrHistoricCurrencyCode'.*",
+            dataProvider = "invalidTransCCYEntry", dataProviderClass = ISOToMT940TestConstants.class)
+    public void testInvalidTransactionCCYEntryScenario(String payload) throws Exception {
+        XSDValidator appHdrValidator = Mockito.mock(XSDValidator.class);
+        XSDValidator documentValidator = Mockito.mock(XSDValidator.class);
+        PowerMockito.whenNew(XSDValidator.class).
+                withArguments(ConnectorConstants.XSD_SCHEMA_HEAD_001_001).thenReturn(appHdrValidator);
+        PowerMockito.whenNew(XSDValidator.class).
+                withArguments(ConnectorConstants.XSD_SCHEMA_CAMT_053_001).thenReturn(documentValidator);
+
+        SOAPEnvelope soapEnvelope = getSOAPEnvelope(payload);
+        PowerMockito.doReturn(soapEnvelope).when(messageContext).getEnvelope();
+
+        isoValidator.connect(messageContext);
+    }
+
+    @Test(expectedExceptions = ConnectException.class, expectedExceptionsMessageRegExp =
+            ".*'.*' is not a valid value for 'decimal'.*",
+            dataProvider = "invalidTransAmtEntry", dataProviderClass = ISOToMT940TestConstants.class)
+    public void testInvalidTransactionAmtEntryScenario(String payload) throws Exception {
+        XSDValidator appHdrValidator = Mockito.mock(XSDValidator.class);
+        XSDValidator documentValidator = Mockito.mock(XSDValidator.class);
+        PowerMockito.whenNew(XSDValidator.class).
+                withArguments(ConnectorConstants.XSD_SCHEMA_HEAD_001_001).thenReturn(appHdrValidator);
+        PowerMockito.whenNew(XSDValidator.class).
+                withArguments(ConnectorConstants.XSD_SCHEMA_CAMT_053_001).thenReturn(documentValidator);
+
+        SOAPEnvelope soapEnvelope = getSOAPEnvelope(payload);
+        PowerMockito.doReturn(soapEnvelope).when(messageContext).getEnvelope();
+
+        isoValidator.connect(messageContext);
+    }
+
+    @Test(expectedExceptions = ConnectException.class, expectedExceptionsMessageRegExp =
+            ".* Value '.*' is not facet-valid with respect to enumeration '\\[CRDT, DBIT]'. " +
+            "It must be a value from the enumeration.*",
+            dataProvider = "invalidTransIndEntry", dataProviderClass = ISOToMT940TestConstants.class)
+    public void testInvalidTransactionIndEntryScenario(String payload) throws Exception {
+        XSDValidator appHdrValidator = Mockito.mock(XSDValidator.class);
+        XSDValidator documentValidator = Mockito.mock(XSDValidator.class);
+        PowerMockito.whenNew(XSDValidator.class).
+                withArguments(ConnectorConstants.XSD_SCHEMA_HEAD_001_001).thenReturn(appHdrValidator);
+        PowerMockito.whenNew(XSDValidator.class).
+                withArguments(ConnectorConstants.XSD_SCHEMA_CAMT_053_001).thenReturn(documentValidator);
+
+        SOAPEnvelope soapEnvelope = getSOAPEnvelope(payload);
+        PowerMockito.doReturn(soapEnvelope).when(messageContext).getEnvelope();
+
+        isoValidator.connect(messageContext);
+    }
+
+    @Test(expectedExceptions = ConnectException.class, expectedExceptionsMessageRegExp =
+            ".*'.*' is not a valid value for 'boolean'.*",
+            dataProvider = "invalidTransRvslIndEntry", dataProviderClass = ISOToMT940TestConstants.class)
+    public void testInvalidTransactionRvslIndEntryScenario(String payload) throws Exception {
+        XSDValidator appHdrValidator = Mockito.mock(XSDValidator.class);
+        XSDValidator documentValidator = Mockito.mock(XSDValidator.class);
+        PowerMockito.whenNew(XSDValidator.class).
+                withArguments(ConnectorConstants.XSD_SCHEMA_HEAD_001_001).thenReturn(appHdrValidator);
+        PowerMockito.whenNew(XSDValidator.class).
+                withArguments(ConnectorConstants.XSD_SCHEMA_CAMT_053_001).thenReturn(documentValidator);
+
+        SOAPEnvelope soapEnvelope = getSOAPEnvelope(payload);
+        PowerMockito.doReturn(soapEnvelope).when(messageContext).getEnvelope();
+
+        isoValidator.connect(messageContext);
+    }
+
+    @Test(expectedExceptions = ConnectException.class, expectedExceptionsMessageRegExp =
+            ".*'.*' is not a valid value for 'dateTime'.*",
+            dataProvider = "invalidTransBkDtEntry", dataProviderClass = ISOToMT940TestConstants.class)
+    public void testInvalidTransactionBkDtEntryScenario(String payload) throws Exception {
+        XSDValidator appHdrValidator = Mockito.mock(XSDValidator.class);
+        XSDValidator documentValidator = Mockito.mock(XSDValidator.class);
+        PowerMockito.whenNew(XSDValidator.class).
+                withArguments(ConnectorConstants.XSD_SCHEMA_HEAD_001_001).thenReturn(appHdrValidator);
+        PowerMockito.whenNew(XSDValidator.class).
+                withArguments(ConnectorConstants.XSD_SCHEMA_CAMT_053_001).thenReturn(documentValidator);
+
+        SOAPEnvelope soapEnvelope = getSOAPEnvelope(payload);
+        PowerMockito.doReturn(soapEnvelope).when(messageContext).getEnvelope();
+
+        isoValidator.connect(messageContext);
+    }
+
+    @Test(expectedExceptions = ConnectException.class, expectedExceptionsMessageRegExp =
+            ".*'.*' is not a valid value for 'date'.*",
+            dataProvider = "invalidTransDtEntry", dataProviderClass = ISOToMT940TestConstants.class)
+    public void testInvalidTransactionDtEntryScenario(String payload) throws Exception {
+        XSDValidator appHdrValidator = Mockito.mock(XSDValidator.class);
+        XSDValidator documentValidator = Mockito.mock(XSDValidator.class);
+        PowerMockito.whenNew(XSDValidator.class).
+                withArguments(ConnectorConstants.XSD_SCHEMA_HEAD_001_001).thenReturn(appHdrValidator);
+        PowerMockito.whenNew(XSDValidator.class).
+                withArguments(ConnectorConstants.XSD_SCHEMA_CAMT_053_001).thenReturn(documentValidator);
+
+        SOAPEnvelope soapEnvelope = getSOAPEnvelope(payload);
+        PowerMockito.doReturn(soapEnvelope).when(messageContext).getEnvelope();
+
+        isoValidator.connect(messageContext);
+    }
+
+    @Test(expectedExceptions = ConnectException.class, expectedExceptionsMessageRegExp =
+            ".*Value '.*' with length = '.*' is not facet-valid with respect to (min|max)Length '(1|35)' for type" +
+            " 'Max35Text'.*",
+            dataProvider = "invalidTransAcctSvcrRefEntry", dataProviderClass = ISOToMT940TestConstants.class)
+    public void testInvalidTransactionAcctSvcrRefEntryScenario(String payload) throws Exception {
+        XSDValidator appHdrValidator = Mockito.mock(XSDValidator.class);
+        XSDValidator documentValidator = Mockito.mock(XSDValidator.class);
+        PowerMockito.whenNew(XSDValidator.class).
+                withArguments(ConnectorConstants.XSD_SCHEMA_HEAD_001_001).thenReturn(appHdrValidator);
+        PowerMockito.whenNew(XSDValidator.class).
+                withArguments(ConnectorConstants.XSD_SCHEMA_CAMT_053_001).thenReturn(documentValidator);
+
+        SOAPEnvelope soapEnvelope = getSOAPEnvelope(payload);
+        PowerMockito.doReturn(soapEnvelope).when(messageContext).getEnvelope();
+
+        isoValidator.connect(messageContext);
+    }
+
+    @Test(expectedExceptions = ConnectException.class, expectedExceptionsMessageRegExp =
+            "Missing (Opening|Closing) Balance in ISO20022.camt.053 message",
+            dataProvider = "invalidBalance", dataProviderClass = ISOToMT940TestConstants.class)
     public void testInvalidBalanceScenario(String payload) throws Exception {
         XSDValidator appHdrValidator = Mockito.mock(XSDValidator.class);
         XSDValidator documentValidator = Mockito.mock(XSDValidator.class);
