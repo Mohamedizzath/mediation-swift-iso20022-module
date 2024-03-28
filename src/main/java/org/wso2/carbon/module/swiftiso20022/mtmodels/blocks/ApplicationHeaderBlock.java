@@ -24,6 +24,8 @@ package org.wso2.carbon.module.swiftiso20022.mtmodels.blocks;
 public class ApplicationHeaderBlock {
     private String inputOutputIdentifier;
     private String messageType;
+    private String destinationAddress;
+    private String priority;
     private String deliveryMonitor;
     private String obsolescencePeriod;
     private String inputTime;
@@ -46,6 +48,22 @@ public class ApplicationHeaderBlock {
 
     public void setMessageType(String messageType) {
         this.messageType = messageType;
+    }
+
+    public String getDestinationAddress() {
+        return destinationAddress;
+    }
+
+    public void setDestinationAddress(String destinationAddress) {
+        this.destinationAddress = destinationAddress;
+    }
+
+    public String getPriority() {
+        return priority;
+    }
+
+    public void setPriority(String priority) {
+        this.priority = priority;
     }
 
     public String getDeliveryMonitor() {
