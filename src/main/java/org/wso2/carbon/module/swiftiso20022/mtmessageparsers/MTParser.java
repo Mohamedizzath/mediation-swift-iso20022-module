@@ -49,6 +49,7 @@ import org.wso2.carbon.module.swiftiso20022.mtmodels.mtmessages.MTMessage;
 import org.wso2.carbon.module.swiftiso20022.utils.MTFieldParserUtils;
 import org.wso2.carbon.module.swiftiso20022.utils.MTParserUtils;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Map;
 
@@ -59,13 +60,26 @@ public class MTParser {
 
     private static final Log log = LogFactory.getLog(MTParser.class);
 
-    public static void parse(Map<String, String> blocks, MTMessage mtMessage) throws MTMessageParsingException {
+    public static <T extends MTMessage> T parse(
+            Map<String, String> blocks, Class<T> mtMessageType) throws MTMessageParsingException {
+
+        T mtMessage;
+
+        try {
+            mtMessage = mtMessageType.getDeclaredConstructor().newInstance();
+        } catch (NoSuchMethodException | SecurityException | InstantiationException
+                 | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+            log.error(String.format("Exception thrown when instantiating a %s object", mtMessageType), e);
+            throw new MTMessageParsingException("runtime-error", "Runtime error occurred when parsing");
+        }
 
         log.info("Parsing User Header Block String");
         mtMessage.setUserHeaderBlock(parseUserHeaderBlock(blocks.get(ConnectorConstants.USER_HEADER_BLOCK_KEY)));
 
         log.info("Parsing Trailer Block String");
         mtMessage.setTrailerBlock(parseTrailerBlock(blocks.get(ConnectorConstants.TRAILER_BLOCK_KEY)));
+
+        return mtMessage;
     }
 
 

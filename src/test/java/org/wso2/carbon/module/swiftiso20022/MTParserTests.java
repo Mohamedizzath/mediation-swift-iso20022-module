@@ -40,20 +40,20 @@ public class MTParserTests {
     @Test(dataProvider = "validMTMessageMapDataProvider", dataProviderClass = MTParserTestConstants.class)
     public void testMTParserParseMethod(Map<String, String> blocks) throws MTMessageParsingException {
 
-        MTParser.parse(blocks, new MTMessage());
+        MTParser.parse(blocks, MTMessage.class);
     }
 
     @Test(expectedExceptions = MTMessageParsingException.class, dataProvider = "invalidUserHeaderBlockDataProvider",
             dataProviderClass = MTParserTestConstants.class)
     public void testParseUserHeaderBlock(String userHeaderBlockString) throws MTMessageParsingException {
 
-        MTParser.parse(Map.of(ConnectorConstants.USER_HEADER_BLOCK_KEY, userHeaderBlockString), new MTMessage());
+        MTParser.parse(Map.of(ConnectorConstants.USER_HEADER_BLOCK_KEY, userHeaderBlockString), MTMessage.class);
     }
 
     @Test(expectedExceptions = MTMessageParsingException.class, dataProvider = "invalidTrailerBlockDataProvider",
             dataProviderClass = MTParserTestConstants.class)
     public void testParseTrailerBlock(String trailerBlockString) throws MTMessageParsingException {
 
-        MTParser.parse(Map.of(ConnectorConstants.TRAILER_BLOCK_KEY, trailerBlockString), new MTMessage());
+        MTParser.parse(Map.of(ConnectorConstants.TRAILER_BLOCK_KEY, trailerBlockString), MTMessage.class);
     }
 }
