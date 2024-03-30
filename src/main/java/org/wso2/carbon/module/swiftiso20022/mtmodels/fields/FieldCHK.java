@@ -33,7 +33,17 @@ public class FieldCHK extends Field {
         return value;
     }
 
-    public FieldCHK setValue(String value) {
+    public void setValue(String value) {
+        this.value = value;
+    }
+
+    /**
+     * Method to set value of the field and return the instance.
+     *
+     * @param value Value to be set.
+     * @return object itself
+     */
+    public FieldCHK value(String value) {
         this.value = value;
         return this;
     }

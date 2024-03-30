@@ -38,17 +38,37 @@ public class Field423 extends Field {
         return date;
     }
 
-    public Field423 setDate(String date) {
+    public void setDate(String date) {
         this.date = date;
-        return this;
     }
 
     public String getTime() {
         return time;
     }
 
-    public Field423 setTime(String time) {
+    public void setTime(String time) {
         this.time = time;
+    }
+
+    /**
+     * Method to set date of the field and return the instance.
+     *
+     * @param date Date value to be set.
+     * @return object itself
+     */
+    public Field423 date(String date) {
+        setDate(date);
+        return this;
+    }
+
+    /**
+     * Method to set time of the field and return the instance.
+     *
+     * @param time Time value to be set.
+     * @return object itself
+     */
+    public Field423 time(String time) {
+        setTime(time);
         return this;
     }
 }

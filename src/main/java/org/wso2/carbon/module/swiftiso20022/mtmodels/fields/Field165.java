@@ -37,17 +37,37 @@ public class Field165 extends Field {
         return code;
     }
 
-    public Field165 setCode(String code) {
+    public void setCode(String code) {
         this.code = code;
-        return this;
     }
 
     public String getInformation() {
         return information;
     }
 
-    public Field165 setInformation(String information) {
+    public void setInformation(String information) {
         this.information = information;
+    }
+
+    /**
+     * Method to set code of the field and return the instance.
+     *
+     * @param code Code value to be set.
+     * @return object itself
+     */
+    public Field165 code(String code) {
+        setCode(code);
+        return this;
+    }
+
+    /**
+     * Method to set information of the field and return the instance.
+     *
+     * @param information Information to be set.
+     * @return object itself
+     */
+    public Field165 information(String information) {
+        setInformation(information);
         return this;
     }
 }

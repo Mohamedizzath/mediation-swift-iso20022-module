@@ -20,7 +20,7 @@ package org.wso2.carbon.module.swiftiso20022.mtmodels.fields;
 
 /**
  * Model for sanctions screening information in User Header Block (Block 03).
- *
+ * <p>
  * format: /(Code)/[Additional Information]
  */
 public class Field433 extends Field {
@@ -37,17 +37,37 @@ public class Field433 extends Field {
         return code;
     }
 
-    public Field433 setCode(String code) {
+    public void setCode(String code) {
         this.code = code;
-        return this;
     }
 
     public String getAdditionalInformation() {
         return additionalInformation;
     }
 
-    public Field433 setAdditionalInformation(String additionalInformation) {
+    public void setAdditionalInformation(String additionalInformation) {
         this.additionalInformation = additionalInformation;
+    }
+
+    /**
+     * Method to set code of the field and return the instance.
+     *
+     * @param code Code value to be set.
+     * @return object itself
+     */
+    public Field433 code(String code) {
+        setCode(code);
+        return this;
+    }
+
+    /**
+     * Method to set additional information of the field and return the instance.
+     *
+     * @param additionalInformation Additional information to be set.
+     * @return object itself
+     */
+    public Field433 additionalInformation(String additionalInformation) {
+        setAdditionalInformation(additionalInformation);
         return this;
     }
 }

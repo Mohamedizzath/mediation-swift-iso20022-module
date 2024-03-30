@@ -50,53 +50,113 @@ public class FieldMRF extends Field {
         return sentDate;
     }
 
-    public FieldMRF setSentDate(String sentDate) {
+    public void setSentDate(String sentDate) {
         this.sentDate = sentDate;
-        return this;
     }
 
     public String getTime() {
         return time;
     }
 
-    public FieldMRF setTime(String time) {
+    public void setTime(String time) {
         this.time = time;
-        return this;
     }
 
     public String getDate() {
         return date;
     }
 
-    public FieldMRF setDate(String date) {
+    public void setDate(String date) {
         this.date = date;
-        return this;
     }
 
     public String getLtIdentifier() {
         return ltIdentifier;
     }
 
-    public FieldMRF setLtIdentifier(String ltIdentifier) {
+    public void setLtIdentifier(String ltIdentifier) {
         this.ltIdentifier = ltIdentifier;
-        return this;
     }
 
     public String getSessionNumber() {
         return sessionNumber;
     }
 
-    public FieldMRF setSessionNumber(String sessionNumber) {
+    public void setSessionNumber(String sessionNumber) {
         this.sessionNumber = sessionNumber;
-        return this;
     }
 
     public String getSequenceNumber() {
         return sequenceNumber;
     }
 
-    public FieldMRF setSequenceNumber(String sequenceNumber) {
+    public void setSequenceNumber(String sequenceNumber) {
         this.sequenceNumber = sequenceNumber;
+    }
+
+    /**
+     * Method to set sent date of the field and return the instance.
+     *
+     * @param sentDate Sent date value to be set.
+     * @return object itself
+     */
+    public FieldMRF sentDate(String sentDate) {
+        setSentDate(sentDate);
+        return this;
+    }
+
+    /**
+     * Method to set time of the field and return the instance.
+     *
+     * @param time Time value to be set.
+     * @return object itself
+     */
+    public FieldMRF time(String time) {
+        setTime(time);
+        return this;
+    }
+
+    /**
+     * Method to set date of the field and return the instance.
+     *
+     * @param date Date value to be set.
+     * @return object itself
+     */
+    public FieldMRF date(String date) {
+        setDate(date);
+        return this;
+    }
+
+    /**
+     * Method to set logical terminal identifier of the field and return the instance.
+     *
+     * @param ltIdentifier Logical terminal identifier value to be set.
+     * @return object itself
+     */
+    public FieldMRF ltIdentifier(String ltIdentifier) {
+        setLtIdentifier(ltIdentifier);
+        return this;
+    }
+
+    /**
+     * Method to set session number of the field and return the instance.
+     *
+     * @param sessionNumber Session number value to be set.
+     * @return object itself
+     */
+    public FieldMRF sessionNumber(String sessionNumber) {
+        setSessionNumber(sessionNumber);
+        return this;
+    }
+
+    /**
+     * Method to set sequence number of the field and return the instance.
+     *
+     * @param sequenceNumber Sequence number value to be set.
+     * @return object itself
+     */
+    public FieldMRF sequenceNumber(String sequenceNumber) {
+        setSequenceNumber(sequenceNumber);
         return this;
     }
 }

@@ -43,35 +43,75 @@ public class Field106 extends Field {
         return date;
     }
 
-    public Field106 setDate(String date) {
+    public void setDate(String date) {
         this.date = date;
-        return this;
     }
 
     public String getLogicalTerminalAddress() {
         return logicalTerminalAddress;
     }
 
-    public Field106 setLogicalTerminalAddress(String logicalTerminalAddress) {
+    public void setLogicalTerminalAddress(String logicalTerminalAddress) {
         this.logicalTerminalAddress = logicalTerminalAddress;
-        return this;
     }
 
     public String getSessionNumber() {
         return sessionNumber;
     }
 
-    public Field106 setSessionNumber(String sessionNumber) {
+    public void setSessionNumber(String sessionNumber) {
         this.sessionNumber = sessionNumber;
-        return this;
     }
 
     public String getSequenceNumber() {
         return sequenceNumber;
     }
 
-    public Field106 setSequenceNumber(String sequenceNumber) {
+    public void setSequenceNumber(String sequenceNumber) {
         this.sequenceNumber = sequenceNumber;
+    }
+
+    /**
+     * Method to set date of the field and return the instance.
+     *
+     * @param date Date value to be set.
+     * @return object itself
+     */
+    public Field106 date(String date) {
+        setDate(date);
+        return this;
+    }
+
+    /**
+     * Method to set logical terminal address of the field and return the instance.
+     *
+     * @param logicalTerminalAddress Logical terminal address value to be set.
+     * @return object itself
+     */
+    public Field106 logicalTerminalAddress(String logicalTerminalAddress) {
+        setLogicalTerminalAddress(logicalTerminalAddress);
+        return this;
+    }
+
+    /**
+     * Method to set session number of the field and return the instance.
+     *
+     * @param sessionNumber Session number Value to be set.
+     * @return object itself
+     */
+    public Field106 sessionNumber(String sessionNumber) {
+        setSessionNumber(sessionNumber);
+        return this;
+    }
+
+    /**
+     * Method to set sequence number value of the field and return the instance.
+     *
+     * @param sequenceNumber Sequence number value to be set.
+     * @return object itself
+     */
+    public Field106 sequenceNumber(String sequenceNumber) {
+        setSequenceNumber(sequenceNumber);
         return this;
     }
 }

@@ -54,7 +54,7 @@ public class MTFieldParserUtils {
      */
     public static Field103 parseField103(String field103String) {
         return new Field103()
-                .setValue(field103String);
+                .value(field103String);
     }
 
     /**
@@ -70,12 +70,12 @@ public class MTFieldParserUtils {
 
         // extract and assign values from field106String
         return new Field106()
-                .setDate(extractSubstringByIndex(field106StringBuilder, ConnectorConstants.DATE_LENGTH))
-                .setLogicalTerminalAddress(extractSubstringByIndex(
+                .date(extractSubstringByIndex(field106StringBuilder, ConnectorConstants.DATE_LENGTH))
+                .logicalTerminalAddress(extractSubstringByIndex(
                         field106StringBuilder, ConnectorConstants.LOGICAL_TERMINAL_ADDRESS_LENGTH))
-                .setSessionNumber(extractSubstringByIndex(
+                .sessionNumber(extractSubstringByIndex(
                         field106StringBuilder, ConnectorConstants.SESSION_NUMBER_LENGTH))
-                .setSequenceNumber(extractSubstringByIndex(
+                .sequenceNumber(extractSubstringByIndex(
                         field106StringBuilder, ConnectorConstants.SEQUENCE_NUMBER_LENGTH));
     }
 
@@ -87,7 +87,7 @@ public class MTFieldParserUtils {
      */
     public static Field108 parseField108(String field108String) {
         return new Field108()
-                .setValue(field108String);
+                .value(field108String);
     }
 
     /**
@@ -98,7 +98,7 @@ public class MTFieldParserUtils {
      */
     public static Field111 parseField111(String field111String) {
         return new Field111()
-                .setValue(field111String);
+                .value(field111String);
     }
 
     /**
@@ -109,7 +109,7 @@ public class MTFieldParserUtils {
      */
     public static Field113 parseField113(String field113String) {
         return new Field113()
-                .setValue(field113String);
+                .value(field113String);
     }
 
     /**
@@ -125,13 +125,13 @@ public class MTFieldParserUtils {
 
         // extract and assign values from field115String
         return new Field115()
-                .setCreditingTime(extractSubstringByIndex(
+                .creditingTime(extractSubstringByIndex(
                         field115StringBuilder, ConnectorConstants.HHMMSS_TIME_LENGTH))
-                .setDebitingTime(extractSubstringByIndex(
+                .debitingTime(extractSubstringByIndex(
                         field115StringBuilder, ConnectorConstants.HHMMSS_TIME_LENGTH))
-                .setCountryCode(extractSubstringByIndex(
+                .countryCode(extractSubstringByIndex(
                         field115StringBuilder, ConnectorConstants.COUNTRY_CODE_LENGTH))
-                .setReference(extractSubstringByIndex(field115StringBuilder, ConnectorConstants.REFERENCE_LENGTH));
+                .reference(extractSubstringByIndex(field115StringBuilder, ConnectorConstants.REFERENCE_LENGTH));
     }
 
     /**
@@ -142,7 +142,7 @@ public class MTFieldParserUtils {
      */
     public static Field119 parseField119(String field119String) {
         return new Field119()
-                .setValue(field119String);
+                .value(field119String);
     }
 
     /**
@@ -153,7 +153,7 @@ public class MTFieldParserUtils {
      */
     public static Field121 parseField121(String field121String) {
         return new Field121()
-                .setValue(field121String);
+                .value(field121String);
     }
 
     /**
@@ -169,8 +169,8 @@ public class MTFieldParserUtils {
 
         // assign separated values
         return new Field165()
-                .setCode(separatedValues.length > 0 ? separatedValues[0] : null)
-                .setInformation(separatedValues.length > 1 ? separatedValues[1] : null);
+                .code(separatedValues.length > 0 ? separatedValues[0] : null)
+                .information(separatedValues.length > 1 ? separatedValues[1] : null);
     }
 
     /**
@@ -186,9 +186,9 @@ public class MTFieldParserUtils {
 
         // extract and assign values from field423String
         return new Field423()
-                .setDate(extractSubstringByIndex(
+                .date(extractSubstringByIndex(
                         field423StringBuilder, ConnectorConstants.DATE_LENGTH))
-                .setTime(extractSubstringByIndex(
+                .time(extractSubstringByIndex(
                         field423StringBuilder, ConnectorConstants.HHMMSSSS_TIME_LENGTH));
     }
 
@@ -200,7 +200,7 @@ public class MTFieldParserUtils {
      */
     public static Field424 parseField424(String field434String) {
         return new Field424()
-                .setValue(field434String);
+                .value(field434String);
     }
 
     /**
@@ -216,8 +216,8 @@ public class MTFieldParserUtils {
 
         // assign separated values
         return new Field433()
-                .setCode(separatedValue.length > 1 ? separatedValue[0] : null)
-                .setAdditionalInformation(separatedValue.length == 2 ? separatedValue[1] : null);
+                .code(separatedValue.length > 1 ? separatedValue[0] : null)
+                .additionalInformation(separatedValue.length == 2 ? separatedValue[1] : null);
     }
 
     /**
@@ -233,8 +233,8 @@ public class MTFieldParserUtils {
 
         // assign separated values
         return new Field434()
-                .setCode(separatedValue.length > 1 ? separatedValue[0] : null)
-                .setAdditionalInformation(separatedValue.length == 2 ? separatedValue[1] : null);
+                .code(separatedValue.length > 1 ? separatedValue[0] : null)
+                .additionalInformation(separatedValue.length == 2 ? separatedValue[1] : null);
     }
 
     /**
@@ -245,7 +245,7 @@ public class MTFieldParserUtils {
      */
     public static FieldCHK parseFieldCHK(String fieldCHKString) {
         return new FieldCHK()
-                .setValue(fieldCHKString);
+                .value(fieldCHKString);
     }
 
     /**
@@ -261,14 +261,14 @@ public class MTFieldParserUtils {
 
         // extract and assign values from fieldMRFString
         return new FieldMRF()
-                .setSentDate(extractSubstringByIndex(fieldMRFStringBuilder, ConnectorConstants.DATE_LENGTH))
-                .setTime(extractSubstringByIndex(fieldMRFStringBuilder, ConnectorConstants.TIME_LENGTH))
-                .setDate(extractSubstringByIndex(fieldMRFStringBuilder, ConnectorConstants.DATE_LENGTH))
-                .setLtIdentifier(extractSubstringByIndex(
+                .sentDate(extractSubstringByIndex(fieldMRFStringBuilder, ConnectorConstants.DATE_LENGTH))
+                .time(extractSubstringByIndex(fieldMRFStringBuilder, ConnectorConstants.TIME_LENGTH))
+                .date(extractSubstringByIndex(fieldMRFStringBuilder, ConnectorConstants.DATE_LENGTH))
+                .ltIdentifier(extractSubstringByIndex(
                         fieldMRFStringBuilder, ConnectorConstants.LOGICAL_TERMINAL_ADDRESS_LENGTH))
-                .setSessionNumber(extractSubstringByIndex(
+                .sessionNumber(extractSubstringByIndex(
                         fieldMRFStringBuilder, ConnectorConstants.SESSION_NUMBER_LENGTH))
-                .setSequenceNumber(extractSubstringByIndex(
+                .sequenceNumber(extractSubstringByIndex(
                         fieldMRFStringBuilder, ConnectorConstants.SEQUENCE_NUMBER_LENGTH));
     }
 
@@ -285,13 +285,13 @@ public class MTFieldParserUtils {
 
         // extract and assign values from fieldPDEString
         return new FieldPDE()
-                .setTime(extractSubstringByIndex(fieldPDEStringBuilder, ConnectorConstants.TIME_LENGTH))
-                .setDate(extractSubstringByIndex(fieldPDEStringBuilder, ConnectorConstants.DATE_LENGTH))
-                .setLtIdentifier(extractSubstringByIndex(
+                .time(extractSubstringByIndex(fieldPDEStringBuilder, ConnectorConstants.TIME_LENGTH))
+                .date(extractSubstringByIndex(fieldPDEStringBuilder, ConnectorConstants.DATE_LENGTH))
+                .ltIdentifier(extractSubstringByIndex(
                         fieldPDEStringBuilder, ConnectorConstants.LOGICAL_TERMINAL_ADDRESS_LENGTH))
-                .setSessionNumber(extractSubstringByIndex(
+                .sessionNumber(extractSubstringByIndex(
                         fieldPDEStringBuilder, ConnectorConstants.SESSION_NUMBER_LENGTH))
-                .setSequenceNumber(extractSubstringByIndex(
+                .sequenceNumber(extractSubstringByIndex(
                         fieldPDEStringBuilder, ConnectorConstants.SEQUENCE_NUMBER_LENGTH));
     }
 
@@ -308,13 +308,13 @@ public class MTFieldParserUtils {
 
         // extract and assign values from fieldPDMString
         return new FieldPDM()
-                .setTime(extractSubstringByIndex(fieldPDMStringBuilder, ConnectorConstants.TIME_LENGTH))
-                .setDate(extractSubstringByIndex(fieldPDMStringBuilder, ConnectorConstants.DATE_LENGTH))
-                .setLtIdentifier(extractSubstringByIndex(
+                .time(extractSubstringByIndex(fieldPDMStringBuilder, ConnectorConstants.TIME_LENGTH))
+                .date(extractSubstringByIndex(fieldPDMStringBuilder, ConnectorConstants.DATE_LENGTH))
+                .ltIdentifier(extractSubstringByIndex(
                         fieldPDMStringBuilder, ConnectorConstants.LOGICAL_TERMINAL_ADDRESS_LENGTH))
-                .setSessionNumber(extractSubstringByIndex(
+                .sessionNumber(extractSubstringByIndex(
                         fieldPDMStringBuilder, ConnectorConstants.SESSION_NUMBER_LENGTH))
-                .setSequenceNumber(extractSubstringByIndex(
+                .sequenceNumber(extractSubstringByIndex(
                         fieldPDMStringBuilder, ConnectorConstants.SEQUENCE_NUMBER_LENGTH));
     }
 
@@ -331,13 +331,13 @@ public class MTFieldParserUtils {
 
         // extract and assign values from fieldSYSString
         return new FieldSYS()
-                .setTime(extractSubstringByIndex(fieldSYSStringBuilder, ConnectorConstants.TIME_LENGTH))
-                .setDate(extractSubstringByIndex(fieldSYSStringBuilder, ConnectorConstants.DATE_LENGTH))
-                .setLtIdentifier(extractSubstringByIndex(
+                .time(extractSubstringByIndex(fieldSYSStringBuilder, ConnectorConstants.TIME_LENGTH))
+                .date(extractSubstringByIndex(fieldSYSStringBuilder, ConnectorConstants.DATE_LENGTH))
+                .ltIdentifier(extractSubstringByIndex(
                         fieldSYSStringBuilder, ConnectorConstants.LOGICAL_TERMINAL_ADDRESS_LENGTH))
-                .setSessionNumber(extractSubstringByIndex(
+                .sessionNumber(extractSubstringByIndex(
                         fieldSYSStringBuilder, ConnectorConstants.SESSION_NUMBER_LENGTH))
-                .setSequenceNumber(extractSubstringByIndex(
+                .sequenceNumber(extractSubstringByIndex(
                         fieldSYSStringBuilder, ConnectorConstants.SEQUENCE_NUMBER_LENGTH));
     }
 

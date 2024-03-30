@@ -60,6 +60,15 @@ public class MTParser {
 
     private static final Log log = LogFactory.getLog(MTParser.class);
 
+    /**
+     * Method to get MT message object extended from {@link MTMessage} by parsing MT message blocks.
+     *
+     * @param blocks A map of block key and block value string
+     * @param mtMessageType Class of MT message model
+     * @param <T> MT message model class type implementation extended from {@link MTMessage}
+     * @return Class extended from {@link MTMessage} with values assigned by parsing passed block values
+     * @throws MTMessageParsingException if any one of the blocks cannot be parsed
+     */
     public static <T extends MTMessage> T parse(
             Map<String, String> blocks, Class<T> mtMessageType) throws MTMessageParsingException {
 
@@ -72,6 +81,8 @@ public class MTParser {
             log.error(String.format("Exception thrown when instantiating a %s object", mtMessageType), e);
             throw new MTMessageParsingException("runtime-error", "Runtime error occurred when parsing");
         }
+
+        // TODO: Add Basic Header Block and Application Header Block parsing
 
         log.info("Parsing User Header Block String");
         mtMessage.setUserHeaderBlock(parseUserHeaderBlock(blocks.get(ConnectorConstants.USER_HEADER_BLOCK_KEY)));

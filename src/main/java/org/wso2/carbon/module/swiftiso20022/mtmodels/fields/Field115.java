@@ -43,35 +43,75 @@ public class Field115 extends Field {
         return creditingTime;
     }
 
-    public Field115 setCreditingTime(String creditingTime) {
+    public void setCreditingTime(String creditingTime) {
         this.creditingTime = creditingTime;
-        return this;
     }
 
     public String getDebitingTime() {
         return debitingTime;
     }
 
-    public Field115 setDebitingTime(String debitingTime) {
+    public void setDebitingTime(String debitingTime) {
         this.debitingTime = debitingTime;
-        return this;
     }
 
     public String getCountryCode() {
         return countryCode;
     }
 
-    public Field115 setCountryCode(String countryCode) {
+    public void setCountryCode(String countryCode) {
         this.countryCode = countryCode;
-        return this;
     }
 
     public String getReference() {
         return reference;
     }
 
-    public Field115 setReference(String reference) {
+    public void setReference(String reference) {
         this.reference = reference;
+    }
+
+    /**
+     * Method to set crediting time of the field and return the instance.
+     *
+     * @param creditingTime Crediting time value to be set.
+     * @return object itself
+     */
+    public Field115 creditingTime(String creditingTime) {
+        setCreditingTime(creditingTime);
+        return this;
+    }
+
+    /**
+     * Method to set debiting time of the field and return the instance.
+     *
+     * @param debitingTime Debiting time value to be set.
+     * @return object itself
+     */
+    public Field115 debitingTime(String debitingTime) {
+        setDebitingTime(debitingTime);
+        return this;
+    }
+
+    /**
+     * Method to set country code of the field and return the instance.
+     *
+     * @param countryCode Country code value to be set.
+     * @return object itself
+     */
+    public Field115 countryCode(String countryCode) {
+        setCountryCode(countryCode);
+        return this;
+    }
+
+    /**
+     * Method to set reference of the field and return the instance.
+     *
+     * @param reference Reference value to be set.
+     * @return object itself
+     */
+    public Field115 reference(String reference) {
+        setReference(reference);
         return this;
     }
 }

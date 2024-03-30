@@ -32,8 +32,18 @@ public class Field103 extends Field {
         return value;
     }
 
-    public Field103 setValue(String value) {
+    public void setValue(String value) {
         this.value = value;
+    }
+
+    /**
+     * Method to set value of the field and return the instance.
+     *
+     * @param value Value to be set.
+     * @return object itself
+     */
+    public Field103 value(String value) {
+        setValue(value);
         return this;
     }
 }
