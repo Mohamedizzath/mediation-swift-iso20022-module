@@ -55,7 +55,7 @@ public class Field165 extends Field {
      * @param code Code value to be set.
      * @return object itself
      */
-    public Field165 code(String code) {
+    public Field165 withCode(String code) {
         setCode(code);
         return this;
     }
@@ -66,7 +66,7 @@ public class Field165 extends Field {
      * @param information Information to be set.
      * @return object itself
      */
-    public Field165 information(String information) {
+    public Field165 withInformation(String information) {
         setInformation(information);
         return this;
     }

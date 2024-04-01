@@ -56,7 +56,7 @@ public class Field423 extends Field {
      * @param date Date value to be set.
      * @return object itself
      */
-    public Field423 date(String date) {
+    public Field423 withDate(String date) {
         setDate(date);
         return this;
     }
@@ -67,7 +67,7 @@ public class Field423 extends Field {
      * @param time Time value to be set.
      * @return object itself
      */
-    public Field423 time(String time) {
+    public Field423 withTime(String time) {
         setTime(time);
         return this;
     }

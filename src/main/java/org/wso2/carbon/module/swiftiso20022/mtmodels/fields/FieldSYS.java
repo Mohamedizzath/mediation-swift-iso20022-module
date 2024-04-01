@@ -88,7 +88,7 @@ public class FieldSYS extends Field {
      * @param time Time value to be set.
      * @return object itself
      */
-    public FieldSYS time(String time) {
+    public FieldSYS withTime(String time) {
         setTime(time);
         return this;
     }
@@ -99,7 +99,7 @@ public class FieldSYS extends Field {
      * @param date Date value to be set.
      * @return object itself
      */
-    public FieldSYS date(String date) {
+    public FieldSYS withDate(String date) {
         setDate(date);
         return this;
     }
@@ -110,7 +110,7 @@ public class FieldSYS extends Field {
      * @param ltIdentifier Logical terminal identifier value to be set.
      * @return object itself
      */
-    public FieldSYS ltIdentifier(String ltIdentifier) {
+    public FieldSYS withLtIdentifier(String ltIdentifier) {
         setLtIdentifier(ltIdentifier);
         return this;
     }
@@ -121,7 +121,7 @@ public class FieldSYS extends Field {
      * @param sessionNumber Session number value to be set.
      * @return object itself
      */
-    public FieldSYS sessionNumber(String sessionNumber) {
+    public FieldSYS withSessionNumber(String sessionNumber) {
         setSessionNumber(sessionNumber);
         return this;
     }
@@ -132,7 +132,7 @@ public class FieldSYS extends Field {
      * @param sequenceNumber Sequence number value to be set.
      * @return object itself
      */
-    public FieldSYS sequenceNumber(String sequenceNumber) {
+    public FieldSYS withSequenceNumber(String sequenceNumber) {
         setSequenceNumber(sequenceNumber);
         return this;
     }

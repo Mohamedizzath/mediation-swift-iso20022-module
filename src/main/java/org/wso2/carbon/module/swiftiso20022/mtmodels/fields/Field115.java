@@ -77,7 +77,7 @@ public class Field115 extends Field {
      * @param creditingTime Crediting time value to be set.
      * @return object itself
      */
-    public Field115 creditingTime(String creditingTime) {
+    public Field115 withCreditingTime(String creditingTime) {
         setCreditingTime(creditingTime);
         return this;
     }
@@ -88,7 +88,7 @@ public class Field115 extends Field {
      * @param debitingTime Debiting time value to be set.
      * @return object itself
      */
-    public Field115 debitingTime(String debitingTime) {
+    public Field115 withDebitingTime(String debitingTime) {
         setDebitingTime(debitingTime);
         return this;
     }
@@ -99,7 +99,7 @@ public class Field115 extends Field {
      * @param countryCode Country code value to be set.
      * @return object itself
      */
-    public Field115 countryCode(String countryCode) {
+    public Field115 withCountryCode(String countryCode) {
         setCountryCode(countryCode);
         return this;
     }
@@ -110,7 +110,7 @@ public class Field115 extends Field {
      * @param reference Reference value to be set.
      * @return object itself
      */
-    public Field115 reference(String reference) {
+    public Field115 withReference(String reference) {
         setReference(reference);
         return this;
     }

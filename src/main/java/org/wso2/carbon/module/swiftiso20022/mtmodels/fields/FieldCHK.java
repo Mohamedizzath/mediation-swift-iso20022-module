@@ -43,7 +43,7 @@ public class FieldCHK extends Field {
      * @param value Value to be set.
      * @return object itself
      */
-    public FieldCHK value(String value) {
+    public FieldCHK withValue(String value) {
         this.value = value;
         return this;
     }

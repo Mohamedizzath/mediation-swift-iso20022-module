@@ -77,7 +77,7 @@ public class Field106 extends Field {
      * @param date Date value to be set.
      * @return object itself
      */
-    public Field106 date(String date) {
+    public Field106 withDate(String date) {
         setDate(date);
         return this;
     }
@@ -88,7 +88,7 @@ public class Field106 extends Field {
      * @param logicalTerminalAddress Logical terminal address value to be set.
      * @return object itself
      */
-    public Field106 logicalTerminalAddress(String logicalTerminalAddress) {
+    public Field106 withLogicalTerminalAddress(String logicalTerminalAddress) {
         setLogicalTerminalAddress(logicalTerminalAddress);
         return this;
     }
@@ -99,7 +99,7 @@ public class Field106 extends Field {
      * @param sessionNumber Session number Value to be set.
      * @return object itself
      */
-    public Field106 sessionNumber(String sessionNumber) {
+    public Field106 withSessionNumber(String sessionNumber) {
         setSessionNumber(sessionNumber);
         return this;
     }
@@ -110,7 +110,7 @@ public class Field106 extends Field {
      * @param sequenceNumber Sequence number value to be set.
      * @return object itself
      */
-    public Field106 sequenceNumber(String sequenceNumber) {
+    public Field106 withSequenceNumber(String sequenceNumber) {
         setSequenceNumber(sequenceNumber);
         return this;
     }

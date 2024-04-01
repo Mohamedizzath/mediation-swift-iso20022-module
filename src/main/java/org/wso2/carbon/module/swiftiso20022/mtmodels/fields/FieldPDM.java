@@ -88,7 +88,7 @@ public class FieldPDM extends Field {
      * @param time Time value to be set.
      * @return object itself
      */
-    public FieldPDM time(String time) {
+    public FieldPDM withTime(String time) {
         setTime(time);
         return this;
     }
@@ -99,7 +99,7 @@ public class FieldPDM extends Field {
      * @param date Date value to be set.
      * @return object itself
      */
-    public FieldPDM date(String date) {
+    public FieldPDM withDate(String date) {
         setDate(date);
         return this;
     }
@@ -110,7 +110,7 @@ public class FieldPDM extends Field {
      * @param ltIdentifier Logical terminal identifier value to be set.
      * @return object itself
      */
-    public FieldPDM ltIdentifier(String ltIdentifier) {
+    public FieldPDM withLtIdentifier(String ltIdentifier) {
         setLtIdentifier(ltIdentifier);
         return this;
     }
@@ -121,7 +121,7 @@ public class FieldPDM extends Field {
      * @param sessionNumber Session number value to be set.
      * @return object itself
      */
-    public FieldPDM sessionNumber(String sessionNumber) {
+    public FieldPDM withSessionNumber(String sessionNumber) {
         setSessionNumber(sessionNumber);
         return this;
     }
@@ -132,7 +132,7 @@ public class FieldPDM extends Field {
      * @param sequenceNumber Sequence number value to be set.
      * @return object itself
      */
-    public FieldPDM sequenceNumber(String sequenceNumber) {
+    public FieldPDM withSequenceNumber(String sequenceNumber) {
         setSequenceNumber(sequenceNumber);
         return this;
     }

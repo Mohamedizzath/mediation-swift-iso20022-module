@@ -42,7 +42,7 @@ public class Field119 extends Field {
      * @param value Value to be set.
      * @return object itself
      */
-    public Field119 value(String value) {
+    public Field119 withValue(String value) {
         setValue(value);
         return this;
     }

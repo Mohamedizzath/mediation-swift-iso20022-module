@@ -89,7 +89,7 @@ public class FieldPDE extends Field {
      * @param time Time value to be set.
      * @return object itself
      */
-    public FieldPDE time(String time) {
+    public FieldPDE withTime(String time) {
         setTime(time);
         return this;
     }
@@ -100,7 +100,7 @@ public class FieldPDE extends Field {
      * @param date Date value to be set.
      * @return object itself
      */
-    public FieldPDE date(String date) {
+    public FieldPDE withDate(String date) {
         setDate(date);
         return this;
     }
@@ -111,7 +111,7 @@ public class FieldPDE extends Field {
      * @param ltIdentifier Logical terminal identifier value to be set.
      * @return object itself
      */
-    public FieldPDE ltIdentifier(String ltIdentifier) {
+    public FieldPDE withLtIdentifier(String ltIdentifier) {
         setLtIdentifier(ltIdentifier);
         return this;
     }
@@ -122,7 +122,7 @@ public class FieldPDE extends Field {
      * @param sessionNumber Session number value to be set.
      * @return object itself
      */
-    public FieldPDE sessionNumber(String sessionNumber) {
+    public FieldPDE withSessionNumber(String sessionNumber) {
         setSessionNumber(sessionNumber);
         return this;
     }
@@ -133,7 +133,7 @@ public class FieldPDE extends Field {
      * @param sequenceNumber Sequence number value to be set.
      * @return object itself
      */
-    public FieldPDE sequenceNumber(String sequenceNumber) {
+    public FieldPDE withSequenceNumber(String sequenceNumber) {
         setSequenceNumber(sequenceNumber);
         return this;
     }

@@ -100,7 +100,7 @@ public class FieldMRF extends Field {
      * @param sentDate Sent date value to be set.
      * @return object itself
      */
-    public FieldMRF sentDate(String sentDate) {
+    public FieldMRF withSentDate(String sentDate) {
         setSentDate(sentDate);
         return this;
     }
@@ -111,7 +111,7 @@ public class FieldMRF extends Field {
      * @param time Time value to be set.
      * @return object itself
      */
-    public FieldMRF time(String time) {
+    public FieldMRF withTime(String time) {
         setTime(time);
         return this;
     }
@@ -122,7 +122,7 @@ public class FieldMRF extends Field {
      * @param date Date value to be set.
      * @return object itself
      */
-    public FieldMRF date(String date) {
+    public FieldMRF withDate(String date) {
         setDate(date);
         return this;
     }
@@ -133,7 +133,7 @@ public class FieldMRF extends Field {
      * @param ltIdentifier Logical terminal identifier value to be set.
      * @return object itself
      */
-    public FieldMRF ltIdentifier(String ltIdentifier) {
+    public FieldMRF withLtIdentifier(String ltIdentifier) {
         setLtIdentifier(ltIdentifier);
         return this;
     }
@@ -144,7 +144,7 @@ public class FieldMRF extends Field {
      * @param sessionNumber Session number value to be set.
      * @return object itself
      */
-    public FieldMRF sessionNumber(String sessionNumber) {
+    public FieldMRF withSessionNumber(String sessionNumber) {
         setSessionNumber(sessionNumber);
         return this;
     }
@@ -155,7 +155,7 @@ public class FieldMRF extends Field {
      * @param sequenceNumber Sequence number value to be set.
      * @return object itself
      */
-    public FieldMRF sequenceNumber(String sequenceNumber) {
+    public FieldMRF withSequenceNumber(String sequenceNumber) {
         setSequenceNumber(sequenceNumber);
         return this;
     }
