@@ -25,7 +25,7 @@ public class Field121 extends Field {
 
     public static final String TAG = "121";
 
-    // format -> xxxxxxxx-xxxx-4xxx-yxxxxxxxxxxxxxxx
+    // example: 180f1e65-90e0-44d5-a49a-92b55eb3025f
     private String value;
 
     public String getValue() {

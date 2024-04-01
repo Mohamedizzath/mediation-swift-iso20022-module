@@ -25,7 +25,7 @@ public class Field108 extends Field {
 
     public static final String TAG = "108";
 
-    // format: 16!x
+    // example: REF0140862562/015
     private String value;
 
     public String getValue() {

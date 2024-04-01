@@ -22,15 +22,16 @@ package org.wso2.carbon.module.swiftiso20022.mtmodels.fields;
  * Model for payments control information in User Header Block (Block 03).
  * <p>
  * format: /(Code)/[Additional Information]
+ * example: /FPO/additional information...
  */
 public class Field434 extends Field {
 
     public static final String TAG = "434";
 
-    // format: 3!a
+    // example: FPO
     private String code;
 
-    // format: 20x
+    // example: additional info
     private String additionalInformation;
 
     public String getCode() {

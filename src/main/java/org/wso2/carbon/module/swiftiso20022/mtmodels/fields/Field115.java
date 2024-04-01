@@ -28,15 +28,17 @@ public class Field115 extends Field {
     public static final String TAG = "115";
 
     // format: HHMMSS
+    // example: 121413
     private String creditingTime;
 
     // format: HHMMSS
+    // example: 121413
     private String debitingTime;
 
-    // format: 2!a
+    // example: DE
     private String countryCode;
 
-    // format: 16x
+    // example: BANKDECDA123
     private String reference;
 
     public String getCreditingTime() {

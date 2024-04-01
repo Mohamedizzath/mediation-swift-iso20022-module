@@ -20,17 +20,18 @@ package org.wso2.carbon.module.swiftiso20022.mtmodels.fields;
 
 /**
  * Model for payment release information in User Header Block (Block 03).
- *
+ * <p>
  * format: /(Code)/(Information)
+ * example: /COD/information...
  */
 public class Field165 extends Field {
 
     public static final String TAG = "165";
 
-    // format: 3!c
+    // example: COD
     private String code;
 
-    // format: 34x
+    // example: information....
     private String information;
 
     public String getCode() {

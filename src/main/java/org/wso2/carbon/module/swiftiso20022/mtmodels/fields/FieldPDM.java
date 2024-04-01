@@ -28,18 +28,20 @@ public class FieldPDM extends Field {
     public static final String TAG = "PDM";
 
     // format: HHMM
+    // example: 1213
     private String time;
 
     // format: YYMMDD
+    // example: 120811
     private String date;
 
-    // format: 12x
+    // example: BANKFRPPAXXX
     private String ltIdentifier;
 
-    // format: 4!n
+    // example: 2222
     private String sessionNumber;
 
-    // format: 6!n
+    // example: 123456
     private String sequenceNumber;
 
     public String getTime() {

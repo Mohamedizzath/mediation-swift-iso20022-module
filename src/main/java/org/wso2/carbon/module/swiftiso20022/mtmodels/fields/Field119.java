@@ -25,7 +25,7 @@ public class Field119 extends Field {
 
     public static final String TAG = "119";
 
-    // format: 8c
+    // example: STP
     private String value;
 
     public String getValue() {

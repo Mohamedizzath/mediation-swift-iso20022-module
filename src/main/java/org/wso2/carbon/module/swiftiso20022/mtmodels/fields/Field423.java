@@ -28,10 +28,12 @@ public class Field423 extends Field {
     public static final String TAG = "423";
 
     // format: YYMMDD
+    // example: 180717
     private String date;
 
     // format: HHMMSS[ss]
     // ss -> hundredths of seconds
+    // example: 15301204
     private String time;
 
     public String getDate() {

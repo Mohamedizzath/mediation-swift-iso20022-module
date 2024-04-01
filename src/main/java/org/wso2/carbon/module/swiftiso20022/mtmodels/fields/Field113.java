@@ -25,7 +25,7 @@ public class Field113 extends Field {
 
     public static final String TAG = "113";
 
-    // format: 4!x
+    // example: xxxx
     private String value;
 
     public String getValue() {

@@ -25,7 +25,7 @@ public class Field111 extends Field {
 
     public static final String TAG = "111";
 
-    // format: 3!n
+    // example: 243
     private String value;
 
     public String getValue() {

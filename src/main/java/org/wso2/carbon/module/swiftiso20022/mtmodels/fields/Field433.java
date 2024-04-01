@@ -22,15 +22,16 @@ package org.wso2.carbon.module.swiftiso20022.mtmodels.fields;
  * Model for sanctions screening information in User Header Block (Block 03).
  * <p>
  * format: /(Code)/[Additional Information]
+ * example: /AOK/additional information...
  */
 public class Field433 extends Field {
 
     public static final String TAG = "433";
 
-    // format: 3!a
+    // example: AOK
     private String code;
 
-    // format:
+    // example: additional information
     private String additionalInformation;
 
     public String getCode() {

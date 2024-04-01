@@ -29,21 +29,24 @@ public class FieldMRF extends Field {
     public static final String TAG = "MRF";
 
     // format: YYMMDD
+    // example: 180627
     private String sentDate;
 
     // format: HHMM
+    // example: 1539
     private String time;
 
     // format: YYMMDD
+    // example: 180626
     private String date;
 
-    // format: 12x
+    // example: BANKFRPPAXXX
     private String ltIdentifier;
 
-    // format: 4!n
+    // example: 2222
     private String sessionNumber;
 
-    // format: 6!n
+    // example: 123456
     private String sequenceNumber;
 
     public String getSentDate() {

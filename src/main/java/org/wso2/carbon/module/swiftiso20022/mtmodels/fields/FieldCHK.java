@@ -26,7 +26,7 @@ public class FieldCHK extends Field {
 
     public static final String TAG = "CHK";
 
-    // format: 12!h
+    // example: 123456789ABC
     private String value;
 
     public String getValue() {

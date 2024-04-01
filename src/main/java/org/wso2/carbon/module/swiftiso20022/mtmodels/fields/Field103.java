@@ -25,7 +25,7 @@ public class Field103 extends Field {
 
     public static final String TAG = "103";
 
-    // format: 3!a
+    // example: EBA
     private String value;
 
     public String getValue() {
