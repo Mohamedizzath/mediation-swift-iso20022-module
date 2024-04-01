@@ -43,8 +43,11 @@ public class MTParserUtils {
 
         while (curr < mtMessage.length()) {
             if (mtMessage.charAt(curr) == '{') {
+                if (stack.isEmpty()) {
+                    start = curr;
+                }
+
                 stack.push(mtMessage.charAt(curr));
-                start = curr;
             } else if (mtMessage.charAt(curr) == '}' && stack.peek() == '{') {
                 stack.pop();
 
