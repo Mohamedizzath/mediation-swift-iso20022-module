@@ -28,4 +28,44 @@ public class Block01 {
     private String logicalTerminalAddress;
     private String sessionNumber;
     private String sequenceNumber;
+
+    public String getApplicationIdentifier() {
+        return applicationIdentifier;
+    }
+
+    public void setApplicationIdentifier(String applicationIdentifier) {
+        this.applicationIdentifier = applicationIdentifier;
+    }
+
+    public String getServiceIdentifier() {
+        return serviceIdentifier;
+    }
+
+    public void setServiceIdentifier(String serviceIdentifier) {
+        this.serviceIdentifier = serviceIdentifier;
+    }
+
+    public String getLogicalTerminalAddress() {
+        return logicalTerminalAddress;
+    }
+
+    public void setLogicalTerminalAddress(String logicalTerminalAddress) {
+        this.logicalTerminalAddress = logicalTerminalAddress;
+    }
+
+    public String getSessionNumber() {
+        return sessionNumber;
+    }
+
+    public void setSessionNumber(String sessionNumber) {
+        this.sessionNumber = sessionNumber;
+    }
+
+    public String getSequenceNumber() {
+        return sequenceNumber;
+    }
+
+    public void setSequenceNumber(String sequenceNumber) {
+        this.sequenceNumber = sequenceNumber;
+    }
 }

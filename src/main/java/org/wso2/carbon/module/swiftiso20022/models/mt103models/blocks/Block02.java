@@ -33,4 +33,84 @@ public class Block02 {
     private String priority;
     private String deliveryMonitoringCode;
     private String obsolescencePeriodCode;
+
+    public String getInputOutputIdentifier() {
+        return inputOutputIdentifier;
+    }
+
+    public void setInputOutputIdentifier(String inputOutputIdentifier) {
+        this.inputOutputIdentifier = inputOutputIdentifier;
+    }
+
+    public String getMessageType() {
+        return messageType;
+    }
+
+    public void setMessageType(String messageType) {
+        this.messageType = messageType;
+    }
+
+    public String getDestinationLogicalTerminalAddress() {
+        return destinationLogicalTerminalAddress;
+    }
+
+    public void setDestinationLogicalTerminalAddress(String destinationLogicalTerminalAddress) {
+        this.destinationLogicalTerminalAddress = destinationLogicalTerminalAddress;
+    }
+
+    public String getInputTime() {
+        return inputTime;
+    }
+
+    public void setInputTime(String inputTime) {
+        this.inputTime = inputTime;
+    }
+
+    public String getMessageInputReference() {
+        return messageInputReference;
+    }
+
+    public void setMessageInputReference(String messageInputReference) {
+        this.messageInputReference = messageInputReference;
+    }
+
+    public String getOutputDate() {
+        return outputDate;
+    }
+
+    public void setOutputDate(String outputDate) {
+        this.outputDate = outputDate;
+    }
+
+    public String getOutputTime() {
+        return outputTime;
+    }
+
+    public void setOutputTime(String outputTime) {
+        this.outputTime = outputTime;
+    }
+
+    public String getPriority() {
+        return priority;
+    }
+
+    public void setPriority(String priority) {
+        this.priority = priority;
+    }
+
+    public String getDeliveryMonitoringCode() {
+        return deliveryMonitoringCode;
+    }
+
+    public void setDeliveryMonitoringCode(String deliveryMonitoringCode) {
+        this.deliveryMonitoringCode = deliveryMonitoringCode;
+    }
+
+    public String getObsolescencePeriodCode() {
+        return obsolescencePeriodCode;
+    }
+
+    public void setObsolescencePeriodCode(String obsolescencePeriodCode) {
+        this.obsolescencePeriodCode = obsolescencePeriodCode;
+    }
 }
