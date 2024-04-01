@@ -19,7 +19,7 @@
 package org.wso2.carbon.module.swiftiso20022.mtmodels.blocks;
 
 /**
- * Model class for application header block
+ * Model class for application header block.
  */
 public class ApplicationHeaderBlock {
     private String inputOutputIdentifier;
@@ -32,7 +32,6 @@ public class ApplicationHeaderBlock {
     private String messageInputReference;
     private String outputDate;
     private String outputTime;
-    private String messagePriority;
 
     public String getInputOutputIdentifier() {
         return inputOutputIdentifier;
@@ -112,13 +111,5 @@ public class ApplicationHeaderBlock {
 
     public void setOutputTime(String outputTime) {
         this.outputTime = outputTime;
-    }
-
-    public String getMessagePriority() {
-        return messagePriority;
-    }
-
-    public void setMessagePriority(String messagePriority) {
-        this.messagePriority = messagePriority;
     }
 }

@@ -20,13 +20,9 @@ package org.wso2.carbon.module.swiftiso20022.mtmodels.mtmessages;
 
 import org.wso2.carbon.module.swiftiso20022.mtmodels.blocks.ApplicationHeaderBlock;
 import org.wso2.carbon.module.swiftiso20022.mtmodels.blocks.BasicHeaderBlock;
-import org.wso2.carbon.module.swiftiso20022.utils.MTParserUtils;
-
-import java.lang.reflect.InvocationTargetException;
-import java.util.Map;
 
 /**
- * Base model class for MT messages which contains common blocks
+ * Base model class for MT messages which contains common blocks.
  */
 public class MTMessage {
     private BasicHeaderBlock basicHeaderBlock;

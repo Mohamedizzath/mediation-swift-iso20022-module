@@ -24,11 +24,11 @@ import org.wso2.carbon.module.swiftiso20022.utils.MTParserUtils;
 import java.util.Map;
 
 /**
- * Parser class for parsing MT940 messages
+ * Parser class for parsing MT940 messages.
  */
 public class MT940Parser {
     /**
-     * Parser method for parsing MT940 message
+     * Parser method for parsing MT940 message.
      * @param mtMessage       MT940 message as String
      * @return                MT940 message object
      */

@@ -19,7 +19,7 @@
 package org.wso2.carbon.module.swiftiso20022.mtmodels.blocks;
 
 /**
- * Model class for basic header block
+ * Model class for basic header block.
  */
 public class BasicHeaderBlock {
     private String applicationIdentifier;

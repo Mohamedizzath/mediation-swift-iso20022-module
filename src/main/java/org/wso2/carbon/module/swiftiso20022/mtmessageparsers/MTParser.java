@@ -29,22 +29,22 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 
 /**
- * Parser class for parsing common blocks in MT messages
+ * Parser class for parsing common blocks in MT messages.
  */
 public class MTParser {
     /**
-     * Parser method for parsing basic header block into BasicHeaderBlock object
+     * Parser method for parsing basic header block into BasicHeaderBlock object.
      * @param block       Basic header block as a String
      * @return            Constructed BasicHeaderBlock object
      */
     private static BasicHeaderBlock parserBasicHeaderBlock(String block) {
         BasicHeaderBlock basicHeaderBlock = new BasicHeaderBlock();
 
-        String applicationIdentifier = (!block.isEmpty()) ? block.substring(0, 1) : null;
-        String serviceIdentifier = (block.length() > 1) ? block.substring(1, 3) : null;
-        String logicalTerminalAddress = (block.length() > 3) ? block.substring(3, 15) : null;
-        String sessionNumber = (block.length() > 15) ? block.substring(15, 19) : null;
-        String sequenceNumber = (block.length() > 19) ? block.substring(19, 25) : null;
+        String applicationIdentifier = (!block.isEmpty()) ? MTParserUtils.extractSubstring(block, 0, 1) : null;
+        String serviceIdentifier = (block.length() > 1) ? MTParserUtils.extractSubstring(block, 1, 3) : null;
+        String logicalTerminalAddress = (block.length() > 3) ? MTParserUtils.extractSubstring(block, 3, 15) : null;
+        String sessionNumber = (block.length() > 15) ? MTParserUtils.extractSubstring(block, 15, 19) : null;
+        String sequenceNumber = (block.length() > 19) ? MTParserUtils.extractSubstring(block, 19, 25) : null;
 
         basicHeaderBlock.setApplicationIdentifier(applicationIdentifier);
         basicHeaderBlock.setServiceIdentifier(serviceIdentifier);
@@ -56,28 +56,28 @@ public class MTParser {
     }
 
     /**
-     * Parser method for parsing application header block into ApplicationHeaderBlock object
+     * Parser method for parsing application header block into ApplicationHeaderBlock object.
      * @param block         Application header block as a String
      * @return              Constructed ApplicationHeaderBlock object
      */
     private static ApplicationHeaderBlock parseApplicationHeaderBlock(String block) {
         ApplicationHeaderBlock applicationHeaderBlock = new ApplicationHeaderBlock();
 
-        String inputOutputId = (!block.isEmpty()) ? block.substring(0, 1) : null;
-        String messageType = (block.length() > 1) ? block.substring(1, 4) : null;
+        String inputOutputId = (!block.isEmpty()) ? MTParserUtils.extractSubstring(block, 0, 1) : null;
+        String messageType = (block.length() > 1) ? MTParserUtils.extractSubstring(block, 1, 4) : null;
 
         applicationHeaderBlock.setInputOutputIdentifier(inputOutputId);
         applicationHeaderBlock.setMessageType(messageType);
 
         if ("I".equals(inputOutputId)) {
             // Entered application block is belong to input message
-            String destinationAddress = (block.length() > 4) ? block.substring(4, 16) : null;
-            String priority = (block.length() > 16) ?
+            String destinationAddress = (block.length() > 5) ? MTParserUtils.extractSubstring(block, 4, 16) : null;
+            String alphaText = (block.length() > 17) ?
                     MTParserUtils.extractTillDigit(block.substring(16), 1) : null;
+            String priority = (!StringUtils.isBlank(alphaText)) ? alphaText.substring(0, 1) : null;
 
             // Consuming the blocks according to the optional fields
-            block = (priority != null && StringUtils.isBlank(priority)) ?
-                    block.substring(16, priority.length()) : block;
+            block = MTParserUtils.extractSubstring(block, (priority != null) ? 17 : 16, block.length());
 
             String digitBlock = (!block.isEmpty()) ?
                     MTParserUtils.extractTillAlphabetic(block, 4) : null;
@@ -99,16 +99,16 @@ public class MTParser {
             applicationHeaderBlock.setObsolescencePeriod(obsolenscenePeriod);
         } else if ("O".equals(inputOutputId)) {
             // Entered application block is belong to output message
-            String inputTime = (block.length() > 4) ? block.substring(4, 8) : null;
-            String messageInputReference = (block.length() > 8) ? block.substring(8, 36) : null;
-            String outputDate = (block.length() > 36) ? block.substring(36, 42) : null;
-            String outputTime = (block.length() > 42) ? block.substring(42, 46) : null;
+            String inputTime = (block.length() > 4) ? MTParserUtils.extractSubstring(block, 4, 8) : null;
+            String messageInputReference = (block.length() > 8) ? MTParserUtils.extractSubstring(block, 8, 36) : null;
+            String outputDate = (block.length() > 36) ? MTParserUtils.extractSubstring(block, 36, 42) : null;
+            String outputTime = (block.length() > 42) ? MTParserUtils.extractSubstring(block, 42, 46) : null;
 
-            String alphaBlock = (block.length() > 42) ?
-                    MTParserUtils.extractTillDigit(block.substring(42)) : null;
+            String alphaBlock = (block.length() > 46) ?
+                    MTParserUtils.extractTillDigit(block.substring(46)) : null;
 
             String priority = null;
-            if(alphaBlock != null && alphaBlock.length() == 1) {
+            if (!StringUtils.isBlank(alphaBlock)) {
                 priority = alphaBlock.substring(0, 1);
             }
 
@@ -123,7 +123,7 @@ public class MTParser {
     }
 
     /**
-     * Parser method for parsing mt message and constructing MTMessage with common fields
+     * Parser method for parsing mt message and constructing MTMessage with common fields.
      * @param blocks            Blocks in MT message as Map
      * @param messageType       Required MT message format
      * @return                  Constructed MTMessage object
@@ -141,13 +141,13 @@ public class MTParser {
             throw new Exception();
         }
 
-        if (blocks.containsKey(ConnectorConstants.BASIC_HEADER_BLOCK_CODE)) {
-            message.setBasicHeaderBlock(parserBasicHeaderBlock(blocks.get(ConnectorConstants.BASIC_HEADER_BLOCK_CODE)));
+        if (blocks.containsKey(ConnectorConstants.BASIC_HEADER_BLOCK_KEY)) {
+            message.setBasicHeaderBlock(parserBasicHeaderBlock(blocks.get(ConnectorConstants.BASIC_HEADER_BLOCK_KEY)));
         }
 
-        if (blocks.containsKey(ConnectorConstants.APPLICATION_HEADER_BLOCK_CODE)) {
+        if (blocks.containsKey(ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY)) {
             message.setApplicationHeaderBlock(parseApplicationHeaderBlock(
-                    blocks.get(ConnectorConstants.APPLICATION_HEADER_BLOCK_CODE)
+                    blocks.get(ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY)
             ));
         }
         return message;

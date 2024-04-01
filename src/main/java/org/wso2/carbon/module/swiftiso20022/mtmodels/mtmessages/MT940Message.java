@@ -19,7 +19,7 @@
 package org.wso2.carbon.module.swiftiso20022.mtmodels.mtmessages;
 
 /**
- * MT940 model class which represents MT940 message
+ * MT940 model class which represents MT940 message.
  */
 public class MT940Message extends MTMessage {
 
