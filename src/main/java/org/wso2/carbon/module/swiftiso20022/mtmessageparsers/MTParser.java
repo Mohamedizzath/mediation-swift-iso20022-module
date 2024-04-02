@@ -69,7 +69,7 @@ public class MTParser {
         applicationHeaderBlock.setInputOutputIdentifier(inputOutputId);
         applicationHeaderBlock.setMessageType(messageType);
 
-        if ("I".equals(inputOutputId)) {
+        if (ConnectorConstants.INPUT_IDENTIFIER.equals(inputOutputId)) {
             // Entered application block is belong to input message
             String destinationAddress = (block.length() > 5) ? MTParserUtils.extractSubstring(block, 4, 16) : null;
             String alphaText = (block.length() > 17) ?
@@ -97,7 +97,7 @@ public class MTParser {
             applicationHeaderBlock.setPriority(priority);
             applicationHeaderBlock.setDeliveryMonitor(deliveryMonitor);
             applicationHeaderBlock.setObsolescencePeriod(obsolenscenePeriod);
-        } else if ("O".equals(inputOutputId)) {
+        } else if (ConnectorConstants.OUTPUT_IDENTIFIER.equals(inputOutputId)) {
             // Entered application block is belong to output message
             String inputTime = (block.length() > 4) ? MTParserUtils.extractSubstring(block, 4, 8) : null;
             String messageInputReference = (block.length() > 8) ? MTParserUtils.extractSubstring(block, 8, 36) : null;

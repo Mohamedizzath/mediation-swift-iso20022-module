@@ -37,8 +37,6 @@ public class MT940Parser {
 
         MT940Message mt940Message = MTParser.parse(blocks, MT940Message.class);
 
-        // mt940Message.setMT940TextBlock(parseMT940TextBlock(blocks.get(ConnectorConstants.TEXT_BLOCK_CODE)));
-
         return mt940Message;
     }
 }

@@ -62,15 +62,15 @@ public class MTParserUtils {
         Map<String, String> blocksMap = new HashMap<>();
 
         for (String block : blocks) {
-            if (block.startsWith("{1:")) {
+            if (block.startsWith(ConnectorConstants.BASIC_HEADER_BLOCK_START)) {
                 blocksMap.put(ConnectorConstants.BASIC_HEADER_BLOCK_KEY, block.substring(3, block.length() - 1));
-            } else if (block.startsWith("{2:")) {
+            } else if (block.startsWith(ConnectorConstants.APPLICATION_HEADER_BLOCK_START)) {
                 blocksMap.put(ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY, block.substring(3, block.length() - 1));
-            } else if (block.startsWith("{3:")) {
+            } else if (block.startsWith(ConnectorConstants.USER_HEADER_BLOCK_START)) {
                 blocksMap.put(ConnectorConstants.USER_HEADER_BLOCK_KEY, block.substring(3, block.length() - 1));
-            } else if (block.startsWith("{4:")) {
+            } else if (block.startsWith(ConnectorConstants.TEXT_BLOCK_START)) {
                 blocksMap.put(ConnectorConstants.TEXT_BLOCK_KEY, block.substring(3, block.length() - 2));
-            } else if (block.startsWith("{5:")) {
+            } else if (block.startsWith(ConnectorConstants.TRAILER_BLOCK_START)) {
                 blocksMap.put(ConnectorConstants.TRAILER_BLOCK_KEY, block.substring(3, block.length() - 1));
             }
         }
@@ -107,7 +107,7 @@ public class MTParserUtils {
      */
     public static String extractTillAlphabetic(String text, int length) {
         int curr = 0;
-        StringBuilder result = new StringBuilder(length);
+        StringBuilder result = new StringBuilder();
 
         while (curr < length && curr < text.length()) {
             if (Character.isAlphabetic(text.charAt(curr))) {
@@ -139,7 +139,7 @@ public class MTParserUtils {
      */
     public static String extractTillDigit(String text, int length) {
         int curr = 0;
-        StringBuilder result = new StringBuilder(length);
+        StringBuilder result = new StringBuilder();
 
         while (curr < length && curr < text.length()) {
             if (Character.isDigit(text.charAt(curr))) {

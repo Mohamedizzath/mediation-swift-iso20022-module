@@ -44,6 +44,17 @@ public class ConnectorConstants {
     public static final String TEXT_BLOCK_KEY = "text-block";
     public static final String TRAILER_BLOCK_KEY = "trailer-block";
 
+    public static final String INPUT_IDENTIFIER = "I";
+    public static final String OUTPUT_IDENTIFIER = "O";
+
+    public static final String BLOCK_STARTING_CHARACTER = "{";
+    public static final String BLOCK_ENDING_CHARACTER = "}";
+    public static final String BASIC_HEADER_BLOCK_START = "{1:";
+    public static final String APPLICATION_HEADER_BLOCK_START = "{2:";
+    public static final String USER_HEADER_BLOCK_START = "{3:";
+    public static final String TEXT_BLOCK_START = "{4:";
+    public static final String TRAILER_BLOCK_START = "{5:";
+
     //MT940 Related Constants
     public static final String MT940_TRANSACTION_REF = ":20";
     public static final String MT940_RELATED_REF = ":21";
