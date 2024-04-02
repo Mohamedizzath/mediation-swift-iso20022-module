@@ -21,7 +21,7 @@ package org.wso2.carbon.module.swiftiso20022.mtmodels.fields;
 /**
  * Model for service type identifier in User Header Block (Block 03).
  */
-public class Field111 extends Field {
+public class Field111 implements Field {
 
     public static final String TAG = "111";
 

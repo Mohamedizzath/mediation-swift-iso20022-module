@@ -19,10 +19,9 @@
 package org.wso2.carbon.module.swiftiso20022.mtmodels.fields;
 
 /**
- * Abstract model that represents a field with a tag in MT message.
- *
+ * Interface that represents a field with a tag in MT message.
  */
-public abstract class Field {
+public interface Field {
 
     // Final tag value should be defined in child classes.
     public static final String TAG = "";

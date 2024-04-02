@@ -21,7 +21,7 @@ package org.wso2.carbon.module.swiftiso20022.mtmodels.fields;
 /**
  * Model for unique end to end reference in User Header Block (Block 03).
  */
-public class Field121 extends Field {
+public class Field121 implements Field {
 
     public static final String TAG = "121";
 

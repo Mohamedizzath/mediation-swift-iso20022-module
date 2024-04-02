@@ -23,7 +23,7 @@ package org.wso2.carbon.module.swiftiso20022.mtmodels.fields;
  *
  * format: (Date)(LT Address)(Session Number)(Sequence Number)
  */
-public class Field106 extends Field {
+public class Field106 implements Field {
 
     public static final String TAG = "106";
 

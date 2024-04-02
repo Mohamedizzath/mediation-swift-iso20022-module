@@ -24,7 +24,7 @@ package org.wso2.carbon.module.swiftiso20022.mtmodels.fields;
  * format: /(Code)/[Additional Information]
  * example: /AOK/additional information...
  */
-public class Field433 extends Field {
+public class Field433 implements Field {
 
     public static final String TAG = "433";
 

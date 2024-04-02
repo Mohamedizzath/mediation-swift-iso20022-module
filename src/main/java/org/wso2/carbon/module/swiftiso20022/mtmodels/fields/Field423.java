@@ -23,7 +23,7 @@ package org.wso2.carbon.module.swiftiso20022.mtmodels.fields;
  *
  * format: (Date)(Time)
  */
-public class Field423 extends Field {
+public class Field423 implements Field {
 
     public static final String TAG = "423";
 

@@ -21,7 +21,7 @@ package org.wso2.carbon.module.swiftiso20022.mtmodels.fields;
 /**
  * Model for banking priority in User Header Block (Block 03).
  */
-public class Field113 extends Field {
+public class Field113 implements Field {
 
     public static final String TAG = "113";
 

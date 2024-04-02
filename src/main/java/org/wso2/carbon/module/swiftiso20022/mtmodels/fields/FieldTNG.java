@@ -24,7 +24,7 @@ package org.wso2.carbon.module.swiftiso20022.mtmodels.fields;
  * Value for this will always be an empty string
  * example: {TNG:}
  */
-public class FieldTNG extends Field {
+public class FieldTNG implements Field {
 
     public static final String TAG = "TNG";
 

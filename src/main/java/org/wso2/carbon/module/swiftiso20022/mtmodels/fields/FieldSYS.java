@@ -23,7 +23,7 @@ package org.wso2.carbon.module.swiftiso20022.mtmodels.fields;
  *
  * format: (Time)(Date)(LT Identifier)(Session Number)(Sequence Number)
  */
-public class FieldSYS extends Field {
+public class FieldSYS implements Field {
 
     public static final String TAG = "SYS";
 

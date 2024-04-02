@@ -22,7 +22,7 @@ package org.wso2.carbon.module.swiftiso20022.mtmodels.fields;
 /**
  * Model for checksum in Trailer Block (Block 05).
  */
-public class FieldCHK extends Field {
+public class FieldCHK implements Field {
 
     public static final String TAG = "CHK";
 

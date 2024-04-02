@@ -23,7 +23,7 @@ package org.wso2.carbon.module.swiftiso20022.mtmodels.fields;
  *
  * format: (Crediting Time)(Debiting Time)(Country Code)(Reference)
  */
-public class Field115 extends Field {
+public class Field115 implements Field {
 
     public static final String TAG = "115";
 

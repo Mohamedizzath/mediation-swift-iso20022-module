@@ -24,7 +24,7 @@ package org.wso2.carbon.module.swiftiso20022.mtmodels.fields;
  *
  * format: (Sent Date)(Time)(Date)(LT Identifier)(Session Number)(Sequence Number)
  */
-public class FieldMRF extends Field {
+public class FieldMRF implements Field {
 
     public static final String TAG = "MRF";
 

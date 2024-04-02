@@ -21,7 +21,7 @@ package org.wso2.carbon.module.swiftiso20022.mtmodels.fields;
 /**
  * Model for message user reference in User Header Block (Block 03).
  */
-public class Field108 extends Field {
+public class Field108 implements Field {
 
     public static final String TAG = "108";
 
