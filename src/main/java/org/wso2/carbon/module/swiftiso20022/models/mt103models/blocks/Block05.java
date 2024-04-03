@@ -30,4 +30,60 @@ public class Block05 {
     private String messageReference;
     private String possibleDuplicateMessage;
     private String systemOriginatedMessage;
+
+    public String getChecksum() {
+        return checksum;
+    }
+
+    public void setChecksum(String checksum) {
+        this.checksum = checksum;
+    }
+
+    public String getTestNTrainingMessage() {
+        return testNTrainingMessage;
+    }
+
+    public void setTestNTrainingMessage(String testNTrainingMessage) {
+        this.testNTrainingMessage = testNTrainingMessage;
+    }
+
+    public String getPossibleDuplicateEmission() {
+        return possibleDuplicateEmission;
+    }
+
+    public void setPossibleDuplicateEmission(String possibleDuplicateEmission) {
+        this.possibleDuplicateEmission = possibleDuplicateEmission;
+    }
+
+    public String getDelayedMessage() {
+        return delayedMessage;
+    }
+
+    public void setDelayedMessage(String delayedMessage) {
+        this.delayedMessage = delayedMessage;
+    }
+
+    public String getMessageReference() {
+        return messageReference;
+    }
+
+    public void setMessageReference(String messageReference) {
+        this.messageReference = messageReference;
+    }
+
+    public String getPossibleDuplicateMessage() {
+        return possibleDuplicateMessage;
+    }
+
+    public void setPossibleDuplicateMessage(String possibleDuplicateMessage) {
+        this.possibleDuplicateMessage = possibleDuplicateMessage;
+    }
+
+    public String getSystemOriginatedMessage() {
+        return systemOriginatedMessage;
+    }
+
+    public void setSystemOriginatedMessage(String systemOriginatedMessage) {
+        this.systemOriginatedMessage = systemOriginatedMessage;
+    }
 }

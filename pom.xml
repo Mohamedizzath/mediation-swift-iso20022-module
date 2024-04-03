@@ -155,6 +155,8 @@
                     <excludes>
                         <!--Excluding them in coverage reports-->
                         <exclude>**/*Model.class</exclude>
+                        <exclude>**/models/mt103models/*.class</exclude>
+                        <exclude>**/models/mt103models/blocks/*.class</exclude>
                     </excludes>
                 </configuration>
                 <executions>

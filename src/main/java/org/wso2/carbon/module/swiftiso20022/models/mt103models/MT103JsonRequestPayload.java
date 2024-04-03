@@ -33,4 +33,44 @@ public class MT103JsonRequestPayload {
     private Block03 block03;
     private Block04 block04;
     private Block05 block05;
+
+    public Block01 getBlock01() {
+        return block01;
+    }
+
+    public void setBlock01(Block01 block01) {
+        this.block01 = block01;
+    }
+
+    public Block02 getBlock02() {
+        return block02;
+    }
+
+    public void setBlock02(Block02 block02) {
+        this.block02 = block02;
+    }
+
+    public Block03 getBlock03() {
+        return block03;
+    }
+
+    public void setBlock03(Block03 block03) {
+        this.block03 = block03;
+    }
+
+    public Block04 getBlock04() {
+        return block04;
+    }
+
+    public void setBlock04(Block04 block04) {
+        this.block04 = block04;
+    }
+
+    public Block05 getBlock05() {
+        return block05;
+    }
+
+    public void setBlock05(Block05 block05) {
+        this.block05 = block05;
+    }
 }
