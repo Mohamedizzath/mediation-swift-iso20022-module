@@ -22,6 +22,7 @@ import org.apache.axis2.AxisFault;
 import org.apache.axis2.Constants;
 import org.apache.axis2.context.MessageContext;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.synapse.commons.json.JsonUtil;
@@ -34,6 +35,7 @@ import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.Optional;
 
 import javax.xml.stream.XMLStreamException;
@@ -113,5 +115,15 @@ public class ConnectorUtils {
                                                    String errorMessage) {
         messageContext.setProperty(ConnectorConstants.ERROR_CODE, errorCode);
         messageContext.setProperty(ConnectorConstants.ERROR_MESSAGE, errorMessage);
+    }
+
+    /**
+     * Method to concat two fields with a space.
+     * @param field1  Field 1
+     * @param field2  Field 2
+     * @return       Concatenated string
+     */
+    public static String concatFieldsWithSpaces(String field1, String field2) {
+        return StringUtils.join(List.of(field1, field2), ConnectorConstants.SPACE);
     }
 }

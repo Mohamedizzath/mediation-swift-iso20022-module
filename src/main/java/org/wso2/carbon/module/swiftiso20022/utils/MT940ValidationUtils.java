@@ -20,7 +20,8 @@ package org.wso2.carbon.module.swiftiso20022.utils;
 
 import org.apache.commons.lang3.StringUtils;
 import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
-import org.wso2.carbon.module.swiftiso20022.model.ErrorModel;
+import org.wso2.carbon.module.swiftiso20022.constants.MT940Constants;
+import org.wso2.carbon.module.swiftiso20022.validation.common.ValidationResult;
 
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -40,8 +41,8 @@ public class MT940ValidationUtils {
     public static boolean isValidC1Rule(String[] lines) {
 
         for (int itr = 0; itr < lines.length; itr++) {
-            if (lines[itr].startsWith(ConnectorConstants.MT940_INFORMATION)) {
-                return lines[itr - 1].startsWith(ConnectorConstants.MT940_STATEMENT_LINE);
+            if (lines[itr].startsWith(MT940Constants.MT940_INFORMATION)) {
+                return lines[itr - 1].startsWith(MT940Constants.MT940_STATEMENT_LINE);
             }
         }
         return true;
@@ -64,13 +65,13 @@ public class MT940ValidationUtils {
             String mandatoryCurrencyField = line.length() > 18 ? line.substring(12, 15) : null;
             String optionalCurrencyField = line.length() > 17 ? line.substring(11, 14) : null;
 
-            if (line.startsWith(ConnectorConstants.MT940_OPENING_BAL)) {
+            if (line.startsWith(MT940Constants.MT940_OPENING_BAL)) {
                 openBalanceCurrency = mandatoryCurrencyField;
-            } else if (line.startsWith(ConnectorConstants.MT940_CLOSING_BAL)) {
+            } else if (line.startsWith(MT940Constants.MT940_CLOSING_BAL)) {
                 closeBalanceCurrency = mandatoryCurrencyField;
-            } else if (line.startsWith(ConnectorConstants.MT940_CLOSING_AVAIL_BAL)) {
+            } else if (line.startsWith(MT940Constants.MT940_CLOSING_AVAIL_BAL)) {
                 closeAvailBalanceCurrency = optionalCurrencyField;
-            } else if (line.startsWith(ConnectorConstants.MT940_FORWARD_AVAIL_BAL)) {
+            } else if (line.startsWith(MT940Constants.MT940_FORWARD_AVAIL_BAL)) {
                 forwardAvailBalanceCurrency = optionalCurrencyField;
             }
         }
@@ -90,57 +91,57 @@ public class MT940ValidationUtils {
      * Method to validate the MT940 format.
      *
      * @param fields  Fields in MT940 format
-     * @return    ErrorModel MT940 format is invalid
+     * @return    ValidationResult MT940 format is invalid
      */
-    public static ErrorModel validateMT940Format(Map<String, Object> fields) {
-        ErrorModel errorModel;
+    public static ValidationResult validateMT940Format(Map<String, Object> fields) {
+        ValidationResult validationResult;
 
-        errorModel = validateReference((String) fields.get(ConnectorConstants.TRANSACTION_REF),
-                ConnectorConstants.TRANSACTION_REF);
-        if (errorModel.isError()) {
-            return errorModel;
+        validationResult = validateReference((String) fields.get(MT940Constants.DN_TRANSACTION_REF),
+                MT940Constants.DN_TRANSACTION_REF);
+        if (!validationResult.isValid()) {
+            return validationResult;
         }
 
-        if (fields.containsKey(ConnectorConstants.RELATED_REF)) {
-            errorModel = validateReference((String) fields.get(ConnectorConstants.RELATED_REF),
-                    ConnectorConstants.RELATED_REF);
-            if (errorModel.isError()) {
-                return errorModel;
+        if (fields.containsKey(MT940Constants.DN_RELATED_REF)) {
+            validationResult = validateReference((String) fields.get(MT940Constants.DN_RELATED_REF),
+                    MT940Constants.DN_RELATED_REF);
+            if (!validationResult.isValid()) {
+                return validationResult;
             }
         }
 
-        errorModel = validateAccountIdentifier((String) fields.get(ConnectorConstants.ACC_IDENTIFICATION));
-        if (errorModel.isError()) {
-            return errorModel;
+        validationResult = validateAccountIdentifier((String) fields.get(MT940Constants.DN_ACC_IDENTIFICATION));
+        if (!validationResult.isValid()) {
+            return validationResult;
         }
 
-        errorModel = validateStatementNumber((String) fields.get(ConnectorConstants.STATEMENT_NUMBER));
-        if (errorModel.isError()) {
-            return errorModel;
+        validationResult = validateStatementNumber((String) fields.get(MT940Constants.DN_STATEMENT_NUMBER));
+        if (!validationResult.isValid()) {
+            return validationResult;
         }
 
-        errorModel = validateOpeningBalance((String) fields.get(ConnectorConstants.OPENING_BALANCE));
-        if (errorModel.isError()) {
-            return errorModel;
+        validationResult = validateOpeningBalance((String) fields.get(MT940Constants.DN_OPENING_BALANCE));
+        if (!validationResult.isValid()) {
+            return validationResult;
         }
 
-        errorModel = validateClosingBalance((String) fields.get(ConnectorConstants.CLOSING_BALANCE));
-        if (errorModel.isError()) {
-            return errorModel;
+        validationResult = validateClosingBalance((String) fields.get(MT940Constants.DN_CLOSING_BALANCE));
+        if (!validationResult.isValid()) {
+            return validationResult;
         }
 
-        errorModel = validateClosingAvailableBalance((String) fields
-                .get(ConnectorConstants.CLOSING_AVAIL_BALANCE));
-        if (errorModel.isError()) {
-            return errorModel;
+        validationResult = validateClosingAvailableBalance((String) fields
+                .get(MT940Constants.DN_CLOSING_AVAIL_BALANCE));
+        if (!validationResult.isValid()) {
+            return validationResult;
         }
 
-        errorModel = validateForwardAvailableBalance((String) fields
-                .get(ConnectorConstants.FORWARD_CLOSING_AVAIL_BALANCE));
-        if (errorModel.isError()) {
-            return errorModel;
+        validationResult = validateForwardAvailableBalance((String) fields
+                .get(MT940Constants.DN_FORWARD_CLOSING_AVAIL_BALANCE));
+        if (!validationResult.isValid()) {
+            return validationResult;
         }
-        return new ErrorModel();
+        return new ValidationResult();
     }
 
     /**
@@ -149,35 +150,36 @@ public class MT940ValidationUtils {
      * @param referenceValue  Reference to be validated
      * @return    Whether reference is valid
      */
-    public static ErrorModel validateReference(String referenceValue, String fieldName) {
+    public static ValidationResult validateReference(String referenceValue, String fieldName) {
         String[] referenceDetails = referenceValue.split(ConnectorConstants.COLON);
         if (!isListLengthValid(referenceDetails)) {
-            return new ErrorModel(ConnectorConstants.INVALID_REQUEST_PAYLOAD,
+            return new ValidationResult(ConnectorConstants.INVALID_REQUEST_PAYLOAD,
                     String.format(ConnectorConstants.ERROR_PARAMETER_INVALID, fieldName));
         }
 
         String reference = referenceDetails[2];
         if (StringUtils.isBlank(reference)) {
-            return new ErrorModel(ConnectorConstants.INVALID_REQUEST_PAYLOAD,
+            return new ValidationResult(ConnectorConstants.INVALID_REQUEST_PAYLOAD,
                     String.format(ConnectorConstants.ERROR_PARAMETER_MISSING, fieldName));
         }
 
-        if (reference.length() > 16) {
-            return new ErrorModel(ConnectorConstants.ERROR_M50,
-                    String.format(ConnectorConstants.ERROR_PARAMETER_LENGTH, fieldName, 16));
+        if (reference.length() > ConnectorConstants.REFERENCE_LENGTH) {
+            return new ValidationResult(ConnectorConstants.ERROR_M50,
+                    String.format(ConnectorConstants.ERROR_PARAMETER_LENGTH, fieldName,
+                            ConnectorConstants.REFERENCE_LENGTH));
         }
 
         if (reference.startsWith(ConnectorConstants.SLASH) || reference.endsWith(ConnectorConstants.SLASH) ||
                 reference.contains(ConnectorConstants.DOUBLE_SLASH)) {
-            return new ErrorModel(ConnectorConstants.ERROR_T26,
+            return new ValidationResult(ConnectorConstants.ERROR_T26,
                     String.format(ConnectorConstants.ERROR_PARAMETER_CONTAINS_SLASH, fieldName));
         }
 
         if (!Pattern.matches(ConnectorConstants.MT_REGEX_PATTERN, reference)) {
-            return new ErrorModel(ConnectorConstants.INVALID_REQUEST_PAYLOAD,
+            return new ValidationResult(ConnectorConstants.INVALID_REQUEST_PAYLOAD,
                     String.format(ConnectorConstants.ERROR_PARAMETER_INVALID, fieldName));
         }
-        return new ErrorModel();
+        return new ValidationResult();
     }
 
     /**
@@ -186,32 +188,33 @@ public class MT940ValidationUtils {
      * @param accIdentifier  Account identifier to be validated
      * @return    Whether account identifier is valid
      */
-    public static ErrorModel validateAccountIdentifier(String accIdentifier) {
+    public static ValidationResult validateAccountIdentifier(String accIdentifier) {
         String[] accIdentifierDetails = accIdentifier.split(ConnectorConstants.COLON);
         if (!isListLengthValid(accIdentifierDetails)) {
-            return new ErrorModel(ConnectorConstants.INVALID_REQUEST_PAYLOAD,
+            return new ValidationResult(ConnectorConstants.INVALID_REQUEST_PAYLOAD,
                     String.format(ConnectorConstants.ERROR_PARAMETER_INVALID,
-                            ConnectorConstants.ACC_IDENTIFICATION));
+                            MT940Constants.DN_ACC_IDENTIFICATION));
         }
         String account = accIdentifierDetails[2];
         if (StringUtils.isBlank(account)) {
-            return new ErrorModel(ConnectorConstants.INVALID_REQUEST_PAYLOAD,
+            return new ValidationResult(ConnectorConstants.INVALID_REQUEST_PAYLOAD,
                     String.format(ConnectorConstants.ERROR_PARAMETER_MISSING,
-                            ConnectorConstants.ACC_IDENTIFICATION));
+                            MT940Constants.DN_ACC_IDENTIFICATION));
         }
 
-        if (account.length() > 35) {
-            return new ErrorModel(ConnectorConstants.ERROR_M50,
+        if (account.length() > ConnectorConstants.ACC_IDENTIFICATION_LENGTH) {
+            return new ValidationResult(ConnectorConstants.ERROR_M50,
                     String.format(ConnectorConstants.ERROR_PARAMETER_LENGTH,
-                            ConnectorConstants.ACC_IDENTIFICATION, 35));
+                            MT940Constants.DN_ACC_IDENTIFICATION,
+                            ConnectorConstants.ACC_IDENTIFICATION_LENGTH));
         }
 
         if (!Pattern.matches(ConnectorConstants.MT_REGEX_PATTERN, account)) {
-            return new ErrorModel(ConnectorConstants.INVALID_REQUEST_PAYLOAD,
+            return new ValidationResult(ConnectorConstants.INVALID_REQUEST_PAYLOAD,
                     String.format(ConnectorConstants.ERROR_PARAMETER_INVALID,
-                            ConnectorConstants.ACC_IDENTIFICATION));
+                            MT940Constants.DN_ACC_IDENTIFICATION));
         }
-        return new ErrorModel();
+        return new ValidationResult();
     }
 
     /**
@@ -220,38 +223,38 @@ public class MT940ValidationUtils {
      * @param statementNumber  Statement number to be validated
      * @return    Whether statement number is valid
      */
-    public static ErrorModel validateStatementNumber(String statementNumber) {
+    public static ValidationResult validateStatementNumber(String statementNumber) {
         String[] statementNumberDetails = statementNumber.split(ConnectorConstants.COLON);
         if (!isListLengthValid(statementNumberDetails)) {
-            return new ErrorModel(ConnectorConstants.INVALID_REQUEST_PAYLOAD,
+            return new ValidationResult(ConnectorConstants.INVALID_REQUEST_PAYLOAD,
                     String.format(ConnectorConstants.ERROR_PARAMETER_INVALID,
-                            ConnectorConstants.STATEMENT_NUMBER));
+                            MT940Constants.DN_STATEMENT_NUMBER));
         }
         String number = statementNumberDetails[2];
         if (StringUtils.isBlank(number)) {
-            return new ErrorModel(ConnectorConstants.INVALID_REQUEST_PAYLOAD,
+            return new ValidationResult(ConnectorConstants.INVALID_REQUEST_PAYLOAD,
                     String.format(ConnectorConstants.ERROR_PARAMETER_MISSING,
-                            ConnectorConstants.STATEMENT_NUMBER));
+                            MT940Constants.DN_STATEMENT_NUMBER));
         }
 
-        if (number.length() > 5) {
-            return new ErrorModel(ConnectorConstants.ERROR_M50,
+        if (number.length() > ConnectorConstants.STATEMENT_NO_LENGTH) {
+            return new ValidationResult(ConnectorConstants.ERROR_M50,
                     String.format(ConnectorConstants.ERROR_PARAMETER_LENGTH,
-                            ConnectorConstants.STATEMENT_NUMBER, 16));
+                            MT940Constants.DN_STATEMENT_NUMBER, ConnectorConstants.STATEMENT_NO_LENGTH));
         }
 
         if (!number.contains(ConnectorConstants.SLASH)) {
-            return new ErrorModel(ConnectorConstants.INVALID_REQUEST_PAYLOAD,
+            return new ValidationResult(ConnectorConstants.INVALID_REQUEST_PAYLOAD,
                     String.format(ConnectorConstants.ERROR_PARAMETER_INVALID,
-                            ConnectorConstants.STATEMENT_NUMBER));
+                            MT940Constants.DN_STATEMENT_NUMBER));
         }
 
-        if (!ValidatorUtils.isNumber(number.replace(ConnectorConstants.SLASH, ""))) {
-            return new ErrorModel(ConnectorConstants.INVALID_REQUEST_PAYLOAD,
+        if (!StringUtils.isNumeric(number.replace(ConnectorConstants.SLASH, ""))) {
+            return new ValidationResult(ConnectorConstants.INVALID_REQUEST_PAYLOAD,
                     String.format(ConnectorConstants.ERROR_PARAMETER_INVALID,
-                            ConnectorConstants.STATEMENT_NUMBER));
+                            MT940Constants.DN_STATEMENT_NUMBER));
         }
-        return new ErrorModel();
+        return new ValidationResult();
     }
 
     /**
@@ -260,26 +263,26 @@ public class MT940ValidationUtils {
      * @param openingBalance  Balance to be validated
      * @return    Whether balance is valid
      */
-    public static ErrorModel validateOpeningBalance(String openingBalance) {
+    public static ValidationResult validateOpeningBalance(String openingBalance) {
         String[] openingBalanceDetails = openingBalance.split(ConnectorConstants.COLON);
         if (!isListLengthValid(openingBalanceDetails)) {
-            return new ErrorModel(ConnectorConstants.INVALID_REQUEST_PAYLOAD,
+            return new ValidationResult(ConnectorConstants.INVALID_REQUEST_PAYLOAD,
                     String.format(ConnectorConstants.ERROR_PARAMETER_INVALID,
-                            ConnectorConstants.OPENING_BALANCE));
+                            MT940Constants.DN_OPENING_BALANCE));
         }
 
         String balance = openingBalanceDetails[2];
         if (StringUtils.isBlank(balance)) {
-            return new ErrorModel(ConnectorConstants.INVALID_REQUEST_PAYLOAD,
+            return new ValidationResult(ConnectorConstants.INVALID_REQUEST_PAYLOAD,
                     String.format(ConnectorConstants.ERROR_PARAMETER_MISSING,
-                            ConnectorConstants.OPENING_BALANCE));
+                            MT940Constants.DN_OPENING_BALANCE));
         }
 
-        ErrorModel errorModel = validateBalance(balance, ConnectorConstants.OPENING_BALANCE);
-        if (errorModel.isError()) {
-            return errorModel;
+        ValidationResult validationResult = validateBalance(balance, MT940Constants.DN_OPENING_BALANCE);
+        if (!validationResult.isValid()) {
+            return validationResult;
         }
-        return new ErrorModel();
+        return new ValidationResult();
     }
 
     /**
@@ -288,26 +291,26 @@ public class MT940ValidationUtils {
      * @param closingBalance  Balance to be validated
      * @return    Whether balance is valid
      */
-    public static ErrorModel validateClosingBalance(String closingBalance) {
+    public static ValidationResult validateClosingBalance(String closingBalance) {
         String[] closingBalanceDetails = closingBalance.split(ConnectorConstants.COLON);
         if (!isListLengthValid(closingBalanceDetails)) {
-            return new ErrorModel(ConnectorConstants.INVALID_REQUEST_PAYLOAD,
+            return new ValidationResult(ConnectorConstants.INVALID_REQUEST_PAYLOAD,
                     String.format(ConnectorConstants.ERROR_PARAMETER_INVALID,
-                            ConnectorConstants.TRANSACTION_REF));
+                            MT940Constants.DN_CLOSING_BALANCE));
         }
 
         String balance = closingBalanceDetails[2];
         if (StringUtils.isBlank(balance)) {
-            return new ErrorModel(ConnectorConstants.ERROR_C24,
+            return new ValidationResult(ConnectorConstants.ERROR_C24,
                     String.format(ConnectorConstants.ERROR_PARAMETER_MISSING,
-                            ConnectorConstants.CLOSING_BALANCE));
+                            MT940Constants.DN_CLOSING_BALANCE));
         }
 
-        ErrorModel errorModel = validateBalance(balance, ConnectorConstants.CLOSING_BALANCE);
-        if (errorModel.isError()) {
-            return errorModel;
+        ValidationResult validationResult = validateBalance(balance, MT940Constants.DN_CLOSING_BALANCE);
+        if (!validationResult.isValid()) {
+            return validationResult;
         }
-        return new ErrorModel();
+        return new ValidationResult();
     }
 
     /** Method to validate whether Closing available balance is valid.
@@ -315,22 +318,22 @@ public class MT940ValidationUtils {
      * @param closingBalance  Balance to be validated
      * @return     Whether balance is valid
      */
-    public static ErrorModel validateClosingAvailableBalance(String closingBalance) {
+    public static ValidationResult validateClosingAvailableBalance(String closingBalance) {
         if (closingBalance != null) {
             String[] closingBalanceDetails = closingBalance.split(ConnectorConstants.COLON);
             if (!isListLengthValid(closingBalanceDetails)) {
-                return new ErrorModel(ConnectorConstants.INVALID_REQUEST_PAYLOAD,
+                return new ValidationResult(ConnectorConstants.INVALID_REQUEST_PAYLOAD,
                         String.format(ConnectorConstants.ERROR_PARAMETER_INVALID,
-                                ConnectorConstants.CLOSING_AVAIL_BALANCE));
+                                MT940Constants.DN_CLOSING_AVAIL_BALANCE));
             }
 
-            ErrorModel errorModel = validateBalance(closingBalanceDetails[2],
-                    ConnectorConstants.CLOSING_AVAIL_BALANCE);
-            if (errorModel.isError()) {
-                return errorModel;
+            ValidationResult validationResult = validateBalance(closingBalanceDetails[2],
+                    MT940Constants.DN_CLOSING_AVAIL_BALANCE);
+            if (!validationResult.isValid()) {
+                return validationResult;
             }
         }
-        return new ErrorModel();
+        return new ValidationResult();
     }
 
     /** Method to validate whether Forward available balance is valid.
@@ -338,22 +341,22 @@ public class MT940ValidationUtils {
      * @param closingBalance  Balance to be validated
      * @return     Whether balance is valid
      */
-    public static ErrorModel validateForwardAvailableBalance(String closingBalance) {
+    public static ValidationResult validateForwardAvailableBalance(String closingBalance) {
         if (closingBalance != null) {
             String[] closingBalanceDetails = closingBalance.split(ConnectorConstants.COLON);
             if (!isListLengthValid(closingBalanceDetails)) {
-                return new ErrorModel(ConnectorConstants.INVALID_REQUEST_PAYLOAD,
+                return new ValidationResult(ConnectorConstants.INVALID_REQUEST_PAYLOAD,
                         String.format(ConnectorConstants.ERROR_PARAMETER_INVALID,
-                                ConnectorConstants.FORWARD_CLOSING_AVAIL_BALANCE));
+                                MT940Constants.DN_FORWARD_CLOSING_AVAIL_BALANCE));
             }
 
-            ErrorModel errorModel = validateBalance(closingBalanceDetails[2],
-                    ConnectorConstants.FORWARD_CLOSING_AVAIL_BALANCE);
-            if (errorModel.isError()) {
-                return errorModel;
+            ValidationResult validationResult = validateBalance(closingBalanceDetails[2],
+                    MT940Constants.DN_FORWARD_CLOSING_AVAIL_BALANCE);
+            if (!validationResult.isValid()) {
+                return validationResult;
             }
         }
-        return new ErrorModel();
+        return new ValidationResult();
     }
 
     /** Method to validate whether Opening/closing balance is valid.
@@ -361,30 +364,30 @@ public class MT940ValidationUtils {
      * @param balance  Balance to be validated
      * @return     Whether balance is valid
      */
-    private static ErrorModel validateBalance(String balance, String balanceName) {
-        ErrorModel errorModel;
-        if (balance.length() > 25) {
-            return new ErrorModel(ConnectorConstants.ERROR_M50,
+    private static ValidationResult validateBalance(String balance, String balanceName) {
+        ValidationResult validationResult;
+        if (balance.length() > ConnectorConstants.BALANCE_LENGTH) {
+            return new ValidationResult(ConnectorConstants.ERROR_M50,
                     String.format(ConnectorConstants.ERROR_PARAMETER_LENGTH,
-                            balanceName, 25));
+                            balanceName, ConnectorConstants.BALANCE_LENGTH));
         }
 
         if (!balance.startsWith(ConnectorConstants.DEBIT) && !balance.startsWith(ConnectorConstants.CREDIT)) {
-            return new ErrorModel(ConnectorConstants.ERROR_T51,
+            return new ValidationResult(ConnectorConstants.ERROR_T51,
                     String.format(ConnectorConstants.ERROR_PARAMETER_INVALID,
                             balanceName));
         }
 
-        errorModel = ValidatorUtils.validateAmountLength(balance.substring(10), balanceName);
-        if (errorModel.isError()) {
-            return errorModel;
+        validationResult = ValidatorUtils.validateAmountLength(balance.substring(10), balanceName);
+        if (!validationResult.isValid()) {
+            return validationResult;
         }
 
-        errorModel = validateAmountFormat(balance.substring(10), balanceName);
-        if (errorModel.isError()) {
-            return errorModel;
+        validationResult = validateAmountFormat(balance.substring(10), balanceName);
+        if (!validationResult.isValid()) {
+            return validationResult;
         }
-        return new ErrorModel();
+        return new ValidationResult();
     }
 
     /** Method to validate whether amount is valid.
@@ -392,14 +395,14 @@ public class MT940ValidationUtils {
      * @param amount  Amount to be validated
      * @return     Whether amount is valid
      */
-    private static ErrorModel validateAmountFormat(String amount, String fieldName) {
+    private static ValidationResult validateAmountFormat(String amount, String fieldName) {
 
         if (amount.contains(".")) {
-            return new ErrorModel(ConnectorConstants.ERROR_T40,
+            return new ValidationResult(ConnectorConstants.ERROR_T40,
                     String.format(ConnectorConstants.ERROR_PARAMETER_INVALID,
-                            fieldName + ConnectorConstants.AMOUNT));
+                            ConnectorUtils.concatFieldsWithSpaces(fieldName, MT940Constants.DN_AMOUNT)));
         }
-        return  new ErrorModel();
+        return  new ValidationResult();
     }
 
     /**

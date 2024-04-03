@@ -22,6 +22,7 @@
         <dependency component="mt940Validator"/>
         <dependency component="isoToMT940"/>
         <dependency component="isoAppHeadValidator"/>
+        <dependency component="jsonToMT103"/>
         <description>WSO2 SWIFT ISO 20022 Mediation library</description>
     </component>
     <type>module</type>
