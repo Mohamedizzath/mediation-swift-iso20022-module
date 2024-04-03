@@ -18,21 +18,25 @@
 
 package org.wso2.carbon.module.swiftiso20022.utils;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.wso2.carbon.connector.core.ConnectException;
 import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
-import org.wso2.carbon.module.swiftiso20022.model.ErrorModel;
-import org.wso2.carbon.module.swiftiso20022.mt940models.BalanceModel;
-import org.wso2.carbon.module.swiftiso20022.mt940models.RequestPayloadModel;
-import org.wso2.carbon.module.swiftiso20022.mt940models.StatementLineModel;
-import org.wso2.carbon.module.swiftiso20022.mt940models.TransactionModel;
+import org.wso2.carbon.module.swiftiso20022.constants.MT940Constants;
+import org.wso2.carbon.module.swiftiso20022.models.mt940models.RequestPayloadModel;
+import org.wso2.carbon.module.swiftiso20022.models.mt940models.StatementLineModel;
+import org.wso2.carbon.module.swiftiso20022.models.mt940models.TransactionModel;
+import org.wso2.carbon.module.swiftiso20022.validation.JsonToMT940PayloadValidator;
+import org.wso2.carbon.module.swiftiso20022.validation.common.ValidationEngine;
+import org.wso2.carbon.module.swiftiso20022.validation.common.ValidationResult;
+import org.wso2.carbon.module.swiftiso20022.validation.common.ValidatorContext;
+import org.wso2.carbon.module.swiftiso20022.validation.rules.custom.MT940AmountFormatValidationRule;
+import org.wso2.carbon.module.swiftiso20022.validation.rules.custom.MT940IndicatorValidationRule;
+import org.wso2.carbon.module.swiftiso20022.validation.rules.custom.MT940StatementTypeValidationRule;
+import org.wso2.carbon.module.swiftiso20022.validation.rules.custom.MT940TransactionTypeValidationRule;
 
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -45,139 +49,93 @@ import java.util.List;
  */
 public class JsonToMt940Utils {
 
-    private static final Log log = LogFactory.getLog(JsonToMt940Utils.class);
-
-    /**
-     * Method to validate the request payload.
-     * @param accountNumber   Account Number
-     * @return  Whether the request payload is valid or not
-     */
-    public static boolean isValidAccountNumber(String accountNumber) {
-        return (StringUtils.isNotBlank(accountNumber) && accountNumber.length() < 36);
-    }
-
-    /**
-     * Method to validate the reference in the request payload.
-     * @param reference   Reference
-     * @return  Whether the reference is valid or not
-     */
-    public static boolean isValidateReference(String reference) {
-        return (StringUtils.isNotBlank(reference) && reference.length() < 17);
-    }
-
-    /**
-     * Method to validate the Sequence Number in the request payload.
-     * @param sequenceNumber   Sequence Number
-     * @return  Whether the sequence number is valid or not
-     */
-    public static boolean isValidateSequenceNumber(String sequenceNumber) {
-        return (StringUtils.isNotBlank(sequenceNumber) && sequenceNumber.length() < 4);
-    }
-
     /**
      * Method to validate the Balance Details in the request payload.
      *
      * @param balanceDetails   Balance Details
      * @param fieldName        Balance Field Name
-     * @return  Return ErrorModel if the balance is invalid.
+     * @return  Return validationResult if the balance is invalid.
      */
-    public static ErrorModel validateBalanceDetails(BalanceModel balanceDetails, String fieldName) {
+    public static ValidationResult validateBalanceDetails(JSONObject balanceDetails, String fieldName) {
 
-        if (!isValidDateFormat(balanceDetails.getDate())) {
-            return new ErrorModel(ConnectorConstants.ERROR_T50,
-                    String.format(ConnectorConstants.ERROR_INCORRECT_FORMAT, fieldName));
-        }
-
-        if (!ValidatorUtils.isValidCurrency(balanceDetails.getCurrency())) {
-            return new ErrorModel(ConnectorConstants.ERROR_T52,
-                    String.format(ConnectorConstants.ERROR_CURRENCY_CODE_INVALID, fieldName));
-        }
-
-        ErrorModel error = ValidatorUtils.validateAmountLength(balanceDetails.getBalanceAmount(),
-                fieldName);
-        if (error.isError()) {
-            return error;
-        }
-
-        if (StringUtils.isBlank(balanceDetails.getIndicator()) ||
-                !(ConnectorConstants.DEBIT.equals(balanceDetails.getIndicator()) ||
-                ConnectorConstants.CREDIT.equals(balanceDetails.getIndicator()))) {
-            return new ErrorModel(ConnectorConstants.ERROR_T51, ConnectorConstants.ERROR_BAL_IND_INVALID);
-        }
-
-        if (StringUtils.isNotBlank(balanceDetails.getStatementType())) {
-            if (!(ConnectorConstants.CURRENT_STATEMENT_TYPE.equals(balanceDetails.getStatementType()) ||
-                    ConnectorConstants.LAST_STATEMENT_TYPE.equals(balanceDetails.getStatementType()))) {
-                return new ErrorModel(ConnectorConstants.ERROR_T51, ConnectorConstants.ERROR_INVALID_STATEMENT_TYPE);
-            }
-        }
-
-        return new ErrorModel();
+        return JsonToMT940PayloadValidator.getMT940BalanceValidationEngine(fieldName)
+                .addCustomRule(new MT940IndicatorValidationRule(new ValidatorContext(MT940Constants.BAL_INDICATOR,
+                        ConnectorUtils.concatFieldsWithSpaces(fieldName, MT940Constants.DN_INDICATOR))))
+                .addCustomRule(new MT940StatementTypeValidationRule(new ValidatorContext(
+                        MT940Constants.BAL_STATEMENT_TYPE, ConnectorUtils.concatFieldsWithSpaces(fieldName,
+                        MT940Constants.DN_STATEMENT_TYPE))))
+                .addCustomRule(new MT940AmountFormatValidationRule(new ValidatorContext(MT940Constants.BAL_AMOUNT,
+                        ConnectorUtils.concatFieldsWithSpaces(fieldName, MT940Constants.DN_DATE))))
+                .validate(balanceDetails);
     }
 
     /**
-     * Method to validate the date format.
+     * Method to validate the Balance object details.
      *
-     * @param dateTime  Date time to validate
-     * @return          True if the date format is valid, else false
+     * @param requestPayload  Request Payload
+     * @return              Validation Result if there is an error, else empty Validation Result
      */
-    public static boolean isValidDateFormat(String dateTime) {
-
-        if (StringUtils.isBlank(dateTime)) {
-            return false;
+    public static ValidationResult validateBalances(JSONObject requestPayload) {
+        ValidationResult validationResult = JsonToMt940Utils.validateBalanceDetails(requestPayload
+                        .getJSONObject(MT940Constants.OPENING_BAL_DETAILS),
+                MT940Constants.DN_OPENING_BALANCE);
+        if (!validationResult.isValid()) {
+            return validationResult;
         }
-        DateFormat formatter = new SimpleDateFormat(ConnectorConstants.DATE_TIME_FORMAT);
 
-        try {
-            formatter.parse(dateTime);
-            return true;
-        } catch (ParseException e) {
-            log.error("Error while parsing the date time", e);
-            return false;
+        validationResult = JsonToMt940Utils.validateBalanceDetails(requestPayload
+                        .getJSONObject(MT940Constants.CLOSING_BALANCE_DETAILS),
+                MT940Constants.DN_CLOSING_BALANCE);
+        if (!validationResult.isValid()) {
+            return validationResult;
         }
+
+        if (requestPayload.has(MT940Constants.CLOSING_AVAIL_BALANCE_DETAILS)) {
+            validationResult = JsonToMt940Utils.validateBalanceDetails(requestPayload
+                            .getJSONObject(MT940Constants.CLOSING_BALANCE_DETAILS),
+                    MT940Constants.DN_CLOSING_AVAIL_BALANCE);
+            if (!validationResult.isValid()) {
+                return validationResult;
+            }
+        }
+
+        if (requestPayload.has(MT940Constants.FORWARD_CLOSING_AVAIL_BALANCE_DETAILS)) {
+            validationResult = JsonToMt940Utils.validateBalanceDetails(requestPayload.getJSONObject(
+                            MT940Constants.FORWARD_CLOSING_AVAIL_BALANCE_DETAILS),
+                    MT940Constants.DN_FORWARD_CLOSING_AVAIL_BALANCE);
+            if (!validationResult.isValid()) {
+                return validationResult;
+            }
+        }
+
+        return new ValidationResult();
     }
 
     /**
-     * Method to validate the transaction type.
+     * Method to validate the transaction details.
      *
-     * @param transactionType  Transaction type to validate
-     * @return                 True if the transaction type is valid, else false
+     * @param transactions  List of transactions
+     * @return              Validation Result if there is an error, else empty Validation Result
      */
-    public static ErrorModel validTransactionType(String transactionType) {
-        if (!transactionType.startsWith(ConnectorConstants.SWIFT_TRANSFER) &&
-                !transactionType.startsWith(ConnectorConstants.NON_SWIFT_TRANSFER) &&
-                !transactionType.startsWith(ConnectorConstants.FIRST_ADVICE)) {
-            return new ErrorModel(ConnectorConstants.ERROR_T53,
-                    ConnectorConstants.ERROR_TRANS_TYPE_INVALID);
-        }
+    public static ValidationResult validateTransactionDetails(JSONArray transactions) {
 
-        if (transactionType.startsWith(ConnectorConstants.SWIFT_TRANSFER)) {
-            String identificationCode = transactionType.substring(1);
-            if (!ValidatorUtils.isNumber(identificationCode)) {
-                return new ErrorModel(ConnectorConstants.ERROR_T53,
-                        ConnectorConstants.ERROR_TRANS_TYPE_INVALID);
-            }
+        ValidationEngine engine =  JsonToMT940PayloadValidator.getMT940TransactionValidationEngine()
+                .addCustomRule(new MT940TransactionTypeValidationRule(new ValidatorContext(
+                                MT940Constants.TRANSACTION_TYPE, MT940Constants.DN_TRANSACTION_TYPE)))
+                .addCustomRule(new MT940IndicatorValidationRule(new ValidatorContext(
+                                MT940Constants.TRANSACTION_INDICATOR, ConnectorUtils.concatFieldsWithSpaces(
+                                        MT940Constants.DN_TRANSACTION, MT940Constants.DN_INDICATOR))));
 
-            if (!(Integer.parseInt(identificationCode) > 99 && Integer.parseInt(identificationCode) < 1000)) {
-                return new ErrorModel(ConnectorConstants.ERROR_T18,
-                        ConnectorConstants.ERROR_TRANS_TYPE_INVALID);
+        for (int i = 0; i < transactions.length(); i++) {
+            ValidationResult paramValidationResult = engine.validate(transactions.getJSONObject(i));
+
+            if (!paramValidationResult.isValid()) {
+                return paramValidationResult;
             }
         }
-        return new ErrorModel();
+        return new ValidationResult();
     }
 
-    /**
-     * Method to validate the transaction type.
-     *
-     * @param debitCreditMark  Debit/Credit Mark to validate
-     * @return                 True if the debitCreditMark is valid, else false
-     */
-    public static boolean isValidDebitCreditMark(String debitCreditMark) {
-        return debitCreditMark.startsWith(ConnectorConstants.DEBIT) ||
-                debitCreditMark.startsWith(ConnectorConstants.CREDIT) ||
-                debitCreditMark.startsWith(ConnectorConstants.REV_DEBIT) ||
-                debitCreditMark.startsWith(ConnectorConstants.REV_CREDIT);
-    }
 
     /**
      * Method to append constructed fields to the payload.
@@ -191,12 +149,14 @@ public class JsonToMt940Utils {
     public static JSONObject appendConstructedFields(String payload, RequestPayloadModel requestPayload)
             throws JSONException, ConnectException {
         JSONObject jsonPayload = new JSONObject(payload);
-        jsonPayload.put(ConnectorConstants.STATEMENT_NO, constructStatementNumber(requestPayload));
-        jsonPayload.put(ConnectorConstants.OPENING_BAL, constructOpeningBalance(requestPayload));
-        jsonPayload.put(ConnectorConstants.CLOSING_BAL, constructClosingBalance(requestPayload));
-        jsonPayload.put(ConnectorConstants.CLOSING_AVAIL_BAL, constructClosingAvailableBalance(requestPayload));
-        jsonPayload.put(ConnectorConstants.FORWARD_AVAIL_BAL, constructForwardAvailableBalance(requestPayload));
-        jsonPayload.put(ConnectorConstants.STATEMENT_LINES, constructStatementLines(requestPayload));
+        jsonPayload.put(MT940Constants.RESPONSE_STATEMENT_NO, constructStatementNumber(requestPayload));
+        jsonPayload.put(MT940Constants.RESPONSE_OPENING_BAL, constructOpeningBalance(requestPayload));
+        jsonPayload.put(MT940Constants.RESPONSE_CLOSING_BAL, constructClosingBalance(requestPayload));
+        jsonPayload.put(MT940Constants.RESPONSE_CLOSING_AVAIL_BAL,
+                constructClosingAvailableBalance(requestPayload));
+        jsonPayload.put(MT940Constants.RESPONSE_FORWARD_AVAIL_BAL,
+                constructForwardAvailableBalance(requestPayload));
+        jsonPayload.put(MT940Constants.RESPONSE_STATEMENT_LINES, constructStatementLines(requestPayload));
         return jsonPayload;
     }
 
@@ -279,7 +239,7 @@ public class JsonToMt940Utils {
                         transaction.getSupplementaryData());
             }
             if (transaction.getInformation() != null) {
-                statementLineModel.setInformation(ConnectorConstants.LINE_BREAK + ConnectorConstants.MT940_INFORMATION
+                statementLineModel.setInformation(ConnectorConstants.LINE_BREAK + MT940Constants.MT940_INFORMATION
                         + transaction.getInformation());
             }
 

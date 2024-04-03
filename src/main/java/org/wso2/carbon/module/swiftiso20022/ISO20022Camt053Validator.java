@@ -42,22 +42,20 @@ public class ISO20022Camt053Validator extends AbstractConnector {
 
     @Override
     public void connect(MessageContext messageContext) throws ConnectException {
-        boolean isBusinessMsg = false;
         String rootElementTag = ISOMessageParser.getRootXMLElement(messageContext);
 
         if (!ConnectorConstants.XML_INPUT_BUSINESS_ENV_TAG.equals(rootElementTag) &&
                 (!ConnectorConstants.XML_INPUT_DOCUMENT_TAG.equals(rootElementTag))) {
             // Invalid XML root tag
-            log.error(ConnectorConstants.ERROR_INVALID_XML_ROOT_TAG);
+            log.error(ConnectorConstants.ERROR_INVALID_XML_ROOT_TAG_MESSAGE);
             ConnectorUtils.appendErrorToMessageContext(messageContext,
-                    ConnectorConstants.ERROR_INVALID_XML_ROOT_TAG, ConnectorConstants.ERROR_INVALID_XML_ROOT_TAG);
+                    ConnectorConstants.ERROR_INVALID_XML_ROOT_TAG,
+                    ConnectorConstants.ERROR_INVALID_XML_ROOT_TAG_MESSAGE);
 
-            super.handleException(ConnectorConstants.ERROR_INVALID_XML_ROOT_TAG, messageContext);
+            super.handleException(ConnectorConstants.ERROR_INVALID_XML_ROOT_TAG_MESSAGE, messageContext);
         }
 
-        if (ConnectorConstants.XML_INPUT_BUSINESS_ENV_TAG.equals(rootElementTag)) {
-            isBusinessMsg = true;
-        }
+        boolean isBusinessMsg = ConnectorConstants.XML_INPUT_BUSINESS_ENV_TAG.equals(rootElementTag);
 
         // Processing ISO20022.camt.053 message
         try {
