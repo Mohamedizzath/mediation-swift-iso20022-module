@@ -51,4 +51,196 @@ public class Block04 {
     private List<String> senderToReceiverInformation;
     private List<String> regulatoryReporting;
     private String envelopeContents;
+
+    public String getSendersReference() {
+        return sendersReference;
+    }
+
+    public void setSendersReference(String sendersReference) {
+        this.sendersReference = sendersReference;
+    }
+
+    public List<String> getTimeIndication() {
+        return timeIndication;
+    }
+
+    public void setTimeIndication(List<String> timeIndication) {
+        this.timeIndication = timeIndication;
+    }
+
+    public String getBankOperationCode() {
+        return bankOperationCode;
+    }
+
+    public void setBankOperationCode(String bankOperationCode) {
+        this.bankOperationCode = bankOperationCode;
+    }
+
+    public List<String> getInstructionCodes() {
+        return instructionCodes;
+    }
+
+    public void setInstructionCodes(List<String> instructionCodes) {
+        this.instructionCodes = instructionCodes;
+    }
+
+    public String getTransactionTypeCode() {
+        return transactionTypeCode;
+    }
+
+    public void setTransactionTypeCode(String transactionTypeCode) {
+        this.transactionTypeCode = transactionTypeCode;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+
+    public String getInstructedAmount() {
+        return instructedAmount;
+    }
+
+    public void setInstructedAmount(String instructedAmount) {
+        this.instructedAmount = instructedAmount;
+    }
+
+    public String getExchangeRate() {
+        return exchangeRate;
+    }
+
+    public void setExchangeRate(String exchangeRate) {
+        this.exchangeRate = exchangeRate;
+    }
+
+    public Entity getOrderingCustomer() {
+        return orderingCustomer;
+    }
+
+    public void setOrderingCustomer(Entity orderingCustomer) {
+        this.orderingCustomer = orderingCustomer;
+    }
+
+    public Entity getSendingInstitution() {
+        return sendingInstitution;
+    }
+
+    public void setSendingInstitution(Entity sendingInstitution) {
+        this.sendingInstitution = sendingInstitution;
+    }
+
+    public Entity getOrderingInstitution() {
+        return orderingInstitution;
+    }
+
+    public void setOrderingInstitution(Entity orderingInstitution) {
+        this.orderingInstitution = orderingInstitution;
+    }
+
+    public Entity getSendersCorrespondent() {
+        return sendersCorrespondent;
+    }
+
+    public void setSendersCorrespondent(Entity sendersCorrespondent) {
+        this.sendersCorrespondent = sendersCorrespondent;
+    }
+
+    public Entity getReceiversCorrespondent() {
+        return receiversCorrespondent;
+    }
+
+    public void setReceiversCorrespondent(Entity receiversCorrespondent) {
+        this.receiversCorrespondent = receiversCorrespondent;
+    }
+
+    public Entity getThirdReimbursementInstitution() {
+        return thirdReimbursementInstitution;
+    }
+
+    public void setThirdReimbursementInstitution(Entity thirdReimbursementInstitution) {
+        this.thirdReimbursementInstitution = thirdReimbursementInstitution;
+    }
+
+    public Entity getIntermediaryInstitution() {
+        return intermediaryInstitution;
+    }
+
+    public void setIntermediaryInstitution(Entity intermediaryInstitution) {
+        this.intermediaryInstitution = intermediaryInstitution;
+    }
+
+    public Entity getAccountWithInstitution() {
+        return accountWithInstitution;
+    }
+
+    public void setAccountWithInstitution(Entity accountWithInstitution) {
+        this.accountWithInstitution = accountWithInstitution;
+    }
+
+    public Entity getBeneficiaryCustomer() {
+        return beneficiaryCustomer;
+    }
+
+    public void setBeneficiaryCustomer(Entity beneficiaryCustomer) {
+        this.beneficiaryCustomer = beneficiaryCustomer;
+    }
+
+    public List<String> getRemittanceInformation() {
+        return remittanceInformation;
+    }
+
+    public void setRemittanceInformation(List<String> remittanceInformation) {
+        this.remittanceInformation = remittanceInformation;
+    }
+
+    public String getDetailsOfCharges() {
+        return detailsOfCharges;
+    }
+
+    public void setDetailsOfCharges(String detailsOfCharges) {
+        this.detailsOfCharges = detailsOfCharges;
+    }
+
+    public List<String> getSendersCharges() {
+        return sendersCharges;
+    }
+
+    public void setSendersCharges(List<String> sendersCharges) {
+        this.sendersCharges = sendersCharges;
+    }
+
+    public String getReceiversCharges() {
+        return receiversCharges;
+    }
+
+    public void setReceiversCharges(String receiversCharges) {
+        this.receiversCharges = receiversCharges;
+    }
+
+    public List<String> getSenderToReceiverInformation() {
+        return senderToReceiverInformation;
+    }
+
+    public void setSenderToReceiverInformation(List<String> senderToReceiverInformation) {
+        this.senderToReceiverInformation = senderToReceiverInformation;
+    }
+
+    public List<String> getRegulatoryReporting() {
+        return regulatoryReporting;
+    }
+
+    public void setRegulatoryReporting(List<String> regulatoryReporting) {
+        this.regulatoryReporting = regulatoryReporting;
+    }
+
+    public String getEnvelopeContents() {
+        return envelopeContents;
+    }
+
+    public void setEnvelopeContents(String envelopeContents) {
+        this.envelopeContents = envelopeContents;
+    }
 }

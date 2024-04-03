@@ -29,4 +29,52 @@ public class Block03 {
     private String validationFlag;
     private String endToEndReference;
     private String serviceTypeIdentifier;
+
+    public String getServiceIdentifier() {
+        return serviceIdentifier;
+    }
+
+    public void setServiceIdentifier(String serviceIdentifier) {
+        this.serviceIdentifier = serviceIdentifier;
+    }
+
+    public String getBankingPriority() {
+        return bankingPriority;
+    }
+
+    public void setBankingPriority(String bankingPriority) {
+        this.bankingPriority = bankingPriority;
+    }
+
+    public String getMessageUserReference() {
+        return messageUserReference;
+    }
+
+    public void setMessageUserReference(String messageUserReference) {
+        this.messageUserReference = messageUserReference;
+    }
+
+    public String getValidationFlag() {
+        return validationFlag;
+    }
+
+    public void setValidationFlag(String validationFlag) {
+        this.validationFlag = validationFlag;
+    }
+
+    public String getEndToEndReference() {
+        return endToEndReference;
+    }
+
+    public void setEndToEndReference(String endToEndReference) {
+        this.endToEndReference = endToEndReference;
+    }
+
+    public String getServiceTypeIdentifier() {
+        return serviceTypeIdentifier;
+    }
+
+    public void setServiceTypeIdentifier(String serviceTypeIdentifier) {
+        this.serviceTypeIdentifier = serviceTypeIdentifier;
+    }
 }
