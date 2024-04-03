@@ -22,7 +22,7 @@ package org.wso2.carbon.module.swiftiso20022.mtmodels.fields;
  * Model for payments control information in User Header Block (Block 03).
  * <p>
  * format: /(Code)/[Additional Information]
- * example: /FPO/additional information...
+ * example: {434:/FPO/additional information...}
  */
 public class Field434 implements Field {
 

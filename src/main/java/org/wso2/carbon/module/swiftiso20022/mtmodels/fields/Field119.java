@@ -20,6 +20,8 @@ package org.wso2.carbon.module.swiftiso20022.mtmodels.fields;
 
 /**
  * Model for validation flag in User Header Block (Block 03).
+ * <p>
+ * example: {119:STP}
  */
 public class Field119 implements Field {
 

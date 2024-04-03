@@ -20,8 +20,9 @@ package org.wso2.carbon.module.swiftiso20022.mtmodels.fields;
 
 /**
  * Model for message input reference in User Header Block (Block 03).
- *
+ * <p>
  * format: (Date)(LT Address)(Session Number)(Sequence Number)
+ * example: {106:120811BANKBEBBAXXX2222123456}
  */
 public class Field106 implements Field {
 

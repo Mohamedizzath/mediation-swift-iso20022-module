@@ -20,6 +20,8 @@ package org.wso2.carbon.module.swiftiso20022.mtmodels.fields;
 
 /**
  * Model for service identifier in User Header Block (Block 03).
+ * <p>
+ * example: {103:EBA}
  */
 public class Field103 implements Field {
 

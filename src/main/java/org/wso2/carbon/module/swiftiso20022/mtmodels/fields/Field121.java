@@ -20,6 +20,8 @@ package org.wso2.carbon.module.swiftiso20022.mtmodels.fields;
 
 /**
  * Model for unique end to end reference in User Header Block (Block 03).
+ * <p>
+ * example: {121:180f1e65-90e0-44d5-a49a-92b55eb3025f}
  */
 public class Field121 implements Field {
 

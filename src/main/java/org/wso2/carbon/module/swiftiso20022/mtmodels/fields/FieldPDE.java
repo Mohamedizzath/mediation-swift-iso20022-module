@@ -20,8 +20,9 @@ package org.wso2.carbon.module.swiftiso20022.mtmodels.fields;
 
 /**
  * Model for possible duplicate emission in Trailer Block (Block 05).
- *
+ * <p>
  * format: (Time)(Date)(LT Identifier)(Session Number)(Sequence Number)
+ * example: {PDE:1348120811BANKFRPPAXXX2222123456}
  */
 public class FieldPDE implements Field {
 

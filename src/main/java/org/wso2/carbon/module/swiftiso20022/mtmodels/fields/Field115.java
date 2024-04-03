@@ -20,8 +20,9 @@ package org.wso2.carbon.module.swiftiso20022.mtmodels.fields;
 
 /**
  * Model for addressee information flag in User Header Block (Block 03).
- *
+ * <p>
  * format: (Crediting Time)(Debiting Time)(Country Code)(Reference)
+ * example: {115:121413121413DEBANKDECDA123}
  */
 public class Field115 implements Field {
 

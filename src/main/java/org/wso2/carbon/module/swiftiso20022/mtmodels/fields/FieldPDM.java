@@ -20,8 +20,9 @@ package org.wso2.carbon.module.swiftiso20022.mtmodels.fields;
 
 /**
  * Model for possible duplicate message in Trailer Block (Block 05).
- *
+ * <p>
  * format: (Time)(Date)(LT Identifier)(Session Number)(Sequence Number)
+ * example: {PDM:1213120811BANKFRPPAXXX2222123456}
  */
 public class FieldPDM implements Field {
 

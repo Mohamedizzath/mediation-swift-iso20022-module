@@ -21,8 +21,9 @@ package org.wso2.carbon.module.swiftiso20022.mtmodels.fields;
 
 /**
  * Model for message reference in Trailer Block (Block 05).
- *
+ * <p>
  * format: (Sent Date)(Time)(Date)(LT Identifier)(Session Number)(Sequence Number)
+ * example: {MRF:1806271539180626BANKFRPPAXXX2222123456}
  */
 public class FieldMRF implements Field {
 

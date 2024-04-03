@@ -20,7 +20,7 @@ package org.wso2.carbon.module.swiftiso20022.mtmodels.fields;
 
 /**
  * Model for test and training in Trailer Block (Block 05).
- *
+ * <p>
  * Value for this will always be an empty string
  * example: {TNG:}
  */

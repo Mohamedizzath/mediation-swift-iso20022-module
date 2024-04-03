@@ -63,9 +63,9 @@ public class MTParser {
     /**
      * Method to get MT message object extended from {@link MTMessage} by parsing MT message blocks.
      *
-     * @param blocks A map of block key and block value string
+     * @param blocks        A map of block key and block value string
      * @param mtMessageType Class of MT message model
-     * @param <T> MT message model class type implementation extended from {@link MTMessage}
+     * @param <T>           MT message model class type implementation extended from {@link MTMessage}
      * @return Class extended from {@link MTMessage} with values assigned by parsing passed block values
      * @throws MTMessageParsingException if any one of the blocks cannot be parsed
      */

@@ -20,6 +20,8 @@ package org.wso2.carbon.module.swiftiso20022.mtmodels.fields;
 
 /**
  * Model for message user reference in User Header Block (Block 03).
+ * <p>
+ * example: {108:REF0140862562/015}
  */
 public class Field108 implements Field {
 
@@ -43,7 +45,7 @@ public class Field108 implements Field {
      * @return object itself
      */
     public Field108 withValue(String value) {
-       setValue(value);
+        setValue(value);
         return this;
     }
 }

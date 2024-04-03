@@ -20,8 +20,9 @@ package org.wso2.carbon.module.swiftiso20022.mtmodels.fields;
 
 /**
  * Model for balance checkpoint in User Header Block (Block 03).
- *
+ * <p>
  * format: (Date)(Time)
+ * example: {423:18071715301204}
  */
 public class Field423 implements Field {
 

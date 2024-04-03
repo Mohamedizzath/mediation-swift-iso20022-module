@@ -21,6 +21,8 @@ package org.wso2.carbon.module.swiftiso20022.mtmodels.fields;
 
 /**
  * Model for checksum in Trailer Block (Block 05).
+ * <p>
+ * example: {CHK:123456789ABC}
  */
 public class FieldCHK implements Field {
 
