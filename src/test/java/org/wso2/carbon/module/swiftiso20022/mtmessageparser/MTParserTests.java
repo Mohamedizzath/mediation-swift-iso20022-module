@@ -22,11 +22,12 @@ import org.mockito.internal.matchers.apachecommons.ReflectionEquals;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import org.wso2.carbon.module.swiftiso20022.mtmessageparsers.MT940Parser;
-import org.wso2.carbon.module.swiftiso20022.mtmessageparsers.MTParser;
-import org.wso2.carbon.module.swiftiso20022.mtmodels.blocks.ApplicationHeaderBlock;
-import org.wso2.carbon.module.swiftiso20022.mtmodels.blocks.BasicHeaderBlock;
-import org.wso2.carbon.module.swiftiso20022.mtmodels.mtmessages.MT940Message;
+import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
+import org.wso2.carbon.module.swiftiso20022.mt.models.blocks.ApplicationHeaderBlock;
+import org.wso2.carbon.module.swiftiso20022.mt.models.blocks.BasicHeaderBlock;
+import org.wso2.carbon.module.swiftiso20022.mt.models.mtmessages.MT940Message;
+import org.wso2.carbon.module.swiftiso20022.mt.parsers.MT940Parser;
+import org.wso2.carbon.module.swiftiso20022.mt.parsers.MTParser;
 import org.wso2.carbon.module.swiftiso20022.utils.MTParserConstants;
 import org.wso2.carbon.module.swiftiso20022.utils.MTParserUtils;
 
@@ -47,7 +48,15 @@ public class MTParserTests {
                 .matches(mtMessage.getApplicationHeaderBlock()));
     }
     @Test(dataProvider = "parseMTMessageBlocks", dataProviderClass = MTParserConstants.class)
-    public void testParseMTMessageBlocksScenario(String mtMessage, Map<String, String> block) {
+    public void testParseMTMessageBlocksScenario(String mtMessage, Map<String, String> block) throws Exception {
+        Map<String, String> parseBlocks = MTParserUtils.getMessageBlocks(mtMessage);
+
+        Assert.assertTrue(new ReflectionEquals(block).matches(parseBlocks));
+    }
+
+    @Test(expectedExceptions = MTMessageParsingException.class, dataProvider = "parseInvalidMTMessageBlocks",
+            dataProviderClass = MTParserConstants.class)
+    public void testParseInvalidMTMessageBlocksScenario(String mtMessage, Map<String, String> block) throws Exception {
         Map<String, String> parseBlocks = MTParserUtils.getMessageBlocks(mtMessage);
 
         Assert.assertTrue(new ReflectionEquals(block).matches(parseBlocks));
@@ -55,7 +64,8 @@ public class MTParserTests {
     @Test(dataProvider = "parserBasicHeaderApplicationID", dataProviderClass = MTParserConstants.class)
     public void testParserBasicHeaderApplicationIDScenario(Map<String, String> block, BasicHeaderBlock basicHeaderBlock)
             throws Exception {
-        MT940Message mt940Message = MTParser.parse(block, MT940Message.class);
+        MT940Message mt940Message = new MT940Message();
+        MTParser.parse(block, mt940Message);
 
         Assert.assertTrue(new ReflectionEquals(basicHeaderBlock).matches(mt940Message.getBasicHeaderBlock()));
     }
@@ -63,7 +73,8 @@ public class MTParserTests {
     @Test(dataProvider = "parserBasicHeaderServiceID", dataProviderClass = MTParserConstants.class)
     public void testParserBasicHeaderServiceIDScenario(Map<String, String> block, BasicHeaderBlock basicHeaderBlock)
             throws Exception {
-        MT940Message mt940Message = MTParser.parse(block, MT940Message.class);
+        MT940Message mt940Message = new MT940Message();
+        MTParser.parse(block, mt940Message);
 
         Assert.assertTrue(new ReflectionEquals(basicHeaderBlock).matches(mt940Message.getBasicHeaderBlock()));
     }
@@ -71,7 +82,8 @@ public class MTParserTests {
     @Test(dataProvider = "parserBasicHeaderLTAddress", dataProviderClass = MTParserConstants.class)
     public void testParserBasicHeaderLTAddressScenario(Map<String, String> block, BasicHeaderBlock basicHeaderBlock)
             throws Exception {
-        MT940Message mt940Message = MTParser.parse(block, MT940Message.class);
+        MT940Message mt940Message = new MT940Message();
+        MTParser.parse(block, mt940Message);
 
         Assert.assertTrue(new ReflectionEquals(basicHeaderBlock).matches(mt940Message.getBasicHeaderBlock()));
     }
@@ -79,7 +91,8 @@ public class MTParserTests {
     @Test(dataProvider = "parserBasicHeaderSessionNumber", dataProviderClass = MTParserConstants.class)
     public void testParserBasicHeaderSessionNumberScenario(Map<String, String> block, BasicHeaderBlock basicHeaderBlock)
             throws Exception {
-        MT940Message mt940Message = MTParser.parse(block, MT940Message.class);
+        MT940Message mt940Message = new MT940Message();
+        MTParser.parse(block, mt940Message);
 
         Assert.assertTrue(new ReflectionEquals(basicHeaderBlock).matches(mt940Message.getBasicHeaderBlock()));
     }
@@ -87,7 +100,8 @@ public class MTParserTests {
     @Test(dataProvider = "parserBasicHeaderSequenceNumber", dataProviderClass = MTParserConstants.class)
     public void testParserBasicHeaderSequenceNumberScenario(Map<String, String> block,
                                                             BasicHeaderBlock basicHeaderBlock) throws Exception {
-        MT940Message mt940Message = MTParser.parse(block, MT940Message.class);
+        MT940Message mt940Message = new MT940Message();
+        MTParser.parse(block, mt940Message);
 
         Assert.assertTrue(new ReflectionEquals(basicHeaderBlock).matches(mt940Message.getBasicHeaderBlock()));
     }
@@ -95,7 +109,8 @@ public class MTParserTests {
     @Test(dataProvider = "parserApplicationHeaderInputOutputID", dataProviderClass = MTParserConstants.class)
     public void testParserApplicationHeaderInputOutputIDScenario(Map<String, String> block,
                                            ApplicationHeaderBlock applicationHeaderBlock) throws Exception {
-        MT940Message mt940Message = MTParser.parse(block, MT940Message.class);
+        MT940Message mt940Message = new MT940Message();
+        MTParser.parse(block, mt940Message);
 
         Assert.assertTrue(new ReflectionEquals(applicationHeaderBlock)
                 .matches(mt940Message.getApplicationHeaderBlock()));
@@ -104,7 +119,8 @@ public class MTParserTests {
     @Test(dataProvider = "parserApplicationHeaderMessageType", dataProviderClass = MTParserConstants.class)
     public void testParserApplicationHeaderMessageTypeScenario(Map<String, String> block,
                                      ApplicationHeaderBlock applicationHeaderBlock) throws Exception {
-        MT940Message mt940Message = MTParser.parse(block, MT940Message.class);
+        MT940Message mt940Message = new MT940Message();
+        MTParser.parse(block, mt940Message);
 
         Assert.assertTrue(new ReflectionEquals(applicationHeaderBlock)
                 .matches(mt940Message.getApplicationHeaderBlock()));
@@ -113,7 +129,8 @@ public class MTParserTests {
     @Test(dataProvider = "parserApplicationHeaderPriority", dataProviderClass = MTParserConstants.class)
     public void testParserApplicationHeaderPriorityScenario(Map<String, String> block,
                                      ApplicationHeaderBlock applicationHeaderBlock) throws Exception {
-        MT940Message mt940Message = MTParser.parse(block, MT940Message.class);
+        MT940Message mt940Message = new MT940Message();
+        MTParser.parse(block, mt940Message);
 
         Assert.assertTrue(new ReflectionEquals(applicationHeaderBlock)
                 .matches(mt940Message.getApplicationHeaderBlock()));
@@ -122,7 +139,8 @@ public class MTParserTests {
     @Test(dataProvider = "parserApplicationHeaderDestinationAddress", dataProviderClass = MTParserConstants.class)
     public void testParserApplicationHeaderDestinationAddressScenario(Map<String, String> block,
                                      ApplicationHeaderBlock applicationHeaderBlock) throws Exception {
-        MT940Message mt940Message = MTParser.parse(block, MT940Message.class);
+        MT940Message mt940Message = new MT940Message();
+        MTParser.parse(block, mt940Message);
 
         Assert.assertTrue(new ReflectionEquals(applicationHeaderBlock)
                 .matches(mt940Message.getApplicationHeaderBlock()));
@@ -131,7 +149,8 @@ public class MTParserTests {
     @Test(dataProvider = "parserApplicationHeaderDeliveryMonitor", dataProviderClass = MTParserConstants.class)
     public void testParserApplicationHeaderDeliveryMonitorScenario(Map<String, String> block,
                                      ApplicationHeaderBlock applicationHeaderBlock) throws Exception {
-        MT940Message mt940Message = MTParser.parse(block, MT940Message.class);
+        MT940Message mt940Message = new MT940Message();
+        MTParser.parse(block, mt940Message);
 
         Assert.assertTrue(new ReflectionEquals(applicationHeaderBlock)
                 .matches(mt940Message.getApplicationHeaderBlock()));
@@ -140,7 +159,8 @@ public class MTParserTests {
     @Test(dataProvider = "parserApplicationHeaderObsolescencePeriod", dataProviderClass = MTParserConstants.class)
     public void testParserApplicationHeaderObsolescencePeriodScenario(Map<String, String> block,
                                      ApplicationHeaderBlock applicationHeaderBlock) throws Exception {
-        MT940Message mt940Message = MTParser.parse(block, MT940Message.class);
+        MT940Message mt940Message = new MT940Message();
+        MTParser.parse(block, mt940Message);
 
         Assert.assertTrue(new ReflectionEquals(applicationHeaderBlock)
                 .matches(mt940Message.getApplicationHeaderBlock()));
@@ -149,7 +169,8 @@ public class MTParserTests {
     @Test(dataProvider = "parserApplicationHeaderInputTime", dataProviderClass = MTParserConstants.class)
     public void testParserApplicationHeaderInputTimePeriodScenario(Map<String, String> block,
                                      ApplicationHeaderBlock applicationHeaderBlock) throws Exception {
-        MT940Message mt940Message = MTParser.parse(block, MT940Message.class);
+        MT940Message mt940Message = new MT940Message();
+        MTParser.parse(block, mt940Message);
 
         Assert.assertTrue(new ReflectionEquals(applicationHeaderBlock)
                 .matches(mt940Message.getApplicationHeaderBlock()));
@@ -158,7 +179,8 @@ public class MTParserTests {
     @Test(dataProvider = "parserApplicationHeaderMessageInputReference", dataProviderClass = MTParserConstants.class)
     public void testParserApplicationHeaderMessageInputReferencePeriodScenario(Map<String, String> block,
                                            ApplicationHeaderBlock applicationHeaderBlock) throws Exception {
-        MT940Message mt940Message = MTParser.parse(block, MT940Message.class);
+        MT940Message mt940Message = new MT940Message();
+        MTParser.parse(block, mt940Message);
 
         Assert.assertTrue(new ReflectionEquals(applicationHeaderBlock)
                 .matches(mt940Message.getApplicationHeaderBlock()));
@@ -167,7 +189,8 @@ public class MTParserTests {
     @Test(dataProvider = "parserApplicationHeaderOutputDate", dataProviderClass = MTParserConstants.class)
     public void testParserApplicationHeaderOutputDateScenario(Map<String, String> block,
                                      ApplicationHeaderBlock applicationHeaderBlock) throws Exception {
-        MT940Message mt940Message = MTParser.parse(block, MT940Message.class);
+        MT940Message mt940Message = new MT940Message();
+        MTParser.parse(block, mt940Message);
 
         Assert.assertTrue(new ReflectionEquals(applicationHeaderBlock)
                 .matches(mt940Message.getApplicationHeaderBlock()));
@@ -176,7 +199,8 @@ public class MTParserTests {
     @Test(dataProvider = "parserApplicationHeaderOutputTime", dataProviderClass = MTParserConstants.class)
     public void testParserApplicationHeaderOutputTimeScenario(Map<String, String> block,
                                      ApplicationHeaderBlock applicationHeaderBlock) throws Exception {
-        MT940Message mt940Message = MTParser.parse(block, MT940Message.class);
+        MT940Message mt940Message = new MT940Message();
+        MTParser.parse(block, mt940Message);
 
         Assert.assertTrue(new ReflectionEquals(applicationHeaderBlock)
                 .matches(mt940Message.getApplicationHeaderBlock()));

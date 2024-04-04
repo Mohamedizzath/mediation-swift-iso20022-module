@@ -16,7 +16,7 @@
  * under the License.
  */
 
-package org.wso2.carbon.module.swiftiso20022.mtmodels.mtmessages;
+package org.wso2.carbon.module.swiftiso20022.mt.models.mtmessages;
 
 /**
  * MT940 model class which represents MT940 message.

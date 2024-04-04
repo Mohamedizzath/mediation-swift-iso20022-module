@@ -16,10 +16,10 @@
  * under the License.
  */
 
-package org.wso2.carbon.module.swiftiso20022.mtmodels.mtmessages;
+package org.wso2.carbon.module.swiftiso20022.mt.models.mtmessages;
 
-import org.wso2.carbon.module.swiftiso20022.mtmodels.blocks.ApplicationHeaderBlock;
-import org.wso2.carbon.module.swiftiso20022.mtmodels.blocks.BasicHeaderBlock;
+import org.wso2.carbon.module.swiftiso20022.mt.models.blocks.ApplicationHeaderBlock;
+import org.wso2.carbon.module.swiftiso20022.mt.models.blocks.BasicHeaderBlock;
 
 /**
  * Base model class for MT messages which contains common blocks.

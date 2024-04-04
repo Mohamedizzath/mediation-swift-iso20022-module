@@ -20,10 +20,10 @@ package org.wso2.carbon.module.swiftiso20022.utils;
 
 import org.testng.annotations.DataProvider;
 import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
-import org.wso2.carbon.module.swiftiso20022.mtmodels.blocks.ApplicationHeaderBlock;
-import org.wso2.carbon.module.swiftiso20022.mtmodels.blocks.BasicHeaderBlock;
-import org.wso2.carbon.module.swiftiso20022.mtmodels.mtmessages.MT940Message;
-import org.wso2.carbon.module.swiftiso20022.mtmodels.mtmessages.MTMessage;
+import org.wso2.carbon.module.swiftiso20022.mt.models.blocks.ApplicationHeaderBlock;
+import org.wso2.carbon.module.swiftiso20022.mt.models.blocks.BasicHeaderBlock;
+import org.wso2.carbon.module.swiftiso20022.mt.models.mtmessages.MT940Message;
+import org.wso2.carbon.module.swiftiso20022.mt.models.mtmessages.MTMessage;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -140,7 +140,7 @@ public class MTParserConstants {
 
     public static String getMTMessageText(Map<String, String> params) {
         return  (params.getOrDefault(ConnectorConstants.BASIC_HEADER_BLOCK_KEY,
-                "{1:F01GSCRUS30XXXX0000000000:}")) +
+                "{1:F01GSCRUS30XXXX0000000000}")) +
                 (params.getOrDefault(ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
                 "{2:O9400400190425GSCRUS30XXXX00000000002403290912N}")) +
                 (params.getOrDefault(ConnectorConstants.USER_HEADER_BLOCK_KEY, "{3:{113:URGT}}")) +
@@ -191,6 +191,13 @@ public class MTParserConstants {
                                         ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY, "")),
                         getMTMessage(Map.of(), MT940Message.class)
                 },
+                {getMTMessageText(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY, "{1:}",
+                        ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY, "{2:}")),
+                        getMTMessage(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY,
+                                getBasicHeaderBlock(Map.of()),
+                                ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
+                                getApplicationHeaderBlock(Map.of())), MT940Message.class)
+                },
         };
     }
 
@@ -198,15 +205,15 @@ public class MTParserConstants {
     Object[][] parseMTMessageBlocks() {
         return new Object[][] {
                 {getMTMessageText(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY,
-                "F01GSCRUS30XXXX0000000000",
+                "{1:F01GSCRUS30XXXX0000000000}",
                 ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
-                "O9400400190425GSCRUS30XXX00000000002403290912N")),
+                "{2:O9400400190425GSCRUS30XXX00000000002403290912N}")),
                 getMTMessageMap(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY,
                 "F01GSCRUS30XXXX0000000000",
                 ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
                 "O9400400190425GSCRUS30XXX00000000002403290912N",
-                ConnectorConstants.USER_HEADER_BLOCK_KEY, "{3:{113:URGT}}", ConnectorConstants.TEXT_BLOCK_KEY,
-                "{4:\n:20:258158850\n" +
+                ConnectorConstants.USER_HEADER_BLOCK_KEY, "{113:URGT}", ConnectorConstants.TEXT_BLOCK_KEY,
+                "\n:20:258158850\n" +
                 ":21:258158850\n" +
                 ":25:DD01100056869\n" +
                 ":28C:1/1\n" +
@@ -218,13 +225,13 @@ public class MTParserConstants {
                 ":61:2310011001CD10,00ASHP20230928LTERMID2000003\n" +
                 ":86:EREF/20230928LTERMID2000003/PREF/RP/GS/CTFILERP0002/CTBA0003\n" +
                 ":62F:D230930USD846665,15\n" +
-                ":64:C231002USD334432401,27\n-}",
-                ConnectorConstants.TRAILER_BLOCK_KEY, "{5:{CHK:123456789ABC}}"))},
+                ":64:C231002USD334432401,27\n",
+                ConnectorConstants.TRAILER_BLOCK_KEY, "{CHK:123456789ABC}"))},
 
                 {getMTMessageText(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY, "",
                 ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY, "")),
-                getMTMessageMap(Map.of(ConnectorConstants.USER_HEADER_BLOCK_KEY, "{3:{113:URGT}}",
-                ConnectorConstants.TEXT_BLOCK_KEY, "{4:\n:20:258158850\n" +
+                getMTMessageMap(Map.of(ConnectorConstants.USER_HEADER_BLOCK_KEY, "{113:URGT}",
+                ConnectorConstants.TEXT_BLOCK_KEY, "\n:20:258158850\n" +
                 ":21:258158850\n" +
                 ":25:DD01100056869\n" +
                 ":28C:1/1\n" +
@@ -236,16 +243,16 @@ public class MTParserConstants {
                 ":61:2310011001CD10,00ASHP20230928LTERMID2000003\n" +
                 ":86:EREF/20230928LTERMID2000003/PREF/RP/GS/CTFILERP0002/CTBA0003\n" +
                 ":62F:D230930USD846665,15\n" +
-                ":64:C231002USD334432401,27\n-}",
-                ConnectorConstants.TRAILER_BLOCK_KEY, "{5:{CHK:123456789ABC}}"))},
+                ":64:C231002USD334432401,27\n",
+                ConnectorConstants.TRAILER_BLOCK_KEY, "{CHK:123456789ABC}"))},
 
                 {getMTMessageText(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY, "",
                 ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
-                "O9400400190425GSCRUS30XXX00000000002403290912N")),
+                "{2:O9400400190425GSCRUS30XXX00000000002403290912N}")),
                 getMTMessageMap(Map.of(ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
                 "O9400400190425GSCRUS30XXX00000000002403290912N",
-                ConnectorConstants.USER_HEADER_BLOCK_KEY, "{3:{113:URGT}}", ConnectorConstants.TEXT_BLOCK_KEY,
-                "{4:\n:20:258158850\n" +
+                ConnectorConstants.USER_HEADER_BLOCK_KEY, "{113:URGT}", ConnectorConstants.TEXT_BLOCK_KEY,
+                "\n:20:258158850\n" +
                 ":21:258158850\n" +
                 ":25:DD01100056869\n" +
                 ":28C:1/1\n" +
@@ -257,15 +264,15 @@ public class MTParserConstants {
                 ":61:2310011001CD10,00ASHP20230928LTERMID2000003\n" +
                 ":86:EREF/20230928LTERMID2000003/PREF/RP/GS/CTFILERP0002/CTBA0003\n" +
                 ":62F:D230930USD846665,15\n" +
-                ":64:C231002USD334432401,27\n-}",
-                ConnectorConstants.TRAILER_BLOCK_KEY, "{5:{CHK:123456789ABC}}"))},
+                ":64:C231002USD334432401,27\n",
+                ConnectorConstants.TRAILER_BLOCK_KEY, "{CHK:123456789ABC}"))},
 
                 {getMTMessageText(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY,
-                "F01GSCRUS30XXXX0000000000")),
+                "{1:F01GSCRUS30XXXX0000000000}")),
                 getMTMessageMap(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY,
-                "F01GSCRUS30XXXX0000000000",
-                ConnectorConstants.USER_HEADER_BLOCK_KEY, "{3:{113:URGT}}", ConnectorConstants.TEXT_BLOCK_KEY,
-                "{4:\n:20:258158850\n" +
+                "{2:F01GSCRUS30XXXX0000000000}",
+                ConnectorConstants.USER_HEADER_BLOCK_KEY, "{113:URGT}", ConnectorConstants.TEXT_BLOCK_KEY,
+                "\n:20:258158850\n" +
                 ":21:258158850\n" +
                 ":25:DD01100056869\n" +
                 ":28C:1/1\n" +
@@ -277,8 +284,24 @@ public class MTParserConstants {
                 ":61:2310011001CD10,00ASHP20230928LTERMID2000003\n" +
                 ":86:EREF/20230928LTERMID2000003/PREF/RP/GS/CTFILERP0002/CTBA0003\n" +
                 ":62F:D230930USD846665,15\n" +
-                ":64:C231002USD334432401,27\n-}",
-                ConnectorConstants.TRAILER_BLOCK_KEY, "{5:{CHK:123456789ABC}}"))}
+                ":64:C231002USD334432401,27\n",
+                ConnectorConstants.TRAILER_BLOCK_KEY, "{CHK:123456789ABC}"))}
+        };
+    }
+
+    @DataProvider(name = "parseInvalidMTMessageBlocks")
+    Object[][] parseInvalidMTMessageBlocks() {
+        return new Object[][] {
+                {getMTMessageText(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY,
+                        "{1:F01GSCRUS30XXXX0000000000",
+                        ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
+                        "{2:O9400400190425GSCRUS30XXX00000000002403290912N}")),
+                        getMTMessageMap(Map.of())},
+                {getMTMessageText(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY,
+                        "{1:F01GSCRUS30XXXX0000000000}}",
+                        ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
+                        "{2:O9400400190425GSCRUS30XXX00000000002403290912N}")),
+                        getMTMessageMap(Map.of())}
         };
     }
 

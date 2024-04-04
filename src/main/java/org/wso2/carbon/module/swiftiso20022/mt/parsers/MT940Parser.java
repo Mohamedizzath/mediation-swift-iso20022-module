@@ -16,9 +16,10 @@
  * under the License.
  */
 
-package org.wso2.carbon.module.swiftiso20022.mtmessageparsers;
+package org.wso2.carbon.module.swiftiso20022.mt.parsers;
 
-import org.wso2.carbon.module.swiftiso20022.mtmodels.mtmessages.MT940Message;
+import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
+import org.wso2.carbon.module.swiftiso20022.mt.models.mtmessages.MT940Message;
 import org.wso2.carbon.module.swiftiso20022.utils.MTParserUtils;
 
 import java.util.Map;
@@ -32,10 +33,14 @@ public class MT940Parser {
      * @param mtMessage       MT940 message as String
      * @return                MT940 message object
      */
-    public static MT940Message parse(String mtMessage) throws Exception {
+    public static MT940Message parse(String mtMessage) throws MTMessageParsingException {
         Map<String, String> blocks = MTParserUtils.getMessageBlocks(mtMessage);
 
-        MT940Message mt940Message = MTParser.parse(blocks, MT940Message.class);
+        MT940Message mt940Message = new MT940Message();
+        MTParser.parse(blocks, mt940Message);
+
+        // Implementation on parsing text block
+        // mt940Message.setTextBlock(MT940TextBlock textBlock);
 
         return mt940Message;
     }

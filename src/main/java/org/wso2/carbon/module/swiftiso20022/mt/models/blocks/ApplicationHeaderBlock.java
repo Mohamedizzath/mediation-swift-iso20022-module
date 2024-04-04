@@ -16,7 +16,7 @@
  * under the License.
  */
 
-package org.wso2.carbon.module.swiftiso20022.mtmodels.blocks;
+package org.wso2.carbon.module.swiftiso20022.mt.models.blocks;
 
 /**
  * Model class for application header block.

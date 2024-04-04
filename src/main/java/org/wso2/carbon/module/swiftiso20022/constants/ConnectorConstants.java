@@ -49,28 +49,13 @@ public class ConnectorConstants {
     public static final String INPUT_IDENTIFIER = "I";
     public static final String OUTPUT_IDENTIFIER = "O";
 
-    public static final String BLOCK_STARTING_CHARACTER = "{";
-    public static final String BLOCK_ENDING_CHARACTER = "}";
+    public static final char BLOCK_STARTING_CHARACTER = '{';
+    public static final char BLOCK_ENDING_CHARACTER = '}';
     public static final String BASIC_HEADER_BLOCK_START = "{1:";
     public static final String APPLICATION_HEADER_BLOCK_START = "{2:";
     public static final String USER_HEADER_BLOCK_START = "{3:";
     public static final String TEXT_BLOCK_START = "{4:";
     public static final String TRAILER_BLOCK_START = "{5:";
-
-    //MT940 Related Constants
-    public static final String MT940_TRANSACTION_REF = ":20";
-    public static final String MT940_RELATED_REF = ":21";
-    public static final String MT940_ACCOUNT_NO = ":25";
-    public static final String MT940_STATEMENT_NO = ":28";
-    public static final String MT940_INFORMATION = ":86:";;
-    public static final String MT940_STATEMENT_LINE = ":61";
-    public static final String MT940_OPENING_BAL = ":60";
-    public static final String MT940_CLOSING_BAL = ":62";
-    public static final String MT940_CLOSING_AVAIL_BAL = ":64";
-    public static final String MT940_FORWARD_AVAIL_BAL = ":65";
-    public static final String SWIFT_TRANSFER = "S";
-    public static final String NON_SWIFT_TRANSFER = "N";
-    public static final String FIRST_ADVICE = "F";
     public static final String COLON = ":";
     public static final String SLASH = "/";
     public static final String DOUBLE_SLASH = "//";
@@ -192,6 +177,9 @@ public class ConnectorConstants {
     public static final String ERROR_T52 = "T52";
     public static final String ERROR_T53 = "T53";
     public static final String ERROR_M50 = "M50";
+
+    // MT Parser Error codes
+    public static final String ERROR_INCORRECT_BLOCKS_FORMAT = "Blocks are not in the correct format";
 
     public static final int ACC_IDENTIFICATION_LENGTH = 35;
     public static final int REFERENCE_LENGTH = 16;

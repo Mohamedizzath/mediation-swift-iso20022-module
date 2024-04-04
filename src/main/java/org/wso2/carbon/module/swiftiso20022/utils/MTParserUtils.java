@@ -19,6 +19,7 @@
 package org.wso2.carbon.module.swiftiso20022.utils;
 
 import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
+import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,28 +36,41 @@ public class MTParserUtils {
      * @param mtMessage     Complete MT messages as string
      * @return              Blocks stored in Map with key as block name(basic-header-block, application-header-block...)
      */
-    public static Map<String, String> getMessageBlocks(String mtMessage) {
+    public static Map<String, String> getMessageBlocks(String mtMessage) throws MTMessageParsingException {
         List<String> blocks = new ArrayList<>();
 
         int start = 0, curr = 0;
         Stack<Character> stack = new Stack<>();
 
         while (curr < mtMessage.length()) {
-            if (mtMessage.charAt(curr) == '{') {
+            if (mtMessage.charAt(curr) == ConnectorConstants.BLOCK_STARTING_CHARACTER) {
+                // If the character is { and stack is empty that means starting of new block
                 if (stack.isEmpty()) {
                     start = curr;
                 }
 
+                // If the character is { and stack is not empty that means nested fields. Ex-user header block
                 stack.push(mtMessage.charAt(curr));
-            } else if (mtMessage.charAt(curr) == '}' && stack.peek() == '{') {
+            } else if (mtMessage.charAt(curr) == ConnectorConstants.BLOCK_ENDING_CHARACTER && !stack.isEmpty()) {
+                // If the character is } and stack top element is { means this is block or field
+                // Removing the { from the stack
                 stack.pop();
 
+                // If stack is empty that means block is found
                 if (stack.isEmpty()) {
                     blocks.add(mtMessage.substring(start, curr + 1));
                 }
+            } else if (mtMessage.charAt(curr) == ConnectorConstants.BLOCK_ENDING_CHARACTER && stack.isEmpty()) {
+                // Unbalanced } characters
+                throw new MTMessageParsingException(ConnectorConstants.ERROR_INCORRECT_BLOCKS_FORMAT);
             }
 
             curr++;
+        }
+
+        if (!stack.isEmpty()) {
+            // Unbalanced { characters
+            throw new MTMessageParsingException(ConnectorConstants.ERROR_INCORRECT_BLOCKS_FORMAT);
         }
 
         Map<String, String> blocksMap = new HashMap<>();

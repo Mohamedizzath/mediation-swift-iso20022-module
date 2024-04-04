@@ -16,22 +16,26 @@
  * under the License.
  */
 
-package org.wso2.carbon.module.swiftiso20022.mtmessageparsers;
+package org.wso2.carbon.module.swiftiso20022.mt.parsers;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
-import org.wso2.carbon.module.swiftiso20022.mtmodels.blocks.ApplicationHeaderBlock;
-import org.wso2.carbon.module.swiftiso20022.mtmodels.blocks.BasicHeaderBlock;
-import org.wso2.carbon.module.swiftiso20022.mtmodels.mtmessages.MTMessage;
+import org.wso2.carbon.module.swiftiso20022.mt.models.blocks.ApplicationHeaderBlock;
+import org.wso2.carbon.module.swiftiso20022.mt.models.blocks.BasicHeaderBlock;
+import org.wso2.carbon.module.swiftiso20022.mt.models.mtmessages.MTMessage;
 import org.wso2.carbon.module.swiftiso20022.utils.MTParserUtils;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 
 /**
  * Parser class for parsing common blocks in MT messages.
  */
 public class MTParser {
+
+    private static final Log log = LogFactory.getLog(MTParser.class);
+
     /**
      * Parser method for parsing basic header block into BasicHeaderBlock object.
      * @param block       Basic header block as a String
@@ -125,21 +129,9 @@ public class MTParser {
     /**
      * Parser method for parsing mt message and constructing MTMessage with common fields.
      * @param blocks            Blocks in MT message as Map
-     * @param messageType       Required MT message format
-     * @return                  Constructed MTMessage object
-     * @param <T>               Type of MT message
-     * @throws Exception
+     * @param message           MT message object
      */
-    public static <T extends MTMessage> T parse(Map<String, String> blocks, Class<T> messageType) throws Exception {
-        T message;
-
-        try {
-            message = messageType.getConstructor().newInstance();
-        } catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException |
-                 InvocationTargetException e) {
-            // Handle the exceptions
-            throw new Exception();
-        }
+    public static void parse(Map<String, String> blocks, MTMessage message) {
 
         if (blocks.containsKey(ConnectorConstants.BASIC_HEADER_BLOCK_KEY)) {
             message.setBasicHeaderBlock(parserBasicHeaderBlock(blocks.get(ConnectorConstants.BASIC_HEADER_BLOCK_KEY)));
@@ -150,6 +142,5 @@ public class MTParser {
                     blocks.get(ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY)
             ));
         }
-        return message;
     }
 }
