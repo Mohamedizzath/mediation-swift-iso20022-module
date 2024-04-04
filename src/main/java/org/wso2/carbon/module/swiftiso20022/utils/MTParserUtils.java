@@ -76,15 +76,15 @@ public class MTParserUtils {
         Map<String, String> blocksMap = new HashMap<>();
 
         for (String block : blocks) {
-            if (block.startsWith(ConnectorConstants.BASIC_HEADER_BLOCK_START)) {
+            if (block.startsWith(ConnectorConstants.BASIC_HEADER_BLOCK_START) && block.length() > 3) {
                 blocksMap.put(ConnectorConstants.BASIC_HEADER_BLOCK_KEY, block.substring(3, block.length() - 1));
-            } else if (block.startsWith(ConnectorConstants.APPLICATION_HEADER_BLOCK_START)) {
+            } else if (block.startsWith(ConnectorConstants.APPLICATION_HEADER_BLOCK_START) && block.length() > 3) {
                 blocksMap.put(ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY, block.substring(3, block.length() - 1));
-            } else if (block.startsWith(ConnectorConstants.USER_HEADER_BLOCK_START)) {
+            } else if (block.startsWith(ConnectorConstants.USER_HEADER_BLOCK_START) && block.length() > 3) {
                 blocksMap.put(ConnectorConstants.USER_HEADER_BLOCK_KEY, block.substring(3, block.length() - 1));
-            } else if (block.startsWith(ConnectorConstants.TEXT_BLOCK_START)) {
+            } else if (block.startsWith(ConnectorConstants.TEXT_BLOCK_START) && block.length() > 5) {
                 blocksMap.put(ConnectorConstants.TEXT_BLOCK_KEY, block.substring(3, block.length() - 2));
-            } else if (block.startsWith(ConnectorConstants.TRAILER_BLOCK_START)) {
+            } else if (block.startsWith(ConnectorConstants.TRAILER_BLOCK_START) && block.length() > 3) {
                 blocksMap.put(ConnectorConstants.TRAILER_BLOCK_KEY, block.substring(3, block.length() - 1));
             }
         }
