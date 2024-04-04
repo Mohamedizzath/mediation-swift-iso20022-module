@@ -106,6 +106,7 @@ public class ConnectorConstants {
     public static final String MISSING_REQUEST_PAYLOAD = "missing_request_payload";
     public static final String INVALID_REQUEST_PAYLOAD = "invalid_request_payload";
     public static final String SERVER_ERROR = "server_error";
+    public static final String RUNTIME_ERROR = "runtime_error";
     public static final String ERROR_VALIDATION_FAILED = "Validation failed";
     public static final String ERROR_MISSING_PAYLOAD = "Missing Request Payload";
     public static final String ERROR_INVALID_PAYLOAD = "Invalid Request Payload";
@@ -147,6 +148,8 @@ public class ConnectorConstants {
     public static final String ERROR_BLOCK_INVALID_FORMAT_LOG = "%s does not have correct sequence of curly brackets";
     public static final String ERROR_INVALID_FIELD_MT_PARSER_LOG = "\"%s\" in %s cannot be parsed";
     public static final String ERROR_INVALID_TAG_MT_PARSER_LOG = "Tag \"%s\" is not allowed in %s";
+    public static final String ERROR_RUNTIME_LOG = "Runtime error occurred when parsing MT message";
+    public static final String ERROR_OBJECT_INSTANTIATING_LOG = "Exception thrown when instantiating a %s object";
 
     //Common Error Codes
     public static final String ERROR_CODE_MISSING_BLOCK = "missing_block";

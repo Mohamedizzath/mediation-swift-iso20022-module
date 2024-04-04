@@ -21,6 +21,7 @@ package org.wso2.carbon.module.swiftiso20022.mtmessageparsers;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
+import org.wso2.carbon.module.swiftiso20022.constants.MT103Constants;
 import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
 import org.wso2.carbon.module.swiftiso20022.mtmodels.blocks.TrailerBlock;
 import org.wso2.carbon.module.swiftiso20022.mtmodels.blocks.UserHeaderBlock;
@@ -78,8 +79,8 @@ public class MTParser {
             mtMessage = mtMessageType.getDeclaredConstructor().newInstance();
         } catch (NoSuchMethodException | SecurityException | InstantiationException
                  | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-            log.error(String.format("Exception thrown when instantiating a %s object", mtMessageType), e);
-            throw new MTMessageParsingException("runtime-error", "Runtime error occurred when parsing");
+            log.error(String.format(ConnectorConstants.ERROR_OBJECT_INSTANTIATING_LOG, mtMessageType), e);
+            throw new MTMessageParsingException(ConnectorConstants.RUNTIME_ERROR, ConnectorConstants.ERROR_RUNTIME_LOG);
         }
 
         // TODO: Add Basic Header Block and Application Header Block parsing
