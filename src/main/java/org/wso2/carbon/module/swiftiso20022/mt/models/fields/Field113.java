@@ -16,18 +16,21 @@
  * under the License.
  */
 
-package org.wso2.carbon.module.swiftiso20022.mtmodels.fields;
+package org.wso2.carbon.module.swiftiso20022.mt.models.fields;
 
 /**
- * Model for validation flag in User Header Block (Block 03).
+ * Model for banking priority in User Header Block (Block 03).
  * <p>
- * example: {119:STP}
+ * example: {113:xxxx}
+ *
+ * @see <a href="https://www.paiementor.com/swift-mt-message-block-3-user-header-description/">
+ *     User Header Block Fields</a>
  */
-public class Field119 implements Field {
+public class Field113 {
 
-    public static final String TAG = "119";
+    public static final String TAG = "113";
 
-    // example: STP
+    // example: xxxx
     private String value;
 
     public String getValue() {
@@ -44,7 +47,7 @@ public class Field119 implements Field {
      * @param value Value to be set.
      * @return object itself
      */
-    public Field119 withValue(String value) {
+    public Field113 withValue(String value) {
         setValue(value);
         return this;
     }

@@ -16,21 +16,21 @@
  * under the License.
  */
 
-package org.wso2.carbon.module.swiftiso20022.mtmodels.blocks;
+package org.wso2.carbon.module.swiftiso20022.mt.models.blocks;
 
-import org.wso2.carbon.module.swiftiso20022.mtmodels.fields.Field103;
-import org.wso2.carbon.module.swiftiso20022.mtmodels.fields.Field106;
-import org.wso2.carbon.module.swiftiso20022.mtmodels.fields.Field108;
-import org.wso2.carbon.module.swiftiso20022.mtmodels.fields.Field111;
-import org.wso2.carbon.module.swiftiso20022.mtmodels.fields.Field113;
-import org.wso2.carbon.module.swiftiso20022.mtmodels.fields.Field115;
-import org.wso2.carbon.module.swiftiso20022.mtmodels.fields.Field119;
-import org.wso2.carbon.module.swiftiso20022.mtmodels.fields.Field121;
-import org.wso2.carbon.module.swiftiso20022.mtmodels.fields.Field165;
-import org.wso2.carbon.module.swiftiso20022.mtmodels.fields.Field423;
-import org.wso2.carbon.module.swiftiso20022.mtmodels.fields.Field424;
-import org.wso2.carbon.module.swiftiso20022.mtmodels.fields.Field433;
-import org.wso2.carbon.module.swiftiso20022.mtmodels.fields.Field434;
+import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field103;
+import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field106;
+import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field108;
+import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field111;
+import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field113;
+import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field115;
+import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field119;
+import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field121;
+import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field165;
+import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field423;
+import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field424;
+import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field433;
+import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field434;
 
 
 /**

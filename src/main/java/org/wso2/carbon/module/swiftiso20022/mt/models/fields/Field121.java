@@ -16,18 +16,21 @@
  * under the License.
  */
 
-package org.wso2.carbon.module.swiftiso20022.mtmodels.fields;
+package org.wso2.carbon.module.swiftiso20022.mt.models.fields;
 
 /**
- * Model for service type identifier in User Header Block (Block 03).
+ * Model for unique end to end reference in User Header Block (Block 03).
+ * <p>
+ * example: {121:180f1e65-90e0-44d5-a49a-92b55eb3025f}
  *
- * example: {111:243}
+ * @see <a href="https://www.paiementor.com/swift-mt-message-block-3-user-header-description/">
+ *     User Header Block Fields</a>
  */
-public class Field111 implements Field {
+public class Field121 {
 
-    public static final String TAG = "111";
+    public static final String TAG = "121";
 
-    // example: 243
+    // example: 180f1e65-90e0-44d5-a49a-92b55eb3025f
     private String value;
 
     public String getValue() {
@@ -44,7 +47,7 @@ public class Field111 implements Field {
      * @param value Value to be set.
      * @return object itself
      */
-    public Field111 withValue(String value) {
+    public Field121 withValue(String value) {
         setValue(value);
         return this;
     }

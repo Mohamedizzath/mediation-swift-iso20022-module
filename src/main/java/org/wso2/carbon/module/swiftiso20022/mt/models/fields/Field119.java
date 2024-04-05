@@ -16,18 +16,21 @@
  * under the License.
  */
 
-package org.wso2.carbon.module.swiftiso20022.mtmodels.fields;
+package org.wso2.carbon.module.swiftiso20022.mt.models.fields;
 
 /**
- * Model for related reference in User Header Block (Block 03).
+ * Model for validation flag in User Header Block (Block 03).
  * <p>
- * example: {424:PQAB1234}
+ * example: {119:STP}
+ *
+ * @see <a href="https://www.paiementor.com/swift-mt-message-block-3-user-header-description/">
+ *     User Header Block Fields</a>
  */
-public class Field424 implements Field {
+public class Field119 {
 
-    public static final String TAG = "424";
+    public static final String TAG = "119";
 
-    // example: PQAB1234...
+    // example: STP
     private String value;
 
     public String getValue() {
@@ -44,7 +47,7 @@ public class Field424 implements Field {
      * @param value Value to be set.
      * @return object itself
      */
-    public Field424 withValue(String value) {
+    public Field119 withValue(String value) {
         setValue(value);
         return this;
     }

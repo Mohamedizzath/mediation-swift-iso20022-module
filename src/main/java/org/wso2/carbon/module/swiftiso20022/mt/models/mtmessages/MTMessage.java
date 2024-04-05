@@ -16,10 +16,10 @@
  * under the License.
  */
 
-package org.wso2.carbon.module.swiftiso20022.mtmodels.mtmessages;
+package org.wso2.carbon.module.swiftiso20022.mt.models.mtmessages;
 
-import org.wso2.carbon.module.swiftiso20022.mtmodels.blocks.TrailerBlock;
-import org.wso2.carbon.module.swiftiso20022.mtmodels.blocks.UserHeaderBlock;
+import org.wso2.carbon.module.swiftiso20022.mt.models.blocks.TrailerBlock;
+import org.wso2.carbon.module.swiftiso20022.mt.models.blocks.UserHeaderBlock;
 
 /**
  * Model with common blocks of MT messages.

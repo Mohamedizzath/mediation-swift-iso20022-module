@@ -16,30 +16,45 @@
  * under the License.
  */
 
-package org.wso2.carbon.module.swiftiso20022.mtmodels.fields;
+package org.wso2.carbon.module.swiftiso20022.mt.models.fields;
 
 /**
- * Model for message input reference in User Header Block (Block 03).
+ * Model for possible duplicate message in Trailer Block (Block 05).
  * <p>
- * format: (Date)(LT Address)(Session Number)(Sequence Number)
- * example: {106:120811BANKBEBBAXXX2222123456}
+ * format: (Time)(Date)(LT Identifier)(Session Number)(Sequence Number)
+ * example: {PDM:1213120811BANKFRPPAXXX2222123456}
+ *
+ * @see <a href="https://www.paiementor.com/swift-mt-message-block-5-trailers-description/">
+ *     Trailer Block Fields</a>
  */
-public class Field106 implements Field {
+public class FieldPDM {
 
-    public static final String TAG = "106";
+    public static final String TAG = "PDM";
+
+    // format: HHMM
+    // example: 1213
+    private String time;
 
     // format: YYMMDD
     // example: 120811
     private String date;
 
-    // example: BANKBEBBAXXX
-    private String logicalTerminalAddress;
+    // example: BANKFRPPAXXX
+    private String ltIdentifier;
 
     // example: 2222
     private String sessionNumber;
 
     // example: 123456
     private String sequenceNumber;
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
 
     public String getDate() {
         return date;
@@ -49,12 +64,12 @@ public class Field106 implements Field {
         this.date = date;
     }
 
-    public String getLogicalTerminalAddress() {
-        return logicalTerminalAddress;
+    public String getLtIdentifier() {
+        return ltIdentifier;
     }
 
-    public void setLogicalTerminalAddress(String logicalTerminalAddress) {
-        this.logicalTerminalAddress = logicalTerminalAddress;
+    public void setLtIdentifier(String ltIdentifier) {
+        this.ltIdentifier = ltIdentifier;
     }
 
     public String getSessionNumber() {
@@ -74,45 +89,56 @@ public class Field106 implements Field {
     }
 
     /**
+     * Method to set time of the field and return the instance.
+     *
+     * @param time Time value to be set.
+     * @return object itself
+     */
+    public FieldPDM withTime(String time) {
+        setTime(time);
+        return this;
+    }
+
+    /**
      * Method to set date of the field and return the instance.
      *
      * @param date Date value to be set.
      * @return object itself
      */
-    public Field106 withDate(String date) {
+    public FieldPDM withDate(String date) {
         setDate(date);
         return this;
     }
 
     /**
-     * Method to set logical terminal address of the field and return the instance.
+     * Method to set logical terminal identifier of the field and return the instance.
      *
-     * @param logicalTerminalAddress Logical terminal address value to be set.
+     * @param ltIdentifier Logical terminal identifier value to be set.
      * @return object itself
      */
-    public Field106 withLogicalTerminalAddress(String logicalTerminalAddress) {
-        setLogicalTerminalAddress(logicalTerminalAddress);
+    public FieldPDM withLtIdentifier(String ltIdentifier) {
+        setLtIdentifier(ltIdentifier);
         return this;
     }
 
     /**
      * Method to set session number of the field and return the instance.
      *
-     * @param sessionNumber Session number Value to be set.
+     * @param sessionNumber Session number value to be set.
      * @return object itself
      */
-    public Field106 withSessionNumber(String sessionNumber) {
+    public FieldPDM withSessionNumber(String sessionNumber) {
         setSessionNumber(sessionNumber);
         return this;
     }
 
     /**
-     * Method to set sequence number value of the field and return the instance.
+     * Method to set sequence number of the field and return the instance.
      *
      * @param sequenceNumber Sequence number value to be set.
      * @return object itself
      */
-    public Field106 withSequenceNumber(String sequenceNumber) {
+    public FieldPDM withSequenceNumber(String sequenceNumber) {
         setSequenceNumber(sequenceNumber);
         return this;
     }

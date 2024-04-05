@@ -23,8 +23,8 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.testng.annotations.Test;
 import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
 import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
-import org.wso2.carbon.module.swiftiso20022.mtmessageparsers.MTParser;
-import org.wso2.carbon.module.swiftiso20022.mtmodels.mtmessages.MTMessage;
+import org.wso2.carbon.module.swiftiso20022.mt.models.mtmessages.MTMessage;
+import org.wso2.carbon.module.swiftiso20022.mt.parsers.MTParser;
 import org.wso2.carbon.module.swiftiso20022.utils.ConnectorUtils;
 import org.wso2.carbon.module.swiftiso20022.utils.MTParserTestConstants;
 
@@ -40,20 +40,21 @@ public class MTParserTests {
     @Test(dataProvider = "validMTMessageMapDataProvider", dataProviderClass = MTParserTestConstants.class)
     public void testMTParserParseMethod(Map<String, String> blocks) throws MTMessageParsingException {
 
-        MTParser.parse(blocks, MTMessage.class);
+        MTParser.parse(blocks, new MTMessage());
     }
 
     @Test(expectedExceptions = MTMessageParsingException.class, dataProvider = "invalidUserHeaderBlockDataProvider",
             dataProviderClass = MTParserTestConstants.class)
     public void testParseUserHeaderBlock(String userHeaderBlockString) throws MTMessageParsingException {
 
-        MTParser.parse(Map.of(ConnectorConstants.USER_HEADER_BLOCK_KEY, userHeaderBlockString), MTMessage.class);
+        MTParser.parse(Map.of(ConnectorConstants.USER_HEADER_BLOCK_KEY, userHeaderBlockString), new MTMessage());
     }
 
     @Test(expectedExceptions = MTMessageParsingException.class, dataProvider = "invalidTrailerBlockDataProvider",
             dataProviderClass = MTParserTestConstants.class)
     public void testParseTrailerBlock(String trailerBlockString) throws MTMessageParsingException {
 
-        MTParser.parse(Map.of(ConnectorConstants.TRAILER_BLOCK_KEY, trailerBlockString), MTMessage.class);
+        MTParser.parse(Map.of(ConnectorConstants.TRAILER_BLOCK_KEY, trailerBlockString), new MTMessage());
     }
+
 }

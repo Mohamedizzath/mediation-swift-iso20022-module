@@ -16,24 +16,32 @@
  * under the License.
  */
 
-package org.wso2.carbon.module.swiftiso20022.mtmodels.fields;
+package org.wso2.carbon.module.swiftiso20022.mt.models.fields;
+
 
 /**
- * Model for system originated message in Trailer Block (Block 05).
+ * Model for message reference in Trailer Block (Block 05).
  * <p>
- * format: (Time)(Date)(LT Identifier)(Session Number)(Sequence Number)
- * example: {SYS:1454120811BANKFRPPAXXX2222123456}
+ * format: (Sent Date)(Time)(Date)(LT Identifier)(Session Number)(Sequence Number)
+ * example: {MRF:1806271539180626BANKFRPPAXXX2222123456}
+ *
+ * @see <a href="https://www.paiementor.com/swift-mt-message-block-5-trailers-description/">
+ *     Trailer Block Fields</a>
  */
-public class FieldSYS implements Field {
+public class FieldMRF {
 
-    public static final String TAG = "SYS";
+    public static final String TAG = "MRF";
+
+    // format: YYMMDD
+    // example: 180627
+    private String sentDate;
 
     // format: HHMM
-    // example: 1454
+    // example: 1539
     private String time;
 
     // format: YYMMDD
-    // example: 120811
+    // example: 180626
     private String date;
 
     // example: BANKFRPPAXXX
@@ -44,6 +52,14 @@ public class FieldSYS implements Field {
 
     // example: 123456
     private String sequenceNumber;
+
+    public String getSentDate() {
+        return sentDate;
+    }
+
+    public void setSentDate(String sentDate) {
+        this.sentDate = sentDate;
+    }
 
     public String getTime() {
         return time;
@@ -86,12 +102,23 @@ public class FieldSYS implements Field {
     }
 
     /**
+     * Method to set sent date of the field and return the instance.
+     *
+     * @param sentDate Sent date value to be set.
+     * @return object itself
+     */
+    public FieldMRF withSentDate(String sentDate) {
+        setSentDate(sentDate);
+        return this;
+    }
+
+    /**
      * Method to set time of the field and return the instance.
      *
      * @param time Time value to be set.
      * @return object itself
      */
-    public FieldSYS withTime(String time) {
+    public FieldMRF withTime(String time) {
         setTime(time);
         return this;
     }
@@ -102,7 +129,7 @@ public class FieldSYS implements Field {
      * @param date Date value to be set.
      * @return object itself
      */
-    public FieldSYS withDate(String date) {
+    public FieldMRF withDate(String date) {
         setDate(date);
         return this;
     }
@@ -113,7 +140,7 @@ public class FieldSYS implements Field {
      * @param ltIdentifier Logical terminal identifier value to be set.
      * @return object itself
      */
-    public FieldSYS withLtIdentifier(String ltIdentifier) {
+    public FieldMRF withLtIdentifier(String ltIdentifier) {
         setLtIdentifier(ltIdentifier);
         return this;
     }
@@ -124,7 +151,7 @@ public class FieldSYS implements Field {
      * @param sessionNumber Session number value to be set.
      * @return object itself
      */
-    public FieldSYS withSessionNumber(String sessionNumber) {
+    public FieldMRF withSessionNumber(String sessionNumber) {
         setSessionNumber(sessionNumber);
         return this;
     }
@@ -135,7 +162,7 @@ public class FieldSYS implements Field {
      * @param sequenceNumber Sequence number value to be set.
      * @return object itself
      */
-    public FieldSYS withSequenceNumber(String sequenceNumber) {
+    public FieldMRF withSequenceNumber(String sequenceNumber) {
         setSequenceNumber(sequenceNumber);
         return this;
     }

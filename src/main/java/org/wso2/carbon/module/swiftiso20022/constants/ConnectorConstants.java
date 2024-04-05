@@ -33,7 +33,6 @@ public class ConnectorConstants {
     public static final String MT_REGEX_PATTERN = "[0-9a-zA-Z*#+.,()/-?:'-]+";
     public static final String NUMBER_REGEX_PATTERN = "[0-9]+";
     public static final String AMOUNT_REGEX_PATTERN = "^\\d{1,3}(,\\d{3})*(\\.\\d+)?$";
-    public static final String CURLY_BRACKETS_MATCHING_PATTERN = "[{}]";
     public static final String DEBIT = "D";
     public static final String CREDIT = "C";
     public static final String REV_DEBIT = "D";
@@ -145,11 +144,6 @@ public class ConnectorConstants {
     public static final String ERROR_111_BEFORE_121 =
             "Service Type Identifier cannot appear before field End To End Reference";
     public static final String ERROR_BLOCK_INVALID_FORMAT = "%s format is invalid";
-    public static final String ERROR_BLOCK_INVALID_FORMAT_LOG = "%s does not have correct sequence of curly brackets";
-    public static final String ERROR_INVALID_FIELD_MT_PARSER_LOG = "\"%s\" in %s cannot be parsed";
-    public static final String ERROR_INVALID_TAG_MT_PARSER_LOG = "Tag \"%s\" is not allowed in %s";
-    public static final String ERROR_RUNTIME_LOG = "Runtime error occurred when parsing MT message";
-    public static final String ERROR_OBJECT_INSTANTIATING_LOG = "Exception thrown when instantiating a %s object";
 
     //Common Error Codes
     public static final String ERROR_CODE_MISSING_BLOCK = "missing_block";

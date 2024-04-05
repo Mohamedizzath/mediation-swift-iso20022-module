@@ -16,20 +16,23 @@
  * under the License.
  */
 
-package org.wso2.carbon.module.swiftiso20022.mtmodels.fields;
+package org.wso2.carbon.module.swiftiso20022.mt.models.fields;
 
 /**
- * Model for possible duplicate message in Trailer Block (Block 05).
+ * Model for possible duplicate emission in Trailer Block (Block 05).
  * <p>
  * format: (Time)(Date)(LT Identifier)(Session Number)(Sequence Number)
- * example: {PDM:1213120811BANKFRPPAXXX2222123456}
+ * example: {PDE:1348120811BANKFRPPAXXX2222123456}
+ *
+ * @see <a href="https://www.paiementor.com/swift-mt-message-block-5-trailers-description/">
+ *     Trailer Block Fields</a>
  */
-public class FieldPDM implements Field {
+public class FieldPDE {
 
-    public static final String TAG = "PDM";
+    public static final String TAG = "PDE";
 
     // format: HHMM
-    // example: 1213
+    // example: 1348
     private String time;
 
     // format: YYMMDD
@@ -49,8 +52,9 @@ public class FieldPDM implements Field {
         return time;
     }
 
-    public void setTime(String time) {
+    public FieldPDE setTime(String time) {
         this.time = time;
+        return this;
     }
 
     public String getDate() {
@@ -91,7 +95,7 @@ public class FieldPDM implements Field {
      * @param time Time value to be set.
      * @return object itself
      */
-    public FieldPDM withTime(String time) {
+    public FieldPDE withTime(String time) {
         setTime(time);
         return this;
     }
@@ -102,7 +106,7 @@ public class FieldPDM implements Field {
      * @param date Date value to be set.
      * @return object itself
      */
-    public FieldPDM withDate(String date) {
+    public FieldPDE withDate(String date) {
         setDate(date);
         return this;
     }
@@ -113,7 +117,7 @@ public class FieldPDM implements Field {
      * @param ltIdentifier Logical terminal identifier value to be set.
      * @return object itself
      */
-    public FieldPDM withLtIdentifier(String ltIdentifier) {
+    public FieldPDE withLtIdentifier(String ltIdentifier) {
         setLtIdentifier(ltIdentifier);
         return this;
     }
@@ -124,7 +128,7 @@ public class FieldPDM implements Field {
      * @param sessionNumber Session number value to be set.
      * @return object itself
      */
-    public FieldPDM withSessionNumber(String sessionNumber) {
+    public FieldPDE withSessionNumber(String sessionNumber) {
         setSessionNumber(sessionNumber);
         return this;
     }
@@ -135,7 +139,7 @@ public class FieldPDM implements Field {
      * @param sequenceNumber Sequence number value to be set.
      * @return object itself
      */
-    public FieldPDM withSequenceNumber(String sequenceNumber) {
+    public FieldPDE withSequenceNumber(String sequenceNumber) {
         setSequenceNumber(sequenceNumber);
         return this;
     }

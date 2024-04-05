@@ -16,15 +16,13 @@
  * under the License.
  */
 
-package org.wso2.carbon.module.swiftiso20022.mtmodels.blocks;
+package org.wso2.carbon.module.swiftiso20022.mt.models.blocks;
 
-import org.wso2.carbon.module.swiftiso20022.mtmodels.fields.FieldCHK;
-import org.wso2.carbon.module.swiftiso20022.mtmodels.fields.FieldDLM;
-import org.wso2.carbon.module.swiftiso20022.mtmodels.fields.FieldMRF;
-import org.wso2.carbon.module.swiftiso20022.mtmodels.fields.FieldPDE;
-import org.wso2.carbon.module.swiftiso20022.mtmodels.fields.FieldPDM;
-import org.wso2.carbon.module.swiftiso20022.mtmodels.fields.FieldSYS;
-import org.wso2.carbon.module.swiftiso20022.mtmodels.fields.FieldTNG;
+import org.wso2.carbon.module.swiftiso20022.mt.models.fields.FieldCHK;
+import org.wso2.carbon.module.swiftiso20022.mt.models.fields.FieldMRF;
+import org.wso2.carbon.module.swiftiso20022.mt.models.fields.FieldPDE;
+import org.wso2.carbon.module.swiftiso20022.mt.models.fields.FieldPDM;
+import org.wso2.carbon.module.swiftiso20022.mt.models.fields.FieldSYS;
 
 /**
  * Model for Trailer Block (Block 05).
@@ -32,12 +30,12 @@ import org.wso2.carbon.module.swiftiso20022.mtmodels.fields.FieldTNG;
 public class TrailerBlock {
 
     private FieldCHK checksum;
-    private FieldDLM delayedMessage;
+    private boolean delayedMessage = false;
     private FieldMRF messageReference;
     private FieldPDE possibleDuplicateEmission;
     private FieldPDM possibleDuplicateMessage;
     private FieldSYS systemOriginatedMessage;
-    private FieldTNG testAndTrainingMessage;
+    private boolean testAndTrainingMessage = false;
 
     public FieldCHK getChecksum() {
         return checksum;
@@ -47,11 +45,11 @@ public class TrailerBlock {
         this.checksum = checksum;
     }
 
-    public FieldDLM getDelayedMessage() {
+    public boolean isDelayedMessage() {
         return delayedMessage;
     }
 
-    public void setDelayedMessage(FieldDLM delayedMessage) {
+    public void setDelayedMessage(boolean delayedMessage) {
         this.delayedMessage = delayedMessage;
     }
 
@@ -87,11 +85,11 @@ public class TrailerBlock {
         this.systemOriginatedMessage = systemOriginatedMessage;
     }
 
-    public FieldTNG getTestAndTrainingMessage() {
+    public boolean isTestAndTrainingMessage() {
         return testAndTrainingMessage;
     }
 
-    public void setTestAndTrainingMessage(FieldTNG testAndTrainingMessage) {
+    public void setTestAndTrainingMessage(boolean testAndTrainingMessage) {
         this.testAndTrainingMessage = testAndTrainingMessage;
     }
 }

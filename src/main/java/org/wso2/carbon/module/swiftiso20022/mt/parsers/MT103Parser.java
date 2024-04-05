@@ -16,16 +16,20 @@
  * under the License.
  */
 
-package org.wso2.carbon.module.swiftiso20022.mtmodels.fields;
+package org.wso2.carbon.module.swiftiso20022.mt.parsers;
+
+import org.wso2.carbon.module.swiftiso20022.mt.models.mtmessages.MT103Message;
 
 /**
- * Model for test and training in Trailer Block (Block 05).
- * <p>
- * Value for this will always be an empty string
- * example: {TNG:}
+ * Parser class for MT103 Message.
  */
-public class FieldTNG implements Field {
+public class MT103Parser {
 
-    public static final String TAG = "TNG";
+    public static MT103Message parse(String mt103message) {
 
+        // TODO: use utils method to break mt message to a map
+        // TODO: pass the map to MTParser.parse() and get the model
+        // TODO: implement parsing logic for the text block and set the text block
+        return null;
+    }
 }

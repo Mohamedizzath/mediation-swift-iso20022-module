@@ -16,20 +16,12 @@
  * under the License.
  */
 
-package org.wso2.carbon.module.swiftiso20022.mtmessageparsers;
-
-import org.wso2.carbon.module.swiftiso20022.mtmodels.mtmessages.MT103Message;
+package org.wso2.carbon.module.swiftiso20022.mt.models.mtmessages;
 
 /**
- * Parser class for MT103 Message.
+ * Model of MT103 Message.
  */
-public class MT103Parser {
+public class MT103Message extends MTMessage {
 
-    public static MT103Message parse(String mt103message) {
-
-        // TODO: use utils method to break mt message to a map
-        // TODO: pass the map to MTParser.parse() and get the model
-        // TODO: implement parsing logic for the text block and set the text block
-        return null;
-    }
+    // TODO: add text block fields
 }

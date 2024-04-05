@@ -16,15 +16,18 @@
  * under the License.
  */
 
-package org.wso2.carbon.module.swiftiso20022.mtmodels.fields;
+package org.wso2.carbon.module.swiftiso20022.mt.models.fields;
 
 
 /**
  * Model for checksum in Trailer Block (Block 05).
  * <p>
  * example: {CHK:123456789ABC}
+ *
+ * @see <a href="https://www.paiementor.com/swift-mt-message-block-5-trailers-description/">
+ *     Trailer Block Fields</a>
  */
-public class FieldCHK implements Field {
+public class FieldCHK {
 
     public static final String TAG = "CHK";
 

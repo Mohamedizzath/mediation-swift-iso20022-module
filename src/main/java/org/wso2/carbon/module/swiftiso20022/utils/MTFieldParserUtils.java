@@ -19,25 +19,26 @@
 package org.wso2.carbon.module.swiftiso20022.utils;
 
 import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
+import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
 import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
-import org.wso2.carbon.module.swiftiso20022.mtmodels.fields.Field103;
-import org.wso2.carbon.module.swiftiso20022.mtmodels.fields.Field106;
-import org.wso2.carbon.module.swiftiso20022.mtmodels.fields.Field108;
-import org.wso2.carbon.module.swiftiso20022.mtmodels.fields.Field111;
-import org.wso2.carbon.module.swiftiso20022.mtmodels.fields.Field113;
-import org.wso2.carbon.module.swiftiso20022.mtmodels.fields.Field115;
-import org.wso2.carbon.module.swiftiso20022.mtmodels.fields.Field119;
-import org.wso2.carbon.module.swiftiso20022.mtmodels.fields.Field121;
-import org.wso2.carbon.module.swiftiso20022.mtmodels.fields.Field165;
-import org.wso2.carbon.module.swiftiso20022.mtmodels.fields.Field423;
-import org.wso2.carbon.module.swiftiso20022.mtmodels.fields.Field424;
-import org.wso2.carbon.module.swiftiso20022.mtmodels.fields.Field433;
-import org.wso2.carbon.module.swiftiso20022.mtmodels.fields.Field434;
-import org.wso2.carbon.module.swiftiso20022.mtmodels.fields.FieldCHK;
-import org.wso2.carbon.module.swiftiso20022.mtmodels.fields.FieldMRF;
-import org.wso2.carbon.module.swiftiso20022.mtmodels.fields.FieldPDE;
-import org.wso2.carbon.module.swiftiso20022.mtmodels.fields.FieldPDM;
-import org.wso2.carbon.module.swiftiso20022.mtmodels.fields.FieldSYS;
+import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field103;
+import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field106;
+import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field108;
+import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field111;
+import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field113;
+import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field115;
+import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field119;
+import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field121;
+import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field165;
+import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field423;
+import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field424;
+import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field433;
+import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field434;
+import org.wso2.carbon.module.swiftiso20022.mt.models.fields.FieldCHK;
+import org.wso2.carbon.module.swiftiso20022.mt.models.fields.FieldMRF;
+import org.wso2.carbon.module.swiftiso20022.mt.models.fields.FieldPDE;
+import org.wso2.carbon.module.swiftiso20022.mt.models.fields.FieldPDM;
+import org.wso2.carbon.module.swiftiso20022.mt.models.fields.FieldSYS;
 
 import java.util.Arrays;
 
@@ -65,18 +66,16 @@ public class MTFieldParserUtils {
      */
     public static Field106 parseField106(String field106String) {
 
-        // initiate stringBuilder object to consume field106String
-        StringBuilder field106StringBuilder = new StringBuilder(field106String);
-
         // extract and assign values from field106String
         return new Field106()
-                .withDate(extractSubstringByIndex(field106StringBuilder, ConnectorConstants.DATE_LENGTH))
-                .withLogicalTerminalAddress(extractSubstringByIndex(
-                        field106StringBuilder, ConnectorConstants.LOGICAL_TERMINAL_ADDRESS_LENGTH))
-                .withSessionNumber(extractSubstringByIndex(
-                        field106StringBuilder, ConnectorConstants.SESSION_NUMBER_LENGTH))
-                .withSequenceNumber(extractSubstringByIndex(
-                        field106StringBuilder, ConnectorConstants.SEQUENCE_NUMBER_LENGTH));
+                .withDate(field106String.substring(
+                        MTParserConstants.FIELD_106_DATE_START, MTParserConstants.FIELD_106_DATE_END))
+                .withLogicalTerminalAddress(field106String.substring(
+                        MTParserConstants.FIELD_106_LT_ADDRESS_START, MTParserConstants.FIELD_106_LT_ADDRESS_END))
+                .withSessionNumber(field106String.substring(
+                        MTParserConstants.FIELD_106_SESSION_NO_START, MTParserConstants.FIELD_106_SESSION_NO_END))
+                .withSequenceNumber(field106String.substring(
+                        MTParserConstants.FIELD_106_SEQUENCE_NO_START));
     }
 
     /**
@@ -120,18 +119,16 @@ public class MTFieldParserUtils {
      */
     public static Field115 parseField115(String field115String) {
 
-        // initiate stringBuilder object to consume field106String
-        StringBuilder field115StringBuilder = new StringBuilder(field115String);
-
         // extract and assign values from field115String
         return new Field115()
-                .withCreditingTime(extractSubstringByIndex(
-                        field115StringBuilder, ConnectorConstants.HHMMSS_TIME_LENGTH))
-                .withDebitingTime(extractSubstringByIndex(
-                        field115StringBuilder, ConnectorConstants.HHMMSS_TIME_LENGTH))
-                .withCountryCode(extractSubstringByIndex(
-                        field115StringBuilder, ConnectorConstants.COUNTRY_CODE_LENGTH))
-                .withReference(extractSubstringByIndex(field115StringBuilder, ConnectorConstants.REFERENCE_LENGTH));
+                .withCreditingTime(field115String.substring(
+                        MTParserConstants.FIELD_115_CREDITING_TIME_START,
+                        MTParserConstants.FIELD_115_CREDITING_TIME_END))
+                .withDebitingTime(field115String.substring(
+                        MTParserConstants.FIELD_115_DEBITING_TIME_START, MTParserConstants.FIELD_115_DEBITING_TIME_END))
+                .withCountryCode(field115String.substring(
+                        MTParserConstants.FIELD_115_COUNTRY_CODE_START, MTParserConstants.FIELD_115_COUNTRY_CODE_END))
+                .withReference(field115String.substring(MTParserConstants.FIELD_115_REFERENCE_START));
     }
 
     /**
@@ -165,12 +162,12 @@ public class MTFieldParserUtils {
     public static Field165 parseField165(String field165String) throws MTMessageParsingException {
 
         // separate values by "/"
-        String[] separatedValues = splitBySlash(field165String, Field165.TAG);
+        String[] separatedStringValues = splitBySlash(field165String, Field165.TAG);
 
         // assign separated values
         return new Field165()
-                .withCode(separatedValues.length > 0 ? separatedValues[0] : null)
-                .withInformation(separatedValues.length > 1 ? separatedValues[1] : null);
+                .withCode(separatedStringValues.length > 0 ? separatedStringValues[0] : null)
+                .withInformation(separatedStringValues.length > 1 ? separatedStringValues[1] : null);
     }
 
     /**
@@ -181,15 +178,11 @@ public class MTFieldParserUtils {
      */
     public static Field423 parseField423(String field423String) {
 
-        // initiate stringBuilder object to consume field423String
-        StringBuilder field423StringBuilder = new StringBuilder(field423String);
-
         // extract and assign values from field423String
         return new Field423()
-                .withDate(extractSubstringByIndex(
-                        field423StringBuilder, ConnectorConstants.DATE_LENGTH))
-                .withTime(extractSubstringByIndex(
-                        field423StringBuilder, ConnectorConstants.HHMMSSSS_TIME_LENGTH));
+                .withDate(field423String.substring(
+                        MTParserConstants.FIELD_423_DATE_START, MTParserConstants.FIELD_423_DATE_END))
+                .withTime(field423String.substring(MTParserConstants.FIELD_423_TIME_START));
     }
 
     /**
@@ -212,12 +205,12 @@ public class MTFieldParserUtils {
     public static Field433 parseField433(String field433String) throws MTMessageParsingException {
 
         // separate values by "/"
-        String[] separatedValue = splitBySlash(field433String, Field433.TAG);
+        String[] separatedStringValues = splitBySlash(field433String, Field433.TAG);
 
         // assign separated values
         return new Field433()
-                .withCode(separatedValue.length > 0 ? separatedValue[0] : null)
-                .withAdditionalInformation(separatedValue.length > 1 ? separatedValue[1] : null);
+                .withCode(separatedStringValues.length > 0 ? separatedStringValues[0] : null)
+                .withAdditionalInformation(separatedStringValues.length > 1 ? separatedStringValues[1] : null);
     }
 
     /**
@@ -229,12 +222,12 @@ public class MTFieldParserUtils {
     public static Field434 parseField434(String field434String) throws MTMessageParsingException {
 
         // separate values by "/"
-        String[] separatedValue = splitBySlash(field434String, Field434.TAG);
+        String[] separatedStringValues = splitBySlash(field434String, Field434.TAG);
 
         // assign separated values
         return new Field434()
-                .withCode(separatedValue.length > 0 ? separatedValue[0] : null)
-                .withAdditionalInformation(separatedValue.length > 1 ? separatedValue[1] : null);
+                .withCode(separatedStringValues.length > 0 ? separatedStringValues[0] : null)
+                .withAdditionalInformation(separatedStringValues.length > 1 ? separatedStringValues[1] : null);
     }
 
     /**
@@ -256,20 +249,19 @@ public class MTFieldParserUtils {
      */
     public static FieldMRF parseFieldMRF(String fieldMRFString) {
 
-        // initiate stringBuilder object to consume fieldMRFString
-        StringBuilder fieldMRFStringBuilder = new StringBuilder(fieldMRFString);
-
         // extract and assign values from fieldMRFString
         return new FieldMRF()
-                .withSentDate(extractSubstringByIndex(fieldMRFStringBuilder, ConnectorConstants.DATE_LENGTH))
-                .withTime(extractSubstringByIndex(fieldMRFStringBuilder, ConnectorConstants.TIME_LENGTH))
-                .withDate(extractSubstringByIndex(fieldMRFStringBuilder, ConnectorConstants.DATE_LENGTH))
-                .withLtIdentifier(extractSubstringByIndex(
-                        fieldMRFStringBuilder, ConnectorConstants.LOGICAL_TERMINAL_ADDRESS_LENGTH))
-                .withSessionNumber(extractSubstringByIndex(
-                        fieldMRFStringBuilder, ConnectorConstants.SESSION_NUMBER_LENGTH))
-                .withSequenceNumber(extractSubstringByIndex(
-                        fieldMRFStringBuilder, ConnectorConstants.SEQUENCE_NUMBER_LENGTH));
+                .withSentDate(fieldMRFString.substring(
+                        MTParserConstants.FIELD_MRF_SENT_DATE_START, MTParserConstants.FIELD_MRF_SENT_DATE_END))
+                .withTime(fieldMRFString.substring(
+                        MTParserConstants.FIELD_MRF_TIME_START, MTParserConstants.FIELD_MRF_TIME_END))
+                .withDate(fieldMRFString.substring(
+                        MTParserConstants.FIELD_MRF_DATE_START, MTParserConstants.FIELD_MRF_DATE_END))
+                .withLtIdentifier(fieldMRFString.substring(
+                        MTParserConstants.FIELD_MRF_LT_ADDRESS_START, MTParserConstants.FIELD_MRF_LT_ADDRESS_END))
+                .withSessionNumber(fieldMRFString.substring(
+                        MTParserConstants.FIELD_MRF_SESSION_NO_START, MTParserConstants.FIELD_MRF_SESSION_NO_END))
+                .withSequenceNumber(fieldMRFString.substring(MTParserConstants.FIELD_MRF_SEQUENCE_NO_START));
     }
 
     /**
@@ -280,19 +272,17 @@ public class MTFieldParserUtils {
      */
     public static FieldPDE parseFieldPDE(String fieldPDEString) {
 
-        // initiate stringBuilder object to consume fieldPDEString
-        StringBuilder fieldPDEStringBuilder = new StringBuilder(fieldPDEString);
-
         // extract and assign values from fieldPDEString
         return new FieldPDE()
-                .withTime(extractSubstringByIndex(fieldPDEStringBuilder, ConnectorConstants.TIME_LENGTH))
-                .withDate(extractSubstringByIndex(fieldPDEStringBuilder, ConnectorConstants.DATE_LENGTH))
-                .withLtIdentifier(extractSubstringByIndex(
-                        fieldPDEStringBuilder, ConnectorConstants.LOGICAL_TERMINAL_ADDRESS_LENGTH))
-                .withSessionNumber(extractSubstringByIndex(
-                        fieldPDEStringBuilder, ConnectorConstants.SESSION_NUMBER_LENGTH))
-                .withSequenceNumber(extractSubstringByIndex(
-                        fieldPDEStringBuilder, ConnectorConstants.SEQUENCE_NUMBER_LENGTH));
+                .withTime(fieldPDEString.substring(
+                        MTParserConstants.FIELD_PDE_TIME_START, MTParserConstants.FIELD_PDE_TIME_END))
+                .withDate(fieldPDEString.substring(
+                        MTParserConstants.FIELD_PDE_DATE_START, MTParserConstants.FIELD_PDE_DATE_END))
+                .withLtIdentifier(fieldPDEString.substring(
+                        MTParserConstants.FIELD_PDE_LT_ADDRESS_START, MTParserConstants.FIELD_PDE_LT_ADDRESS_END))
+                .withSessionNumber(fieldPDEString.substring(
+                        MTParserConstants.FIELD_PDE_SESSION_NO_START, MTParserConstants.FIELD_PDE_SESSION_NO_END))
+                .withSequenceNumber(fieldPDEString.substring(MTParserConstants.FIELD_PDE_SEQUENCE_NO_START));
     }
 
     /**
@@ -303,19 +293,17 @@ public class MTFieldParserUtils {
      */
     public static FieldPDM parseFieldPDM(String fieldPDMString) {
 
-        // initiate stringBuilder object to consume fieldPDMString
-        StringBuilder fieldPDMStringBuilder = new StringBuilder(fieldPDMString);
-
         // extract and assign values from fieldPDMString
         return new FieldPDM()
-                .withTime(extractSubstringByIndex(fieldPDMStringBuilder, ConnectorConstants.TIME_LENGTH))
-                .withDate(extractSubstringByIndex(fieldPDMStringBuilder, ConnectorConstants.DATE_LENGTH))
-                .withLtIdentifier(extractSubstringByIndex(
-                        fieldPDMStringBuilder, ConnectorConstants.LOGICAL_TERMINAL_ADDRESS_LENGTH))
-                .withSessionNumber(extractSubstringByIndex(
-                        fieldPDMStringBuilder, ConnectorConstants.SESSION_NUMBER_LENGTH))
-                .withSequenceNumber(extractSubstringByIndex(
-                        fieldPDMStringBuilder, ConnectorConstants.SEQUENCE_NUMBER_LENGTH));
+                .withTime(fieldPDMString.substring(
+                        MTParserConstants.FIELD_PDM_TIME_START, MTParserConstants.FIELD_PDM_TIME_END))
+                .withDate(fieldPDMString.substring(
+                        MTParserConstants.FIELD_PDM_DATE_START, MTParserConstants.FIELD_PDM_DATE_END))
+                .withLtIdentifier(fieldPDMString.substring(
+                        MTParserConstants.FIELD_PDM_LT_ADDRESS_START, MTParserConstants.FIELD_PDM_LT_ADDRESS_END))
+                .withSessionNumber(fieldPDMString.substring(
+                        MTParserConstants.FIELD_PDM_SESSION_NO_START, MTParserConstants.FIELD_PDM_SESSION_NO_END))
+                .withSequenceNumber(fieldPDMString.substring(MTParserConstants.FIELD_PDM_SEQUENCE_NO_START));
     }
 
     /**
@@ -326,95 +314,36 @@ public class MTFieldParserUtils {
      */
     public static FieldSYS parseFieldSYS(String fieldSYSString) {
 
-        // initiate stringBuilder object to consume fieldSYSString
-        StringBuilder fieldSYSStringBuilder = new StringBuilder(fieldSYSString);
-
         // extract and assign values from fieldSYSString
         return new FieldSYS()
-                .withTime(extractSubstringByIndex(fieldSYSStringBuilder, ConnectorConstants.TIME_LENGTH))
-                .withDate(extractSubstringByIndex(fieldSYSStringBuilder, ConnectorConstants.DATE_LENGTH))
-                .withLtIdentifier(extractSubstringByIndex(
-                        fieldSYSStringBuilder, ConnectorConstants.LOGICAL_TERMINAL_ADDRESS_LENGTH))
-                .withSessionNumber(extractSubstringByIndex(
-                        fieldSYSStringBuilder, ConnectorConstants.SESSION_NUMBER_LENGTH))
-                .withSequenceNumber(extractSubstringByIndex(
-                        fieldSYSStringBuilder, ConnectorConstants.SEQUENCE_NUMBER_LENGTH));
-    }
-
-    /**
-     * Method to extract a value from StringBuilder object and delete the substring from the object.
-     *
-     * @param stringBuilder StringBuilder object with the string
-     * @param startIndex    Starting index of the substring
-     * @param endIndex      Ending index of the substring
-     * @return substring or null if the StringBuilder object is empty.
-     */
-    public static String extractSubstringByIndex(StringBuilder stringBuilder, int startIndex, int endIndex) {
-
-        // if the string is empty
-        if (stringBuilder.length() == 0) {
-            return null;
-        }
-
-        // if remaining length is less than defined length
-        if (stringBuilder.length() <= endIndex - startIndex) {
-
-            // assign whole remaining string to a variable
-            String substring = stringBuilder.toString();
-
-            // empty StringBuilder object
-            stringBuilder.setLength(0);
-
-            // return assigned string
-            return substring;
-        }
-
-        // else extract defined substring
-        String substring = stringBuilder.substring(startIndex, endIndex);
-
-        // remove substring from the StringBuilder object
-        stringBuilder.delete(startIndex, endIndex);
-
-        // return extracted substring
-        return substring;
-    }
-
-    /**
-     * Overloaded method to extract substring from the zero index.
-     *
-     * @param stringBuilder StringBuilder object with the string
-     * @param index         Ending index of the substring
-     * @return substring or null if the StringBuilder object is empty.
-     */
-    public static String extractSubstringByIndex(StringBuilder stringBuilder, int index) {
-        return extractSubstringByIndex(stringBuilder, 0, index);
+                .withTime(fieldSYSString.substring(
+                        MTParserConstants.FIELD_SYS_TIME_START, MTParserConstants.FIELD_SYS_TIME_END))
+                .withDate(fieldSYSString.substring(
+                        MTParserConstants.FIELD_SYS_DATE_START, MTParserConstants.FIELD_SYS_DATE_END))
+                .withLtIdentifier(fieldSYSString.substring(
+                        MTParserConstants.FIELD_SYS_LT_ADDRESS_START, MTParserConstants.FIELD_SYS_LT_ADDRESS_END))
+                .withSessionNumber(fieldSYSString.substring(
+                        MTParserConstants.FIELD_SYS_SESSION_NO_START, MTParserConstants.FIELD_SYS_SESSION_NO_END))
+                .withSequenceNumber(fieldSYSString.substring(MTParserConstants.FIELD_SYS_SEQUENCE_NO_START));
     }
 
     /**
      * Method to get elements as an array of strings after splitting by "/".
-     * Used for fields in the format -> /(element1)/(element2)
+     * Used for fields in the format -> /(element1)/(element2)/...
      *
      * @param fieldString String with the field value
      * @param fieldName   Name of the field
-     * @return An array of string with the 2 elements
-     * @throws MTMessageParsingException if the passed string is in incorrect format
+     * @return An array of string excluding first empty string
      */
     public static String[] splitBySlash(
-            String fieldString, String fieldName) throws MTMessageParsingException {
+            String fieldString, String fieldName) {
 
         // split the string by "/"
-        // /(element1)/(element2)
-        String[] separatedElements = fieldString.split(ConnectorConstants.SLASH);
-
-        // First element always should be a empty string and max there can be 2 more elements
-        if (separatedElements.length > 3 || !separatedElements[0].isEmpty()) {
-            throw new MTMessageParsingException(ConnectorConstants.ERROR_U00,
-                    String.format(ConnectorConstants.ERROR_FIELD_INVALID_IN_BLOCK,
-                            fieldName, ConnectorConstants.USER_HEADER_BLOCK));
-        }
+        // /(element1)/(element2)/... -> ["", "element1", "element2", ...]
+        String[] separatedStringValues = fieldString.split(ConnectorConstants.SLASH);
 
         // return separated values excluding empty string
-        return Arrays.copyOfRange(separatedElements, 1, separatedElements.length);
+        return Arrays.copyOfRange(separatedStringValues, 1, separatedStringValues.length);
     }
 
 }

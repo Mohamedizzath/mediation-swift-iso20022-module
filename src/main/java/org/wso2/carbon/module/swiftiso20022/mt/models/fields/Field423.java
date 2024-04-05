@@ -16,15 +16,18 @@
  * under the License.
  */
 
-package org.wso2.carbon.module.swiftiso20022.mtmodels.fields;
+package org.wso2.carbon.module.swiftiso20022.mt.models.fields;
 
 /**
  * Model for balance checkpoint in User Header Block (Block 03).
  * <p>
  * format: (Date)(Time)
  * example: {423:18071715301204}
+ *
+ * @see <a href="https://www.paiementor.com/swift-mt-message-block-3-user-header-description/">
+ *     User Header Block Fields</a>
  */
-public class Field423 implements Field {
+public class Field423 {
 
     public static final String TAG = "423";
 
