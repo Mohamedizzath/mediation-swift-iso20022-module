@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 
+
 /**
  * Util class for MT message parser.
  */
@@ -101,14 +102,12 @@ public class MTParserUtils {
      * @return          Substring according to the length
      */
     public static String extractSubstring(String text, int start, int end) {
-        StringBuilder result = new StringBuilder();
-
         int curr = start;
         while (curr < end && curr < text.length()) {
-            result.append(text.charAt(curr++));
+            curr++;
         }
 
-        return result.toString();
+        return text.substring(start, curr);
     }
 
     /**
@@ -121,17 +120,16 @@ public class MTParserUtils {
      */
     public static String extractTillAlphabetic(String text, int length) {
         int curr = 0;
-        StringBuilder result = new StringBuilder();
 
         while (curr < length && curr < text.length()) {
             if (Character.isAlphabetic(text.charAt(curr))) {
-                return result.toString();
+                return text.substring(0, curr);
             }
 
-            result.append(text.charAt(curr++));
+            curr++;
         }
 
-        return result.toString();
+        return text.substring(0, curr);
     }
 
     /**
@@ -153,17 +151,16 @@ public class MTParserUtils {
      */
     public static String extractTillDigit(String text, int length) {
         int curr = 0;
-        StringBuilder result = new StringBuilder();
 
         while (curr < length && curr < text.length()) {
             if (Character.isDigit(text.charAt(curr))) {
-                return result.toString();
+                return text.substring(0, curr);
             }
 
-            result.append(text.charAt(curr++));
+            curr++;
         }
 
-        return result.toString();
+        return text.substring(0, curr);
     }
 
     /**

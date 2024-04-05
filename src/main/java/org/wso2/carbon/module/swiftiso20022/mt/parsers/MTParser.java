@@ -81,7 +81,9 @@ public class MTParser {
             String priority = (!StringUtils.isBlank(alphaText)) ? alphaText.substring(0, 1) : null;
 
             // Consuming the blocks according to the optional fields
-            block = MTParserUtils.extractSubstring(block, (priority != null) ? 17 : 16, block.length());
+            if (block.length() > 16) {
+                block = MTParserUtils.extractSubstring(block, (priority != null) ? 17 : 16, block.length());
+            }
 
             String digitBlock = (!block.isEmpty()) ?
                     MTParserUtils.extractTillAlphabetic(block, 4) : null;
