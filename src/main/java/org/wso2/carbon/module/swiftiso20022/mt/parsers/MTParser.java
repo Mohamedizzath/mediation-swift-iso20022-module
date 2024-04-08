@@ -96,11 +96,11 @@ public class MTParser {
         // block cannot be blank
         if (userHeaderBlockString.isBlank()) {
             throw new MTMessageParsingException(String.format(
-                    MTParserConstants.EMPTY_BLOCK, ConnectorConstants.USER_HEADER_BLOCK));
+                    MTParserConstants.EMPTY_BLOCK_MESSAGE, ConnectorConstants.USER_HEADER_BLOCK));
         }
 
         // extract fields as a map of tag and value
-        Map<String, String> fields =  MTParserUtils.extractFieldsWithinCurlyBrackets(userHeaderBlockString);
+        Map<String, String> fields = MTParserUtils.extractFieldsWithinCurlyBrackets(userHeaderBlockString);
 
         // if no matching fields found -> block cannot be parsed
         if (fields.isEmpty()) {
@@ -273,10 +273,10 @@ public class MTParser {
 
                 default:
                     log.error(String.format(ConnectorConstants.ERROR_FIELD_NOT_ALLOWED_IN_BLOCK,
-                        key, ConnectorConstants.TRAILER_BLOCK));
+                            key, ConnectorConstants.TRAILER_BLOCK));
                     throw new MTMessageParsingException(
-                        String.format(ConnectorConstants.ERROR_FIELD_NOT_ALLOWED_IN_BLOCK,
-                                key, ConnectorConstants.TRAILER_BLOCK));
+                            String.format(ConnectorConstants.ERROR_FIELD_NOT_ALLOWED_IN_BLOCK,
+                                    key, ConnectorConstants.TRAILER_BLOCK));
             }
         }
 

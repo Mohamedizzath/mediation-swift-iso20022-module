@@ -40,7 +40,8 @@ import org.wso2.carbon.module.swiftiso20022.mt.models.fields.FieldPDE;
 import org.wso2.carbon.module.swiftiso20022.mt.models.fields.FieldPDM;
 import org.wso2.carbon.module.swiftiso20022.mt.models.fields.FieldSYS;
 
-import java.util.Arrays;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Utility class for parsing MT message fields.
@@ -64,18 +65,23 @@ public class MTFieldParserUtils {
      * @param field106String String containing value of 106 field in User Header Block
      * @return A {@link Field106} with values assigned from the passed string.
      */
-    public static Field106 parseField106(String field106String) {
+    public static Field106 parseField106(String field106String) throws MTMessageParsingException {
+
+        // Get matcher to the regex matching -> (Date)(LT Address)(Session No)(Sequence No)
+        Matcher field106Matcher = getRegexMatcher(MTParserConstants.FIELD_106_REGEX_PATTERN, field106String,
+                ConnectorConstants.BLOCK03_MESSAGE_INPUT_REFERENCE, ConnectorConstants.USER_HEADER_BLOCK);
 
         // extract and assign values from field106String
+        // group 1 -> Date
+        // group 2 -> LT Address
+        // group 1 -> Session Number
+        // group 2 -> Sequence Number
         return new Field106()
-                .withDate(field106String.substring(
-                        MTParserConstants.FIELD_106_DATE_START, MTParserConstants.FIELD_106_DATE_END))
-                .withLogicalTerminalAddress(field106String.substring(
-                        MTParserConstants.FIELD_106_LT_ADDRESS_START, MTParserConstants.FIELD_106_LT_ADDRESS_END))
-                .withSessionNumber(field106String.substring(
-                        MTParserConstants.FIELD_106_SESSION_NO_START, MTParserConstants.FIELD_106_SESSION_NO_END))
-                .withSequenceNumber(field106String.substring(
-                        MTParserConstants.FIELD_106_SEQUENCE_NO_START));
+                .withDate(field106Matcher.group(1))
+                .withLogicalTerminalAddress(field106Matcher.group(2))
+                .withSessionNumber(field106Matcher.group(3))
+                .withSequenceNumber(field106Matcher.group(4));
+
     }
 
     /**
@@ -117,18 +123,23 @@ public class MTFieldParserUtils {
      * @param field115String String containing value of 115 field in User Header Block
      * @return A {@link Field115} with values assigned from the passed string.
      */
-    public static Field115 parseField115(String field115String) {
+    public static Field115 parseField115(String field115String) throws MTMessageParsingException {
+
+        // Get matcher to the regex matching -> (Crediting Time)(Debiting Time)(Country Code)(Reference)
+        Matcher field115Matcher = getRegexMatcher(MTParserConstants.FIELD_115_REGEX_PATTERN, field115String,
+                ConnectorConstants.BLOCK03_ADDRESSEE_INFORMATION, ConnectorConstants.USER_HEADER_BLOCK);
 
         // extract and assign values from field115String
+        // group 1 -> Crediting Time
+        // group 2 -> Debiting Time
+        // group 3 -> Country Code
+        // group 4 -> Reference
         return new Field115()
-                .withCreditingTime(field115String.substring(
-                        MTParserConstants.FIELD_115_CREDITING_TIME_START,
-                        MTParserConstants.FIELD_115_CREDITING_TIME_END))
-                .withDebitingTime(field115String.substring(
-                        MTParserConstants.FIELD_115_DEBITING_TIME_START, MTParserConstants.FIELD_115_DEBITING_TIME_END))
-                .withCountryCode(field115String.substring(
-                        MTParserConstants.FIELD_115_COUNTRY_CODE_START, MTParserConstants.FIELD_115_COUNTRY_CODE_END))
-                .withReference(field115String.substring(MTParserConstants.FIELD_115_REFERENCE_START));
+                .withCreditingTime(field115Matcher.group(1))
+                .withDebitingTime(field115Matcher.group(2))
+                .withCountryCode(field115Matcher.group(3))
+                .withReference(field115Matcher.group(4));
+
     }
 
     /**
@@ -161,13 +172,16 @@ public class MTFieldParserUtils {
      */
     public static Field165 parseField165(String field165String) throws MTMessageParsingException {
 
-        // separate values by "/"
-        String[] separatedStringValues = splitBySlash(field165String, Field165.TAG);
+        // Get matcher to the regex matching -> /(Code)/(Information)
+        Matcher field165Matcher = getRegexMatcher(MTParserConstants.FIELD_165_REGEX_PATTERN, field165String,
+                ConnectorConstants.BLOCK03_PAYMENT_RELEASE_INFORMATION, ConnectorConstants.USER_HEADER_BLOCK);
 
         // assign separated values
+        // group 1 -> Code
+        // group 2 -> Information
         return new Field165()
-                .withCode(separatedStringValues.length > 0 ? separatedStringValues[0] : null)
-                .withInformation(separatedStringValues.length > 1 ? separatedStringValues[1] : null);
+                .withCode(field165Matcher.group(1))
+                .withInformation(field165Matcher.group(2));
     }
 
     /**
@@ -176,13 +190,19 @@ public class MTFieldParserUtils {
      * @param field423String String containing value of 423 field in User Header Block
      * @return A {@link Field423} with values assigned from the passed string.
      */
-    public static Field423 parseField423(String field423String) {
+    public static Field423 parseField423(String field423String) throws MTMessageParsingException {
+
+        // Get matcher to the regex matching -> (Date)(Time)
+        Matcher field423Matcher = getRegexMatcher(MTParserConstants.FIELD_423_REGEX_PATTERN, field423String,
+                ConnectorConstants.BLOCK03_BALANCE_CHECKPOINT, ConnectorConstants.USER_HEADER_BLOCK);
 
         // extract and assign values from field423String
+        // group 1 -> Date
+        // group 2 -> Time
         return new Field423()
-                .withDate(field423String.substring(
-                        MTParserConstants.FIELD_423_DATE_START, MTParserConstants.FIELD_423_DATE_END))
-                .withTime(field423String.substring(MTParserConstants.FIELD_423_TIME_START));
+                .withDate(field423Matcher.group(1))
+                .withTime(field423Matcher.group(2));
+
     }
 
     /**
@@ -204,13 +224,17 @@ public class MTFieldParserUtils {
      */
     public static Field433 parseField433(String field433String) throws MTMessageParsingException {
 
-        // separate values by "/"
-        String[] separatedStringValues = splitBySlash(field433String, Field433.TAG);
+        // Get matcher to the regex matching -> /(Code)[/(Additional Information)]
+        Matcher field433Matcher = getRegexMatcher(MTParserConstants.FIELD_433_REGEX_PATTERN, field433String,
+                ConnectorConstants.BLOCK03_SANCTIONS_SCREENING_INFORMATION, ConnectorConstants.USER_HEADER_BLOCK);
 
         // assign separated values
+        // group 1 -> Code
+        // group 2 -> /Additional information
+        // group 3 -> Additional information
         return new Field433()
-                .withCode(separatedStringValues.length > 0 ? separatedStringValues[0] : null)
-                .withAdditionalInformation(separatedStringValues.length > 1 ? separatedStringValues[1] : null);
+                .withCode(field433Matcher.group(1))
+                .withAdditionalInformation(field433Matcher.group(2) == null ? null : field433Matcher.group(3));
     }
 
     /**
@@ -221,13 +245,17 @@ public class MTFieldParserUtils {
      */
     public static Field434 parseField434(String field434String) throws MTMessageParsingException {
 
-        // separate values by "/"
-        String[] separatedStringValues = splitBySlash(field434String, Field434.TAG);
+        // Get matcher to the regex matching -> /(Code)(/(Additional Information))
+        Matcher field434Matcher = getRegexMatcher(MTParserConstants.FIELD_434_REGEX_PATTERN, field434String,
+                ConnectorConstants.BLOCK03_PAYMENT_CONTROLS_INFORMATION, ConnectorConstants.USER_HEADER_BLOCK);
 
         // assign separated values
+        // group 1 -> Code
+        // group 2 -> /Additional information
+        // group 3 -> Additional information
         return new Field434()
-                .withCode(separatedStringValues.length > 0 ? separatedStringValues[0] : null)
-                .withAdditionalInformation(separatedStringValues.length > 1 ? separatedStringValues[1] : null);
+                .withCode(field434Matcher.group(1))
+                .withAdditionalInformation(field434Matcher.group(2) == null ? null : field434Matcher.group(3));
     }
 
     /**
@@ -247,21 +275,27 @@ public class MTFieldParserUtils {
      * @param fieldMRFString String containing value of MRF field in Trailer Block
      * @return A {@link FieldMRF} with values assigned from the passed string.
      */
-    public static FieldMRF parseFieldMRF(String fieldMRFString) {
+    public static FieldMRF parseFieldMRF(String fieldMRFString) throws MTMessageParsingException {
+
+        // Get matcher to the regex matching -> (Sent Date)(Time)(Date)(LT Address)(Session No)(Sequence No)
+        Matcher fieldMRFMatcher = getRegexMatcher(MTParserConstants.FIELD_MRF_REGEX_PATTERN, fieldMRFString,
+                ConnectorConstants.BLOCK05_MESSAGE_REFERENCE, ConnectorConstants.TRAILER_BLOCK_KEY);
 
         // extract and assign values from fieldMRFString
+        // group 1 -> Sent Date
+        // group 2 -> Time
+        // group 3 -> Date
+        // group 4 -> LT Identifier
+        // group 5 -> Session Number
+        // group 6 -> Sequence Number
         return new FieldMRF()
-                .withSentDate(fieldMRFString.substring(
-                        MTParserConstants.FIELD_MRF_SENT_DATE_START, MTParserConstants.FIELD_MRF_SENT_DATE_END))
-                .withTime(fieldMRFString.substring(
-                        MTParserConstants.FIELD_MRF_TIME_START, MTParserConstants.FIELD_MRF_TIME_END))
-                .withDate(fieldMRFString.substring(
-                        MTParserConstants.FIELD_MRF_DATE_START, MTParserConstants.FIELD_MRF_DATE_END))
-                .withLtIdentifier(fieldMRFString.substring(
-                        MTParserConstants.FIELD_MRF_LT_ADDRESS_START, MTParserConstants.FIELD_MRF_LT_ADDRESS_END))
-                .withSessionNumber(fieldMRFString.substring(
-                        MTParserConstants.FIELD_MRF_SESSION_NO_START, MTParserConstants.FIELD_MRF_SESSION_NO_END))
-                .withSequenceNumber(fieldMRFString.substring(MTParserConstants.FIELD_MRF_SEQUENCE_NO_START));
+                .withSentDate(fieldMRFMatcher.group(1))
+                .withTime(fieldMRFMatcher.group(2))
+                .withDate(fieldMRFMatcher.group(3))
+                .withLtIdentifier(fieldMRFMatcher.group(4))
+                .withSessionNumber(fieldMRFMatcher.group(5))
+                .withSequenceNumber(fieldMRFMatcher.group(6));
+
     }
 
     /**
@@ -270,19 +304,25 @@ public class MTFieldParserUtils {
      * @param fieldPDEString String containing value of PDE field in Trailer Block
      * @return A {@link FieldPDE} with values assigned from the passed string.
      */
-    public static FieldPDE parseFieldPDE(String fieldPDEString) {
+    public static FieldPDE parseFieldPDE(String fieldPDEString) throws MTMessageParsingException {
+
+        // Get matcher to the regex matching -> (Time)(Date)(LT Address)(Session No)(Sequence No)
+        Matcher fieldPDEMatcher = getRegexMatcher(MTParserConstants.FIELD_PDE_REGEX_PATTERN, fieldPDEString,
+                ConnectorConstants.BLOCK05_POSSIBLE_DUPLICATE_EMISSION, ConnectorConstants.TRAILER_BLOCK);
 
         // extract and assign values from fieldPDEString
+        // group 1 -> Time
+        // group 2 -> Date
+        // group 3 -> LT Identifier
+        // group 4 -> Session Number
+        // group 5 -> Sequence Number
         return new FieldPDE()
-                .withTime(fieldPDEString.substring(
-                        MTParserConstants.FIELD_PDE_TIME_START, MTParserConstants.FIELD_PDE_TIME_END))
-                .withDate(fieldPDEString.substring(
-                        MTParserConstants.FIELD_PDE_DATE_START, MTParserConstants.FIELD_PDE_DATE_END))
-                .withLtIdentifier(fieldPDEString.substring(
-                        MTParserConstants.FIELD_PDE_LT_ADDRESS_START, MTParserConstants.FIELD_PDE_LT_ADDRESS_END))
-                .withSessionNumber(fieldPDEString.substring(
-                        MTParserConstants.FIELD_PDE_SESSION_NO_START, MTParserConstants.FIELD_PDE_SESSION_NO_END))
-                .withSequenceNumber(fieldPDEString.substring(MTParserConstants.FIELD_PDE_SEQUENCE_NO_START));
+                .withTime(fieldPDEMatcher.group(1))
+                .withDate(fieldPDEMatcher.group(2))
+                .withLtIdentifier(fieldPDEMatcher.group(3))
+                .withSessionNumber(fieldPDEMatcher.group(4))
+                .withSequenceNumber(fieldPDEMatcher.group(5));
+
     }
 
     /**
@@ -291,19 +331,25 @@ public class MTFieldParserUtils {
      * @param fieldPDMString String containing value of PDM field in Trailer Block
      * @return A {@link FieldPDM} with values assigned from the passed string.
      */
-    public static FieldPDM parseFieldPDM(String fieldPDMString) {
+    public static FieldPDM parseFieldPDM(String fieldPDMString) throws MTMessageParsingException {
+
+        // Get matcher to the regex matching -> (Time)(Date)(LT Address)(Session No)(Sequence No)
+        Matcher fieldPDMMatcher = getRegexMatcher(MTParserConstants.FIELD_PDM_REGEX_PATTERN, fieldPDMString,
+                ConnectorConstants.BLOCK05_POSSIBLE_DUPLICATE_MESSAGE, ConnectorConstants.TRAILER_BLOCK);
 
         // extract and assign values from fieldPDMString
+        // group 1 -> Time
+        // group 2 -> Date
+        // group 3 -> LT Identifier
+        // group 4 -> Session Number
+        // group 5 -> Sequence Number
         return new FieldPDM()
-                .withTime(fieldPDMString.substring(
-                        MTParserConstants.FIELD_PDM_TIME_START, MTParserConstants.FIELD_PDM_TIME_END))
-                .withDate(fieldPDMString.substring(
-                        MTParserConstants.FIELD_PDM_DATE_START, MTParserConstants.FIELD_PDM_DATE_END))
-                .withLtIdentifier(fieldPDMString.substring(
-                        MTParserConstants.FIELD_PDM_LT_ADDRESS_START, MTParserConstants.FIELD_PDM_LT_ADDRESS_END))
-                .withSessionNumber(fieldPDMString.substring(
-                        MTParserConstants.FIELD_PDM_SESSION_NO_START, MTParserConstants.FIELD_PDM_SESSION_NO_END))
-                .withSequenceNumber(fieldPDMString.substring(MTParserConstants.FIELD_PDM_SEQUENCE_NO_START));
+                .withTime(fieldPDMMatcher.group(1))
+                .withDate(fieldPDMMatcher.group(2))
+                .withLtIdentifier(fieldPDMMatcher.group(3))
+                .withSessionNumber(fieldPDMMatcher.group(4))
+                .withSequenceNumber(fieldPDMMatcher.group(5));
+
     }
 
     /**
@@ -312,38 +358,56 @@ public class MTFieldParserUtils {
      * @param fieldSYSString String containing value of SYS field in Trailer Block
      * @return A {@link FieldSYS} with values assigned from the passed string.
      */
-    public static FieldSYS parseFieldSYS(String fieldSYSString) {
+    public static FieldSYS parseFieldSYS(String fieldSYSString) throws MTMessageParsingException {
+
+        // Get matcher to the regex matching -> (Time)(Date)(LT Address)(Session No)(Sequence No)
+        Matcher fieldSYSMatcher = getRegexMatcher(MTParserConstants.FIELD_SYS_REGEX_PATTERN, fieldSYSString,
+                ConnectorConstants.BLOCK05_SYSTEM_ORIGINATED_MESSAGE, ConnectorConstants.TRAILER_BLOCK);
 
         // extract and assign values from fieldSYSString
+        // group 1 -> Time
+        // group 2 -> Date
+        // group 3 -> LT Identifier
+        // group 4 -> Session Number
+        // group 5 -> Sequence Number
         return new FieldSYS()
-                .withTime(fieldSYSString.substring(
-                        MTParserConstants.FIELD_SYS_TIME_START, MTParserConstants.FIELD_SYS_TIME_END))
-                .withDate(fieldSYSString.substring(
-                        MTParserConstants.FIELD_SYS_DATE_START, MTParserConstants.FIELD_SYS_DATE_END))
-                .withLtIdentifier(fieldSYSString.substring(
-                        MTParserConstants.FIELD_SYS_LT_ADDRESS_START, MTParserConstants.FIELD_SYS_LT_ADDRESS_END))
-                .withSessionNumber(fieldSYSString.substring(
-                        MTParserConstants.FIELD_SYS_SESSION_NO_START, MTParserConstants.FIELD_SYS_SESSION_NO_END))
-                .withSequenceNumber(fieldSYSString.substring(MTParserConstants.FIELD_SYS_SEQUENCE_NO_START));
+                .withTime(fieldSYSMatcher.group(1))
+                .withDate(fieldSYSMatcher.group(2))
+                .withLtIdentifier(fieldSYSMatcher.group(3))
+                .withSessionNumber(fieldSYSMatcher.group(4))
+                .withSequenceNumber(fieldSYSMatcher.group(5));
+
     }
 
     /**
-     * Method to get elements as an array of strings after splitting by "/".
-     * Used for fields in the format -> /(element1)/(element2)/...
+     * Method to match a regex pattern with passed string value.
+     * Only check one matching value.
      *
-     * @param fieldString String with the field value
+     * @param regex       Regex pattern to be matched
+     * @param stringValue String value to be matched
      * @param fieldName   Name of the field
-     * @return An array of string excluding first empty string
+     * @param blockName   Name of the block the field belongs to
+     * @return A {@link Matcher} object if any match was found
+     * @throws MTMessageParsingException if the string value doesn't match the regex
      */
-    public static String[] splitBySlash(
-            String fieldString, String fieldName) {
+    public static Matcher getRegexMatcher(
+            String regex, String stringValue, String fieldName, String blockName) throws MTMessageParsingException {
 
-        // split the string by "/"
-        // /(element1)/(element2)/... -> ["", "element1", "element2", ...]
-        String[] separatedStringValues = fieldString.split(ConnectorConstants.SLASH);
+        // Compiling the pattern
+        Pattern pattern = Pattern.compile(regex);
 
-        // return separated values excluding empty string
-        return Arrays.copyOfRange(separatedStringValues, 1, separatedStringValues.length);
+        // Create a Matcher object from the passed string
+        Matcher matcher = pattern.matcher(stringValue);
+
+        // If there is a match
+        if (matcher.find()) {
+            return matcher;
+        } else {
+
+            // else there are no matches, passed string is in invalid format
+            throw new MTMessageParsingException(
+                    String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE, fieldName, blockName));
+        }
     }
 
 }

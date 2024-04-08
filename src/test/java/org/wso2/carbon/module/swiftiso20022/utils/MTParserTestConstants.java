@@ -40,7 +40,7 @@ public class MTParserTestConstants {
 
     @DataProvider(name = "validMTMessageMapDataProvider")
     Object[][] getValidMTMessageMapDataProvider() {
-        return new Object[][] {
+        return new Object[][]{
                 {new HashMap<String, String>()},
                 {Map.of(ConnectorConstants.USER_HEADER_BLOCK_KEY, VALID_USER_HEADER_BLOCK)},
                 {Map.of(ConnectorConstants.TRAILER_BLOCK_KEY, VALID_TRAILER_BLOCK)},
@@ -51,7 +51,7 @@ public class MTParserTestConstants {
 
     @DataProvider(name = "invalidUserHeaderBlockDataProvider")
     Object[][] getInvalidUserHeaderBlockDataProvider() {
-        return new Object[][] {
+        return new Object[][]{
                 {"  "},
                 {"{"},
                 {"}"},
@@ -60,12 +60,15 @@ public class MTParserTestConstants {
                 {"{:245689393}"},
                 {"{567:245689393}"},
                 {"{567:245689393}}"},
+                {"{423:1234}"},
+                {"{433:/AOK/}"},
+                {"{433:/AOKadditional info"}
         };
     }
 
     @DataProvider(name = "invalidTrailerBlockDataProvider")
     Object[][] getTrailerBlockDataProvider() {
-        return new Object[][] {
+        return new Object[][]{
                 {"  "},
                 {"{"},
                 {"}"},
@@ -76,7 +79,8 @@ public class MTParserTestConstants {
                 {"{:245689393}"},
                 {"{567:245689393}"},
                 {"{567:245689393}}"},
-                {"{567:245689393:adadaf}"}
+                {"{567:245689393:adadaf}"},
+                {"{SYS:1234}"}
         };
     }
 }

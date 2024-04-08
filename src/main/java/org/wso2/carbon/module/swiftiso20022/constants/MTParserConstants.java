@@ -29,70 +29,23 @@ public class MTParserConstants {
 
     public static final String FIELD_DLM_TAG = "DLM";
     public static final String FIELD_TNG_TAG = "TNG";
-    public static final String CURLY_BRACKETS_FIELDS_MATCHING_PATTERN = "\\{([^}:]+):([^}:]*)}";
+
+    // Regex patterns for MT parser and utils
+    public static final String CURLY_BRACKETS_FIELDS_MATCHING_PATTERN = "\\{([^}:]+):([^}:]*)\\}";
+    public static final String FIELD_106_REGEX_PATTERN = "^([0-9]{6})([0-9A-Z]{12})([0-9]{4})([0-9]{6})$";
+    public static final String FIELD_115_REGEX_PATTERN = "^([0-9]{6})([0-9]{6})([A-Z]{2})([0-9A-Z]{0,12})$";
+    public static final String FIELD_165_REGEX_PATTERN = "^\\/([0-9A-Z]{3})\\/([^\\/]{1,34})$";
+    public static final String FIELD_423_REGEX_PATTERN = "^([0-9]{6})([0-9]{6}|[0-9]{8})$";
+    public static final String FIELD_433_REGEX_PATTERN = "^\\/([A-Z]{3})(\\/([^\\/]{1,20})){0,1}$";
+    public static final String FIELD_434_REGEX_PATTERN = "^\\/([A-Z]{3})(\\/([^\\/]{1,20})){0,1}$";
+    public static final String FIELD_MRF_REGEX_PATTERN
+            = "^([0-9]{6})([0-9]{4})([0-9]{6})([0-9A-Z]{12})([0-9]{4})([0-9]{6})$";
+    public static final String FIELD_PDE_REGEX_PATTERN = "^([0-9]{4})([0-9]{6})([0-9A-Z]{12})([0-9]{4})([0-9]{6})$";
+    public static final String FIELD_PDM_REGEX_PATTERN = "^([0-9]{4})([0-9]{6})([0-9A-Z]{12})([0-9]{4})([0-9]{6})$";
+    public static final String FIELD_SYS_REGEX_PATTERN = "^([0-9]{4})([0-9]{6})([0-9A-Z]{12})([0-9]{4})([0-9]{6})$";
 
     // Error message related constants
-    public static final String EMPTY_BLOCK = "Empty %s cannot be parsed";
-
-    // Constants related to value extraction from fields (starting and ending indexes)
-
-    // User Header Block Field indexes
-    public static final int FIELD_106_DATE_START = 0;
-    public static final int FIELD_106_DATE_END = 4;
-    public static final int FIELD_106_LT_ADDRESS_START = 4;
-    public static final int FIELD_106_LT_ADDRESS_END = 16;
-    public static final int FIELD_106_SESSION_NO_START = 16;
-    public static final int FIELD_106_SESSION_NO_END = 20;
-    public static final int FIELD_106_SEQUENCE_NO_START = 20;
-    public static final int FIELD_115_CREDITING_TIME_START = 0;
-    public static final int FIELD_115_CREDITING_TIME_END = 4;
-    public static final int FIELD_115_DEBITING_TIME_START = 4;
-    public static final int FIELD_115_DEBITING_TIME_END = 8;
-    public static final int FIELD_115_COUNTRY_CODE_START = 8;
-    public static final int FIELD_115_COUNTRY_CODE_END = 10;
-    public static final int FIELD_115_REFERENCE_START = 10;
-    public static final int FIELD_423_DATE_START = 0;
-    public static final int FIELD_423_DATE_END = 4;
-    public static final int FIELD_423_TIME_START = 4;
-
-    // Trailer Block Field indexes
-    public static final int FIELD_MRF_SENT_DATE_START = 0;
-    public static final int FIELD_MRF_SENT_DATE_END = 6;
-    public static final int FIELD_MRF_TIME_START = 6;
-    public static final int FIELD_MRF_TIME_END = 10;
-    public static final int FIELD_MRF_DATE_START = 10;
-    public static final int FIELD_MRF_DATE_END = 16;
-    public static final int FIELD_MRF_LT_ADDRESS_START = 16;
-    public static final int FIELD_MRF_LT_ADDRESS_END = 28;
-    public static final int FIELD_MRF_SESSION_NO_START = 28;
-    public static final int FIELD_MRF_SESSION_NO_END = 32;
-    public static final int FIELD_MRF_SEQUENCE_NO_START = 32;
-    public static final int FIELD_PDE_TIME_START = 0;
-    public static final int FIELD_PDE_TIME_END = 4;
-    public static final int FIELD_PDE_DATE_START = 4;
-    public static final int FIELD_PDE_DATE_END = 10;
-    public static final int FIELD_PDE_LT_ADDRESS_START = 10;
-    public static final int FIELD_PDE_LT_ADDRESS_END = 22;
-    public static final int FIELD_PDE_SESSION_NO_START = 22;
-    public static final int FIELD_PDE_SESSION_NO_END = 26;
-    public static final int FIELD_PDE_SEQUENCE_NO_START = 26;
-    public static final int FIELD_PDM_TIME_START = 0;
-    public static final int FIELD_PDM_TIME_END = 4;
-    public static final int FIELD_PDM_DATE_START = 4;
-    public static final int FIELD_PDM_DATE_END = 10;
-    public static final int FIELD_PDM_LT_ADDRESS_START = 10;
-    public static final int FIELD_PDM_LT_ADDRESS_END = 22;
-    public static final int FIELD_PDM_SESSION_NO_START = 22;
-    public static final int FIELD_PDM_SESSION_NO_END = 26;
-    public static final int FIELD_PDM_SEQUENCE_NO_START = 26;
-    public static final int FIELD_SYS_TIME_START = 0;
-    public static final int FIELD_SYS_TIME_END = 4;
-    public static final int FIELD_SYS_DATE_START = 4;
-    public static final int FIELD_SYS_DATE_END = 10;
-    public static final int FIELD_SYS_LT_ADDRESS_START = 10;
-    public static final int FIELD_SYS_LT_ADDRESS_END = 22;
-    public static final int FIELD_SYS_SESSION_NO_START = 22;
-    public static final int FIELD_SYS_SESSION_NO_END = 26;
-    public static final int FIELD_SYS_SEQUENCE_NO_START = 26;
+    public static final String EMPTY_BLOCK_MESSAGE = "Empty %s cannot be parsed";
+    public static final String INVALID_FIELD_IN_BLOCK_MESSAGE = "%s in %s is in invalid format";
 
 }
