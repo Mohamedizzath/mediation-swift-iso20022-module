@@ -33,7 +33,7 @@ public class MTParserConstants {
     // Regex patterns for MT parser and utils
     public static final String CURLY_BRACKETS_FIELDS_MATCHING_PATTERN = "\\{([^}:]+):([^}:]*)\\}";
     public static final String FIELD_106_REGEX_PATTERN = "^([0-9]{6})([0-9A-Z]{12})([0-9]{4})([0-9]{6})$";
-    public static final String FIELD_115_REGEX_PATTERN = "^([0-9]{6})([0-9]{6})([A-Z]{2})([0-9A-Z]{0,12})$";
+    public static final String FIELD_115_REGEX_PATTERN = "^([0-9]{6})([0-9]{6})([A-Z]{2})(.{1,16})$";
     public static final String FIELD_165_REGEX_PATTERN = "^\\/([0-9A-Z]{3})\\/([^\\/]{1,34})$";
     public static final String FIELD_423_REGEX_PATTERN = "^([0-9]{6})([0-9]{6}|[0-9]{8})$";
     public static final String FIELD_433_REGEX_PATTERN = "^\\/([A-Z]{3})(\\/([^\\/]{1,20})){0,1}$";

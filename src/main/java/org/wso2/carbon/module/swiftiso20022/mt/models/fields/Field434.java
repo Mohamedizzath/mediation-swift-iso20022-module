@@ -21,7 +21,7 @@ package org.wso2.carbon.module.swiftiso20022.mt.models.fields;
 /**
  * Model for payments control information in User Header Block (Block 03).
  * <p>
- * format: /(Code)/[Additional Information]
+ * format: /(Code)[/Additional Information]
  * example: {434:/FPO/additional information...}
  *
  * @see <a href="https://www.paiementor.com/swift-mt-message-block-3-user-header-description/">
