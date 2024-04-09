@@ -25,7 +25,7 @@ package org.wso2.carbon.module.swiftiso20022.mt.models.fields;
  * example: {CHK:123456789ABC}
  *
  * @see <a href="https://www.paiementor.com/swift-mt-message-block-5-trailers-description/">
- *     Trailer Block Fields</a>
+ * Trailer Block Fields</a>
  */
 public class FieldCHK {
 

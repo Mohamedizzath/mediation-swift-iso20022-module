@@ -26,7 +26,7 @@ package org.wso2.carbon.module.swiftiso20022.mt.models.fields;
  * example: {MRF:1806271539180626BANKFRPPAXXX2222123456}
  *
  * @see <a href="https://www.paiementor.com/swift-mt-message-block-5-trailers-description/">
- *     Trailer Block Fields</a>
+ * Trailer Block Fields</a>
  */
 public class FieldMRF {
 

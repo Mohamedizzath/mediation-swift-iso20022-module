@@ -34,7 +34,6 @@ public class MT940Constants {
     public static final String MT940_ACCOUNT_NO = ":25";
     public static final String MT940_STATEMENT_NO = ":28";
     public static final String MT940_INFORMATION = ":86:";
-    ;
     public static final String MT940_STATEMENT_LINE = ":61";
     public static final String MT940_OPENING_BAL = ":60";
     public static final String MT940_CLOSING_BAL = ":62";

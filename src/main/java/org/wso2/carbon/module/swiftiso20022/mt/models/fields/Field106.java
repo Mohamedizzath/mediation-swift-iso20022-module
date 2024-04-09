@@ -25,7 +25,7 @@ package org.wso2.carbon.module.swiftiso20022.mt.models.fields;
  * example: {106:120811BANKBEBBAXXX2222123456}
  *
  * @see <a href="https://www.paiementor.com/swift-mt-message-block-3-user-header-description/">
- *     User Header Block Fields</a>
+ * User Header Block Fields</a>
  */
 public class Field106 {
 

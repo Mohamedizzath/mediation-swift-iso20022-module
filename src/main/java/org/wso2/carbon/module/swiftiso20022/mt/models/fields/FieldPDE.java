@@ -25,7 +25,7 @@ package org.wso2.carbon.module.swiftiso20022.mt.models.fields;
  * example: {PDE:1348120811BANKFRPPAXXX2222123456}
  *
  * @see <a href="https://www.paiementor.com/swift-mt-message-block-5-trailers-description/">
- *     Trailer Block Fields</a>
+ * Trailer Block Fields</a>
  */
 public class FieldPDE {
 
