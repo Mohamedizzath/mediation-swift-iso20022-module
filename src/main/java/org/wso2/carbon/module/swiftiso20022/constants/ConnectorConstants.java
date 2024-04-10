@@ -47,8 +47,8 @@ public class ConnectorConstants {
     public static final char CLOSING_CURLY_BRACKET = '}';
     public static final String ENUM_KEY = "enumClassName";
     public static final String FIXED_VALUE_KEY = "fixedValue";
-    public static final String USER_HEADER_BLOCK_KEY = "userHeaderBlock";
-    public static final String TRAILER_BLOCK_KEY = "trailerBlock";
+    public static final String USER_HEADER_BLOCK_KEY = "3:";
+    public static final String TRAILER_BLOCK_KEY = "5:";
 
     // MT message block names
     public static final String USER_HEADER_BLOCK = "User Header Block";

@@ -19,6 +19,14 @@
 package org.wso2.carbon.module.swiftiso20022.mt.models.fields;
 
 
+import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
+import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
+import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
+import org.wso2.carbon.module.swiftiso20022.utils.MTParserUtils;
+
+import java.util.Optional;
+import java.util.regex.Matcher;
+
 /**
  * Model for message reference in Trailer Block (Block 05).
  * <p>
@@ -166,4 +174,41 @@ public class FieldMRF {
         setSequenceNumber(sequenceNumber);
         return this;
     }
-}
+
+    /**
+     * Method to parse and get FieldMRF object.
+     *
+     * @param fieldMRFString String containing value of MRF field in Trailer Block
+     * @return An instance of this model.
+     * @throws MTMessageParsingException if the value is invalid
+     */
+    public static FieldMRF parse(String fieldMRFString) throws MTMessageParsingException {
+
+        // Get matcher to the regex matching -> (Sent Date)(Time)(Date)(LT Address)(Session No)(Sequence No)
+        Optional<Matcher> fieldMRFMatcher = MTParserUtils.getRegexMatcher(
+                MTParserConstants.FIELD_MRF_REGEX_PATTERN, fieldMRFString);
+
+        if (fieldMRFMatcher.isPresent()) {
+
+            Matcher matcher = fieldMRFMatcher.get();
+
+            // group 1 -> Sent Date
+            // group 2 -> Time
+            // group 3 -> Date
+            // group 4 -> LT Identifier
+            // group 5 -> Session Number
+            // group 6 -> Sequence Number
+            return new FieldMRF()
+                    .withSentDate(matcher.group(1))
+                    .withTime(matcher.group(2))
+                    .withDate(matcher.group(3))
+                    .withLtIdentifier(matcher.group(4))
+                    .withSessionNumber(matcher.group(5))
+                    .withSequenceNumber(matcher.group(6));
+        } else {
+            throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
+                    ConnectorConstants.BLOCK05_MESSAGE_REFERENCE, ConnectorConstants.TRAILER_BLOCK));
+        }
+    }
+
+ }

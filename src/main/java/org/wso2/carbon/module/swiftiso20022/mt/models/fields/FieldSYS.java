@@ -18,6 +18,14 @@
 
 package org.wso2.carbon.module.swiftiso20022.mt.models.fields;
 
+import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
+import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
+import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
+import org.wso2.carbon.module.swiftiso20022.utils.MTParserUtils;
+
+import java.util.Optional;
+import java.util.regex.Matcher;
+
 /**
  * Model for system originated message in Trailer Block (Block 05).
  * <p>
@@ -141,5 +149,39 @@ public class FieldSYS {
     public FieldSYS withSequenceNumber(String sequenceNumber) {
         setSequenceNumber(sequenceNumber);
         return this;
+    }
+
+    /**
+     * Method to parse and get FieldSYS object.
+     *
+     * @param fieldSYSString String containing value of SYS field in Trailer Block
+     * @return An instance of this model.
+     * @throws MTMessageParsingException of the value is invalid
+     */
+    public static FieldSYS parse(String fieldSYSString) throws MTMessageParsingException {
+
+        // Get matcher to the regex matching -> (Time)(Date)(LT Address)(Session No)(Sequence No)
+        Optional<Matcher> fieldSYSMatcher = MTParserUtils.getRegexMatcher(
+                MTParserConstants.FIELD_SYS_REGEX_PATTERN, fieldSYSString);
+
+        if (fieldSYSMatcher.isPresent()) {
+
+            Matcher matcher = fieldSYSMatcher.get();
+
+            // group 1 -> Time
+            // group 2 -> Date
+            // group 3 -> LT Identifier
+            // group 4 -> Session Number
+            // group 5 -> Sequence Number
+            return new FieldSYS()
+                    .withTime(matcher.group(1))
+                    .withDate(matcher.group(2))
+                    .withLtIdentifier(matcher.group(3))
+                    .withSessionNumber(matcher.group(4))
+                    .withSequenceNumber(matcher.group(5));
+        } else {
+            throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
+                    ConnectorConstants.BLOCK05_SYSTEM_ORIGINATED_MESSAGE, ConnectorConstants.TRAILER_BLOCK));
+        }
     }
 }

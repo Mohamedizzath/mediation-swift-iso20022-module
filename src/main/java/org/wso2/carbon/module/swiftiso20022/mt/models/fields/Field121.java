@@ -18,6 +18,14 @@
 
 package org.wso2.carbon.module.swiftiso20022.mt.models.fields;
 
+import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
+import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
+import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
+import org.wso2.carbon.module.swiftiso20022.utils.MTParserUtils;
+
+import java.util.Optional;
+import java.util.regex.Matcher;
+
 /**
  * Model for unique end to end reference in User Header Block (Block 03).
  * <p>
@@ -50,5 +58,26 @@ public class Field121 {
     public Field121 withValue(String value) {
         setValue(value);
         return this;
+    }
+
+    /**
+     * Method to parse and get Field121 object.
+     *
+     * @param field121String String containing value of 103 field in User Header Block
+     * @return An instance of this model.
+     * @throws MTMessageParsingException if the value is invalid
+     */
+    public static Field121 parse(String field121String) throws MTMessageParsingException {
+
+        Optional<Matcher> field121Matcher = MTParserUtils.getRegexMatcher(
+                MTParserConstants.FIELD_121_REGEX_PATTERN, field121String);
+
+        if (field121Matcher.isPresent()) {
+            return new Field121()
+                    .withValue(field121Matcher.get().group());
+        } else {
+            throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
+                    ConnectorConstants.BLOCK03_END_TO_END_REFERENCE, ConnectorConstants.USER_HEADER_BLOCK));
+        }
     }
 }

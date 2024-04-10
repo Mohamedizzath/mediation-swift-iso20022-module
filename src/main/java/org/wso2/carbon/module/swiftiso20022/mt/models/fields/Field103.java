@@ -18,6 +18,14 @@
 
 package org.wso2.carbon.module.swiftiso20022.mt.models.fields;
 
+import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
+import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
+import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
+import org.wso2.carbon.module.swiftiso20022.utils.MTParserUtils;
+
+import java.util.Optional;
+import java.util.regex.Matcher;
+
 /**
  * Model for service identifier in User Header Block (Block 03).
  * <p>
@@ -51,4 +59,26 @@ public class Field103 {
         setValue(value);
         return this;
     }
+
+    /**
+     * Method to parse and get Field103 object.
+     *
+     * @param field103String String containing value of 103 field in User Header Block
+     * @return An instance of this model.
+     * @throws MTMessageParsingException if the value is invalid
+     */
+    public static Field103 parse(String field103String) throws MTMessageParsingException {
+
+        Optional<Matcher> field103Matcher = MTParserUtils.getRegexMatcher(
+                MTParserConstants.FIELD_103_REGEX_PATTERN, field103String);
+
+        if (field103Matcher.isPresent()) {
+            return new Field103()
+                    .withValue(field103Matcher.get().group());
+        } else {
+            throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
+                    ConnectorConstants.BLOCK03_SERVICE_IDENTIFIER, ConnectorConstants.USER_HEADER_BLOCK));
+        }
+    }
+
 }

@@ -22,6 +22,7 @@ import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -39,24 +40,43 @@ public class MTParserUtils {
      */
     public static Map<String, String> extractFieldsWithinCurlyBrackets(String fieldsString) {
 
-        // map to store fields
         Map<String, String> fields = new HashMap<>();
 
         // regex pattern initialization for matching curly brackets with fields
         // {tag:value}, regex pattern matches tag and value in separate groups in each match
-        // group 1 -> tag   &   group 2 -> value
-        Pattern curlyBracketsMatch = Pattern.compile(MTParserConstants.CURLY_BRACKETS_FIELDS_MATCHING_PATTERN);
-        Matcher matcher = curlyBracketsMatch.matcher(fieldsString);
+        // Get matcher to the regex matching -> {(Tag):(Field Value)}
+        Matcher matcher = Pattern.compile(MTParserConstants.CURLY_BRACKETS_FIELDS_MATCHING_PATTERN)
+                .matcher(fieldsString);
 
-        // while there is a match for the pattern
         while (matcher.find()) {
 
-            // putting tag as the key to each relevant value
+            // group 1 -> Tag
+            // group 2 -> Field Value
             fields.put(matcher.group(1), matcher.group(2));
 
         }
 
         return fields;
+    }
+
+    /**
+     * Method to match a regex pattern with passed string value.
+     * Only check one matching value.
+     *
+     * @param regex       Regex pattern to be matched
+     * @param stringValue String value to be matched
+     * @return An Optional of the matcher object or an empty matcher object if the string doesn't match the pattern
+     */
+    public static Optional<Matcher> getRegexMatcher(String regex, String stringValue) {
+
+        // Compiling the pattern
+        Matcher matcher = Pattern.compile(regex).matcher(stringValue);
+
+        if (matcher.find()) {
+            return Optional.of(matcher);
+        } else {
+            return Optional.empty();
+        }
     }
 
 }

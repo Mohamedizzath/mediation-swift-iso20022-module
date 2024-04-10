@@ -19,6 +19,14 @@
 package org.wso2.carbon.module.swiftiso20022.mt.models.fields;
 
 
+import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
+import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
+import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
+import org.wso2.carbon.module.swiftiso20022.utils.MTParserUtils;
+
+import java.util.Optional;
+import java.util.regex.Matcher;
+
 /**
  * Model for checksum in Trailer Block (Block 05).
  * <p>
@@ -52,4 +60,26 @@ public class FieldCHK {
         this.value = value;
         return this;
     }
+
+    /**
+     * Method to parse and get FieldCHK object.
+     *
+     * @param fieldCHKString String containing value of CHK field in Trailer Block
+     * @return An instance of this model.
+     * @throws MTMessageParsingException if the value is invalid
+     */
+    public static FieldCHK parse(String fieldCHKString) throws MTMessageParsingException {
+
+        Optional<Matcher> fieldCHKMatcher = MTParserUtils.getRegexMatcher(
+                MTParserConstants.FIELD_CHK_REGEX_PATTERN, fieldCHKString);
+
+        if (fieldCHKMatcher.isPresent()) {
+            return new FieldCHK()
+                    .withValue(fieldCHKMatcher.get().group());
+        } else {
+            throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
+                    ConnectorConstants.BLOCK05_CHECKSUM, ConnectorConstants.TRAILER_BLOCK));
+        }
+    }
+
 }

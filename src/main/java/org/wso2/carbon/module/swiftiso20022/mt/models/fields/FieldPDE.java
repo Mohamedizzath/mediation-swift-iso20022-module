@@ -18,6 +18,14 @@
 
 package org.wso2.carbon.module.swiftiso20022.mt.models.fields;
 
+import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
+import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
+import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
+import org.wso2.carbon.module.swiftiso20022.utils.MTParserUtils;
+
+import java.util.Optional;
+import java.util.regex.Matcher;
+
 /**
  * Model for possible duplicate emission in Trailer Block (Block 05).
  * <p>
@@ -143,4 +151,39 @@ public class FieldPDE {
         setSequenceNumber(sequenceNumber);
         return this;
     }
+
+    /**
+     * Method to parse and get FieldPDE object.
+     *
+     * @param fieldPDEString String containing value of PDE field in Trailer Block
+     * @return An instance of this model.
+     * @throws MTMessageParsingException if the value is invalid
+     */
+    public static FieldPDE parse(String fieldPDEString) throws MTMessageParsingException {
+
+        // Get matcher to the regex matching -> (Time)(Date)(LT Address)(Session No)(Sequence No)
+        Optional<Matcher> fieldPDEMatcher = MTParserUtils.getRegexMatcher(
+                MTParserConstants.FIELD_PDE_REGEX_PATTERN, fieldPDEString);
+
+        if (fieldPDEMatcher.isPresent()) {
+
+            Matcher matcher = fieldPDEMatcher.get();
+
+            // group 1 -> Time
+            // group 2 -> Date
+            // group 3 -> LT Identifier
+            // group 4 -> Session Number
+            // group 5 -> Sequence Number
+            return new FieldPDE()
+                    .withTime(matcher.group(1))
+                    .withDate(matcher.group(2))
+                    .withLtIdentifier(matcher.group(3))
+                    .withSessionNumber(matcher.group(4))
+                    .withSequenceNumber(matcher.group(5));
+        } else {
+            throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
+                    ConnectorConstants.BLOCK05_POSSIBLE_DUPLICATE_EMISSION, ConnectorConstants.TRAILER_BLOCK));
+        }
+    }
+
 }

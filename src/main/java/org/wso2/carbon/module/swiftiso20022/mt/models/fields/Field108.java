@@ -18,6 +18,14 @@
 
 package org.wso2.carbon.module.swiftiso20022.mt.models.fields;
 
+import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
+import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
+import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
+import org.wso2.carbon.module.swiftiso20022.utils.MTParserUtils;
+
+import java.util.Optional;
+import java.util.regex.Matcher;
+
 /**
  * Model for message user reference in User Header Block (Block 03).
  * <p>
@@ -51,4 +59,26 @@ public class Field108 {
         setValue(value);
         return this;
     }
+
+    /**
+     * Method to parse and get Field108 object.
+     *
+     * @param field108String String containing value of 108 field in User Header Block
+     * @return A {@link Field108} with values assigned from the passed string.
+     * @throws MTMessageParsingException if the value is invalid
+     */
+    public static Field108 parse(String field108String) throws MTMessageParsingException {
+
+        Optional<Matcher> field108Matcher = MTParserUtils.getRegexMatcher(
+                MTParserConstants.FIELD_108_REGEX_PATTERN, field108String);
+
+        if (field108Matcher.isPresent()) {
+            return new Field108()
+                    .withValue(field108Matcher.get().group());
+        } else {
+            throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
+                    ConnectorConstants.BLOCK03_MESSAGE_USER_REFERENCE, ConnectorConstants.USER_HEADER_BLOCK));
+        }
+    }
+
 }

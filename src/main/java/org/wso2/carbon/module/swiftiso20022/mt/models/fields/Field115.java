@@ -18,6 +18,14 @@
 
 package org.wso2.carbon.module.swiftiso20022.mt.models.fields;
 
+import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
+import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
+import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
+import org.wso2.carbon.module.swiftiso20022.utils.MTParserUtils;
+
+import java.util.Optional;
+import java.util.regex.Matcher;
+
 /**
  * Model for addressee information flag in User Header Block (Block 03).
  * <p>
@@ -119,5 +127,37 @@ public class Field115 {
     public Field115 withReference(String reference) {
         setReference(reference);
         return this;
+    }
+
+    /**
+     * Method to parse and get Field115 object.
+     *
+     * @param field115String String containing value of 115 field in User Header Block
+     * @return An instance of this model.
+     * @throws MTMessageParsingException if the value is invalid
+     */
+    public static Field115 parse(String field115String) throws MTMessageParsingException {
+
+        // Get matcher to the regex matching -> (Crediting Time)(Debiting Time)(Country Code)(Reference)
+        Optional<Matcher> field115Matcher = MTParserUtils.getRegexMatcher(
+                MTParserConstants.FIELD_115_REGEX_PATTERN, field115String);
+
+        if (field115Matcher.isPresent()) {
+
+            Matcher matcher = field115Matcher.get();
+
+            // group 1 -> Crediting Time
+            // group 2 -> Debiting Time
+            // group 3 -> Country Code
+            // group 4 -> Reference
+            return new Field115()
+                    .withCreditingTime(matcher.group(1))
+                    .withDebitingTime(matcher.group(2))
+                    .withCountryCode(matcher.group(3))
+                    .withReference(matcher.group(4));
+        } else {
+            throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
+                    ConnectorConstants.BLOCK03_ADDRESSEE_INFORMATION, ConnectorConstants.USER_HEADER_BLOCK));
+        }
     }
 }

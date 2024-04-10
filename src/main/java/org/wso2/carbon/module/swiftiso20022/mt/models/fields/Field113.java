@@ -18,6 +18,14 @@
 
 package org.wso2.carbon.module.swiftiso20022.mt.models.fields;
 
+import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
+import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
+import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
+import org.wso2.carbon.module.swiftiso20022.utils.MTParserUtils;
+
+import java.util.Optional;
+import java.util.regex.Matcher;
+
 /**
  * Model for banking priority in User Header Block (Block 03).
  * <p>
@@ -51,4 +59,26 @@ public class Field113 {
         setValue(value);
         return this;
     }
+
+    /**
+     * Method to parse and get Field113 object.
+     *
+     * @param field113String String containing value of 113 field in User Header Block
+     * @return An instance of this model.
+     * @throws MTMessageParsingException if the value is invalid.
+     */
+    public static Field113 parse(String field113String) throws MTMessageParsingException {
+
+        Optional<Matcher> field113Matcher = MTParserUtils.getRegexMatcher(
+                MTParserConstants.FIELD_113_REGEX_PATTERN, field113String);
+
+        if (field113Matcher.isPresent()) {
+            return new Field113()
+                    .withValue(field113Matcher.get().group());
+        } else {
+            throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
+                    ConnectorConstants.BLOCK03_BANKING_PRIORITY, ConnectorConstants.USER_HEADER_BLOCK));
+        }
+    }
+
 }

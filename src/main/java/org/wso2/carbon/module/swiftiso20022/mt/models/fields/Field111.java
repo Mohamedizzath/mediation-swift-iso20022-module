@@ -18,6 +18,14 @@
 
 package org.wso2.carbon.module.swiftiso20022.mt.models.fields;
 
+import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
+import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
+import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
+import org.wso2.carbon.module.swiftiso20022.utils.MTParserUtils;
+
+import java.util.Optional;
+import java.util.regex.Matcher;
+
 /**
  * Model for service type identifier in User Header Block (Block 03).
  * <p>
@@ -51,4 +59,26 @@ public class Field111 {
         setValue(value);
         return this;
     }
+
+    /**
+     * Method to parse and get Field111 object.
+     *
+     * @param field111String String containing value of 111 field in User Header Block
+     * @return An instance of this model.
+     * @throws MTMessageParsingException if the string is invalid
+     */
+    public static Field111 parse(String field111String) throws MTMessageParsingException {
+
+        Optional<Matcher> field111Matcher = MTParserUtils.getRegexMatcher(
+                MTParserConstants.FIELD_111_REGEX_PATTERN, field111String);
+
+        if (field111Matcher.isPresent()) {
+            return new Field111()
+                    .withValue(field111Matcher.get().group());
+        } else {
+            throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
+                    ConnectorConstants.BLOCK03_SERVICE_TYPE_IDENTIFIER, ConnectorConstants.USER_HEADER_BLOCK));
+        }
+    }
+
 }
