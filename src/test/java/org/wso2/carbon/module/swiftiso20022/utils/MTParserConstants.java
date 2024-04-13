@@ -143,7 +143,8 @@ public class MTParserConstants {
                 "{1:F01GSCRUS30XXXX0000000000}")) +
                 (params.getOrDefault(ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
                 "{2:O9400400190425GSCRUS30XXXX00000000002403290912N}")) +
-                (params.getOrDefault(ConnectorConstants.USER_HEADER_BLOCK_KEY, "{3:{113:URGT}}")) +
+                (params.getOrDefault(ConnectorConstants.USER_HEADER_BLOCK_KEY,
+                "{3:{113:URGT}{108:INTLPMTS}{121:5798a701-effe-43e5-8d14-eec27ea3d8ec}}")) +
                 (params.getOrDefault(ConnectorConstants.TEXT_BLOCK_KEY, "{4:\n:20:258158850\n" +
                 ":21:258158850\n" +
                 ":25:DD01100056869\n" +
@@ -174,6 +175,18 @@ public class MTParserConstants {
                                  "190425GSCRUS30XXXX0000000000", "OutputDate", "240329"
                                  , "OutputTime", "0912", "Priority", "N"))), MT940Message.class)
                 },
+                {getMTMessageText(Map.of(ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY, "")),
+                        getMTMessage(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY,
+                                getBasicHeaderBlock(Map.of("AppID", "F", "ServiceID", "01",
+                                        "LTAddress", "GSCRUS30XXXX", "SessionNumber", "0000",
+                                        "SequenceNumber", "000000"))), MT940Message.class)
+                }
+        };
+    }
+
+    @DataProvider(name = "parseInvalidMTMessage")
+    Object[][] parseInvalidMTMessage() throws Exception {
+        return new Object[][] {
                 {getMTMessageText(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY, "")),
                         getMTMessage(Map.of(ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
                                 getApplicationHeaderBlock(Map.of("IOID", "O", "MessageType", "940",
@@ -181,14 +194,8 @@ public class MTParserConstants {
                                         "190425GSCRUS30XXXX0000000000", "OutputDate", "240329"
                                         , "OutputTime", "0912", "Priority", "N"))), MT940Message.class)
                 },
-                {getMTMessageText(Map.of(ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY, "")),
-                        getMTMessage(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY,
-                                getBasicHeaderBlock(Map.of("AppID", "F", "ServiceID", "01",
-                                        "LTAddress", "GSCRUS30XXXX", "SessionNumber", "0000",
-                                        "SequenceNumber", "000000"))), MT940Message.class)
-                },
                 {getMTMessageText(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY, "",
-                                        ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY, "")),
+                        ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY, "")),
                         getMTMessage(Map.of(), MT940Message.class)
                 },
                 {getMTMessageText(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY, "{1:}",
@@ -212,46 +219,9 @@ public class MTParserConstants {
                 "F01GSCRUS30XXXX0000000000",
                 ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
                 "O9400400190425GSCRUS30XXX00000000002403290912N",
-                ConnectorConstants.USER_HEADER_BLOCK_KEY, "{113:URGT}", ConnectorConstants.TEXT_BLOCK_KEY,
-                "\n:20:258158850\n" +
-                ":21:258158850\n" +
-                ":25:DD01100056869\n" +
-                ":28C:1/1\n" +
-                ":60F:D230930USD843686,20\n" +
-                ":61:2310011001RCD10,00ACHPGSGWGDNCTAHQM8\n" +
-                ":86:EREF/GSGWGDNCTAHQM8/PREF/RP/GS/CTFILERP0002/CTBA0003\n" +
-                ":61:2310011001DD10,00ACHPNONREF\n" +
-                ":86:PREF/RP/GS/CTFILERP0002/CTBA0003\n" +
-                ":61:2310011001CD10,00ASHP20230928LTERMID2000003\n" +
-                ":86:EREF/20230928LTERMID2000003/PREF/RP/GS/CTFILERP0002/CTBA0003\n" +
-                ":62F:D230930USD846665,15\n" +
-                ":64:C231002USD334432401,27\n",
-                ConnectorConstants.TRAILER_BLOCK_KEY, "{CHK:123456789ABC}"))},
-
-                {getMTMessageText(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY, "",
-                ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY, "")),
-                getMTMessageMap(Map.of(ConnectorConstants.USER_HEADER_BLOCK_KEY, "{113:URGT}",
-                ConnectorConstants.TEXT_BLOCK_KEY, "\n:20:258158850\n" +
-                ":21:258158850\n" +
-                ":25:DD01100056869\n" +
-                ":28C:1/1\n" +
-                ":60F:D230930USD843686,20\n" +
-                ":61:2310011001RCD10,00ACHPGSGWGDNCTAHQM8\n" +
-                ":86:EREF/GSGWGDNCTAHQM8/PREF/RP/GS/CTFILERP0002/CTBA0003\n" +
-                ":61:2310011001DD10,00ACHPNONREF\n" +
-                ":86:PREF/RP/GS/CTFILERP0002/CTBA0003\n" +
-                ":61:2310011001CD10,00ASHP20230928LTERMID2000003\n" +
-                ":86:EREF/20230928LTERMID2000003/PREF/RP/GS/CTFILERP0002/CTBA0003\n" +
-                ":62F:D230930USD846665,15\n" +
-                ":64:C231002USD334432401,27\n",
-                ConnectorConstants.TRAILER_BLOCK_KEY, "{CHK:123456789ABC}"))},
-
-                {getMTMessageText(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY, "",
-                ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
-                "{2:O9400400190425GSCRUS30XXX00000000002403290912N}")),
-                getMTMessageMap(Map.of(ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
-                "O9400400190425GSCRUS30XXX00000000002403290912N",
-                ConnectorConstants.USER_HEADER_BLOCK_KEY, "{113:URGT}", ConnectorConstants.TEXT_BLOCK_KEY,
+                ConnectorConstants.USER_HEADER_BLOCK_KEY,
+                "{113:URGT}{108:INTLPMTS}{121:5798a701-effe-43e5-8d14-eec27ea3d8ec}",
+                ConnectorConstants.TEXT_BLOCK_KEY,
                 "\n:20:258158850\n" +
                 ":21:258158850\n" +
                 ":25:DD01100056869\n" +
@@ -268,10 +238,13 @@ public class MTParserConstants {
                 ConnectorConstants.TRAILER_BLOCK_KEY, "{CHK:123456789ABC}"))},
 
                 {getMTMessageText(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY,
-                "{1:F01GSCRUS30XXXX0000000000}")),
+                "{1:F01GSCRUS30XXXX0000000000}",
+                ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY, "")),
                 getMTMessageMap(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY,
-                "{2:F01GSCRUS30XXXX0000000000}",
-                ConnectorConstants.USER_HEADER_BLOCK_KEY, "{113:URGT}", ConnectorConstants.TEXT_BLOCK_KEY,
+                "F01GSCRUS30XXXX0000000000",
+                ConnectorConstants.USER_HEADER_BLOCK_KEY,
+                "{113:URGT}{108:INTLPMTS}{121:5798a701-effe-43e5-8d14-eec27ea3d8ec}",
+                ConnectorConstants.TEXT_BLOCK_KEY,
                 "\n:20:258158850\n" +
                 ":21:258158850\n" +
                 ":25:DD01100056869\n" +
@@ -285,23 +258,165 @@ public class MTParserConstants {
                 ":86:EREF/20230928LTERMID2000003/PREF/RP/GS/CTFILERP0002/CTBA0003\n" +
                 ":62F:D230930USD846665,15\n" +
                 ":64:C231002USD334432401,27\n",
-                ConnectorConstants.TRAILER_BLOCK_KEY, "{CHK:123456789ABC}"))}
+                ConnectorConstants.TRAILER_BLOCK_KEY, "{CHK:123456789ABC}"))},
+
+                {getMTMessageText(Map.of(ConnectorConstants.USER_HEADER_BLOCK_KEY, "")),
+                getMTMessageMap(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY,
+                "F01GSCRUS30XXXX0000000000",
+                ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
+                "O9400400190425GSCRUS30XXX00000000002403290912N",
+                ConnectorConstants.TEXT_BLOCK_KEY,
+                "\n:20:258158850\n" +
+                ":21:258158850\n" +
+                ":25:DD01100056869\n" +
+                ":28C:1/1\n" +
+                ":60F:D230930USD843686,20\n" +
+                ":61:2310011001RCD10,00ACHPGSGWGDNCTAHQM8\n" +
+                ":86:EREF/GSGWGDNCTAHQM8/PREF/RP/GS/CTFILERP0002/CTBA0003\n" +
+                ":61:2310011001DD10,00ACHPNONREF\n" +
+                ":86:PREF/RP/GS/CTFILERP0002/CTBA0003\n" +
+                ":61:2310011001CD10,00ASHP20230928LTERMID2000003\n" +
+                ":86:EREF/20230928LTERMID2000003/PREF/RP/GS/CTFILERP0002/CTBA0003\n" +
+                ":62F:D230930USD846665,15\n" +
+                ":64:C231002USD334432401,27\n",
+                ConnectorConstants.TRAILER_BLOCK_KEY, "{CHK:123456789ABC}"))},
+
+                {getMTMessageText(Map.of(ConnectorConstants.TRAILER_BLOCK_KEY, "")),
+                getMTMessageMap(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY,
+                "F01GSCRUS30XXXX0000000000",
+                ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
+                "O9400400190425GSCRUS30XXX00000000002403290912N",
+                ConnectorConstants.USER_HEADER_BLOCK_KEY,
+                "{113:URGT}{108:INTLPMTS}{121:5798a701-effe-43e5-8d14-eec27ea3d8ec}",
+                ConnectorConstants.TEXT_BLOCK_KEY,
+            "\n:20:258158850\n" +
+                ":21:258158850\n" +
+                ":25:DD01100056869\n" +
+                ":28C:1/1\n" +
+                ":60F:D230930USD843686,20\n" +
+                ":61:2310011001RCD10,00ACHPGSGWGDNCTAHQM8\n" +
+                ":86:EREF/GSGWGDNCTAHQM8/PREF/RP/GS/CTFILERP0002/CTBA0003\n" +
+                ":61:2310011001DD10,00ACHPNONREF\n" +
+                ":86:PREF/RP/GS/CTFILERP0002/CTBA0003\n" +
+                ":61:2310011001CD10,00ASHP20230928LTERMID2000003\n" +
+                ":86:EREF/20230928LTERMID2000003/PREF/RP/GS/CTFILERP0002/CTBA0003\n" +
+                ":62F:D230930USD846665,15\n" +
+                ":64:C231002USD334432401,27\n"))}
         };
     }
 
     @DataProvider(name = "parseInvalidMTMessageBlocks")
     Object[][] parseInvalidMTMessageBlocks() {
         return new Object[][] {
+                {getMTMessageText(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY, ""))},
                 {getMTMessageText(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY,
-                        "{1:F01GSCRUS30XXXX0000000000",
-                        ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
-                        "{2:O9400400190425GSCRUS30XXX00000000002403290912N}")),
-                        getMTMessageMap(Map.of())},
+                        "{1:F01GSCRUS30XXXX0000000000"))},
                 {getMTMessageText(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY,
-                        "{1:F01GSCRUS30XXXX0000000000}}",
-                        ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
-                        "{2:O9400400190425GSCRUS30XXX00000000002403290912N}")),
-                        getMTMessageMap(Map.of())}
+                        "{1:"))},
+                {getMTMessageText(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY,
+                        "{1:}"))},
+                {getMTMessageText(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY,
+                        "{1:F01GSCRUS30XXXX0000000000}}"))},
+                {getMTMessageText(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY,
+                        "{1:{{F01GSCRUS30XXXX0000000000}"))},
+                {getMTMessageText(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY,
+                        "{1:F01GSCRUS30XXXX{}0000000000}"))},
+                {getMTMessageText(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY,
+                        "{1:F01GSCRUS30XXXX}{0000000000}"))},
+                {getMTMessageText(Map.of(ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
+                        "{2:O9400400190425GSCRUS30XXX0000000002403141137N"))},
+                {getMTMessageText(Map.of(ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
+                        "{2:"))},
+                {getMTMessageText(Map.of(ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
+                        "{2:}"))},
+                {getMTMessageText(Map.of(ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
+                        "{2:O9400400190425GSCRUS30XXX0000000002403141137N}}"))},
+                {getMTMessageText(Map.of(ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
+                        "{2:{{O9400400190425GSCRUS30XXX0000000002403141137N}"))},
+                {getMTMessageText(Map.of(ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
+                        "{2:O9400400190425GSCRUS30XXX{}0000000002403141137N}"))},
+                {getMTMessageText(Map.of(ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
+                        "{2:O9400400190425GSCRUS30XXX}{0000000002403141137N}"))},
+                {getMTMessageText(Map.of(ConnectorConstants.USER_HEADER_BLOCK_KEY,
+                        "{3:{113:URGT}{108:INTLPMTS}{121:5798a701-effe-43e5-8d14-eec27ea3d8ec}"))},
+                {getMTMessageText(Map.of(ConnectorConstants.USER_HEADER_BLOCK_KEY,
+                        "{3:"))},
+                {getMTMessageText(Map.of(ConnectorConstants.USER_HEADER_BLOCK_KEY,
+                        "{3:}"))},
+                {getMTMessageText(Map.of(ConnectorConstants.USER_HEADER_BLOCK_KEY,
+                        "{3:{113:URGT}{108:INTLPMTS}{121:5798a701-effe-43e5-8d14-eec27ea3d8ec}}}"))},
+                {getMTMessageText(Map.of(ConnectorConstants.USER_HEADER_BLOCK_KEY,
+                        "{3:{113:URGT}}{108:INTLPMTS}{121:5798a701-effe-43e5-8d14-eec27ea3d8ec}}"))},
+                {getMTMessageText(Map.of(ConnectorConstants.USER_HEADER_BLOCK_KEY,
+                        "{3:{113:URGT}{108:INTLPMTS}{121:5798a701-effe-43e5-8d14-eec27ea3d8ec}"))},
+                {getMTMessageText(Map.of(ConnectorConstants.USER_HEADER_BLOCK_KEY,
+                        "{3:{113:URGT}{108:INTLPMTS}{}{121:5798a701-effe-43e5-8d14-eec27ea3d8ec}}"))},
+                {getMTMessageText(Map.of(ConnectorConstants.USER_HEADER_BLOCK_KEY,
+                        "{3:{113:URGT}{108:INTLPMTS}}{{121:5798a701-effe-43e5-8d14-eec27ea3d8ec}}"))},
+                {getMTMessageText(Map.of(ConnectorConstants.USER_HEADER_BLOCK_KEY,
+                        "{3:{113:UR{GT}{108:INTLPMTS}{121:5798a701-effe-43e5-8d14-eec27ea3d8ec}}"))},
+                {getMTMessageText(Map.of(ConnectorConstants.USER_HEADER_BLOCK_KEY,
+                        "{3:{113:UR{GT}{108:INTLPMTS}{121:5798a701-effe-43e5-8d14-eec27ea3d8ec}}"))},
+                {getMTMessageText(Map.of(ConnectorConstants.USER_HEADER_BLOCK_KEY,
+                        "{3:{113:UR}{GT}{108:INTLPMTS}{121:5798a701-effe-43e5-8d14-eec27ea3d8ec}}"))},
+                {getMTMessageText(Map.of(ConnectorConstants.USER_HEADER_BLOCK_KEY,
+                        "{3:{113:UR}{GT}{108:INTLPMTS}{121:5798a701-effe-43e5-8d14-eec27ea3d8ec}}"))},
+                {getMTMessageText(Map.of(ConnectorConstants.TEXT_BLOCK_KEY,
+                        "{4:}"))},
+                {getMTMessageText(Map.of(ConnectorConstants.TEXT_BLOCK_KEY,
+                        "{4:"))},
+                {getMTMessageText(Map.of(ConnectorConstants.TEXT_BLOCK_KEY,
+                        "{4:\n" +
+                            ":20:258158850\n" +
+                            ":21:258158850\n" +
+                            ":25:DD01100056869\n" +
+                            ":28C:1/1\n" +
+                            ":60F:D230930USD843686,20\n" +
+                            ":61:2310011001RCD10,00ACHPGSGWGDNCTAHQM8\n" +
+                            ":86:EREF/GSGWGDNCTAHQM8/PREF/RP/GS/CTFILERP0002/CTBA0003\n" +
+                            ":62F:D230930USD846665,15\n" +
+                            ":64:C231002USD334432401,27\n" +
+                            "-"))},
+                {getMTMessageText(Map.of(ConnectorConstants.TEXT_BLOCK_KEY,
+                        "{4:\n" +
+                                ":20:258158850\n" +
+                                "{:21:258158850}\n" +
+                                ":25:DD01100056869\n" +
+                                ":28C:1/1\n" +
+                                ":60F:D230930USD843686,20\n" +
+                                ":61:2310011001RCD10,00ACHPGSGWGDNCTAHQM8\n" +
+                                ":86:EREF/GSGWGDNCTAHQM8/PREF/RP/GS/CTFILERP0002/CTBA0003\n" +
+                                ":62F:D230930USD846665,15\n" +
+                                ":64:C231002USD334432401,27\n" +
+                                "-}"))},
+                {getMTMessageText(Map.of(ConnectorConstants.TEXT_BLOCK_KEY,
+                        "{4:\n" +
+                                ":20:258158850\n" +
+                                ":21:258158850\n" +
+                                "}{:25:DD01100056869\n" +
+                                ":28C:1/1\n" +
+                                ":60F:D230930USD843686,20\n" +
+                                ":61:2310011001RCD10,00ACHPGSGWGDNCTAHQM8\n" +
+                                ":86:EREF/GSGWGDNCTAHQM8/PREF/RP/GS/CTFILERP0002/CTBA0003\n" +
+                                ":62F:D230930USD846665,15\n" +
+                                ":64:C231002USD334432401,27\n" +
+                                "-}\n"))},
+                {getMTMessageText(Map.of(ConnectorConstants.TRAILER_BLOCK_KEY,
+                        "{5:}"))},
+                {getMTMessageText(Map.of(ConnectorConstants.TRAILER_BLOCK_KEY,
+                        "{5:"))},
+                {getMTMessageText(Map.of(ConnectorConstants.TRAILER_BLOCK_KEY,
+                        "{5:{CHK:123456789ABC}{PDE:1348120811BANKFRPPAXXX2222123456"))},
+                {getMTMessageText(Map.of(ConnectorConstants.TRAILER_BLOCK_KEY,
+                        "{5:{CHK:123456789ABC}{PDE:1348120811BANKFRPPAXXX2222123456}}}"))},
+                {getMTMessageText(Map.of(ConnectorConstants.TRAILER_BLOCK_KEY,
+                        "{5:{CHK:123456789ABC{PDE:1348120811BANKFRPPAXXX2222123456}}"))},
+                {getMTMessageText(Map.of(ConnectorConstants.TRAILER_BLOCK_KEY,
+                        "{5:{CH{:123456789ABC}{PDE:1348120811BANKFRPPAXXX2222123456}}}"))},
+                {getMTMessageText(Map.of(ConnectorConstants.TRAILER_BLOCK_KEY,
+                        "{5:{CHK:123456789{}ABC}{PDE:1348120811BANKFRPPAXXX2222123456}}}"))},
+                {getMTMessageText(Map.of(ConnectorConstants.TRAILER_BLOCK_KEY,
+                        "{5:{CHK:12345678{}9ABC}{}{PDE:1348120811BANKFRPPAXXX2222123456}}}"))}
         };
     }
 
@@ -312,21 +427,21 @@ public class MTParserConstants {
                         getBasicHeaderBlockText(Map.of("AppID", "F")))),
                         getBasicHeaderBlock(Map.of("AppID", "F", "ServiceID", "01",
                                 "LTAddress", "GSCRUS30XXXX", "SessionNumber", "0000",
-                                "SequenceNumber", "000000"))},
+                                "SequenceNumber", "000000"))}
+
+        };
+    }
+
+    @DataProvider(name = "parserInvalidBasicHeaderApplicationID")
+    Object[][] parseInvalidBasicHeaderApplicationID() {
+        return new Object[][] {
                 {getMTMessageMap(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY,
                         getBasicHeaderBlockText(Map.of("AppID", "", "ServiceID", "",
-                                "LTAddress", "", "SessionNumber", "", "SequenceNumber", "")))),
-                        getBasicHeaderBlock(Map.of())},
+                                "LTAddress", "", "SessionNumber", "", "SequenceNumber", ""))))},
                 {getMTMessageMap(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY,
-                        getBasicHeaderBlockText(Map.of("AppID", "")))),
-                        getBasicHeaderBlock(Map.of("AppID", "0", "ServiceID", "1G",
-                                "LTAddress", "SCRUS30XXXX0", "SessionNumber", "0000",
-                                "SequenceNumber", "00000"))},
+                        getBasicHeaderBlockText(Map.of("AppID", ""))))},
                 {getMTMessageMap(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY,
-                        getBasicHeaderBlockText(Map.of("AppID", "CDGK")))),
-                        getBasicHeaderBlock(Map.of("AppID", "C", "ServiceID", "DG",
-                                "LTAddress", "K01GSCRUS30X", "SessionNumber", "XXX0",
-                                "SequenceNumber", "000000"))}
+                        getBasicHeaderBlockText(Map.of("AppID", "CDGK"))))}
 
         };
     }
@@ -335,20 +450,22 @@ public class MTParserConstants {
     Object[][] parseBasicHeaderServiceID() {
         return new Object[][]{
                 {getMTMessageMap(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY,
-                        getBasicHeaderBlockText(Map.of("ServiceID", "")))),
-                        getBasicHeaderBlock(Map.of("AppID", "F", "ServiceID", "GS",
-                                "LTAddress", "CRUS30XXXX00", "SessionNumber", "0000",
-                                "SequenceNumber", "0000"))},
-                {getMTMessageMap(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY,
-                        getBasicHeaderBlockText(Map.of("ServiceID", "0")))),
-                        getBasicHeaderBlock(Map.of("AppID", "F", "ServiceID", "0G",
-                                "LTAddress", "SCRUS30XXXX0", "SessionNumber", "0000",
-                                "SequenceNumber", "00000"))},
-                {getMTMessageMap(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY,
-                        getBasicHeaderBlockText(Map.of("ServiceID", "011")))),
+                        getBasicHeaderBlockText(Map.of("ServiceID", "01")))),
                         getBasicHeaderBlock(Map.of("AppID", "F", "ServiceID", "01",
-                                "LTAddress", "1GSCRUS30XXX", "SessionNumber", "X000",
+                                "LTAddress", "GSCRUS30XXXX", "SessionNumber", "0000",
                                 "SequenceNumber", "000000"))},
+        };
+    }
+
+    @DataProvider(name = "parserInvalidBasicHeaderServiceID")
+    Object[][] parseInvalidBasicHeaderServiceID() {
+        return new Object[][]{
+                {getMTMessageMap(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY,
+                        getBasicHeaderBlockText(Map.of("ServiceID", ""))))},
+                {getMTMessageMap(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY,
+                        getBasicHeaderBlockText(Map.of("ServiceID", "0"))))},
+                {getMTMessageMap(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY,
+                        getBasicHeaderBlockText(Map.of("ServiceID", "011"))))},
         };
     }
 
@@ -356,19 +473,22 @@ public class MTParserConstants {
     Object[][] parseBasicHeaderLTAddress() {
         return new Object[][]{
                 {getMTMessageMap(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY,
-                        getBasicHeaderBlockText(Map.of("LTAddress", "")))),
+                        getBasicHeaderBlockText(Map.of("LTAddress", "GSCRUS30XXXX")))),
                         getBasicHeaderBlock(Map.of("AppID", "F", "ServiceID", "01",
-                                "LTAddress", "0000000000"))},
-                {getMTMessageMap(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY,
-                        getBasicHeaderBlockText(Map.of("LTAddress", "GSCRUS30")))),
-                        getBasicHeaderBlock(Map.of("AppID", "F", "ServiceID", "01",
-                                "LTAddress", "GSCRUS300000", "SessionNumber", "0000",
-                                "SequenceNumber", "00"))},
-                {getMTMessageMap(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY,
-                        getBasicHeaderBlockText(Map.of("LTAddress", "GSCRUS30XXXX324")))),
-                        getBasicHeaderBlock(Map.of("AppID", "F", "ServiceID", "01",
-                                "LTAddress", "GSCRUS30XXXX", "SessionNumber", "3240",
+                                "LTAddress", "GSCRUS30XXXX", "SessionNumber", "0000",
                                 "SequenceNumber", "000000"))}
+        };
+    }
+
+    @DataProvider(name = "parserInvalidBasicHeaderLTAddress")
+    Object[][] parseInvalidBasicHeaderLTAddress() {
+        return new Object[][]{
+                {getMTMessageMap(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY,
+                        getBasicHeaderBlockText(Map.of("LTAddress", ""))))},
+                {getMTMessageMap(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY,
+                        getBasicHeaderBlockText(Map.of("LTAddress", "GSCRUS30"))))},
+                {getMTMessageMap(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY,
+                        getBasicHeaderBlockText(Map.of("LTAddress", "GSCRUS30XXXX324"))))}
         };
     }
 
@@ -376,20 +496,22 @@ public class MTParserConstants {
     Object[][] parseBasicHeaderSessionNumber() {
         return new Object[][]{
                 {getMTMessageMap(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY,
-                        getBasicHeaderBlockText(Map.of("SessionNumber", "")))),
+                        getBasicHeaderBlockText(Map.of("SessionNumber", "0000")))),
                         getBasicHeaderBlock(Map.of("AppID", "F", "ServiceID", "01",
                                 "LTAddress", "GSCRUS30XXXX", "SessionNumber", "0000",
-                                "SequenceNumber", "00"))},
+                                "SequenceNumber", "000000"))}
+        };
+    }
+
+    @DataProvider(name = "parserInvalidBasicHeaderSessionNumber")
+    Object[][] parseInvalidBasicHeaderSessionNumber() {
+        return new Object[][]{
                 {getMTMessageMap(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY,
-                        getBasicHeaderBlockText(Map.of("SessionNumber", "12")))),
-                        getBasicHeaderBlock(Map.of("AppID", "F", "ServiceID", "01",
-                                "LTAddress", "GSCRUS30XXXX", "SessionNumber", "1200",
-                                "SequenceNumber", "0000"))},
+                        getBasicHeaderBlockText(Map.of("SessionNumber", ""))))},
                 {getMTMessageMap(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY,
-                        getBasicHeaderBlockText(Map.of("SessionNumber", "243212")))),
-                        getBasicHeaderBlock(Map.of("AppID", "F", "ServiceID", "01",
-                                "LTAddress", "GSCRUS30XXXX", "SessionNumber", "2432",
-                                "SequenceNumber", "120000"))}
+                        getBasicHeaderBlockText(Map.of("SessionNumber", "12"))))},
+                {getMTMessageMap(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY,
+                        getBasicHeaderBlockText(Map.of("SessionNumber", "243212"))))}
         };
     }
 
@@ -397,101 +519,100 @@ public class MTParserConstants {
     Object[][] parseBasicHeaderSequenceNumber() {
         return new Object[][]{
                 {getMTMessageMap(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY,
-                        getBasicHeaderBlockText(Map.of("SequenceNumber", "")))),
-                        getBasicHeaderBlock(Map.of("AppID", "F", "ServiceID", "01",
-                                "LTAddress", "GSCRUS30XXXX", "SessionNumber", "0000"))},
-                {getMTMessageMap(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY,
-                        getBasicHeaderBlockText(Map.of("SequenceNumber", "1290")))),
+                        getBasicHeaderBlockText(Map.of("SequenceNumber", "000000")))),
                         getBasicHeaderBlock(Map.of("AppID", "F", "ServiceID", "01",
                                 "LTAddress", "GSCRUS30XXXX", "SessionNumber", "0000",
-                                "SequenceNumber", "1290"))},
+                                "SequenceNumber", "000000"))}
+        };
+    }
+
+    @DataProvider(name = "parserInvalidBasicHeaderSequenceNumber")
+    Object[][] parseInvalidBasicHeaderSequenceNumber() {
+        return new Object[][]{
                 {getMTMessageMap(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY,
-                        getBasicHeaderBlockText(Map.of("SequenceNumber", "32119012")))),
-                        getBasicHeaderBlock(Map.of("AppID", "F", "ServiceID", "01",
-                                "LTAddress", "GSCRUS30XXXX", "SessionNumber", "0000",
-                                "SequenceNumber", "321190"))}
+                        getBasicHeaderBlockText(Map.of("SequenceNumber", ""))))},
+                {getMTMessageMap(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY,
+                        getBasicHeaderBlockText(Map.of("SequenceNumber", "1290"))))},
+                {getMTMessageMap(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY,
+                        getBasicHeaderBlockText(Map.of("SequenceNumber", "32119012"))))}
         };
     }
 
     @DataProvider(name = "parserApplicationHeaderInputOutputID")
     Object[][] parseApplicationHeaderInputOutputID() {
         return new Object[][]{
-                {getMTMessageMap(Map.of(ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
+                {getMTMessageMap(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY, getBasicHeaderBlockText(Map.of()),
+                        ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
                         getApplicationHeaderBlockText(Map.of("IOID", "I")))),
                         getApplicationHeaderBlock(Map.of("IOID", "I", "MessageType", "103",
                                 "DestinationAddress", "GSCRUS30XXXX", "Priority", "U",
                                 "DeliveryMonitor", "3", "ObsolescencePeriod", "003"))},
-                {getMTMessageMap(Map.of(ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
+                {getMTMessageMap(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY, getBasicHeaderBlockText(Map.of()),
+                        ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
                         getApplicationHeaderBlockText(Map.of("IOID", "O")))),
                         getApplicationHeaderBlock(Map.of("IOID", "O", "MessageType", "940",
                                 "InputTime", "0400", "MessageInputReference",
                                 "190425GSCRUS30XXXX0000000000", "OutputDate", "240327"
-                                , "OutputTime", "1128", "Priority", "N"))},
-                {getMTMessageMap(Map.of(ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
-                        getApplicationHeaderBlockText(Map.of("IOID", "", "MessageType", "",
-                                "DestinationAddress", "", "Priority", "",
-                                "DeliveryMonitor", "", "ObsolescencePeriod", "", "InputTime", "",
-                                "MessageInputReference", "", "OutputDate", "",
-                                "OutputTime", "")))),
-                        getApplicationHeaderBlock(Map.of())},
-                {getMTMessageMap(Map.of(ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
-                        getApplicationHeaderBlockText(Map.of("IOID", "")))),
-                        getApplicationHeaderBlock(Map.of("IOID", "9", "MessageType", "400"))},
-                {getMTMessageMap(Map.of(ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
-                        getApplicationHeaderBlockText(Map.of("IOID", "KT")))),
-                        getApplicationHeaderBlock(Map.of("IOID", "K", "MessageType", "T94"))},
+                                , "OutputTime", "1128", "Priority", "N"))}
+        };
+    }
+
+    @DataProvider(name = "parserInvalidApplicationHeaderInputOutputID")
+    Object[][] parseInvalidApplicationHeaderInputOutputID() {
+        return new Object[][]{
+                {getMTMessageMap(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY, getBasicHeaderBlockText(Map.of()),
+                        ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
+                        getApplicationHeaderBlockText(Map.of("IOID", ""))))},
+                {getMTMessageMap(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY, getBasicHeaderBlockText(Map.of()),
+                        ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
+                        getApplicationHeaderBlockText(Map.of("IOID", "9"))))},
+                {getMTMessageMap(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY, getBasicHeaderBlockText(Map.of()),
+                        ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
+                        getApplicationHeaderBlockText(Map.of("IOID", "KT"))))},
         };
     }
 
     @DataProvider(name = "parserApplicationHeaderMessageType")
     Object[][] parseApplicationHeaderMessageType() {
         return new Object[][]{
-                {getMTMessageMap(Map.of(ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
+                {getMTMessageMap(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY, getBasicHeaderBlockText(Map.of()),
+                        ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
                         getApplicationHeaderBlockText(Map.of("IOID", "I", "MessageType", "103")))),
                         getApplicationHeaderBlock(Map.of("IOID", "I", "MessageType", "103",
                                 "DestinationAddress", "GSCRUS30XXXX", "Priority", "U",
                                 "DeliveryMonitor", "3", "ObsolescencePeriod", "003"))},
-                {getMTMessageMap(Map.of(ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
+                {getMTMessageMap(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY, getBasicHeaderBlockText(Map.of()),
+                        ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
                         getApplicationHeaderBlockText(Map.of("MessageType", "940")))),
                         getApplicationHeaderBlock(Map.of("IOID", "O", "MessageType", "940",
                                 "InputTime", "0400", "MessageInputReference",
                                 "190425GSCRUS30XXXX0000000000", "OutputDate", "240327"
-                                , "OutputTime", "1128", "Priority", "N"))},
-                {getMTMessageMap(Map.of(ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
-                        getApplicationHeaderBlockText(Map.of("IOID", "I", "MessageType", "10")))),
-                        getApplicationHeaderBlock(Map.of("IOID", "I", "MessageType", "10G",
-                                "DestinationAddress", "SCRUS30XXXXU",
-                                "DeliveryMonitor", "3", "ObsolescencePeriod", "003"))},
-                {getMTMessageMap(Map.of(ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
-                        getApplicationHeaderBlockText(Map.of("MessageType", "94")))),
-                        getApplicationHeaderBlock(Map.of("IOID", "O", "MessageType", "940",
-                                "InputTime", "4001", "MessageInputReference",
-                                "90425GSCRUS30XXXX00000000002", "OutputDate", "403271"
-                                , "OutputTime", "128N"))},
-                {getMTMessageMap(Map.of(ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
-                        getApplicationHeaderBlockText(Map.of("IOID", "I", "MessageType", "1033")))),
-                        getApplicationHeaderBlock(Map.of("IOID", "I", "MessageType", "103",
-                                "DestinationAddress", "3GSCRUS30XXX", "Priority", "X"))},
-                {getMTMessageMap(Map.of(ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
-                        getApplicationHeaderBlockText(Map.of("MessageType", "9440")))),
-                        getApplicationHeaderBlock(Map.of("IOID", "O", "MessageType", "944",
-                                "InputTime", "0040",  "MessageInputReference",
-                                "0190425GSCRUS30XXXX000000000", "OutputDate", "024032"
-                                , "OutputTime", "7112"))},
-                {getMTMessageMap(Map.of(ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
-                        getApplicationHeaderBlockText(Map.of("IOID", "I", "MessageType", "",
-                                "DestinationAddress", "", "Priority", "",
-                                "DeliveryMonitor", "", "ObsolescencePeriod", "", "InputTime", "",
-                                "MessageInputReference", "", "OutputDate", "",
-                                "OutputTime", "")))),
-                        getApplicationHeaderBlock(Map.of("IOID", "I"))},
-                {getMTMessageMap(Map.of(ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
-                        getApplicationHeaderBlockText(Map.of("IOID", "O", "MessageType", "",
-                                "DestinationAddress", "", "Priority", "",
-                                "DeliveryMonitor", "", "ObsolescencePeriod", "", "InputTime", "",
-                                "MessageInputReference", "", "OutputDate", "",
-                                "OutputTime", "")))),
-                        getApplicationHeaderBlock(Map.of("IOID", "O"))}
+                                , "OutputTime", "1128", "Priority", "N"))}
+
+        };
+    }
+
+    @DataProvider(name = "parserInvalidApplicationHeaderMessageType")
+    Object[][] parseInvalidApplicationHeaderMessageType() {
+        return new Object[][]{
+                {getMTMessageMap(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY, getBasicHeaderBlockText(Map.of()),
+                        ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
+                        getApplicationHeaderBlockText(Map.of("IOID", "I", "MessageType", "10"))))},
+                {getMTMessageMap(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY, getBasicHeaderBlockText(Map.of()),
+                        ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
+                        getApplicationHeaderBlockText(Map.of("IOID", "O", "MessageType", "94"))))},
+                {getMTMessageMap(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY, getBasicHeaderBlockText(Map.of()),
+                        ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
+                        getApplicationHeaderBlockText(Map.of("IOID", "I", "MessageType", "1033"))))},
+                {getMTMessageMap(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY, getBasicHeaderBlockText(Map.of()),
+                        ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
+                        getApplicationHeaderBlockText(Map.of("IOID", "O", "MessageType", "1033"))))},
+                {getMTMessageMap(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY, getBasicHeaderBlockText(Map.of()),
+                        ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
+                        getApplicationHeaderBlockText(Map.of("IOID", "I", "MessageType", ""))))},
+                {getMTMessageMap(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY, getBasicHeaderBlockText(Map.of()),
+                        ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
+                        getApplicationHeaderBlockText(Map.of("IOID", "O", "MessageType", ""))))}
 
         };
     }
@@ -499,38 +620,57 @@ public class MTParserConstants {
     @DataProvider(name = "parserApplicationHeaderPriority")
     Object[][] parserApplicationHeaderPriority() {
         return new Object[][]{
-                {getMTMessageMap(Map.of(ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
+                {getMTMessageMap(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY, getBasicHeaderBlockText(Map.of()),
+                        ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
                         getApplicationHeaderBlockText(Map.of("IOID", "I", "Priority", "U")))),
                         getApplicationHeaderBlock(Map.of("IOID", "I", "MessageType", "103",
                                 "DestinationAddress", "GSCRUS30XXXX", "Priority", "U",
                                 "DeliveryMonitor", "3", "ObsolescencePeriod", "003"))},
-                {getMTMessageMap(Map.of(ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
-                        getApplicationHeaderBlockText(Map.of("Priority", "N")))),
+                {getMTMessageMap(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY, getBasicHeaderBlockText(Map.of()),
+                        ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
+                        getApplicationHeaderBlockText(Map.of("IOID", "O", "Priority", "N")))),
                         getApplicationHeaderBlock(Map.of("IOID", "O", "MessageType", "940",
                                 "InputTime", "0400", "MessageInputReference",
                                 "190425GSCRUS30XXXX0000000000", "OutputDate", "240327"
                                 , "OutputTime", "1128", "Priority", "N"))},
-                {getMTMessageMap(Map.of(ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
-                        getApplicationHeaderBlockText(Map.of("IOID", "I", "Priority", "5")))),
+                {getMTMessageMap(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY, getBasicHeaderBlockText(Map.of()),
+                        ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
+                        getApplicationHeaderBlockText(Map.of("IOID", "I", "Priority", "")))),
                         getApplicationHeaderBlock(Map.of("IOID", "I", "MessageType", "103",
-                                "DestinationAddress", "GSCRUS30XXXX", "DeliveryMonitor", "5",
-                                "ObsolescencePeriod", "300"))},
-                {getMTMessageMap(Map.of(ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
-                        getApplicationHeaderBlockText(Map.of("Priority", "8")))),
-                        getApplicationHeaderBlock(Map.of("IOID", "O", "MessageType", "940",
-                                "InputTime", "0400", "MessageInputReference",
-                                "190425GSCRUS30XXXX0000000000", "OutputDate", "240327",
-                                "OutputTime", "1128"))},
-                {getMTMessageMap(Map.of(ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
-                        getApplicationHeaderBlockText(Map.of("IOID", "I", "Priority", "NT")))),
-                        getApplicationHeaderBlock(Map.of("IOID", "I", "MessageType", "103",
-                                "DestinationAddress", "GSCRUS30XXXX", "Priority", "N"))},
-                {getMTMessageMap(Map.of(ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
-                        getApplicationHeaderBlockText(Map.of("Priority", "MP")))),
+                                "DestinationAddress", "GSCRUS30XXXX", "DeliveryMonitor", "3",
+                                "ObsolescencePeriod", "003"))},
+                {getMTMessageMap(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY, getBasicHeaderBlockText(Map.of()),
+                        ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
+                        getApplicationHeaderBlockText(Map.of("IOID", "O", "Priority", "")))),
                         getApplicationHeaderBlock(Map.of("IOID", "O", "MessageType", "940",
                                 "InputTime", "0400", "MessageInputReference",
                                 "190425GSCRUS30XXXX0000000000", "OutputDate", "240327"
-                                , "OutputTime", "1128", "Priority", "M"))}
+                                , "OutputTime", "1128"))}
+
+        };
+    }
+
+    @DataProvider(name = "parserInvalidApplicationHeaderPriority")
+    Object[][] parserInvalidApplicationHeaderPriority() {
+        return new Object[][]{
+                {getMTMessageMap(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY, getBasicHeaderBlockText(Map.of()),
+                        ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
+                        getApplicationHeaderBlockText(Map.of("IOID", "I", "Priority", "5"))))},
+                {getMTMessageMap(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY, getBasicHeaderBlockText(Map.of()),
+                        ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
+                        getApplicationHeaderBlockText(Map.of("IOID", "O", "Priority", "8"))))},
+                {getMTMessageMap(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY, getBasicHeaderBlockText(Map.of()),
+                        ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
+                        getApplicationHeaderBlockText(Map.of("IOID", "I", "Priority", "512"))))},
+                {getMTMessageMap(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY, getBasicHeaderBlockText(Map.of()),
+                        ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
+                        getApplicationHeaderBlockText(Map.of("IOID", "O", "Priority", "878"))))},
+                {getMTMessageMap(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY, getBasicHeaderBlockText(Map.of()),
+                        ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
+                        getApplicationHeaderBlockText(Map.of("IOID", "I", "Priority", "NT"))))},
+                {getMTMessageMap(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY, getBasicHeaderBlockText(Map.of()),
+                        ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
+                        getApplicationHeaderBlockText(Map.of("IOID", "O", "Priority", "MP"))))}
 
         };
     }
@@ -538,21 +678,27 @@ public class MTParserConstants {
     @DataProvider(name = "parserApplicationHeaderDestinationAddress")
     Object[][] parserApplicationHeaderDestinationAddress() {
         return new Object[][]{
-                {getMTMessageMap(Map.of(ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
+                {getMTMessageMap(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY, getBasicHeaderBlockText(Map.of()),
+                        ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
                         getApplicationHeaderBlockText(Map.of("IOID", "I",
                                 "DestinationAddress", "GSCRUS30XXXX")))),
                         getApplicationHeaderBlock(Map.of("IOID", "I", "MessageType", "103",
                                 "DestinationAddress", "GSCRUS30XXXX", "Priority", "U",
-                                "DeliveryMonitor", "3", "ObsolescencePeriod", "003"))},
-                {getMTMessageMap(Map.of(ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
-                        getApplicationHeaderBlockText(Map.of("IOID", "I", "DestinationAddress", "")))),
-                        getApplicationHeaderBlock(Map.of("IOID", "I", "MessageType", "103",
-                                "DestinationAddress", "U3003"))},
-                {getMTMessageMap(Map.of(ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
+                                "DeliveryMonitor", "3", "ObsolescencePeriod", "003"))}
+
+        };
+    }
+
+    @DataProvider(name = "parserInvalidApplicationHeaderDestinationAddress")
+    Object[][] parserInvalidApplicationHeaderDestinationAddress() {
+        return new Object[][]{
+                {getMTMessageMap(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY, getBasicHeaderBlockText(Map.of()),
+                        ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
+                        getApplicationHeaderBlockText(Map.of("IOID", "I", "DestinationAddress", ""))))},
+                {getMTMessageMap(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY, getBasicHeaderBlockText(Map.of()),
+                        ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
                         getApplicationHeaderBlockText(Map.of("IOID", "I",
-                                "DestinationAddress", "GSCRUS30XXXX1PTX")))),
-                        getApplicationHeaderBlock(Map.of("IOID", "I", "MessageType", "103",
-                                "DestinationAddress", "GSCRUS30XXXX", "DeliveryMonitor", "1"))}
+                                "DestinationAddress", "GSCRUS30XXXX1PTX"))))}
 
         };
     }
@@ -560,180 +706,186 @@ public class MTParserConstants {
     @DataProvider(name = "parserApplicationHeaderDeliveryMonitor")
     Object[][] parserApplicationHeaderDeliveryMonitor() {
         return new Object[][]{
-                {getMTMessageMap(Map.of(ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
+                {getMTMessageMap(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY, getBasicHeaderBlockText(Map.of()),
+                        ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
                         getApplicationHeaderBlockText(Map.of("IOID", "I", "DeliveryMonitor", "3")))),
                         getApplicationHeaderBlock(Map.of("IOID", "I", "MessageType", "103",
                                 "DestinationAddress", "GSCRUS30XXXX", "Priority", "U",
                                 "DeliveryMonitor", "3", "ObsolescencePeriod", "003"))},
-                {getMTMessageMap(Map.of(ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
+                {getMTMessageMap(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY, getBasicHeaderBlockText(Map.of()),
+                        ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
                         getApplicationHeaderBlockText(Map.of("IOID", "I", "DeliveryMonitor", "")))),
                         getApplicationHeaderBlock(Map.of("IOID", "I", "MessageType", "103",
-                                "DestinationAddress", "GSCRUS30XXXX", "Priority", "U", "ObsolescencePeriod", "003"))},
-                {getMTMessageMap(Map.of(ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
-                        getApplicationHeaderBlockText(Map.of("IOID", "I", "DeliveryMonitor", "P")))),
-                        getApplicationHeaderBlock(Map.of("IOID", "I", "MessageType", "103",
-                                "DestinationAddress", "GSCRUS30XXXX", "Priority", "U"))},
-                {getMTMessageMap(Map.of(ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
-                        getApplicationHeaderBlockText(Map.of("IOID", "I", "DeliveryMonitor", "DTP")))),
-                        getApplicationHeaderBlock(Map.of("IOID", "I", "MessageType", "103",
-                                "DestinationAddress", "GSCRUS30XXXX", "Priority", "U"))},
-                {getMTMessageMap(Map.of(ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
-                        getApplicationHeaderBlockText(Map.of("IOID", "I", "DeliveryMonitor", "124")))),
-                        getApplicationHeaderBlock(Map.of("IOID", "I", "MessageType", "103",
-                                "DestinationAddress", "GSCRUS30XXXX", "Priority", "U",
-                                "DeliveryMonitor", "1", "ObsolescencePeriod", "240"))}
+                                "DestinationAddress", "GSCRUS30XXXX", "Priority", "U", "ObsolescencePeriod", "003"))}
+        };
+    }
+
+    @DataProvider(name = "parserInvalidApplicationHeaderDeliveryMonitor")
+    Object[][] parserInvalidApplicationHeaderDeliveryMonitor() {
+        return new Object[][]{
+                {getMTMessageMap(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY, getBasicHeaderBlockText(Map.of()),
+                        ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
+                        getApplicationHeaderBlockText(Map.of("IOID", "I", "DeliveryMonitor", "P"))))},
+                {getMTMessageMap(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY, getBasicHeaderBlockText(Map.of()),
+                        ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
+                        getApplicationHeaderBlockText(Map.of("IOID", "I", "DeliveryMonitor", "DTP"))))},
+                {getMTMessageMap(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY, getBasicHeaderBlockText(Map.of()),
+                        ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
+                        getApplicationHeaderBlockText(Map.of("IOID", "I", "DeliveryMonitor", "124"))))}
         };
     }
 
     @DataProvider(name = "parserApplicationHeaderObsolescencePeriod")
     Object[][] parserApplicationHeaderObsolescencePeriod() {
         return new Object[][]{
-                {getMTMessageMap(Map.of(ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
+                {getMTMessageMap(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY, getBasicHeaderBlockText(Map.of()),
+                        ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
                         getApplicationHeaderBlockText(Map.of("IOID", "I", "ObsolescencePeriod", "003")))),
                         getApplicationHeaderBlock(Map.of("IOID", "I", "MessageType", "103",
                                 "DestinationAddress", "GSCRUS30XXXX", "Priority", "U",
                                 "DeliveryMonitor", "3", "ObsolescencePeriod", "003"))},
-                {getMTMessageMap(Map.of(ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
-                        getApplicationHeaderBlockText(Map.of("IOID", "I", "ObsolescencePeriod", "")))),
-                        getApplicationHeaderBlock(Map.of("IOID", "I", "MessageType", "103",
-                                "DestinationAddress", "GSCRUS30XXXX", "Priority", "U",
-                                "DeliveryMonitor", "3"))},
-                {getMTMessageMap(Map.of(ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
-                        getApplicationHeaderBlockText(Map.of("IOID", "I", "ObsolescencePeriod", "32345")))),
-                        getApplicationHeaderBlock(Map.of("IOID", "I", "MessageType", "103",
-                                "DestinationAddress", "GSCRUS30XXXX", "Priority", "U",
-                                "DeliveryMonitor", "3", "ObsolescencePeriod", "323"))},
-                {getMTMessageMap(Map.of(ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
-                        getApplicationHeaderBlockText(Map.of("IOID", "I", "ObsolescencePeriod", "TYP")))),
-                        getApplicationHeaderBlock(Map.of("IOID", "I", "MessageType", "103",
-                                "DestinationAddress", "GSCRUS30XXXX", "Priority", "U",
-                                "DeliveryMonitor", "3"))},
+        };
+    }
+
+    @DataProvider(name = "parserInvalidApplicationHeaderObsolescencePeriod")
+    Object[][] parserInvalidApplicationHeaderObsolescencePeriod() {
+        return new Object[][]{
+                {getMTMessageMap(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY, getBasicHeaderBlockText(Map.of()),
+                        ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
+                        getApplicationHeaderBlockText(Map.of("IOID", "I", "ObsolescencePeriod", "32345"))))},
+                {getMTMessageMap(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY, getBasicHeaderBlockText(Map.of()),
+                        ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
+                        getApplicationHeaderBlockText(Map.of("IOID", "I", "ObsolescencePeriod", "TYP"))))},
         };
     }
 
     @DataProvider(name = "parserApplicationHeaderInputTime")
     Object[][] parserApplicationHeaderInputTime() {
         return new Object[][]{
-                {getMTMessageMap(Map.of(ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
+                {getMTMessageMap(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY, getBasicHeaderBlockText(Map.of()),
+                        ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
                         getApplicationHeaderBlockText(Map.of("InputTime", "0400")))),
                         getApplicationHeaderBlock(Map.of("IOID", "O", "MessageType", "940",
                                 "InputTime", "0400", "MessageInputReference",
                                 "190425GSCRUS30XXXX0000000000", "OutputDate", "240327"
                                 , "OutputTime", "1128", "Priority", "N"))},
-                {getMTMessageMap(Map.of(ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
-                        getApplicationHeaderBlockText(Map.of("InputTime", "")))),
-                        getApplicationHeaderBlock(Map.of("IOID", "O", "MessageType", "940",
-                                "InputTime", "1904", "MessageInputReference",
-                                "25GSCRUS30XXXX00000000002403", "OutputDate", "271128", "OutputTime", "N"))},
-                {getMTMessageMap(Map.of(ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
-                        getApplicationHeaderBlockText(Map.of("InputTime", "04")))),
-                        getApplicationHeaderBlock(Map.of("IOID", "O", "MessageType", "940",
-                                "InputTime", "0419", "MessageInputReference",
-                                "0425GSCRUS30XXXX000000000024", "OutputDate", "032711"
-                                , "OutputTime", "28N"))},
-                {getMTMessageMap(Map.of(ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
-                        getApplicationHeaderBlockText(Map.of("InputTime", "042343")))),
-                        getApplicationHeaderBlock(Map.of("IOID", "O", "MessageType", "940",
-                                "InputTime", "0423", "MessageInputReference",
-                                "43190425GSCRUS30XXXX00000000", "OutputDate", "002403"
-                                , "OutputTime", "2711"))}
+        };
+    }
+
+    @DataProvider(name = "parserInvalidApplicationHeaderInputTime")
+    Object[][] parserInvalidApplicationHeaderInputTime() {
+        return new Object[][]{
+                {getMTMessageMap(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY, getBasicHeaderBlockText(Map.of()),
+                        ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
+                        getApplicationHeaderBlockText(Map.of("InputTime", ""))))},
+                {getMTMessageMap(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY, getBasicHeaderBlockText(Map.of()),
+                        ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
+                        getApplicationHeaderBlockText(Map.of("InputTime", "04"))))},
+                {getMTMessageMap(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY, getBasicHeaderBlockText(Map.of()),
+                        ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
+                        getApplicationHeaderBlockText(Map.of("InputTime", "042343"))))},
+                {getMTMessageMap(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY, getBasicHeaderBlockText(Map.of()),
+                        ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
+                        getApplicationHeaderBlockText(Map.of("InputTime", "AFIJ"))))}
         };
     }
 
     @DataProvider(name = "parserApplicationHeaderMessageInputReference")
     Object[][] parserApplicationHeaderMessageInputReference() {
         return new Object[][]{
-                {getMTMessageMap(Map.of(ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
+                {getMTMessageMap(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY, getBasicHeaderBlockText(Map.of()),
+                        ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
                         getApplicationHeaderBlockText(Map.of("MessageInputReference",
                                 "190425GSCRUS30XXXX0000000000")))),
                         getApplicationHeaderBlock(Map.of("IOID", "O", "MessageType", "940",
                                 "InputTime", "0400", "MessageInputReference",
                                 "190425GSCRUS30XXXX0000000000", "OutputDate", "240327"
-                                , "OutputTime", "1128", "Priority", "N"))},
-                {getMTMessageMap(Map.of(ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
-                        getApplicationHeaderBlockText(Map.of("MessageInputReference", "")))),
-                        getApplicationHeaderBlock(Map.of("IOID", "O", "MessageType", "940",
-                                "InputTime", "0400", "MessageInputReference",
-                                "2403271128N"))},
-                {getMTMessageMap(Map.of(ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
+                                , "OutputTime", "1128", "Priority", "N"))}
+        };
+    }
+
+    @DataProvider(name = "parserInvalidApplicationHeaderMessageInputReference")
+    Object[][] parserInvalidApplicationHeaderMessageInputReference() {
+        return new Object[][]{
+                {getMTMessageMap(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY, getBasicHeaderBlockText(Map.of()),
+                        ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
+                        getApplicationHeaderBlockText(Map.of("MessageInputReference", ""))))},
+                {getMTMessageMap(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY, getBasicHeaderBlockText(Map.of()),
+                        ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
                         getApplicationHeaderBlockText(Map.of("MessageInputReference",
-                                "190425GSCRUS30XXXX")))),
-                        getApplicationHeaderBlock(Map.of("IOID", "O", "MessageType", "940",
-                                "InputTime", "0400", "MessageInputReference",
-                                "190425GSCRUS30XXXX2403271128", "OutputDate", "N"))},
-                {getMTMessageMap(Map.of(ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
+                                "190425GSCRUS30"))))},
+                {getMTMessageMap(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY, getBasicHeaderBlockText(Map.of()),
+                        ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
                         getApplicationHeaderBlockText(Map.of("MessageInputReference",
-                                "25GSCRUS30XXXX0000000000")))),
-                        getApplicationHeaderBlock(Map.of("IOID", "O", "MessageType", "940",
-                                "InputTime", "0400", "MessageInputReference",
-                                "25GSCRUS30XXXX00000000002403", "OutputDate", "271128"
-                                , "OutputTime", "N"))},
-                {getMTMessageMap(Map.of(ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
+                                "25GSCRUS30XXXX0000000000"))))},
+                {getMTMessageMap(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY, getBasicHeaderBlockText(Map.of()),
+                        ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
                         getApplicationHeaderBlockText(Map.of("MessageInputReference",
-                                "190425GSCRUS30XXXX0000000000PQRT")))),
-                        getApplicationHeaderBlock(Map.of("IOID", "O", "MessageType", "940",
-                                "InputTime", "0400", "MessageInputReference",
-                                "190425GSCRUS30XXXX0000000000", "OutputDate", "PQRT24"
-                                , "OutputTime", "0327"))},
+                                "190425GSCRUS30XXXX0000000000PQRT"))))}
         };
     }
 
     @DataProvider(name = "parserApplicationHeaderOutputDate")
     Object[][] parserApplicationHeaderOutputDate() {
         return new Object[][]{
-                {getMTMessageMap(Map.of(ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
+                {getMTMessageMap(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY, getBasicHeaderBlockText(Map.of()),
+                        ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
                         getApplicationHeaderBlockText(Map.of("OutputDate", "240327")))),
                         getApplicationHeaderBlock(Map.of("IOID", "O", "MessageType", "940",
                                 "InputTime", "0400", "MessageInputReference",
                                 "190425GSCRUS30XXXX0000000000", "OutputDate", "240327"
                                 , "OutputTime", "1128", "Priority", "N"))},
-                {getMTMessageMap(Map.of(ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
+                {getMTMessageMap(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY, getBasicHeaderBlockText(Map.of()),
+                        ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
                         getApplicationHeaderBlockText(Map.of("OutputDate", "")))),
                         getApplicationHeaderBlock(Map.of("IOID", "O", "MessageType", "940",
                                 "InputTime", "0400", "MessageInputReference",
-                                "190425GSCRUS30XXXX0000000000", "OutputDate", "1128N"))},
-                {getMTMessageMap(Map.of(ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
-                        getApplicationHeaderBlockText(Map.of("OutputDate", "240")))),
-                        getApplicationHeaderBlock(Map.of("IOID", "O", "MessageType", "940",
-                                "InputTime", "0400", "MessageInputReference",
-                                "190425GSCRUS30XXXX0000000000", "OutputDate", "240112"
-                                , "OutputTime", "8N"))},
-                {getMTMessageMap(Map.of(ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
-                        getApplicationHeaderBlockText(Map.of("OutputDate", "24032712")))),
-                        getApplicationHeaderBlock(Map.of("IOID", "O", "MessageType", "940",
-                                "InputTime", "0400", "MessageInputReference",
-                                "190425GSCRUS30XXXX0000000000", "OutputDate", "240327"
-                                , "OutputTime", "1211"))},
+                                "190425GSCRUS30XXXX0000000000", "OutputTime", "1128",
+                                "Priority", "N"))}
+        };
+    }
+
+    @DataProvider(name = "parserInvalidApplicationHeaderOutputDate")
+    Object[][] parserInvalidApplicationHeaderOutputDate() {
+        return new Object[][]{
+                {getMTMessageMap(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY, getBasicHeaderBlockText(Map.of()),
+                        ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
+                        getApplicationHeaderBlockText(Map.of("OutputDate", "240"))))},
+                {getMTMessageMap(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY, getBasicHeaderBlockText(Map.of()),
+                        ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
+                        getApplicationHeaderBlockText(Map.of("OutputDate", "24032712"))))},
         };
     }
 
     @DataProvider(name = "parserApplicationHeaderOutputTime")
     Object[][] parserApplicationHeaderOutputTime() {
         return new Object[][]{
-                {getMTMessageMap(Map.of(ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
+                {getMTMessageMap(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY, getBasicHeaderBlockText(Map.of()),
+                        ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
                         getApplicationHeaderBlockText(Map.of("OutputTime", "1128")))),
                         getApplicationHeaderBlock(Map.of("IOID", "O", "MessageType", "940",
                                 "InputTime", "0400", "MessageInputReference",
                                 "190425GSCRUS30XXXX0000000000", "OutputDate", "240327"
                                 , "OutputTime", "1128", "Priority", "N"))},
-                {getMTMessageMap(Map.of(ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
+                {getMTMessageMap(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY, getBasicHeaderBlockText(Map.of()),
+                        ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
                         getApplicationHeaderBlockText(Map.of("OutputTime", "")))),
                         getApplicationHeaderBlock(Map.of("IOID", "O", "MessageType", "940",
                                 "InputTime", "0400", "MessageInputReference",
                                 "190425GSCRUS30XXXX0000000000", "OutputDate", "240327"
-                                , "OutputTime", "N"))},
-                {getMTMessageMap(Map.of(ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
-                        getApplicationHeaderBlockText(Map.of("OutputTime", "11")))),
-                        getApplicationHeaderBlock(Map.of("IOID", "O", "MessageType", "940",
-                                "InputTime", "0400", "MessageInputReference",
-                                "190425GSCRUS30XXXX0000000000", "OutputDate", "240327"
-                                , "OutputTime", "11N"))},
-                {getMTMessageMap(Map.of(ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
-                        getApplicationHeaderBlockText(Map.of("OutputTime", "112878")))),
-                        getApplicationHeaderBlock(Map.of("IOID", "O", "MessageType", "940",
-                                "InputTime", "0400", "MessageInputReference",
-                                "190425GSCRUS30XXXX0000000000", "OutputDate", "240327"
-                                , "OutputTime", "1128"))},
+                                , "Priority", "N"))}
+        };
+    }
+
+    @DataProvider(name = "parserInvalidApplicationHeaderOutputTime")
+    Object[][] parserInvalidApplicationHeaderOutputTime() {
+        return new Object[][]{
+                {getMTMessageMap(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY, getBasicHeaderBlockText(Map.of()),
+                        ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
+                        getApplicationHeaderBlockText(Map.of("OutputTime", "11"))))},
+                {getMTMessageMap(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY, getBasicHeaderBlockText(Map.of()),
+                        ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
+                        getApplicationHeaderBlockText(Map.of("OutputTime", "112878"))))},
         };
     }
 }
