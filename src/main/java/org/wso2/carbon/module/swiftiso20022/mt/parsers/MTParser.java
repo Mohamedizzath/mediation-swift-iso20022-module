@@ -19,36 +19,51 @@
 package org.wso2.carbon.module.swiftiso20022.mt.parsers;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
+import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
+import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
 import org.wso2.carbon.module.swiftiso20022.mt.models.blocks.ApplicationHeaderBlock;
 import org.wso2.carbon.module.swiftiso20022.mt.models.blocks.BasicHeaderBlock;
 import org.wso2.carbon.module.swiftiso20022.mt.models.mtmessages.MTMessage;
-import org.wso2.carbon.module.swiftiso20022.utils.MTParserUtils;
 
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Parser class for parsing common blocks in MT messages.
  */
 public class MTParser {
-
-    private static final Log log = LogFactory.getLog(MTParser.class);
-
     /**
      * Parser method for parsing basic header block into BasicHeaderBlock object.
+     * <br/> <a href="https://www.paiementor.com/swift-mt-message-block-1-basic-header-description/">Reference</a>
+     * <br/>Regex explanation - ^(F|A|L)(\d{2})([A-Z0-9]{12})(\d{4})(\d{6})$
+     *    <ol>
+     *      <li>(F|A|L) - Application identifier</li>
+     *      <li>(\d{2}) - Service identifier</li>
+     *      <li>([A-Z0-9]{12}) - Logical terminal address</li>
+     *      <li>(\d{4}) - Session number</li>
+     *      <li>(\d{6}) - Sequence number</li>
+     *    </ol>
      * @param block       Basic header block as a String
      * @return            Constructed BasicHeaderBlock object
      */
-    private static BasicHeaderBlock parserBasicHeaderBlock(String block) {
+    private static BasicHeaderBlock parserBasicHeaderBlock(String block) throws MTMessageParsingException {
         BasicHeaderBlock basicHeaderBlock = new BasicHeaderBlock();
 
-        String applicationIdentifier = (!block.isEmpty()) ? MTParserUtils.extractSubstring(block, 0, 1) : null;
-        String serviceIdentifier = (block.length() > 1) ? MTParserUtils.extractSubstring(block, 1, 3) : null;
-        String logicalTerminalAddress = (block.length() > 3) ? MTParserUtils.extractSubstring(block, 3, 15) : null;
-        String sessionNumber = (block.length() > 15) ? MTParserUtils.extractSubstring(block, 15, 19) : null;
-        String sequenceNumber = (block.length() > 19) ? MTParserUtils.extractSubstring(block, 19, 25) : null;
+        Pattern basicHeaderPattern = Pattern.compile(MTParserConstants.BASIC_HEADER_REGEX);
+        Matcher basicHeaderMatcher = basicHeaderPattern.matcher(block);
+
+        if (!basicHeaderMatcher.matches()) {
+            // Throw mt message parsing exception
+            throw new MTMessageParsingException(MTParserConstants.INVALID_BASIC_HEADER);
+        }
+
+        String applicationIdentifier = basicHeaderMatcher.group(1);
+        String serviceIdentifier = basicHeaderMatcher.group(2);
+        String logicalTerminalAddress = basicHeaderMatcher.group(3);
+        String sessionNumber = basicHeaderMatcher.group(4);
+        String sequenceNumber = basicHeaderMatcher.group(5);
 
         basicHeaderBlock.setApplicationIdentifier(applicationIdentifier);
         basicHeaderBlock.setServiceIdentifier(serviceIdentifier);
@@ -61,63 +76,85 @@ public class MTParser {
 
     /**
      * Parser method for parsing application header block into ApplicationHeaderBlock object.
+     * <br /><a href="https://www.paiementor.com/swift-mt-message-block-2-application-header-description/">Reference</a>
+     * <br/>Regex explanation for input message) - ^I(\d{3})([A-Z0-9]{12})(S|U|N|)(\d?)(\d{3}|)$
+     *    <ol>
+     *      <li>I - Input/Output identifier</li>
+     *      <li>(\d{3}) - Message type</li>
+     *      <li>([A-Z0-9]{12}) - Logical terminal address</li>
+     *      <li>(S|U|N|) - Priority</li>
+     *      <li>(\d?) - Delivery monitor</li>
+     *      <li>(\d{3}|) - Obsolecene period</li>
+     *    </ol>
+     *<br/>Regex explanation for output message-^O(\d{3})(\d{4})(\d{6}[A-Z0-9]{12}[0-9]{4}[0-9]{6})(\d{6}|)(\d{4}|)(N|)$
+     *    <ol>
+     *        <li>O - Input/Output identifier</li>
+     *        <li>(\d{3}) - Message type</li>
+     *        <li>(\d{4}) - Input time</li>
+     *        <li>(\d{6}[A-Z0-9]{12}[0-9]{4}[0-9]{6}) - Message input reference</li>
+     *        <li>(\d{6}|) - Output date</li>
+     *        <li>(\d{4}|) - Output time</li>
+     *        <li>(N|) - Priority</li>
+     *    </ol>
      * @param block         Application header block as a String
      * @return              Constructed ApplicationHeaderBlock object
      */
-    private static ApplicationHeaderBlock parseApplicationHeaderBlock(String block) {
+    private static ApplicationHeaderBlock parseApplicationHeaderBlock(String block) throws MTMessageParsingException {
         ApplicationHeaderBlock applicationHeaderBlock = new ApplicationHeaderBlock();
 
-        String inputOutputId = (!block.isEmpty()) ? MTParserUtils.extractSubstring(block, 0, 1) : null;
-        String messageType = (block.length() > 1) ? MTParserUtils.extractSubstring(block, 1, 4) : null;
+        Pattern inputOutputPattern = Pattern.compile(MTParserConstants.INPUT_OUTPUT_IDENTIFIER_REGEX);
+        Matcher inputOutputMatcher = inputOutputPattern.matcher(block);
 
+        if (!inputOutputMatcher.matches()) {
+            // Throw mt message parsing exception
+            throw new MTMessageParsingException(MTParserConstants.INVALID_APPLICATION_HEADER);
+        }
+
+        String inputOutputId = inputOutputMatcher.group(1);
         applicationHeaderBlock.setInputOutputIdentifier(inputOutputId);
-        applicationHeaderBlock.setMessageType(messageType);
 
         if (ConnectorConstants.INPUT_IDENTIFIER.equals(inputOutputId)) {
             // Entered application block is belong to input message
-            String destinationAddress = (block.length() > 5) ? MTParserUtils.extractSubstring(block, 4, 16) : null;
-            String alphaText = (block.length() > 17) ?
-                    MTParserUtils.extractTillDigit(block.substring(16), 1) : null;
-            String priority = (!StringUtils.isBlank(alphaText)) ? alphaText.substring(0, 1) : null;
+            Pattern inputMsgPattern = Pattern.compile(MTParserConstants.INPUT_APPLICATION_HEADER_REGEX);
+            Matcher inputMsgMatcher = inputMsgPattern.matcher(block);
 
-            // Consuming the blocks according to the optional fields
-            if (block.length() > 16) {
-                block = MTParserUtils.extractSubstring(block, (priority != null) ? 17 : 16, block.length());
+            if (!inputMsgMatcher.matches()) {
+                // Throw mt message parsing exception
+                throw new MTMessageParsingException(MTParserConstants.INVALID_APPLICATION_HEADER);
             }
 
-            String digitBlock = (!block.isEmpty()) ?
-                    MTParserUtils.extractTillAlphabetic(block, 4) : null;
+            String messageType = inputMsgMatcher.group(1);
+            String destinationAddress = inputMsgMatcher.group(2);
 
-            String deliveryMonitor = null, obsolenscenePeriod = null;
+            String priority = !StringUtils.isEmpty(inputMsgMatcher.group(3)) ? inputMsgMatcher.group(3) : null;
 
-            if (digitBlock != null && digitBlock.length() == 4) {
-                deliveryMonitor = digitBlock.substring(0, 1);
-                obsolenscenePeriod = digitBlock.substring(1, 4);
-            } else if (digitBlock != null && digitBlock.length() == 3) {
-                obsolenscenePeriod = digitBlock.substring(0, 3);
-            } else if (digitBlock != null && digitBlock.length() == 1) {
-                deliveryMonitor = digitBlock.substring(0, 1);
-            }
+            String deliveryMonitor = !StringUtils.isEmpty(inputMsgMatcher.group(4)) ? inputMsgMatcher.group(4) : null;
+            String obsolenscenePeriod =
+                    !StringUtils.isEmpty(inputMsgMatcher.group(5)) ? inputMsgMatcher.group(5) : null;
 
+            applicationHeaderBlock.setMessageType(messageType);
             applicationHeaderBlock.setDestinationAddress(destinationAddress);
             applicationHeaderBlock.setPriority(priority);
             applicationHeaderBlock.setDeliveryMonitor(deliveryMonitor);
             applicationHeaderBlock.setObsolescencePeriod(obsolenscenePeriod);
         } else if (ConnectorConstants.OUTPUT_IDENTIFIER.equals(inputOutputId)) {
             // Entered application block is belong to output message
-            String inputTime = (block.length() > 4) ? MTParserUtils.extractSubstring(block, 4, 8) : null;
-            String messageInputReference = (block.length() > 8) ? MTParserUtils.extractSubstring(block, 8, 36) : null;
-            String outputDate = (block.length() > 36) ? MTParserUtils.extractSubstring(block, 36, 42) : null;
-            String outputTime = (block.length() > 42) ? MTParserUtils.extractSubstring(block, 42, 46) : null;
+            Pattern outputMsgPattern = Pattern.compile(MTParserConstants.OUTPUT_APPLICATION_HEADER_REGEX);
+            Matcher outputMsgMatcher = outputMsgPattern.matcher(block);
 
-            String alphaBlock = (block.length() > 46) ?
-                    MTParserUtils.extractTillDigit(block.substring(46)) : null;
-
-            String priority = null;
-            if (!StringUtils.isBlank(alphaBlock)) {
-                priority = alphaBlock.substring(0, 1);
+            if (!outputMsgMatcher.matches()) {
+                // Throw mt message parsing exception
+                throw new MTMessageParsingException(MTParserConstants.INVALID_APPLICATION_HEADER);
             }
 
+            String messageType = outputMsgMatcher.group(1);
+            String inputTime = outputMsgMatcher.group(2);
+            String messageInputReference = outputMsgMatcher.group(3);
+            String outputDate = !StringUtils.isEmpty(outputMsgMatcher.group(4)) ? outputMsgMatcher.group(4) : null;
+            String outputTime = !StringUtils.isEmpty(outputMsgMatcher.group(5)) ? outputMsgMatcher.group(5) : null;
+            String priority = !StringUtils.isEmpty(outputMsgMatcher.group(6)) ? outputMsgMatcher.group(6) : null;
+
+            applicationHeaderBlock.setMessageType(messageType);
             applicationHeaderBlock.setInputTime(inputTime);
             applicationHeaderBlock.setMessageInputReference(messageInputReference);
             applicationHeaderBlock.setOutputDate(outputDate);
@@ -133,10 +170,13 @@ public class MTParser {
      * @param blocks            Blocks in MT message as Map
      * @param message           MT message object
      */
-    public static void parse(Map<String, String> blocks, MTMessage message) {
+    public static void parse(Map<String, String> blocks, MTMessage message) throws MTMessageParsingException {
 
         if (blocks.containsKey(ConnectorConstants.BASIC_HEADER_BLOCK_KEY)) {
             message.setBasicHeaderBlock(parserBasicHeaderBlock(blocks.get(ConnectorConstants.BASIC_HEADER_BLOCK_KEY)));
+        } else {
+            // Basic header block is mandatory for MT messages
+            throw new MTMessageParsingException(MTParserConstants.INVALID_MT_MESSAGE_BLOCKS);
         }
 
         if (blocks.containsKey(ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY)) {

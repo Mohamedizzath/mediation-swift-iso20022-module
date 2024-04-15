@@ -40,11 +40,11 @@ public class ConnectorConstants {
     public static final String LINE_BREAK = "\n";
     public static final String SPACE = " ";
 
-    public static final String BASIC_HEADER_BLOCK_KEY = "basic-header-block";
-    public static final String APPLICATION_HEADER_BLOCK_KEY = "application-header-block";
-    public static final String USER_HEADER_BLOCK_KEY = "user-header-block";
-    public static final String TEXT_BLOCK_KEY = "text-block";
-    public static final String TRAILER_BLOCK_KEY = "trailer-block";
+    public static final String BASIC_HEADER_BLOCK_KEY = "1";
+    public static final String APPLICATION_HEADER_BLOCK_KEY = "2";
+    public static final String USER_HEADER_BLOCK_KEY = "3";
+    public static final String TEXT_BLOCK_KEY = "4";
+    public static final String TRAILER_BLOCK_KEY = "5";
 
     public static final String INPUT_IDENTIFIER = "I";
     public static final String OUTPUT_IDENTIFIER = "O";
