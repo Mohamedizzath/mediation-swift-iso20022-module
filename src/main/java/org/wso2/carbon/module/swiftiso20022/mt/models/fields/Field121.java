@@ -77,7 +77,7 @@ public class Field121 {
                     .withValue(field121Matcher.get().group());
         } else {
             throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
-                    ConnectorConstants.BLOCK03_END_TO_END_REFERENCE, ConnectorConstants.USER_HEADER_BLOCK));
+                    ConnectorConstants.END_TO_END_REFERENCE, ConnectorConstants.USER_HEADER_BLOCK));
         }
     }
 }

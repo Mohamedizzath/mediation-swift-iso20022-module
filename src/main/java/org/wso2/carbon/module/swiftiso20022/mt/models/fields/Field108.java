@@ -77,7 +77,7 @@ public class Field108 {
                     .withValue(field108Matcher.get().group());
         } else {
             throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
-                    ConnectorConstants.BLOCK03_MESSAGE_USER_REFERENCE, ConnectorConstants.USER_HEADER_BLOCK));
+                    ConnectorConstants.MESSAGE_USER_REFERENCE, ConnectorConstants.USER_HEADER_BLOCK));
         }
     }
 

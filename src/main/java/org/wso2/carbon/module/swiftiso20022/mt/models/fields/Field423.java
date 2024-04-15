@@ -110,7 +110,7 @@ public class Field423 {
                     .withTime(matcher.group(2));
         } else {
             throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
-                    ConnectorConstants.BLOCK03_BALANCE_CHECKPOINT, ConnectorConstants.USER_HEADER_BLOCK));
+                    ConnectorConstants.BALANCE_CHECKPOINT, ConnectorConstants.USER_HEADER_BLOCK));
         }
     }
 }

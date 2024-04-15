@@ -108,7 +108,7 @@ public class Field434 {
                     .withAdditionalInformation(matcher.group(3));
         } else {
             throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
-                    ConnectorConstants.BLOCK03_PAYMENT_CONTROLS_INFORMATION, ConnectorConstants.USER_HEADER_BLOCK));
+                    ConnectorConstants.PAYMENT_CONTROLS_INFORMATION, ConnectorConstants.USER_HEADER_BLOCK));
         }
     }
 }

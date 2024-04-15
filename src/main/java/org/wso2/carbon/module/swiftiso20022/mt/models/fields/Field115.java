@@ -157,7 +157,7 @@ public class Field115 {
                     .withReference(matcher.group(4));
         } else {
             throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
-                    ConnectorConstants.BLOCK03_ADDRESSEE_INFORMATION, ConnectorConstants.USER_HEADER_BLOCK));
+                    ConnectorConstants.ADDRESSEE_INFORMATION, ConnectorConstants.USER_HEADER_BLOCK));
         }
     }
 }

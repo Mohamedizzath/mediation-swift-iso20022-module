@@ -207,7 +207,7 @@ public class FieldMRF {
                     .withSequenceNumber(matcher.group(6));
         } else {
             throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
-                    ConnectorConstants.BLOCK05_MESSAGE_REFERENCE, ConnectorConstants.TRAILER_BLOCK));
+                    ConnectorConstants.MESSAGE_REFERENCE, ConnectorConstants.TRAILER_BLOCK));
         }
     }
 

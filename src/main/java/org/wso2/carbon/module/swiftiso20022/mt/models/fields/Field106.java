@@ -157,7 +157,7 @@ public class Field106 {
 
         } else {
             throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
-                    ConnectorConstants.BLOCK03_MESSAGE_INPUT_REFERENCE, ConnectorConstants.USER_HEADER_BLOCK));
+                    ConnectorConstants.MESSAGE_INPUT_REFERENCE, ConnectorConstants.USER_HEADER_BLOCK));
         }
     }
 }

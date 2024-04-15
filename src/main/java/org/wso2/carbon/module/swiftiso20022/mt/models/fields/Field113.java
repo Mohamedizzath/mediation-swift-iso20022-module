@@ -77,7 +77,7 @@ public class Field113 {
                     .withValue(field113Matcher.get().group());
         } else {
             throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
-                    ConnectorConstants.BLOCK03_BANKING_PRIORITY, ConnectorConstants.USER_HEADER_BLOCK));
+                    ConnectorConstants.BANKING_PRIORITY, ConnectorConstants.USER_HEADER_BLOCK));
         }
     }
 

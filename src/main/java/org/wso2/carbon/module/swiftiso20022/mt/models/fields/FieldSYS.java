@@ -181,7 +181,7 @@ public class FieldSYS {
                     .withSequenceNumber(matcher.group(5));
         } else {
             throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
-                    ConnectorConstants.BLOCK05_SYSTEM_ORIGINATED_MESSAGE, ConnectorConstants.TRAILER_BLOCK));
+                    ConnectorConstants.SYSTEM_ORIGINATED_MESSAGE, ConnectorConstants.TRAILER_BLOCK));
         }
     }
 }

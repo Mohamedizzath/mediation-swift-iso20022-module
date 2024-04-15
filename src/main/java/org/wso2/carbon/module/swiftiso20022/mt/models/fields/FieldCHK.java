@@ -78,7 +78,7 @@ public class FieldCHK {
                     .withValue(fieldCHKMatcher.get().group());
         } else {
             throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
-                    ConnectorConstants.BLOCK05_CHECKSUM, ConnectorConstants.TRAILER_BLOCK));
+                    ConnectorConstants.CHECKSUM, ConnectorConstants.TRAILER_BLOCK));
         }
     }
 

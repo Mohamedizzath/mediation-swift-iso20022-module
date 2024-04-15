@@ -108,7 +108,7 @@ public class Field165 {
 
         } else {
             throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
-                    ConnectorConstants.BLOCK03_PAYMENT_RELEASE_INFORMATION, ConnectorConstants.USER_HEADER_BLOCK));
+                    ConnectorConstants.PAYMENT_RELEASE_INFORMATION, ConnectorConstants.USER_HEADER_BLOCK));
         }
     }
 
