@@ -55,49 +55,47 @@ public class ConnectorConstants {
     public static final String TRAILER_BLOCK = "Trailer Block";
 
     // Block01 (Basic Header) Related Constants
-    public static final String BLOCK01_APPLICATION_ID = "Application Identifier";
-    public static final String BLOCK01_SERVICE_ID = "Service Identifier";
-    public static final String BLOCK01_LOGICAL_TERMINAL_ADDRESS = "Logical Terminal Address";
-    public static final String BLOCK01_SESSION_NUMBER = "Session Number";
-    public static final String BLOCK01_SEQUENCE_NUMBER = "Sequence Number";
+    public static final String APPLICATION_IDENTIFIER = "Application Identifier";
+    public static final String SERVICE_IDENTIFIER = "Service Identifier";
+    public static final String LOGICAL_TERMINAL_ADDRESS = "Logical Terminal Address";
+    public static final String SESSION_NUMBER = "Session Number";
+    public static final String SEQUENCE_NUMBER = "Sequence Number";
 
     // Block02 (Application Header) Related Constants
-    public static final String BLOCK02_INPUT_OUTPUT_ID = "Input Output Identifier";
-    public static final String BLOCK02_INPUT_ID = "I";
-    public static final String BLOCK02_OUTPUT_ID = "O";
-    public static final String BLOCK02_MESSAGE_TYPE = "Message Type";
-    public static final String BLOCK02_DESTINATION_LOGICAL_TERMINAL_ADDRESS = "Destination Logical Terminal Address";
-    public static final String BLOCK02_INPUT_TIME = "Input Time";
-    public static final String BLOCK02_MESSAGE_INPUT_REFERENCE = "Message Input Reference";
-    public static final String BLOCK02_OUTPUT_DATE = "Output Date";
-    public static final String BLOCK02_OUTPUT_TIME = "Output Time";
-    public static final String BLOCK02_PRIORITY = "Priority";
-    public static final String BLOCK02_DELIVERY_MONITORING_CODE = "Delivery Monitoring Code";
-    public static final String BLOCK02_OBSOLESCENCE_PERIOD_CODE = "Obsolescence Period Code";
+    public static final String INPUT_OUTPUT_IDENTIFIER = "Input Output Identifier";
+    public static final String INPUT_IDENTIFIER = "I";
+    public static final String OUTPUT_IDENTIFIER = "O";
+    public static final String MESSAGE_TYPE = "Message Type";
+    public static final String DESTINATION_LOGICAL_TERMINAL_ADDRESS = "Destination Logical Terminal Address";
+    public static final String INPUT_TIME = "Input Time";
+    public static final String MESSAGE_INPUT_REFERENCE = "Message Input Reference";
+    public static final String OUTPUT_DATE = "Output Date";
+    public static final String OUTPUT_TIME = "Output Time";
+    public static final String PRIORITY = "Priority";
+    public static final String DELIVERY_MONITORING_CODE = "Delivery Monitoring Code";
+    public static final String OBSOLESCENCE_PERIOD_CODE = "Obsolescence Period Code";
 
     // Block03 (User Header) Related Constants
-    public static final String BLOCK03_SERVICE_IDENTIFIER = "Service Identifier";
-    public static final String BLOCK03_BANKING_PRIORITY = "Banking Priority";
-    public static final String BLOCK03_MESSAGE_USER_REFERENCE = "Message User Reference";
-    public static final String BLOCK03_VALIDATION_FLAG = "Validation Flag";
-    public static final String BLOCK03_END_TO_END_REFERENCE = "End to End Reference";
-    public static final String BLOCK03_SERVICE_TYPE_IDENTIFIER = "Service Type Identifier";
-    public static final String BLOCK03_MESSAGE_INPUT_REFERENCE = "Message Input Reference";
-    public static final String BLOCK03_ADDRESSEE_INFORMATION = "Addressee Information";
-    public static final String BLOCK03_PAYMENT_RELEASE_INFORMATION = "Payment Release Information";
-    public static final String BLOCK03_BALANCE_CHECKPOINT = "Balance Checkpoint";
-    public static final String BLOCK03_RELATED_REFERENCE = "Related Reference";
-    public static final String BLOCK03_SANCTIONS_SCREENING_INFORMATION = "Related Reference";
-    public static final String BLOCK03_PAYMENT_CONTROLS_INFORMATION = "Payment Controls Information";
+    public static final String BANKING_PRIORITY = "Banking Priority";
+    public static final String MESSAGE_USER_REFERENCE = "Message User Reference";
+    public static final String VALIDATION_FLAG = "Validation Flag";
+    public static final String END_TO_END_REFERENCE = "End to End Reference";
+    public static final String SERVICE_TYPE_IDENTIFIER = "Service Type Identifier";
+    public static final String ADDRESSEE_INFORMATION = "Addressee Information";
+    public static final String PAYMENT_RELEASE_INFORMATION = "Payment Release Information";
+    public static final String BALANCE_CHECKPOINT = "Balance Checkpoint";
+    public static final String RELATED_REFERENCE = "Related Reference";
+    public static final String SANCTIONS_SCREENING_INFORMATION = "Sanctions Screening Information";
+    public static final String PAYMENT_CONTROLS_INFORMATION = "Payment Controls Information";
 
     // Block05 (Trailer) Related Constants
-    public static final String BLOCK05_CHECKSUM = "Checksum";
-    public static final String BLOCK05_POSSIBLE_DUPLICATE_EMISSION = "Possible Duplicate Emission";
-    public static final String BLOCK05_MESSAGE_REFERENCE = "Message Reference";
-    public static final String BLOCK05_POSSIBLE_DUPLICATE_MESSAGE = "Possible Duplicate Message";
-    public static final String BLOCK05_SYSTEM_ORIGINATED_MESSAGE = "System Originated Message";
-    public static final String BLOCK05_DELAYED_MESSAGE = "Delayed Message";
-    public static final String BLOCK05_TEST_AND_TRAINING_MESSAGE = "Test And Training Message";
+    public static final String CHECKSUM = "Checksum";
+    public static final String POSSIBLE_DUPLICATE_EMISSION = "Possible Duplicate Emission";
+    public static final String MESSAGE_REFERENCE = "Message Reference";
+    public static final String POSSIBLE_DUPLICATE_MESSAGE = "Possible Duplicate Message";
+    public static final String SYSTEM_ORIGINATED_MESSAGE = "System Originated Message";
+    public static final String DELAYED_MESSAGE = "Delayed Message";
+    public static final String TEST_AND_TRAINING_MESSAGE = "Test And Training Message";
 
     // ISO 20022 Related Constants
     public static final String SOAP_PREFIX = "soapenv";
