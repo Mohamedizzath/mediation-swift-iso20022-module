@@ -36,6 +36,15 @@ import java.util.regex.Pattern;
 public class MTParser {
     /**
      * Parser method for parsing basic header block into BasicHeaderBlock object.
+     * <br/> <a href="https://www.paiementor.com/swift-mt-message-block-1-basic-header-description/">Reference</a>
+     * <br/>Regex explanation - ^(F|A|L)(\d{2})([A-Z0-9]{12})(\d{4})(\d{6})$
+     *    <ol>
+     *      <li>(F|A|L) - Application identifier</li>
+     *      <li>(\d{2}) - Service identifier</li>
+     *      <li>([A-Z0-9]{12}) - Logical terminal address</li>
+     *      <li>(\d{4}) - Session number</li>
+     *      <li>(\d{6}) - Sequence number</li>
+     *    </ol>
      * @param block       Basic header block as a String
      * @return            Constructed BasicHeaderBlock object
      */
@@ -67,6 +76,26 @@ public class MTParser {
 
     /**
      * Parser method for parsing application header block into ApplicationHeaderBlock object.
+     * <br /><a href="https://www.paiementor.com/swift-mt-message-block-2-application-header-description/">Reference</a>
+     * <br/>Regex explanation for input message) - ^I(\d{3})([A-Z0-9]{12})(S|U|N|)(\d?)(\d{3}|)$
+     *    <ol>
+     *      <li>I - Input/Output identifier</li>
+     *      <li>(\d{3}) - Message type</li>
+     *      <li>([A-Z0-9]{12}) - Logical terminal address</li>
+     *      <li>(S|U|N|) - Priority</li>
+     *      <li>(\d?) - Delivery monitor</li>
+     *      <li>(\d{3}|) - Obsolecene period</li>
+     *    </ol>
+     *<br/>Regex explanation for output message-^O(\d{3})(\d{4})(\d{6}[A-Z0-9]{12}[0-9]{4}[0-9]{6})(\d{6}|)(\d{4}|)(N|)$
+     *    <ol>
+     *        <li>O - Input/Output identifier</li>
+     *        <li>(\d{3}) - Message type</li>
+     *        <li>(\d{4}) - Input time</li>
+     *        <li>(\d{6}[A-Z0-9]{12}[0-9]{4}[0-9]{6}) - Message input reference</li>
+     *        <li>(\d{6}|) - Output date</li>
+     *        <li>(\d{4}|) - Output time</li>
+     *        <li>(N|) - Priority</li>
+     *    </ol>
      * @param block         Application header block as a String
      * @return              Constructed ApplicationHeaderBlock object
      */

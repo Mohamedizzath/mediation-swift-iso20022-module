@@ -34,53 +34,58 @@ import java.util.regex.Pattern;
  */
 public class MTParserUtils {
     /**
-     * Util methods for parsing blocks in MT messages.
+     * Util methods for parsing blocks in MT messages.<br/>
      * Regex explanation - ^(\\{1:([^\\W_\\}]+)\\})(\\{2:([^\\W_\\}]+)\\})?(\\{3:(\\{\\d{3}:[^\\{\\}]*\\})+\\})?
      *                     (\\{4:[^\\{\\}]+\\})(\\{5:(\\{[A-Z]{3}:[^\\{\\}]*\\})+\\})?$
-     *      1. (\\{1:([^\\W_\\}]+)\\}) - Matching basic header block of MT messages. Starting ( and ending ) marks group
+     *<ol>
+     *      <li>(\\{1:([^\\W_\\}]+)\\})-Matching basic header block of MT messages. Starting ( and ending ) marks group
      *      to match, {1: exact match of starting characters of basic header block, next () groups inner contents of
      *      basic header block, [^\\W_\\]+ matches characters 0-9A-Za-z without _ and } since + presents there should at
      *      least one character.
-     *         Ex - {1:F01GSCRUS30XXXX0000000000}
+     *         <br/>Ex - {1:F01GSCRUS30XXXX0000000000}<br/><br/>
+     *      </li>
      *
-     *      2. (\\{2:([^\\W_\\}]+)\\})? - Matching application header block of MT messages. Starting ( and ending )
+     *      <li>(\\{2:([^\\W_\\}]+)\\})? - Matching application header block of MT messages. Starting ( and ending )
      *      marks group to match and since group ends with ? application header can be empty. {2: is exact match of
      *      starting character of application header block, next () groups inner contents of application header block,
      *      [^\\W_\\]+ matches characters 0-9A-Za-z without _ and } since + presents there should at least one
      *      character.
-     *         Ex - {2:O9400400190425GSCRUS30XXX0000000002403141137N}
+     *         <br/>Ex - {2:O9400400190425GSCRUS30XXX0000000002403141137N}<br/><br/>
+     *      </li>
      *
-     *      3. (\\{3:(\\{\\d{3}:[^\\{\\}]*\\})+\\})? - Matching user header block of MT messages. Starting ( and
+     *      <li>(\\{3:(\\{\\d{3}:[^\\{\\}]*\\})+\\})? - Matching user header block of MT messages. Starting ( and
      *      ending ) marks group to match and since group ends with ? user header can be empty. {3: is exact match of
      *      starting character of user header block, next () groups inner contents of user header block, next ()
      *      represents inner groups to match tag:value. \\{ matches exact match of starting curly bracket of tag:value,
      *      \\d{3} matches tag which is exact three digits following by exact match of : and for the value [^\\{\\}]*
      *      matches zero or more occurrence of any character except {}. Note that there should be at least one tag.
-     *         Ex - {3:{113:URGT}}
+     *         <br/>Ex - {3:{113:URGT}}<br/><br/>
+     *      </li>
      *
-     *      4. (\\{4:[^\\{\\}]+\\}) - Matching the text block of MT messages. Starting ( and ending ) marks the group to
+     *      <li>(\\{4:[^\\{\\}]+\\})-Matching the text block of MT messages. Starting ( and ending ) marks the group to
      *      match, {4: is an exact match of starting characters of text block and [^\\{\\}]+ matches the contents of
      *      text block where there should be at least one character from any characters except {}.
-     *        Ex - {4:
-     *              :20:258158850
-     *              :21:258158850
-     *              :25:DD01100056869
-     *              :28C:1/1
-     *              :60F:D230930USD843686,20
-     *              :61:2310011001RCD10,00ACHPGSGWGDNCTAHQM8
-     *              :86:EREF/GSGWGDNCTAHQM8/PREF/RP/GS/CTFILERP0002/CTBA0003
-     *              :62F:D230930USD846665,15
-     *              :64:C231002USD334432401,27
-     *              -}
-     *
-     *      5. (\\{5:(\\{[A-Z]{3}:[^\\{\\}]*\\})+\\})? - Matching trailer block of MT messages. Starting ( and
-     *      ending ) marks group to match and since group ends with ? trailer header can be empty. {5: is exact match of
+     *        <br/>Ex - {4:<br/>
+     *              :20:258158850<br/>
+     *              :21:258158850<br/>
+     *              :25:DD01100056869<br/>
+     *              :28C:1/1<br/>
+     *              :60F:D230930USD843686,20<br/>
+     *              :61:2310011001RCD10,00ACHPGSGWGDNCTAHQM8<br/>
+     *              :86:EREF/GSGWGDNCTAHQM8/PREF/RP/GS/CTFILERP0002/CTBA0003<br/>
+     *              :62F:D230930USD846665,15<br/>
+     *              :64:C231002USD334432401,27<br/>
+     *              -}<br/><br/>
+     *      </li>
+     *      <li>(\\{5:(\\{[A-Z]{3}:[^\\{\\}]*\\})+\\})? - Matching trailer block of MT messages. Starting ( and
+     *      ending ) marks group to match and since group ends with ? trailer header can be empty.{5: is exact match of
      *      starting character of trailer header block, next () groups inner contents of user header block, next ()
      *      represents inner groups to match tag:value. \\{ matches exact match of starting curly bracket of tag:value,
      *      \\[A-Z]{3} matches tag which is exact three uppercase letters following by exact match of : and for the
      *      value [^\\{\\}]* matches zero or more occurrence of any character except {}. Note that there should be at
      *      least one tag.
-     *         Ex - {5:{CHK:123456789ABC}}
+     *         <br/>Ex - {5:{CHK:123456789ABC}}<br/><br/>
+     *      </li>
      *
      * @param mtMessage     Complete MT messages as string
      * @return              Blocks stored in Map with key as block name(basic-header-block, application-header-block...)
