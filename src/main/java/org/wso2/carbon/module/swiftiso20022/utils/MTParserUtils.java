@@ -26,6 +26,7 @@ import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -158,4 +159,25 @@ public class MTParserUtils {
 
         return List.of(textBlock.trim().split("\\R:"));
     }
+
+    /**
+     * Method to match a regex pattern with passed string value.
+     * Only check one matching value.
+     *
+     * @param regex       Regex pattern to be matched
+     * @param stringValue String value to be matched
+     * @return An Optional of the matcher object or an empty matcher object if the string doesn't match the pattern
+     */
+    public static Optional<Matcher> getRegexMatcher(String regex, String stringValue) {
+
+        // Compiling the pattern
+        Matcher matcher = Pattern.compile(regex).matcher(stringValue);
+
+        if (matcher.find()) {
+            return Optional.of(matcher);
+        } else {
+            return Optional.empty();
+        }
+    }
+
 }

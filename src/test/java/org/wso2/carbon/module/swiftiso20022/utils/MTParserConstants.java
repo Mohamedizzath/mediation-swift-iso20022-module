@@ -22,8 +22,8 @@ import org.testng.annotations.DataProvider;
 import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
 import org.wso2.carbon.module.swiftiso20022.mt.models.blocks.ApplicationHeaderBlock;
 import org.wso2.carbon.module.swiftiso20022.mt.models.blocks.BasicHeaderBlock;
-import org.wso2.carbon.module.swiftiso20022.mt.models.mtmessages.MT940Message;
-import org.wso2.carbon.module.swiftiso20022.mt.models.mtmessages.MTMessage;
+import org.wso2.carbon.module.swiftiso20022.mt.models.messages.MT940Message;
+import org.wso2.carbon.module.swiftiso20022.mt.models.messages.MTMessage;
 
 import java.util.HashMap;
 import java.util.List;
