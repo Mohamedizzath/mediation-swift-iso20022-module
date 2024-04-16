@@ -39,4 +39,7 @@ public class MTParserConstants {
     public static final String INVALID_MT_MESSAGE_BLOCKS = "MT message blocks are not in the correct format";
     public static final String INVALID_BASIC_HEADER = "Basic header block is not in the correct format";
     public static final String INVALID_APPLICATION_HEADER = "Application header block is not in the correct format";
+    public static final String INVALID_TEXT_BLOCK = "Text block is not in the correct format";
+    public static final String TEXT_BLOCK_FIELD_REGEX = "^(\\d{2}\\[a-zA-Z]):.*";
+    public static final String INVALID_FIELD_FORMAT = "%s field not in the correct format";
 }

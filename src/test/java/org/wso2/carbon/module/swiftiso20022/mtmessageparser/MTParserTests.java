@@ -31,6 +31,7 @@ import org.wso2.carbon.module.swiftiso20022.mt.parsers.MTParser;
 import org.wso2.carbon.module.swiftiso20022.utils.MTParserConstants;
 import org.wso2.carbon.module.swiftiso20022.utils.MTParserUtils;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -68,6 +69,14 @@ public class MTParserTests {
     public void testParseInvalidMTMessageBlocksScenario(String mtMessage) throws Exception {
         Map<String, String> parseBlocks = MTParserUtils.getMessageBlocks(mtMessage);
     }
+
+    @Test(dataProvider = "parseTextBlockFields", dataProviderClass = MTParserConstants.class)
+    public void testParseTextBlockFields(String textBlock, List<String> fields) throws Exception {
+        List<String> parsedFields = MTParserUtils.getTextBlockFields(textBlock);
+
+        Assert.assertEquals(parsedFields, fields);
+    }
+
     @Test(dataProvider = "parserBasicHeaderApplicationID", dataProviderClass = MTParserConstants.class)
     public void testParserBasicHeaderApplicationIDScenario(Map<String, String> block, BasicHeaderBlock basicHeaderBlock)
             throws Exception {

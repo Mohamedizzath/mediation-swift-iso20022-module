@@ -24,6 +24,7 @@ import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
 import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -143,5 +144,18 @@ public class MTParserUtils {
         }
 
         return blocksMap;
+    }
+
+    public static List<String> getTextBlockFields(String textBlock) throws MTMessageParsingException {
+        Pattern textStartPattern = Pattern.compile("^\\R:.+", Pattern.DOTALL);
+        Matcher textStartMatcher = textStartPattern.matcher(textBlock);
+
+        if (textStartMatcher.matches()) {
+            textBlock = textBlock.substring(2);
+        } else {
+            throw new MTMessageParsingException("Text block not in the correct format");
+        }
+
+        return List.of(textBlock.trim().split("\\R:"));
     }
 }

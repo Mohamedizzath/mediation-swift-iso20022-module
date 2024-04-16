@@ -26,6 +26,7 @@ import org.wso2.carbon.module.swiftiso20022.mt.models.mtmessages.MT940Message;
 import org.wso2.carbon.module.swiftiso20022.mt.models.mtmessages.MTMessage;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -417,6 +418,53 @@ public class MTParserConstants {
                         "{5:{CHK:123456789{}ABC}{PDE:1348120811BANKFRPPAXXX2222123456}}}"))},
                 {getMTMessageText(Map.of(ConnectorConstants.TRAILER_BLOCK_KEY,
                         "{5:{CHK:12345678{}9ABC}{}{PDE:1348120811BANKFRPPAXXX2222123456}}}"))}
+        };
+    }
+
+    @DataProvider(name = "parseTextBlockFields")
+    Object[][] parseTextBlockFields() {
+        return new Object[][] {
+                {
+                    "\n:20:258158850\n" +
+                    ":21:258158850\n" +
+                    ":25:DD01100056869\n" +
+                    ":28C:1/1\n" +
+                    ":60F:D230930USD843686,20\n" +
+                    ":61:2310011001RCD10,00ACHPGSGWGDNCTAHQM8\n" +
+                    ":86:EREF/GSGWGDNCTAHQM8/PREF/RP/GS/CTFILERP0002/CTBA0003\n" +
+                    ":62F:D230930USD846665,15\n" +
+                    ":64:C231002USD334432401,27\n",
+                    List.of("20:258158850", "21:258158850", "25:DD01100056869", "28C:1/1", "60F:D230930USD843686,20",
+                    "61:2310011001RCD10,00ACHPGSGWGDNCTAHQM8", "86:EREF/GSGWGDNCTAHQM8/PREF/RP/GS/CTFILERP0002/CTBA0003"
+                    , "62F:D230930USD846665,15", "64:C231002USD334432401,27")
+                },
+                {
+                    "\n:20:TXNREF1234567890\n" +
+                    ":23B:CRED\n" +
+                    ":32A:230523EUR100000,50\n" +
+                    ":50K:/12345678\n" +
+                    "JOHN DOE\n" +
+                    "123, FAKE STREET\n" +
+                    "FAKETOWN\n" +
+                    ":52A:DEUTDEFFXXX\n" +
+                    ":53B:/DE12345678901234567890\n" +
+                    ":54A:CHASUS33XXX\n" +
+                    ":56C:IRVTUS3NXXX\n" +
+                    ":57A:NORDDKKKXXX\n" +
+                    ":59:/DK5000400440116243\n" +
+                    "JANE SMITH\n" +
+                    "789, REAL ROAD\n" +
+                    "REALVILLE\n" +
+                    ":70:PAYMENT FOR INVOICE 998877\n" +
+                    ":71A:OUR\n" +
+                    ":72:/ACC/RENT/MAY\n" +
+                    "/INV/998877\n",
+                    List.of("20:TXNREF1234567890", "23B:CRED", "32A:230523EUR100000,50", "50K:/12345678\n" +
+                    "JOHN DOE\n123, FAKE STREET\nFAKETOWN", "52A:DEUTDEFFXXX", "53B:/DE12345678901234567890",
+                    "54A:CHASUS33XXX", "56C:IRVTUS3NXXX", "57A:NORDDKKKXXX", "59:/DK5000400440116243\nJANE SMITH\n" +
+                    "789, REAL ROAD\nREALVILLE", "70:PAYMENT FOR INVOICE 998877", "71A:OUR", "72:/ACC/RENT/MAY\n" +
+                    "/INV/998877")
+                }
         };
     }
 

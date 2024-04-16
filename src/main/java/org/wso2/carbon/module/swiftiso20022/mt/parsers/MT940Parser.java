@@ -18,11 +18,16 @@
 
 package org.wso2.carbon.module.swiftiso20022.mt.parsers;
 
+import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
+import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
 import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
 import org.wso2.carbon.module.swiftiso20022.mt.models.mtmessages.MT940Message;
 import org.wso2.carbon.module.swiftiso20022.utils.MTParserUtils;
 
+import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Parser class for parsing MT940 messages.
@@ -41,6 +46,25 @@ public class MT940Parser {
 
         // Implementation on parsing text block
         // mt940Message.setTextBlock(MT940TextBlock textBlock);
+
+        if (!blocks.containsKey(ConnectorConstants.TEXT_BLOCK_KEY)) {
+            // Basic header block is mandatory for MT messages
+            throw new MTMessageParsingException(MTParserConstants.INVALID_TEXT_BLOCK);
+        }
+
+        List<String> fields = MTParserUtils.getTextBlockFields(blocks.get(ConnectorConstants.TEXT_BLOCK_KEY));
+
+        for (String field : fields) {
+            Pattern fieldPattern = Pattern.compile(MTParserConstants.TEXT_BLOCK_FIELD_REGEX, Pattern.DOTALL);
+            Matcher fieldMatcher = fieldPattern.matcher(field);
+
+            if (!fieldMatcher.matches()) {
+                throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_FORMAT, field));
+            }
+
+            String tag = fieldMatcher.group(1);
+
+        }
 
         return mt940Message;
     }
