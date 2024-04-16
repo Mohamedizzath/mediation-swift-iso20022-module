@@ -86,6 +86,7 @@ public class MTParserUtils {
      *      least one tag.
      *         <br/>Ex - {5:{CHK:123456789ABC}}<br/><br/>
      *      </li>
+     * </ol>
      *
      * @param mtMessage     Complete MT messages as string
      * @return              Blocks stored in Map with key as block name(basic-header-block, application-header-block...)

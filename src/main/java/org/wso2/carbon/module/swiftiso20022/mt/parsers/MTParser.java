@@ -34,6 +34,28 @@ import java.util.regex.Pattern;
  * Parser class for parsing common blocks in MT messages.
  */
 public class MTParser {
+
+    /**
+     * Parser method for parsing mt message and constructing MTMessage with common fields.
+     * @param blocks            Blocks in MT message as Map
+     * @param message           MT message object
+     */
+    public static void parse(Map<String, String> blocks, MTMessage message) throws MTMessageParsingException {
+
+        if (blocks.containsKey(ConnectorConstants.BASIC_HEADER_BLOCK_KEY)) {
+            message.setBasicHeaderBlock(parserBasicHeaderBlock(blocks.get(ConnectorConstants.BASIC_HEADER_BLOCK_KEY)));
+        } else {
+            // Basic header block is mandatory for MT messages
+            throw new MTMessageParsingException(MTParserConstants.INVALID_MT_MESSAGE_BLOCKS);
+        }
+
+        if (blocks.containsKey(ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY)) {
+            message.setApplicationHeaderBlock(parseApplicationHeaderBlock(
+                    blocks.get(ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY)
+            ));
+        }
+    }
+
     /**
      * Parser method for parsing basic header block into BasicHeaderBlock object.
      * <br/> <a href="https://www.paiementor.com/swift-mt-message-block-1-basic-header-description/">Reference</a>
@@ -163,26 +185,5 @@ public class MTParser {
         }
 
         return applicationHeaderBlock;
-    }
-
-    /**
-     * Parser method for parsing mt message and constructing MTMessage with common fields.
-     * @param blocks            Blocks in MT message as Map
-     * @param message           MT message object
-     */
-    public static void parse(Map<String, String> blocks, MTMessage message) throws MTMessageParsingException {
-
-        if (blocks.containsKey(ConnectorConstants.BASIC_HEADER_BLOCK_KEY)) {
-            message.setBasicHeaderBlock(parserBasicHeaderBlock(blocks.get(ConnectorConstants.BASIC_HEADER_BLOCK_KEY)));
-        } else {
-            // Basic header block is mandatory for MT messages
-            throw new MTMessageParsingException(MTParserConstants.INVALID_MT_MESSAGE_BLOCKS);
-        }
-
-        if (blocks.containsKey(ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY)) {
-            message.setApplicationHeaderBlock(parseApplicationHeaderBlock(
-                    blocks.get(ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY)
-            ));
-        }
     }
 }
