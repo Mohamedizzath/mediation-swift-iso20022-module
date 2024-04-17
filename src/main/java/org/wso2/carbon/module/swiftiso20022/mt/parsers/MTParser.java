@@ -24,7 +24,7 @@ import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
 import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
 import org.wso2.carbon.module.swiftiso20022.mt.models.blocks.ApplicationHeaderBlock;
 import org.wso2.carbon.module.swiftiso20022.mt.models.blocks.BasicHeaderBlock;
-import org.wso2.carbon.module.swiftiso20022.mt.models.mtmessages.MTMessage;
+import org.wso2.carbon.module.swiftiso20022.mt.models.messages.MTMessage;
 
 import java.util.Map;
 import java.util.regex.Matcher;

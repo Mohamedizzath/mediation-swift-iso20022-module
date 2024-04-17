@@ -16,7 +16,7 @@
  * under the License.
  */
 
-package org.wso2.carbon.module.swiftiso20022.mt.models.mtmessages;
+package org.wso2.carbon.module.swiftiso20022.mt.models.messages;
 
 import org.wso2.carbon.module.swiftiso20022.mt.models.blocks.ApplicationHeaderBlock;
 import org.wso2.carbon.module.swiftiso20022.mt.models.blocks.BasicHeaderBlock;
