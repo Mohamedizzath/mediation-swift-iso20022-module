@@ -28,7 +28,7 @@ public class MTParserConstants {
     }
 
     public static final String MT_MESSAGE_BLOCKS_REGEX =
-                    "^(\\{1:([^\\W_\\}]+)\\})(\\{2:([^\\W_\\}]+)\\})?(\\{3:(\\{\\d{3}:[^\\{\\}]*\\})+\\})?" +
+                    "^(\\{1:([^\\W_]+)\\})(\\{2:([^\\W_]+)\\})?(\\{3:(\\{\\d{3}:[^\\{\\}]*\\})+\\})?" +
                     "(\\{4:[^\\{\\}]+\\})(\\{5:(\\{[A-Z]{3}:[^\\{\\}]*\\})+\\})?$";
     public static final String BASIC_HEADER_REGEX = "^(F|A|L)(\\d{2})([A-Z0-9]{12})(\\d{4})(\\d{6})$";
     public static final String INPUT_OUTPUT_IDENTIFIER_REGEX = "^(I|O).*$";
