@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 /**
@@ -150,10 +151,10 @@ public class MTParserUtils {
      * @param stringValue String value to be matched
      * @return An Optional of the matcher object or an empty matcher object if the string doesn't match the pattern
      */
-    public static Optional<Matcher> getRegexMatcher(String regex, String stringValue) {
+    public static Optional<Matcher> getRegexMatcher(Pattern regex, String stringValue) {
 
         // Compiling the pattern
-        Matcher matcher = Pattern.compile(regex).matcher(stringValue);
+        Matcher matcher = regex.matcher(stringValue);
 
         if (matcher.find()) {
             return Optional.of(matcher);

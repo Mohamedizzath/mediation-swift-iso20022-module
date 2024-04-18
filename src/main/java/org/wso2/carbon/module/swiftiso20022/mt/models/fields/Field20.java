@@ -25,6 +25,15 @@ import org.wso2.carbon.module.swiftiso20022.utils.MTParserUtils;
 import java.util.Optional;
 import java.util.regex.Matcher;
 
+/**
+ * Model for Swift MT Tag 20
+ * <p>
+ *     format: (Value)<br/>
+ *     example: 20:258158850
+ *     @see <a href="https://www2.swift.com/knowledgecentre/publications/us9m_20230720/
+ *     2.0?topic=con_sfld_MaOrQQQQEe2AI4OK6vBjrg_1537937705fld.htm">Tag 20</a>
+ * </p>
+ */
 public class Field20 {
 
     public static final String TAG = "20";
@@ -50,6 +59,12 @@ public class Field20 {
         return this;
     }
 
+    /**
+     * Method for parse and get Field20 object
+     * @param field20String       String which contains value of Field20
+     * @return                    Created instance of Field20
+     * @throws MTMessageParsingException
+     */
     public static Field20 parse(String field20String) throws MTMessageParsingException {
         Optional<Matcher> field20Matcher = MTParserUtils.getRegexMatcher(
                 MTParserConstants.FIELD_20_REGEX_PATTERN, field20String);

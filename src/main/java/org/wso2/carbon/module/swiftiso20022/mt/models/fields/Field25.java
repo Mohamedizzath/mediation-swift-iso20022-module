@@ -26,18 +26,18 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 
 /**
- * Model for Swift MT Tag 21
+ * Model for Swift MT Tag 25
  * <p>
- *     format: (Value)<br/>
- *     example: 21:258158850
+ *     format: (Account)
+ *     example: 25:DD01100056869
  *     @see <a href="https://www2.swift.com/knowledgecentre/publications/us9m_20230720/
- *     2.0?topic=con_sfld_MaOrVQQQEe2AI4OK6vBjrg_847543236fld.htm">Tag 21</a>
+ *     2.0?topic=con_sfld_MaOrZQQQEe2AI4OK6vBjrg_1154221120fld.htm">Tag 25</a>
  * </p>
  */
-public class Field21 {
-    public static final String TAG = "21";
+public class Field25 {
+    public static final String TAG = "25";
 
-    // Example - 258158850
+    // Example - DD01100056869
     private String value;
 
     public String getValue() {
@@ -49,30 +49,30 @@ public class Field21 {
     }
 
     /**
-     * Method to set value of Field21 and return the instance
-     * @param value     Value of Field21
-     * @return          Created instance of Field21
+     * Method to set value of Field25 and return the instance
+     * @param value   Value of Field25
+     * @return        Created instance of Field25
      */
-    public Field21 withValue(String value) {
+    public Field25 withValue(String value) {
         setValue(value);
         return this;
     }
 
     /**
-     * Method for parse and get Field21 object
-     * @param field21String       String which contains value of Field21
-     * @return                    Created instance of Field21
+     * Method for parse and get Field25 object
+     * @param field25String       String which contains value of Field25
+     * @return                    Created instance of Field25
      * @throws MTMessageParsingException
      */
-    public static Field21 parse(String field21String) throws MTMessageParsingException {
-        Optional<Matcher> field21Matcher = MTParserUtils.getRegexMatcher(
-                MTParserConstants.FIELD_21_REGEX_PATTERN, field21String);
+    public static Field25 parse(String field25String) throws MTMessageParsingException {
+        Optional<Matcher> field25Matcher = MTParserUtils.getRegexMatcher(
+                MTParserConstants.FIELD_25_REGEX_PATTERN, field25String);
 
-        if (field21Matcher.isPresent()) {
-            return new Field21().withValue(field21Matcher.get().group(1));
+        if (field25Matcher.isPresent()) {
+            return new Field25().withValue(field25Matcher.get().group(1));
         } else {
             throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_FORMAT,
-                    Field21.TAG));
+                    Field25.TAG));
         }
     }
 }
