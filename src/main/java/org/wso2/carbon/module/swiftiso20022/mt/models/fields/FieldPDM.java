@@ -21,9 +21,7 @@ package org.wso2.carbon.module.swiftiso20022.mt.models.fields;
 import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
 import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
 import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
-import org.wso2.carbon.module.swiftiso20022.utils.MTParserUtils;
 
-import java.util.Optional;
 import java.util.regex.Matcher;
 
 /**
@@ -161,12 +159,9 @@ public class FieldPDM {
     public static FieldPDM parse(String fieldPDMString) throws MTMessageParsingException {
 
         // Get matcher to the regex matching -> (Time)(Date)(LT Address)(Session No)(Sequence No)
-        Optional<Matcher> fieldPDMMatcher = MTParserUtils.getRegexMatcher(
-                MTParserConstants.FIELD_PDM_REGEX_PATTERN, fieldPDMString);
+        Matcher fieldPDMMatcher = MTParserConstants.FIELD_PDM_REGEX_PATTERN.matcher(fieldPDMString);
 
-        if (fieldPDMMatcher.isPresent()) {
-
-            Matcher matcher = fieldPDMMatcher.get();
+        if (fieldPDMMatcher.matches()) {
 
             // group 1 -> Time
             // group 2 -> Date
@@ -174,11 +169,11 @@ public class FieldPDM {
             // group 4 -> Session Number
             // group 5 -> Sequence Number
             return new FieldPDM()
-                    .withTime(matcher.group(1))
-                    .withDate(matcher.group(2))
-                    .withLtIdentifier(matcher.group(3))
-                    .withSessionNumber(matcher.group(4))
-                    .withSequenceNumber(matcher.group(5));
+                    .withTime(fieldPDMMatcher.group(1))
+                    .withDate(fieldPDMMatcher.group(2))
+                    .withLtIdentifier(fieldPDMMatcher.group(3))
+                    .withSessionNumber(fieldPDMMatcher.group(4))
+                    .withSequenceNumber(fieldPDMMatcher.group(5));
         } else {
             throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
                     ConnectorConstants.POSSIBLE_DUPLICATE_MESSAGE, ConnectorConstants.TRAILER_BLOCK));

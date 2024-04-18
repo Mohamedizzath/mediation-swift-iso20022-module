@@ -21,9 +21,7 @@ package org.wso2.carbon.module.swiftiso20022.mt.models.fields;
 import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
 import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
 import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
-import org.wso2.carbon.module.swiftiso20022.utils.MTParserUtils;
 
-import java.util.Optional;
 import java.util.regex.Matcher;
 
 /**
@@ -93,19 +91,16 @@ public class Field433 {
     public static Field433 parse(String field433String) throws MTMessageParsingException {
 
         // Get matcher to the regex matching -> (Code)[/(Additional Information)]
-        Optional<Matcher> field433Matcher = MTParserUtils.getRegexMatcher(
-                MTParserConstants.FIELD_433_REGEX_PATTERN, field433String);
+        Matcher field433Matcher = MTParserConstants.FIELD_433_REGEX_PATTERN.matcher(field433String);
 
-        if (field433Matcher.isPresent()) {
-
-            Matcher matcher = field433Matcher.get();
+        if (field433Matcher.matches()) {
 
             // group 1 -> Code
             // group 2 -> /Additional information
             // group 3 -> Additional information
             return new Field433()
-                    .withCode(matcher.group(1))
-                    .withAdditionalInformation(matcher.group(3));
+                    .withCode(field433Matcher.group(1))
+                    .withAdditionalInformation(field433Matcher.group(3));
         } else {
             throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
                     ConnectorConstants.SANCTIONS_SCREENING_INFORMATION, ConnectorConstants.USER_HEADER_BLOCK));

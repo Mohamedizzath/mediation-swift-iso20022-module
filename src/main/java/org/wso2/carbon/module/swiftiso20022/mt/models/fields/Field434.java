@@ -21,9 +21,7 @@ package org.wso2.carbon.module.swiftiso20022.mt.models.fields;
 import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
 import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
 import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
-import org.wso2.carbon.module.swiftiso20022.utils.MTParserUtils;
 
-import java.util.Optional;
 import java.util.regex.Matcher;
 
 /**
@@ -93,19 +91,16 @@ public class Field434 {
     public static Field434 parse(String field434String) throws MTMessageParsingException {
 
         // Get matcher to the regex matching -> (Code)[/(Additional Information)]
-        Optional<Matcher> field434Matcher = MTParserUtils.getRegexMatcher(
-                MTParserConstants.FIELD_434_REGEX_PATTERN, field434String);
+        Matcher field434Matcher = MTParserConstants.FIELD_434_REGEX_PATTERN.matcher(field434String);
 
-        if (field434Matcher.isPresent()) {
-
-            Matcher matcher = field434Matcher.get();
+        if (field434Matcher.matches()) {
 
             // group 1 -> Code
             // group 2 -> /Additional information
             // group 3 -> Additional information
             return new Field434()
-                    .withCode(matcher.group(1))
-                    .withAdditionalInformation(matcher.group(3));
+                    .withCode(field434Matcher.group(1))
+                    .withAdditionalInformation(field434Matcher.group(3));
         } else {
             throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
                     ConnectorConstants.PAYMENT_CONTROLS_INFORMATION, ConnectorConstants.USER_HEADER_BLOCK));

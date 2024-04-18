@@ -21,9 +21,7 @@ package org.wso2.carbon.module.swiftiso20022.mt.models.fields;
 import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
 import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
 import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
-import org.wso2.carbon.module.swiftiso20022.utils.MTParserUtils;
 
-import java.util.Optional;
 import java.util.regex.Matcher;
 
 /**
@@ -138,22 +136,19 @@ public class Field106 {
     public static Field106 parse(String field106String) throws MTMessageParsingException {
 
         // Get matcher to the regex matching -> (Date)(LT Address)(Session No)(Sequence No)
-        Optional<Matcher> field106Matcher = MTParserUtils.getRegexMatcher(
-                MTParserConstants.FIELD_106_REGEX_PATTERN, field106String);
+        Matcher field106Matcher = MTParserConstants.FIELD_106_REGEX_PATTERN.matcher(field106String);
 
-        if (field106Matcher.isPresent()) {
-
-            Matcher matcher = field106Matcher.get();
+        if (field106Matcher.matches()) {
 
             // group 1 -> Date
             // group 2 -> LT Address
             // group 1 -> Session Number
             // group 2 -> Sequence Number
             return new Field106()
-                    .withDate(matcher.group(1))
-                    .withLogicalTerminalAddress(matcher.group(2))
-                    .withSessionNumber(matcher.group(3))
-                    .withSequenceNumber(matcher.group(4));
+                    .withDate(field106Matcher.group(1))
+                    .withLogicalTerminalAddress(field106Matcher.group(2))
+                    .withSessionNumber(field106Matcher.group(3))
+                    .withSequenceNumber(field106Matcher.group(4));
 
         } else {
             throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,

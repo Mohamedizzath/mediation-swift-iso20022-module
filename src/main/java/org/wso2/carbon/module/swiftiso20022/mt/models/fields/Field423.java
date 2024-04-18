@@ -21,9 +21,7 @@ package org.wso2.carbon.module.swiftiso20022.mt.models.fields;
 import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
 import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
 import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
-import org.wso2.carbon.module.swiftiso20022.utils.MTParserUtils;
 
-import java.util.Optional;
 import java.util.regex.Matcher;
 
 /**
@@ -96,18 +94,15 @@ public class Field423 {
     public static Field423 parse(String field423String) throws MTMessageParsingException {
 
         // Get matcher to the regex matching -> (Date)(Time)
-        Optional<Matcher> field423Matcher = MTParserUtils.getRegexMatcher(
-                MTParserConstants.FIELD_423_REGEX_PATTERN, field423String);
+        Matcher field423Matcher = MTParserConstants.FIELD_423_REGEX_PATTERN.matcher(field423String);
 
-        if (field423Matcher.isPresent()) {
-
-            Matcher matcher = field423Matcher.get();
+        if (field423Matcher.matches()) {
 
             // group 1 -> Date
             // group 2 -> Time
             return new Field423()
-                    .withDate(matcher.group(1))
-                    .withTime(matcher.group(2));
+                    .withDate(field423Matcher.group(1))
+                    .withTime(field423Matcher.group(2));
         } else {
             throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
                     ConnectorConstants.BALANCE_CHECKPOINT, ConnectorConstants.USER_HEADER_BLOCK));

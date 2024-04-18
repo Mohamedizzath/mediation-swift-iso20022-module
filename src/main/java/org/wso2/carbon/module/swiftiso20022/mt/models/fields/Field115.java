@@ -21,9 +21,7 @@ package org.wso2.carbon.module.swiftiso20022.mt.models.fields;
 import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
 import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
 import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
-import org.wso2.carbon.module.swiftiso20022.utils.MTParserUtils;
 
-import java.util.Optional;
 import java.util.regex.Matcher;
 
 /**
@@ -139,22 +137,19 @@ public class Field115 {
     public static Field115 parse(String field115String) throws MTMessageParsingException {
 
         // Get matcher to the regex matching -> (Crediting Time)(Debiting Time)(Country Code)(Reference)
-        Optional<Matcher> field115Matcher = MTParserUtils.getRegexMatcher(
-                MTParserConstants.FIELD_115_REGEX_PATTERN, field115String);
+        Matcher field115Matcher = MTParserConstants.FIELD_115_REGEX_PATTERN.matcher(field115String);
 
-        if (field115Matcher.isPresent()) {
-
-            Matcher matcher = field115Matcher.get();
+        if (field115Matcher.matches()) {
 
             // group 1 -> Crediting Time
             // group 2 -> Debiting Time
             // group 3 -> Country Code
             // group 4 -> Reference
             return new Field115()
-                    .withCreditingTime(matcher.group(1))
-                    .withDebitingTime(matcher.group(2))
-                    .withCountryCode(matcher.group(3))
-                    .withReference(matcher.group(4));
+                    .withCreditingTime(field115Matcher.group(1))
+                    .withDebitingTime(field115Matcher.group(2))
+                    .withCountryCode(field115Matcher.group(3))
+                    .withReference(field115Matcher.group(4));
         } else {
             throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
                     ConnectorConstants.ADDRESSEE_INFORMATION, ConnectorConstants.USER_HEADER_BLOCK));

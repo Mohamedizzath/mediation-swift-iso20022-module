@@ -22,9 +22,7 @@ package org.wso2.carbon.module.swiftiso20022.mt.models.fields;
 import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
 import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
 import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
-import org.wso2.carbon.module.swiftiso20022.utils.MTParserUtils;
 
-import java.util.Optional;
 import java.util.regex.Matcher;
 
 /**
@@ -185,12 +183,9 @@ public class FieldMRF {
     public static FieldMRF parse(String fieldMRFString) throws MTMessageParsingException {
 
         // Get matcher to the regex matching -> (Sent Date)(Time)(Date)(LT Address)(Session No)(Sequence No)
-        Optional<Matcher> fieldMRFMatcher = MTParserUtils.getRegexMatcher(
-                MTParserConstants.FIELD_MRF_REGEX_PATTERN, fieldMRFString);
+        Matcher fieldMRFMatcher = MTParserConstants.FIELD_MRF_REGEX_PATTERN.matcher(fieldMRFString);
 
-        if (fieldMRFMatcher.isPresent()) {
-
-            Matcher matcher = fieldMRFMatcher.get();
+        if (fieldMRFMatcher.matches()) {
 
             // group 1 -> Sent Date
             // group 2 -> Time
@@ -199,12 +194,12 @@ public class FieldMRF {
             // group 5 -> Session Number
             // group 6 -> Sequence Number
             return new FieldMRF()
-                    .withSentDate(matcher.group(1))
-                    .withTime(matcher.group(2))
-                    .withDate(matcher.group(3))
-                    .withLtIdentifier(matcher.group(4))
-                    .withSessionNumber(matcher.group(5))
-                    .withSequenceNumber(matcher.group(6));
+                    .withSentDate(fieldMRFMatcher.group(1))
+                    .withTime(fieldMRFMatcher.group(2))
+                    .withDate(fieldMRFMatcher.group(3))
+                    .withLtIdentifier(fieldMRFMatcher.group(4))
+                    .withSessionNumber(fieldMRFMatcher.group(5))
+                    .withSequenceNumber(fieldMRFMatcher.group(6));
         } else {
             throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
                     ConnectorConstants.MESSAGE_REFERENCE, ConnectorConstants.TRAILER_BLOCK));

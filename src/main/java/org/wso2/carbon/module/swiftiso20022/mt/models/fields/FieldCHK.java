@@ -22,9 +22,7 @@ package org.wso2.carbon.module.swiftiso20022.mt.models.fields;
 import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
 import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
 import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
-import org.wso2.carbon.module.swiftiso20022.utils.MTParserUtils;
 
-import java.util.Optional;
 import java.util.regex.Matcher;
 
 /**
@@ -70,12 +68,12 @@ public class FieldCHK {
      */
     public static FieldCHK parse(String fieldCHKString) throws MTMessageParsingException {
 
-        Optional<Matcher> fieldCHKMatcher = MTParserUtils.getRegexMatcher(
-                MTParserConstants.FIELD_CHK_REGEX_PATTERN, fieldCHKString);
+        Matcher fieldCHKMatcher = MTParserConstants.FIELD_CHK_REGEX_PATTERN.matcher(fieldCHKString);
 
-        if (fieldCHKMatcher.isPresent()) {
+        if (fieldCHKMatcher.matches()) {
+
             return new FieldCHK()
-                    .withValue(fieldCHKMatcher.get().group());
+                    .withValue(fieldCHKMatcher.group());
         } else {
             throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
                     ConnectorConstants.CHECKSUM, ConnectorConstants.TRAILER_BLOCK));

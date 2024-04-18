@@ -58,24 +58,4 @@ public class MTParserUtils {
         return fields;
     }
 
-    /**
-     * Method to match a regex pattern with passed string value.
-     * Only check one matching value.
-     *
-     * @param regexPattern Pattern object compiled with the regex pattern
-     * @param stringValue String value to be matched
-     * @return An Optional of the matcher object or an empty matcher object if the string doesn't match the pattern
-     */
-    public static Optional<Matcher> getRegexMatcher(Pattern regexPattern, String stringValue) {
-
-        // Compiling the pattern
-        Matcher matcher = regexPattern.matcher(stringValue);
-
-        if (matcher.matches()) {
-            return Optional.of(matcher);
-        } else {
-            return Optional.empty();
-        }
-    }
-
 }

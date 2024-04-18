@@ -21,9 +21,7 @@ package org.wso2.carbon.module.swiftiso20022.mt.models.fields;
 import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
 import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
 import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
-import org.wso2.carbon.module.swiftiso20022.utils.MTParserUtils;
 
-import java.util.Optional;
 import java.util.regex.Matcher;
 
 /**
@@ -69,12 +67,12 @@ public class Field424 {
      */
     public static Field424 parse(String field424String) throws MTMessageParsingException {
 
-        Optional<Matcher> field424Matcher = MTParserUtils.getRegexMatcher(
-                MTParserConstants.FIELD_424_REGEX_PATTERN, field424String);
+        Matcher field424Matcher = MTParserConstants.FIELD_424_REGEX_PATTERN.matcher(field424String);
 
-        if (field424Matcher.isPresent()) {
+        if (field424Matcher.matches()) {
+
             return new Field424()
-                    .withValue(field424Matcher.get().group());
+                    .withValue(field424Matcher.group());
         } else {
             throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
                     ConnectorConstants.RELATED_REFERENCE, ConnectorConstants.USER_HEADER_BLOCK));
