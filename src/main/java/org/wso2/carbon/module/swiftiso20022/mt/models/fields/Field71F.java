@@ -18,14 +18,12 @@
 
 package org.wso2.carbon.module.swiftiso20022.mt.models.fields;
 
-
-import java.util.Optional;
-import java.util.regex.Matcher;
 import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
 import org.wso2.carbon.module.swiftiso20022.constants.MT103Constants;
 import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
 import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
-import org.wso2.carbon.module.swiftiso20022.utils.MTParserUtils;
+
+import java.util.regex.Matcher;
 
 /**
  * Model for sender's charges in Text Block (Block 04).
@@ -92,18 +90,15 @@ public class Field71F {
     public static Field71F parse(String field71FString) throws MTMessageParsingException {
 
         // Get matcher to the regex matching -> (Currency)(Amount)
-        Optional<Matcher> field71FMatcher = MTParserUtils.getRegexMatcher(
-                MTParserConstants.FIELD_71F_REGEX_PATTERN, field71FString);
+        Matcher field71FMatcher = MTParserConstants.FIELD_71F_REGEX_PATTERN.matcher(field71FString);
 
-        if (field71FMatcher.isPresent()) {
-
-            Matcher matcher = field71FMatcher.get();
+        if (field71FMatcher.matches()) {
 
             // group 1 -> Currency
             // group 2 -> Amount
             return new Field71F()
-                    .withCurrency(matcher.group(1))
-                    .withAmount(matcher.group(2));
+                    .withCurrency(field71FMatcher.group(1))
+                    .withAmount(field71FMatcher.group(2));
         } else {
             throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
                     MT103Constants.SENDERS_CHARGES, ConnectorConstants.TEXT_BLOCK));

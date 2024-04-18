@@ -18,13 +18,12 @@
 
 package org.wso2.carbon.module.swiftiso20022.mt.models.fields;
 
-import java.util.Optional;
-import java.util.regex.Matcher;
 import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
 import org.wso2.carbon.module.swiftiso20022.constants.MT103Constants;
 import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
 import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
-import org.wso2.carbon.module.swiftiso20022.utils.MTParserUtils;
+
+import java.util.regex.Matcher;
 
 /**
  * Model for transaction type code in Text Block (Block 04).
@@ -69,13 +68,12 @@ public class Field26T {
      */
     public static Field26T parse(String field26TString) throws MTMessageParsingException {
 
-        Optional<Matcher> field26TMatcher = MTParserUtils.getRegexMatcher(
-                MTParserConstants.FIELD_26T_REGEX_PATTERN, field26TString);
+        Matcher field26TMatcher = MTParserConstants.FIELD_26T_REGEX_PATTERN.matcher(field26TString);
 
-        if (field26TMatcher.isPresent()) {
+        if (field26TMatcher.matches()) {
 
             return new Field26T()
-                    .withValue(field26TMatcher.get().group());
+                    .withValue(field26TMatcher.group());
         } else {
             throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
                     MT103Constants.TRANSACTION_TYPE_CODE, ConnectorConstants.TEXT_BLOCK));

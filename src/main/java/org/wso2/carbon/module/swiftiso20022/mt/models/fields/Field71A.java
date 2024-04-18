@@ -18,13 +18,12 @@
 
 package org.wso2.carbon.module.swiftiso20022.mt.models.fields;
 
-import java.util.Optional;
-import java.util.regex.Matcher;
 import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
 import org.wso2.carbon.module.swiftiso20022.constants.MT103Constants;
 import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
 import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
-import org.wso2.carbon.module.swiftiso20022.utils.MTParserUtils;
+
+import java.util.regex.Matcher;
 
 /**
  * Model for details of charge in Text Block (Block 04).
@@ -68,13 +67,12 @@ public class Field71A {
      */
     public static Field71A parse(String field71AString) throws MTMessageParsingException {
 
-        Optional<Matcher> field71AMatcher = MTParserUtils.getRegexMatcher(
-                MTParserConstants.FIELD_71A_REGEX_PATTERN, field71AString);
+        Matcher field71AMatcher = MTParserConstants.FIELD_71A_REGEX_PATTERN.matcher(field71AString);
 
-        if (field71AMatcher.isPresent()) {
+        if (field71AMatcher.matches()) {
 
             return new Field71A()
-                    .withValue(field71AMatcher.get().group());
+                    .withValue(field71AMatcher.group());
         } else {
             throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
                     MT103Constants.DETAILS_OF_CHARGES, ConnectorConstants.TEXT_BLOCK));

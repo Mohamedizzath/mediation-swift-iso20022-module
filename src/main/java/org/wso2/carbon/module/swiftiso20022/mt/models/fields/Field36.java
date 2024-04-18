@@ -18,13 +18,12 @@
 
 package org.wso2.carbon.module.swiftiso20022.mt.models.fields;
 
-import java.util.Optional;
-import java.util.regex.Matcher;
 import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
 import org.wso2.carbon.module.swiftiso20022.constants.MT103Constants;
 import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
 import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
-import org.wso2.carbon.module.swiftiso20022.utils.MTParserUtils;
+
+import java.util.regex.Matcher;
 
 /**
  * Model for exchange rate in Text Block (Block 04).
@@ -69,13 +68,12 @@ public class Field36 {
      */
     public static Field36 parse(String field36String) throws MTMessageParsingException {
 
-        Optional<Matcher> field26Matcher = MTParserUtils.getRegexMatcher(
-                MTParserConstants.FIELD_36_REGEX_PATTERN, field36String);
+        Matcher field26Matcher = MTParserConstants.FIELD_36_REGEX_PATTERN.matcher(field36String);
 
-        if (field26Matcher.isPresent()) {
+        if (field26Matcher.matches()) {
 
             return new Field36()
-                    .withValue(field26Matcher.get().group());
+                    .withValue(field26Matcher.group());
         } else {
             throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
                     MT103Constants.EXCHANGE_RATE, ConnectorConstants.TEXT_BLOCK));

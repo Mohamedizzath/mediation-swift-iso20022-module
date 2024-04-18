@@ -18,13 +18,12 @@
 
 package org.wso2.carbon.module.swiftiso20022.mt.models.fields;
 
-import java.util.Optional;
-import java.util.regex.Matcher;
 import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
 import org.wso2.carbon.module.swiftiso20022.constants.MT103Constants;
 import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
 import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
-import org.wso2.carbon.module.swiftiso20022.utils.MTParserUtils;
+
+import java.util.regex.Matcher;
 
 /**
  * Model for sending institution with option A in Text Block (Block 04).
@@ -99,20 +98,17 @@ public class Field51A {
 
         // Get matcher to the regex matching -> [/(Party Identifier)]
         //                                      (Identifier Code)
-        Optional<Matcher> field51AMatcher = MTParserUtils.getRegexMatcher(
-                MTParserConstants.PARTY_IDENTIFIER_OPTION_A_REGEX_PATTERN, field51AString);
+        Matcher field51AMatcher = MTParserConstants.PARTY_IDENTIFIER_OPTION_A_REGEX_PATTERN.matcher(field51AString);
 
-        if (field51AMatcher.isPresent()) {
-
-            Matcher matcher = field51AMatcher.get();
+        if (field51AMatcher.matches()) {
 
             // group 1 -> /Party Identifier
             // group 2 is not assigned because of OR operator
             // group 3 -> Party Identifier
             // group 4 -> Identifier Code
             return new Field51A()
-                    .withPartyIdentifier(matcher.group(3))
-                    .withIdentifierCode(matcher.group(4));
+                    .withPartyIdentifier(field51AMatcher.group(3))
+                    .withIdentifierCode(field51AMatcher.group(4));
         } else {
             throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
                     MT103Constants.SENDING_INSTITUTION, ConnectorConstants.TEXT_BLOCK));

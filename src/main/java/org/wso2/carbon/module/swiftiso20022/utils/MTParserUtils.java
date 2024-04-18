@@ -35,6 +35,10 @@ import java.util.regex.Pattern;
  */
 public class MTParserUtils {
 
+    private MTParserUtils() {
+        // Private constructor to prevent instantiation.
+    }
+
     /**
      * Util methods for parsing blocks in MT messages.<br/>
      * Regex explanation - ^(\\{1:([^\\W_]+)\\})(\\{2:([^\\W_]+)\\})?(\\{3:(\\{\\d{3}:[^\\{\\}]*\\})+\\})?
@@ -182,15 +186,12 @@ public class MTParserUtils {
      * @param textBlock Text Block string excluding block identifier and enclosing curly brackets
      * @return A list of text block field strings
      */
-    public static Optional<List<String>> getTextBlockFields(String textBlock) {
+    public static List<String> getTextBlockFields(String textBlock) {
 
-        List<String> fields = List.of(textBlock.split("\\R:"));
-
-        if (!fields.isEmpty() && fields.get(0).isEmpty() ) {
-            return Optional.of(fields.subList(1, fields.size()));
-        } else {
-            return Optional.empty();
-        }
+        List<String> fieldList = List.of(textBlock
+                .substring(0, textBlock.length() - 1)
+                .split(MTParserConstants.LINE_BREAK_WITH_COLON_REGEX_PATTERN));
+        return fieldList.subList(1, fieldList.size());
     }
 
 }

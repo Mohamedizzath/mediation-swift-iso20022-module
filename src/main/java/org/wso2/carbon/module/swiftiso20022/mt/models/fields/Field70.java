@@ -18,14 +18,13 @@
 
 package org.wso2.carbon.module.swiftiso20022.mt.models.fields;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.regex.Matcher;
 import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
 import org.wso2.carbon.module.swiftiso20022.constants.MT103Constants;
 import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
 import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
-import org.wso2.carbon.module.swiftiso20022.utils.MTParserUtils;
+
+import java.util.List;
+import java.util.regex.Matcher;
 
 /**
  * Model for remittance information in Text Block (Block 04).
@@ -76,15 +75,13 @@ public class Field70 {
      */
     public static Field70 parse(String field70String) throws MTMessageParsingException {
 
-        Optional<Matcher> field70Matcher = MTParserUtils.getRegexMatcher(
-                MTParserConstants.FIELD_70_REGEX_PATTERN, field70String);
+        Matcher field70Matcher = MTParserConstants.FIELD_70_REGEX_PATTERN.matcher(field70String);
 
-        if (field70Matcher.isPresent()) {
+        if (field70Matcher.matches()) {
 
             return new Field70()
                     // Values group -> "line1\nline2\n" -> ["line1", "line2"]
-                    .withValues(
-                            List.of(field70Matcher.get().group(1).split(MTParserConstants.LINE_BREAK_REGEX_PATTERN)));
+                    .withValues(List.of(field70Matcher.group(1).split(MTParserConstants.LINE_BREAK_REGEX_PATTERN)));
         } else {
             throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
                     MT103Constants.REMITTANCE_INFORMATION, ConnectorConstants.TEXT_BLOCK));

@@ -18,13 +18,12 @@
 
 package org.wso2.carbon.module.swiftiso20022.mt.models.fields;
 
-import java.util.Optional;
-import java.util.regex.Matcher;
 import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
 import org.wso2.carbon.module.swiftiso20022.constants.MT103Constants;
 import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
 import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
-import org.wso2.carbon.module.swiftiso20022.utils.MTParserUtils;
+
+import java.util.regex.Matcher;
 
 /**
  * Model for references in Text Block (Block 04).
@@ -69,13 +68,12 @@ public class Field20 {
      */
     public static Field20 parse(String field20String) throws MTMessageParsingException {
 
-        Optional<Matcher> field20Matcher = MTParserUtils.getRegexMatcher(
-                MTParserConstants.FIELD_20_REGEX_PATTERN, field20String);
+        Matcher field20Matcher = MTParserConstants.FIELD_20_REGEX_PATTERN.matcher(field20String);
 
-        if (field20Matcher.isPresent()) {
+        if (field20Matcher.matches()) {
 
             return new Field20()
-                    .withValue(field20Matcher.get().group(0));
+                    .withValue(field20Matcher.group(0));
         } else {
             throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
                     MT103Constants.SENDERS_REFERENCE, ConnectorConstants.TEXT_BLOCK));

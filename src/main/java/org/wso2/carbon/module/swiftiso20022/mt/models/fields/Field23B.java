@@ -18,13 +18,12 @@
 
 package org.wso2.carbon.module.swiftiso20022.mt.models.fields;
 
-import java.util.Optional;
-import java.util.regex.Matcher;
 import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
 import org.wso2.carbon.module.swiftiso20022.constants.MT103Constants;
 import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
 import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
-import org.wso2.carbon.module.swiftiso20022.utils.MTParserUtils;
+
+import java.util.regex.Matcher;
 
 /**
  * Model for bank operation code in Text Block (Block 04).
@@ -70,17 +69,15 @@ public class Field23B {
      */
     public static Field23B parse(String field23BString) throws MTMessageParsingException {
 
-        Optional<Matcher> field23BMatcher = MTParserUtils.getRegexMatcher(
-                MTParserConstants.FIELD_23B_REGEX_PATTERN, field23BString);
+        Matcher field23BMatcher = MTParserConstants.FIELD_23B_REGEX_PATTERN.matcher(field23BString);
 
-        if (field23BMatcher.isPresent()) {
+        if (field23BMatcher.matches()) {
 
             return new Field23B()
-                    .withValue(field23BMatcher.get().group());
+                    .withValue(field23BMatcher.group());
         } else {
             throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
                     MT103Constants.BANK_OPERATION_CODE, ConnectorConstants.TEXT_BLOCK));
         }
     }
-
 }

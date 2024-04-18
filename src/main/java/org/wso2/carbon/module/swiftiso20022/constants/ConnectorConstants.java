@@ -108,6 +108,19 @@ public class ConnectorConstants {
     public static final String DELAYED_MESSAGE = "Delayed Message";
     public static final String TEST_AND_TRAINING_MESSAGE = "Test And Training Message";
 
+    /**
+     * Includes the options available for a Text Block field.
+     */
+    public static enum MTFieldDOption {
+        NO_LETTER,
+        A,
+        B,
+        C,
+        D,
+        F,
+        K
+    }
+
     // ISO 20022 Related Constants
     public static final String SOAP_PREFIX = "soapenv";
     public static final String SOAP_NAMESPACE = "http://schemas.xmlsoap.org/soap/envelope/";

@@ -18,14 +18,13 @@
 
 package org.wso2.carbon.module.swiftiso20022.mt.models.fields;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.regex.Matcher;
 import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
 import org.wso2.carbon.module.swiftiso20022.constants.MT103Constants;
 import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
 import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
-import org.wso2.carbon.module.swiftiso20022.utils.MTParserUtils;
+
+import java.util.List;
+import java.util.regex.Matcher;
 
 /**
  * Model for regulatory reporting in Text Block (Block 04).
@@ -69,15 +68,14 @@ public class Field77B {
      */
     public static Field77B parse(String field77BString) throws MTMessageParsingException {
 
-        Optional<Matcher> field77BMatcher = MTParserUtils.getRegexMatcher(
-                MTParserConstants.FIELD_77B_REGEX_PATTERN, field77BString);
+        Matcher field77BMatcher = MTParserConstants.FIELD_77B_REGEX_PATTERN.matcher(field77BString);
 
-        if (field77BMatcher.isPresent()) {
+        if (field77BMatcher.matches()) {
 
             return new Field77B()
                     // Values group -> "line1\nline2\n" -> ["line1", "line2"]
                     .withValues(
-                            List.of(field77BMatcher.get().group(1).split(MTParserConstants.LINE_BREAK_REGEX_PATTERN)));
+                            List.of(field77BMatcher.group(1).split(MTParserConstants.LINE_BREAK_REGEX_PATTERN)));
         } else {
             throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
                     MT103Constants.REGULATORY_REPORTING, ConnectorConstants.TEXT_BLOCK));

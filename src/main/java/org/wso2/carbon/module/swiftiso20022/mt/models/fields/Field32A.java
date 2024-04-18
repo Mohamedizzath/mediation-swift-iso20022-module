@@ -18,13 +18,12 @@
 
 package org.wso2.carbon.module.swiftiso20022.mt.models.fields;
 
-import java.util.Optional;
-import java.util.regex.Matcher;
 import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
 import org.wso2.carbon.module.swiftiso20022.constants.MT103Constants;
 import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
 import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
-import org.wso2.carbon.module.swiftiso20022.utils.MTParserUtils;
+
+import java.util.regex.Matcher;
 
 /**
  * Model for value/amount in Text Block (Block 04).
@@ -117,20 +116,17 @@ public class Field32A {
     public static Field32A parse(String field32AString) throws MTMessageParsingException {
 
         // Get matcher to the regex matching -> (Date)(Currency)(Amount)
-        Optional<Matcher> field32AMatcher = MTParserUtils.getRegexMatcher(
-                MTParserConstants.FIELD_32A_REGEX_PATTERN, field32AString);
+        Matcher field32AMatcher = MTParserConstants.FIELD_32A_REGEX_PATTERN.matcher(field32AString);
 
-        if (field32AMatcher.isPresent()) {
-
-            Matcher matcher = field32AMatcher.get();
+        if (field32AMatcher.matches()) {
 
             // group 1 -> Date
             // group 2 -> Currency
             // group 3 -> Amount
             return new Field32A()
-                    .withDate(matcher.group(1))
-                    .withCurrency(matcher.group(2))
-                    .withAmount(matcher.group(3));
+                    .withDate(field32AMatcher.group(1))
+                    .withCurrency(field32AMatcher.group(2))
+                    .withAmount(field32AMatcher.group(3));
         } else {
             throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
                     MT103Constants.VALUE, ConnectorConstants.TEXT_BLOCK));

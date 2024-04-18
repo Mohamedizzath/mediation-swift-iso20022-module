@@ -18,13 +18,12 @@
 
 package org.wso2.carbon.module.swiftiso20022.mt.models.fields;
 
-import java.util.Optional;
-import java.util.regex.Matcher;
 import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
 import org.wso2.carbon.module.swiftiso20022.constants.MT103Constants;
 import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
 import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
-import org.wso2.carbon.module.swiftiso20022.utils.MTParserUtils;
+
+import java.util.regex.Matcher;
 
 /**
  * Model for instruction code in Text Block (Block 04).
@@ -94,19 +93,16 @@ public class Field23E {
     public static Field23E parse(String field23EString)  throws MTMessageParsingException {
 
         // Get matcher to the regex matching -> (Instruction Code)[/(Additional Information)]
-        Optional<Matcher> field23EMatcher = MTParserUtils.getRegexMatcher(
-                MTParserConstants.FIELD_23E_REGEX_PATTERN, field23EString);
+        Matcher field23EMatcher = MTParserConstants.FIELD_23E_REGEX_PATTERN.matcher(field23EString);
 
-        if (field23EMatcher.isPresent()) {
-
-            Matcher matcher = field23EMatcher.get();
+        if (field23EMatcher.matches()) {
 
             // group 1 -> Instruction Code
             // group 2 -> /Additional Information
             // group 3 -> Additional Information
             return new Field23E()
-                    .withInstructionCode(matcher.group(1))
-                    .withAdditionalInformation(matcher.group(3));
+                    .withInstructionCode(field23EMatcher.group(1))
+                    .withAdditionalInformation(field23EMatcher.group(3));
 
         } else {
             throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,

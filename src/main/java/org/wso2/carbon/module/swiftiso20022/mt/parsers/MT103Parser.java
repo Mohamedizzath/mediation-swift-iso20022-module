@@ -18,12 +18,11 @@
 
 package org.wso2.carbon.module.swiftiso20022.mt.parsers;
 
-import java.util.List;
-import java.util.Optional;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
 import org.wso2.carbon.module.swiftiso20022.constants.MT103Constants;
+import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
 import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
 import org.wso2.carbon.module.swiftiso20022.mt.models.blocks.text.MT103TextBlock;
 import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field13C;
@@ -34,31 +33,15 @@ import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field26T;
 import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field32A;
 import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field33B;
 import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field36;
-import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field50A;
-import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field50F;
-import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field50K;
+import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field50;
 import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field51A;
-import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field52A;
-import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field52D;
-import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field53A;
-import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field53B;
-import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field53D;
-import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field54A;
-import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field54B;
-import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field54D;
-import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field55A;
-import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field55B;
-import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field55D;
-import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field56A;
-import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field56C;
-import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field56D;
-import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field57A;
-import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field57B;
-import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field57C;
-import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field57D;
+import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field52;
+import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field53;
+import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field54;
+import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field55;
+import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field56;
+import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field57;
 import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field59;
-import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field59A;
-import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field59F;
 import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field70;
 import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field71A;
 import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field71F;
@@ -66,10 +49,12 @@ import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field71G;
 import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field72;
 import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field77B;
 import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field77T;
-import org.wso2.carbon.module.swiftiso20022.utils.MTParserUtils;
 import org.wso2.carbon.module.swiftiso20022.mt.models.messages.MT103Message;
+import org.wso2.carbon.module.swiftiso20022.utils.MTParserUtils;
 
+import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
 
 /**
  * Parser class for MT103 Message.
@@ -78,17 +63,27 @@ public class MT103Parser {
 
     private static final Log log = LogFactory.getLog(MT103Parser.class);
 
+    private MT103Parser() {
+        // Private constructor to prevent instantiation.
+    }
+
+    /**
+     * Method to parse MT103 message string to a {@link MT103Message} model.
+     *
+     * @param mt103Message MT103 message string
+     * @return A {@link MT103Message} with assigned values from the message
+     * @throws MTMessageParsingException if the message can be parsed (invalid format)
+     */
     public static MT103Message parse(String mt103Message) throws MTMessageParsingException {
 
         Map<String, String> blocks = MTParserUtils.getMessageBlocks(mt103Message);
         // TODO: Do the format validations
         MT103Message mt103MessageModel = new MT103Message();
         MTParser.parse(blocks, mt103MessageModel);
-        // TODO: implement parsing logic for the text block and set the text block
-        return null;
+        mt103MessageModel.setTextBlock(parseTextBlock(blocks.get(ConnectorConstants.TEXT_BLOCK_KEY)));
+        return mt103MessageModel;
     }
 
-    // TODO: make this method private after merging
     /**
      * Method to parse text block and return MT103TextBlock object.
      *
@@ -105,204 +100,126 @@ public class MT103Parser {
      * @return A {@link MT103TextBlock} model with values assigned by parsing text block
      * @throws MTMessageParsingException if the string cannot be parsed.
      */
-    public static MT103TextBlock parseTextBlock(String textBlock) throws MTMessageParsingException {
+    private static MT103TextBlock parseTextBlock(String textBlock) throws MTMessageParsingException {
 
-        Optional<List<String>> textBlockFields = MTParserUtils.getTextBlockFields(textBlock);
-
-        if (textBlockFields.isEmpty()) {
-
-            String errorMessage = String.format(
-                    ConnectorConstants.ERROR_TEXT_BLOCK_FOR_MESSAGE, MT103Constants.MT103);
-            log.error(errorMessage);
-            throw new MTMessageParsingException(errorMessage);
-        }
+        // Get text block fields as an array of strings
+        // "\n:tag1:val1\n:tag2:val2\n:tag3:val3" -> ["tag1:val1", "tag2:val2", "tag3:val3"]
+        List<String> fields = MTParserUtils.getTextBlockFields(textBlock);
 
         MT103TextBlock mt103TextBlock = new MT103TextBlock();
 
-        List<String> fields = textBlockFields.get();
-
         for (String field : fields) {
 
-            String[] tagNValue = field.split(ConnectorConstants.COLON);
+            // Matchers format -> (tag):(value)
+            Matcher tagNValue = MTParserConstants.TAG_AND_VALUE_REGEX_PATTERN_TEXT_BLOCK.matcher(field);
 
-            if (tagNValue.length != 2) {
-
+            // After splitting, there can be only 2 elements else invalid tag and value format
+            if (!tagNValue.matches()) {
                 String errorMessage = String.format(ConnectorConstants.ERROR_INVALID_FIELD_AND_VALUE,
                         field, ConnectorConstants.TEXT_BLOCK);
                 log.error(errorMessage);
                 throw new MTMessageParsingException(errorMessage);
             }
 
-            switch (tagNValue[0]) {
-
+            // group 1 -> tag
+            // group 2 -> value
+            switch (tagNValue.group(1)) {
                 case Field13C.TAG:
-                    mt103TextBlock.addTimeIndication(Field13C.parse(tagNValue[1]));
+                    mt103TextBlock.addTimeIndication(Field13C.parse(tagNValue.group(2)));
                     break;
-
                 case Field20.TAG:
-                    mt103TextBlock.setSendersReference(Field20.parse(tagNValue[1]));
+                    mt103TextBlock.setSendersReference(Field20.parse(tagNValue.group(2)));
                     break;
-
                 case Field23B.TAG:
-                    mt103TextBlock.setBankOperationCode(Field23B.parse(tagNValue[1]));
+                    mt103TextBlock.setBankOperationCode(Field23B.parse(tagNValue.group(2)));
                     break;
-
                 case Field23E.TAG:
-                    mt103TextBlock.addInstructionCode(Field23E.parse(tagNValue[1]));
+                    mt103TextBlock.addInstructionCode(Field23E.parse(tagNValue.group(2)));
                     break;
-
                 case Field26T.TAG:
-                    mt103TextBlock.setTransactionTypeCode(Field26T.parse(tagNValue[1]));
+                    mt103TextBlock.setTransactionTypeCode(Field26T.parse(tagNValue.group(2)));
                     break;
-
                 case Field32A.TAG:
-                    mt103TextBlock.setValue(Field32A.parse(tagNValue[1]));
+                    mt103TextBlock.setValue(Field32A.parse(tagNValue.group(2)));
                     break;
-
                 case Field33B.TAG:
-                    mt103TextBlock.setInstructedAmount(Field33B.parse(tagNValue[1]));
+                    mt103TextBlock.setInstructedAmount(Field33B.parse(tagNValue.group(2)));
                     break;
-
                 case Field36.TAG:
-                    mt103TextBlock.setExchangeRate(Field36.parse(tagNValue[1]));
+                    mt103TextBlock.setExchangeRate(Field36.parse(tagNValue.group(2)));
                     break;
-
-                case Field50A.TAG:
-                    mt103TextBlock.setOrderingCustomerOptA(Field50A.parse(tagNValue[1]));
+                case Field50.OPTION_A_TAG:
+                case Field50.OPTION_F_TAG:
+                case Field50.OPTION_K_TAG:
+                    mt103TextBlock.setOrderingCustomer(Field50.parse(tagNValue.group(2), tagNValue.group(1)));
                     break;
-
-                case Field50F.TAG:
-                    mt103TextBlock.setOrderingCustomerOptF(Field50F.parse(tagNValue[1]));
-                    break;
-
-                case Field50K.TAG:
-                    mt103TextBlock.setOrderingCustomerOptK(Field50K.parse(tagNValue[1]));
-                    break;
-
                 case Field51A.TAG:
-                    mt103TextBlock.setSendingInstitution(Field51A.parse(tagNValue[1]));
+                    mt103TextBlock.setSendingInstitution(Field51A.parse(tagNValue.group(2)));
                     break;
-
-                case Field52A.TAG:
-                    mt103TextBlock.setOrderingInstitutionOptA(Field52A.parse(tagNValue[1]));
+                case Field52.OPTION_A_TAG:
+                case Field52.OPTION_D_TAG:
+                    mt103TextBlock.setOrderingInstitution(Field52.parse(tagNValue.group(2), tagNValue.group(1)));
                     break;
-
-                case Field52D.TAG:
-                    mt103TextBlock.setOrderingInstitutionOptD(Field52D.parse(tagNValue[1]));
+                case Field53.OPTION_A_TAG:
+                case Field53.OPTION_B_TAG:
+                case Field53.OPTION_D_TAG:
+                    mt103TextBlock.setSendersCorrespondent(Field53.parse(tagNValue.group(2), tagNValue.group(1)));
                     break;
-
-                case Field53A.TAG:
-                    mt103TextBlock.setSendersCorrespondentOptA(Field53A.parse(tagNValue[1]));
+                case Field54.OPTION_A_TAG:
+                case Field54.OPTION_B_TAG:
+                case Field54.OPTION_D_TAG:
+                    mt103TextBlock.setReceiversCorrespondent(Field54.parse(tagNValue.group(2), tagNValue.group(1)));
                     break;
-
-                case Field53B.TAG:
-                    mt103TextBlock.setSendersCorrespondentOptB(Field53B.parse(tagNValue[1]));
+                case Field55.OPTION_A_TAG:
+                case Field55.OPTION_B_TAG:
+                case Field55.OPTION_D_TAG:
+                    mt103TextBlock.setThirdReimbursementInstitution(
+                            Field55.parse(tagNValue.group(2), tagNValue.group(1)));
                     break;
-
-                case Field53D.TAG:
-                    mt103TextBlock.setSendersCorrespondentOptD(Field53D.parse(tagNValue[1]));
+                case Field56.OPTION_A_TAG:
+                case Field56.OPTION_C_TAG:
+                case Field56.OPTION_D_TAG:
+                    mt103TextBlock.setIntermediaryInstitution(Field56.parse(tagNValue.group(2), tagNValue.group(1)));
                     break;
-
-                case Field54A.TAG:
-                    mt103TextBlock.setReceiversCorrespondentOptA(Field54A.parse(tagNValue[1]));
+                case Field57.OPTION_A_TAG:
+                case Field57.OPTION_B_TAG:
+                case Field57.OPTION_C_TAG:
+                case Field57.OPTION_D_TAG:
+                    mt103TextBlock.setAccountWithInstitution(Field57.parse(tagNValue.group(2), tagNValue.group(1)));
                     break;
-
-                case Field54B.TAG:
-                    mt103TextBlock.setReceiversCorrespondentOptB(Field54B.parse(tagNValue[1]));
+                case Field59.NO_LETTER_OPTION_TAG:
+                case Field59.OPTION_A_TAG:
+                case Field59.OPTION_F_TAG:
+                    mt103TextBlock.setBeneficiaryCustomer(Field59.parse(tagNValue.group(2), tagNValue.group(1)));
                     break;
-
-                case Field54D.TAG:
-                    mt103TextBlock.setReceiversCorrespondentOptD(Field54D.parse(tagNValue[1]));
-                    break;
-
-                case Field55A.TAG:
-                    mt103TextBlock.setThirdReimbursementInstitutionOptA(Field55A.parse(tagNValue[1]));
-                    break;
-
-                case Field55B.TAG:
-                    mt103TextBlock.setThirdReimbursementInstitutionOptB(Field55B.parse(tagNValue[1]));
-                    break;
-
-                case Field55D.TAG:
-                    mt103TextBlock.setThirdReimbursementInstitutionOptD(Field55D.parse(tagNValue[1]));
-                    break;
-
-                case Field56A.TAG:
-                    mt103TextBlock.setIntermediaryInstitutionOptA(Field56A.parse(tagNValue[1]));
-                    break;
-
-                case Field56C.TAG:
-                    mt103TextBlock.setIntermediaryInstitutionOptC(Field56C.parse(tagNValue[1]));
-                    break;
-
-                case Field56D.TAG:
-                    mt103TextBlock.setIntermediaryInstitutionOptD(Field56D.parse(tagNValue[1]));
-                    break;
-
-                case Field57A.TAG:
-                    mt103TextBlock.setAccountWithInstitutionOptA(Field57A.parse(tagNValue[1]));
-                    break;
-
-                case Field57B.TAG:
-                    mt103TextBlock.setAccountWithInstitutionOptB(Field57B.parse(tagNValue[1]));
-                    break;
-
-                case Field57C.TAG:
-                    mt103TextBlock.setAccountWithInstitutionOptC(Field57C.parse(tagNValue[1]));
-                    break;
-
-                case Field57D.TAG:
-                    mt103TextBlock.setAccountWithInstitutionOptD(Field57D.parse(tagNValue[1]));
-                    break;
-
-                case Field59.TAG:
-                    mt103TextBlock.setBeneficiaryCustomerOptNoLetter(Field59.parse(tagNValue[1]));
-                    break;
-
-                case Field59A.TAG:
-                    mt103TextBlock.setBeneficiaryCustomerOptA(Field59A.parse(tagNValue[1]));
-                    break;
-
-                case Field59F.TAG:
-                    mt103TextBlock.setBeneficiaryCustomerOptF(Field59F.parse(tagNValue[1]));
-                    break;
-
                 case Field70.TAG:
-                    mt103TextBlock.setRemittanceInformation(Field70.parse(tagNValue[1]));
+                    mt103TextBlock.setRemittanceInformation(Field70.parse(tagNValue.group(2)));
                     break;
-
                 case Field71A.TAG:
-                    mt103TextBlock.setDetailsOfCharge(Field71A.parse(tagNValue[1]));
+                    mt103TextBlock.setDetailsOfCharge(Field71A.parse(tagNValue.group(2)));
                     break;
-
                 case Field71F.TAG:
-                    mt103TextBlock.addSendersCharges(Field71F.parse(tagNValue[1]));
+                    mt103TextBlock.addSendersCharges(Field71F.parse(tagNValue.group(2)));
                     break;
-
                 case Field71G.TAG:
-                    mt103TextBlock.setReceiversCharges(Field71G.parse(tagNValue[1]));
+                    mt103TextBlock.setReceiversCharges(Field71G.parse(tagNValue.group(2)));
                     break;
-
                 case Field72.TAG:
-                    mt103TextBlock.setSenderToReceiverInformation(Field72.parse(tagNValue[1]));
+                    mt103TextBlock.setSenderToReceiverInformation(Field72.parse(tagNValue.group(2)));
                     break;
-
                 case Field77B.TAG:
-                    mt103TextBlock.setRegulatoryReporting(Field77B.parse(tagNValue[1]));
+                    mt103TextBlock.setRegulatoryReporting(Field77B.parse(tagNValue.group(2)));
                     break;
-
                 case Field77T.TAG:
-                    mt103TextBlock.setEnvelopeContents(Field77T.parse(tagNValue[1]));
+                    mt103TextBlock.setEnvelopeContents(Field77T.parse(tagNValue.group(2)));
                     break;
-
                 default:
                     throw new MTMessageParsingException(
                             String.format(ConnectorConstants.ERROR_FIELD_NOT_ALLOWED_IN_TEXT_BLOCK,
-                                    tagNValue[0], MT103Constants.MT103));
+                                    tagNValue.group(1), MT103Constants.MT103));
             }
         }
 
         return mt103TextBlock;
     }
-
 }

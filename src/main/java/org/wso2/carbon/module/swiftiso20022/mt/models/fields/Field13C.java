@@ -18,13 +18,12 @@
 
 package org.wso2.carbon.module.swiftiso20022.mt.models.fields;
 
-import java.util.Optional;
-import java.util.regex.Matcher;
 import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
 import org.wso2.carbon.module.swiftiso20022.constants.MT103Constants;
 import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
 import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
-import org.wso2.carbon.module.swiftiso20022.utils.MTParserUtils;
+
+import java.util.regex.Matcher;
 
 /**
  * Model for time indication in Text Block (Block 04).
@@ -140,22 +139,19 @@ public class Field13C {
     public static Field13C parse(String field13CString) throws MTMessageParsingException {
 
         // Get matcher to the regex matching -> /(Code)/(Time)(Sign)(Offset)
-        Optional<Matcher> field13CMatcher = MTParserUtils.getRegexMatcher(
-                MTParserConstants.FIELD_13C_REGEX_PATTERN, field13CString);
+        Matcher field13CMatcher = MTParserConstants.FIELD_13C_REGEX_PATTERN.matcher(field13CString);
 
-        if (field13CMatcher.isPresent()) {
-
-            Matcher matcher = field13CMatcher.get();
+        if (field13CMatcher.matches()) {
 
             // group 1 -> Code
             // group 2 -> Time
             // group 3 -> Sign
             // group 4 -> Offset
             return  new Field13C()
-                    .withCode(matcher.group(1))
-                    .withTime(matcher.group(2))
-                    .withSign(matcher.group(3))
-                    .withOffset(matcher.group(4));
+                    .withCode(field13CMatcher.group(1))
+                    .withTime(field13CMatcher.group(2))
+                    .withSign(field13CMatcher.group(3))
+                    .withOffset(field13CMatcher.group(4));
         } else {
             throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
                     MT103Constants.TIME_INDICATION, ConnectorConstants.TEXT_BLOCK));
