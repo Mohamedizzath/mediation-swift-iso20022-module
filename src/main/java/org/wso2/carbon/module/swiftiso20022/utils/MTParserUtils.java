@@ -45,8 +45,7 @@ public class MTParserUtils {
         // regex pattern initialization for matching curly brackets with fields
         // {tag:value}, regex pattern matches tag and value in separate groups in each match
         // Get matcher to the regex matching -> {(Tag):(Field Value)}
-        Matcher matcher = Pattern.compile(MTParserConstants.CURLY_BRACKETS_FIELDS_MATCHING_PATTERN)
-                .matcher(fieldsString);
+        Matcher matcher = MTParserConstants.CURLY_BRACKETS_FIELDS_MATCHING_PATTERN.matcher(fieldsString);
 
         while (matcher.find()) {
 
@@ -63,16 +62,16 @@ public class MTParserUtils {
      * Method to match a regex pattern with passed string value.
      * Only check one matching value.
      *
-     * @param regex       Regex pattern to be matched
+     * @param regexPattern Pattern object compiled with the regex pattern
      * @param stringValue String value to be matched
      * @return An Optional of the matcher object or an empty matcher object if the string doesn't match the pattern
      */
-    public static Optional<Matcher> getRegexMatcher(String regex, String stringValue) {
+    public static Optional<Matcher> getRegexMatcher(Pattern regexPattern, String stringValue) {
 
         // Compiling the pattern
-        Matcher matcher = Pattern.compile(regex).matcher(stringValue);
+        Matcher matcher = regexPattern.matcher(stringValue);
 
-        if (matcher.find()) {
+        if (matcher.matches()) {
             return Optional.of(matcher);
         } else {
             return Optional.empty();

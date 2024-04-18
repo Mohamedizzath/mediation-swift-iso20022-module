@@ -18,6 +18,8 @@
 
 package org.wso2.carbon.module.swiftiso20022.constants;
 
+import java.util.regex.Pattern;
+
 /**
  * Constants for the MT parsers.
  */
@@ -31,26 +33,31 @@ public class MTParserConstants {
     public static final String FIELD_TNG_TAG = "TNG";
 
     // Regex patterns for MT parser and utils
-    public static final String CURLY_BRACKETS_FIELDS_MATCHING_PATTERN = "\\{([0-9A-Z]{3}):([^}:]*)\\}";
-    public static final String FIELD_103_REGEX_PATTERN = "^[A-Z]{3}$";
-    public static final String FIELD_106_REGEX_PATTERN = "^([0-9]{6})([0-9A-Z]{12})([0-9]{4})([0-9]{6})$";
-    public static final String FIELD_108_REGEX_PATTERN = "^[\\da-zA-Z\\/\\-?:().,'+ ]{16}$";
-    public static final String FIELD_111_REGEX_PATTERN = "^\\d{3}$";
-    public static final String FIELD_113_REGEX_PATTERN = "^[\\da-zA-Z\\/\\-?:().,'+ ]{4}$";
-    public static final String FIELD_115_REGEX_PATTERN = "^([0-9]{6})([0-9]{6})([A-Z]{2})(.{1,16})$";
-    public static final String FIELD_119_REGEX_PATTERN = "^[0-9A-Z]{1,8}$";
-    public static final String FIELD_121_REGEX_PATTERN = "^[0-9a-z\\-]{36}$";
-    public static final String FIELD_165_REGEX_PATTERN = "^\\/([0-9A-Z]{3})\\/([^\\/]{1,34})$";
-    public static final String FIELD_423_REGEX_PATTERN = "^([0-9]{6})([0-9]{6}|[0-9]{8})$";
-    public static final String FIELD_424_REGEX_PATTERN = "^[\\da-zA-Z\\/\\-?:().,'+ ]{1,16}$";
-    public static final String FIELD_433_REGEX_PATTERN = "^\\/([A-Z]{3})(\\/([^\\/]{1,20})){0,1}$";
-    public static final String FIELD_434_REGEX_PATTERN = "^\\/([A-Z]{3})(\\/([^\\/]{1,20})){0,1}$";
-    public static final String FIELD_CHK_REGEX_PATTERN = "^[0-9A-F]{12}$";
-    public static final String FIELD_MRF_REGEX_PATTERN
-            = "^([0-9]{6})([0-9]{4})([0-9]{6})([0-9A-Z]{12})([0-9]{4})([0-9]{6})$";
-    public static final String FIELD_PDE_REGEX_PATTERN = "^([0-9]{4})([0-9]{6})([0-9A-Z]{12})([0-9]{4})([0-9]{6})$";
-    public static final String FIELD_PDM_REGEX_PATTERN = "^([0-9]{4})([0-9]{6})([0-9A-Z]{12})([0-9]{4})([0-9]{6})$";
-    public static final String FIELD_SYS_REGEX_PATTERN = "^([0-9]{4})([0-9]{6})([0-9A-Z]{12})([0-9]{4})([0-9]{6})$";
+    public static final Pattern CURLY_BRACKETS_FIELDS_MATCHING_PATTERN =
+            Pattern.compile("\\{([0-9A-Z]{3}):([^}:]*)}");
+    public static final Pattern FIELD_103_REGEX_PATTERN = Pattern.compile("^[A-Z]{3}$");
+    public static final Pattern FIELD_106_REGEX_PATTERN =
+            Pattern.compile("^([0-9]{6})([0-9A-Z]{12})([0-9]{4})([0-9]{6})$");
+    public static final Pattern FIELD_108_REGEX_PATTERN = Pattern.compile("^[\\da-zA-Z/\\-?:().,'+ ]{16}$");
+    public static final Pattern FIELD_111_REGEX_PATTERN = Pattern.compile("^\\d{3}$");
+    public static final Pattern FIELD_113_REGEX_PATTERN = Pattern.compile("^[\\da-zA-Z/\\-?:().,'+ ]{4}$");
+    public static final Pattern FIELD_115_REGEX_PATTERN = Pattern.compile("^([0-9]{6})([0-9]{6})([A-Z]{2})(.{1,16})$");
+    public static final Pattern FIELD_119_REGEX_PATTERN = Pattern.compile("^[0-9A-Z]{1,8}$");
+    public static final Pattern FIELD_121_REGEX_PATTERN = Pattern.compile("^[0-9a-z\\-]{36}$");
+    public static final Pattern FIELD_165_REGEX_PATTERN = Pattern.compile("^/([0-9A-Z]{3})/([^/]{1,34})$");
+    public static final Pattern FIELD_423_REGEX_PATTERN = Pattern.compile("^([0-9]{6})([0-9]{6}|[0-9]{8})$");
+    public static final Pattern FIELD_424_REGEX_PATTERN = Pattern.compile("^[\\da-zA-Z/\\-?:().,'+ ]{1,16}$");
+    public static final Pattern FIELD_433_REGEX_PATTERN = Pattern.compile("^/([A-Z]{3})(/([^/]{1,20}))?$");
+    public static final Pattern FIELD_434_REGEX_PATTERN = Pattern.compile("^/([A-Z]{3})(/([^/]{1,20}))?$");
+    public static final Pattern FIELD_CHK_REGEX_PATTERN = Pattern.compile("^[0-9A-F]{12}$");
+    public static final Pattern FIELD_MRF_REGEX_PATTERN =
+            Pattern.compile("^([0-9]{6})([0-9]{4})([0-9]{6})([0-9A-Z]{12})([0-9]{4})([0-9]{6})$");
+    public static final Pattern FIELD_PDE_REGEX_PATTERN =
+            Pattern.compile("^([0-9]{4})([0-9]{6})([0-9A-Z]{12})([0-9]{4})([0-9]{6})$");
+    public static final Pattern FIELD_PDM_REGEX_PATTERN =
+            Pattern.compile("^([0-9]{4})([0-9]{6})([0-9A-Z]{12})([0-9]{4})([0-9]{6})$");
+    public static final Pattern FIELD_SYS_REGEX_PATTERN =
+            Pattern.compile("^([0-9]{4})([0-9]{6})([0-9A-Z]{12})([0-9]{4})([0-9]{6})$");
 
     // Error message related constants
     public static final String EMPTY_BLOCK_MESSAGE = "Empty %s cannot be parsed";
