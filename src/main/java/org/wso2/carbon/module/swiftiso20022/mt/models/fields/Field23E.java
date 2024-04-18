@@ -18,6 +18,14 @@
 
 package org.wso2.carbon.module.swiftiso20022.mt.models.fields;
 
+import java.util.Optional;
+import java.util.regex.Matcher;
+import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
+import org.wso2.carbon.module.swiftiso20022.constants.MT103Constants;
+import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
+import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
+import org.wso2.carbon.module.swiftiso20022.utils.MTParserUtils;
+
 /**
  * Model for instruction code in Text Block (Block 04).
  * <p>
@@ -52,5 +60,57 @@ public class Field23E {
 
     public void setAdditionalInformation(String additionalInformation) {
         this.additionalInformation = additionalInformation;
+    }
+
+    /**
+     * Method to set instruction code of the field and return the instance.
+     *
+     * @param instructionCode Instruction Code to be set.
+     * @return object itself
+     */
+    public Field23E withInstructionCode(String instructionCode) {
+        setInstructionCode(instructionCode);
+        return this;
+    }
+
+    /**
+     * Method to set additional information of the field and return the instance.
+     *
+     * @param additionalInformation Additional Information to be set.
+     * @return object itself
+     */
+    public Field23E withAdditionalInformation(String additionalInformation) {
+        setAdditionalInformation(additionalInformation);
+        return this;
+    }
+
+    /**
+     * Method to parse and get Field23E object.
+     *
+     * @param field23EString String containing value of 23E field in Text Block
+     * @return An instance of this model.
+     * @throws MTMessageParsingException if the value is invalid
+     */
+    public static Field23E parse(String field23EString)  throws MTMessageParsingException {
+
+        // Get matcher to the regex matching -> (Instruction Code)[/(Additional Information)]
+        Optional<Matcher> field23EMatcher = MTParserUtils.getRegexMatcher(
+                MTParserConstants.FIELD_23E_REGEX_PATTERN, field23EString);
+
+        if (field23EMatcher.isPresent()) {
+
+            Matcher matcher = field23EMatcher.get();
+
+            // group 1 -> Instruction Code
+            // group 2 -> /Additional Information
+            // group 3 -> Additional Information
+            return new Field23E()
+                    .withInstructionCode(matcher.group(1))
+                    .withAdditionalInformation(matcher.group(3));
+
+        } else {
+            throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
+                    MT103Constants.INSTRUCTION_CODE, ConnectorConstants.TEXT_BLOCK));
+        }
     }
 }

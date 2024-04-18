@@ -19,6 +19,13 @@
 package org.wso2.carbon.module.swiftiso20022.mt.models.fields;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.regex.Matcher;
+import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
+import org.wso2.carbon.module.swiftiso20022.constants.MT103Constants;
+import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
+import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
+import org.wso2.carbon.module.swiftiso20022.utils.MTParserUtils;
 
 /**
  * Model for receiver's correspondent with option D in Text Block (Block 04).
@@ -52,5 +59,58 @@ public class Field55D {
 
     public void setDetails(List<String> details) {
         this.details = details;
+    }
+
+    /**
+     * Method to set party identifier of the field and return the instance.
+     *
+     * @param partyIdentifier Party Identifier to be set.
+     * @return object itself
+     */
+    public Field55D withPartyIdentifier(String partyIdentifier) {
+        setPartyIdentifier(partyIdentifier);
+        return this;
+    }
+
+    /**
+     * Method to set details of the field and return the instance.
+     *
+     * @param details Details to be set.
+     * @return object itself
+     */
+    public Field55D withDetails(List<String> details) {
+        setDetails(details);
+        return this;
+    }
+
+    /**
+     * Method to parse and get Field55D object.
+     *
+     * @param field55DString String containing value of 55D field in Text Block
+     * @return An instance of this model.
+     * @throws MTMessageParsingException if the value is invalid
+     */
+    public static Field55D parse(String field55DString) throws MTMessageParsingException {
+
+        // Get matcher to the regex matching -> [/(Party Identifier)]
+        //                                      (Details)
+        Optional<Matcher> field55DMatcher = MTParserUtils.getRegexMatcher(
+                MTParserConstants.PARTY_IDENTIFIER_OPTION_D_REGEX_PATTERN, field55DString);
+
+        if (field55DMatcher.isPresent()) {
+
+            Matcher matcher = field55DMatcher.get();
+
+            // group 1 -> /Party Identifier
+            // group 2 -> Party Identifier
+            // group 3 -> Details
+            return new Field55D()
+                    .withPartyIdentifier(matcher.group(2))
+                    // Details group -> "val1\nval2\n" -> ["val1", "val2"]
+                    .withDetails(List.of(matcher.group(3).split(MTParserConstants.LINE_BREAK_REGEX_PATTERN)));
+        } else {
+            throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
+                    MT103Constants.THIRD_REIMBURSEMENT_INSTITUTION, ConnectorConstants.TEXT_BLOCK));
+        }
     }
 }

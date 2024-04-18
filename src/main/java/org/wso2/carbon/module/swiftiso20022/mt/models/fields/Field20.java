@@ -18,6 +18,14 @@
 
 package org.wso2.carbon.module.swiftiso20022.mt.models.fields;
 
+import java.util.Optional;
+import java.util.regex.Matcher;
+import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
+import org.wso2.carbon.module.swiftiso20022.constants.MT103Constants;
+import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
+import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
+import org.wso2.carbon.module.swiftiso20022.utils.MTParserUtils;
+
 /**
  * Model for references in Text Block (Block 04).
  * <p>
@@ -39,5 +47,38 @@ public class Field20 {
 
     public void setValue(String value) {
         this.value = value;
+    }
+
+    /**
+     * Method to set value of the field and return the instance.
+     *
+     * @param value Value to be set.
+     * @return object itself
+     */
+    public Field20 withValue(String value) {
+        setValue(value);
+        return this;
+    }
+
+    /**
+     * Method to parse and get Field20 object.
+     *
+     * @param field20String String containing value of 20 field in Text Block
+     * @return An instance of this model.
+     * @throws MTMessageParsingException if the value is invalid
+     */
+    public static Field20 parse(String field20String) throws MTMessageParsingException {
+
+        Optional<Matcher> field20Matcher = MTParserUtils.getRegexMatcher(
+                MTParserConstants.FIELD_20_REGEX_PATTERN, field20String);
+
+        if (field20Matcher.isPresent()) {
+
+            return new Field20()
+                    .withValue(field20Matcher.get().group(0));
+        } else {
+            throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
+                    MT103Constants.SENDERS_REFERENCE, ConnectorConstants.TEXT_BLOCK));
+        }
     }
 }

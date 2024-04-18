@@ -18,6 +18,14 @@
 
 package org.wso2.carbon.module.swiftiso20022.mt.models.fields;
 
+import java.util.Optional;
+import java.util.regex.Matcher;
+import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
+import org.wso2.carbon.module.swiftiso20022.constants.MT103Constants;
+import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
+import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
+import org.wso2.carbon.module.swiftiso20022.utils.MTParserUtils;
+
 /**
  * Model for intermediary institution with option C in Text Block (Block 04).
  *
@@ -32,13 +40,49 @@ package org.wso2.carbon.module.swiftiso20022.mt.models.fields;
 public class Field57C {
 
     public static final String TAG = "57C";
-    private String partyIdentifier;
+    private String value;
 
-    public String getPartyIdentifier() {
-        return partyIdentifier;
+    public String getValue() {
+        return value;
     }
 
-    public void setPartyIdentifier(String partyIdentifier) {
-        this.partyIdentifier = partyIdentifier;
+    public void setValue(String value) {
+        this.value = value;
+    }
+
+    /**
+     * Method to set value of the field and return the instance.
+     *
+     * @param value Value to be set.
+     * @return object itself
+     */
+    public Field57C withValue(String value) {
+        setValue(value);
+        return this;
+    }
+
+    /**
+     * Method to parse and get Field57C object.
+     *
+     * @param field57CString String containing value of 57C field in Text Block
+     * @return An instance of this model.
+     * @throws MTMessageParsingException if the value is invalid
+     */
+    public static Field57C parse(String field57CString) throws MTMessageParsingException {
+
+        // Get matcher to the regex matching -> /(Party Identifier)
+        Optional<Matcher> field57CMatcher = MTParserUtils.getRegexMatcher(
+                MTParserConstants.PARTY_IDENTIFIER_OPTION_C_REGEX_PATTERN, field57CString);
+
+        if (field57CMatcher.isPresent()) {
+
+            // group 0 -> /Party Identifier
+            // group 1 -> Party Identifier
+            return new Field57C()
+                    .withValue(field57CMatcher.get().group(1));
+        } else {
+            throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
+                    MT103Constants.ACCOUNT_WITH_INSTITUTION, ConnectorConstants.TEXT_BLOCK));
+        }
     }
 }

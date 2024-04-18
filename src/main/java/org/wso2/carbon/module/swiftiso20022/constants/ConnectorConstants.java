@@ -64,6 +64,7 @@ public class ConnectorConstants {
 
     // MT message block names
     public static final String USER_HEADER_BLOCK = "User Header Block";
+    public static final String TEXT_BLOCK = "Text Block";
     public static final String TRAILER_BLOCK = "Trailer Block";
 
     // Block01 (Basic Header) Related Constants
@@ -171,9 +172,12 @@ public class ConnectorConstants {
     public static final String ERROR_FIELD_REPEATED = "%s in %s cannot repeated";
     public static final String ERROR_FIELD_INVALID_IN_BLOCK = "Value of field %s in %s is invalid";
     public static final String ERROR_FIELD_NOT_ALLOWED_IN_BLOCK = "%s field is not allowed in %s";
+    public static final String ERROR_FIELD_NOT_ALLOWED_IN_TEXT_BLOCK =
+            "%s field is not allowed in %s message Text Block";
     public static final String ERROR_111_BEFORE_121 =
             "Service Type Identifier cannot appear before field End To End Reference";
     public static final String ERROR_BLOCK_INVALID_FORMAT = "%s format is invalid";
+    public static final String ERROR_TEXT_BLOCK_FOR_MESSAGE = "Text Block format is invalid for %s message";
 
     //Common Error Codes
     public static final String ERROR_CODE_MISSING_BLOCK = "missing_block";

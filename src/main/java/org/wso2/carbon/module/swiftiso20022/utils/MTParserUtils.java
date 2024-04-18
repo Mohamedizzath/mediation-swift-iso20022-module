@@ -24,8 +24,11 @@ import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
 import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Utility class for MT message parsing.
@@ -151,6 +154,43 @@ public class MTParserUtils {
         }
 
         return fields;
+    }
+
+    /**
+     * Method to match a regex pattern with passed string value.
+     * Only check one matching value.
+     *
+     * @param regexPattern Pattern object compiled with the regex pattern
+     * @param stringValue String value to be matched
+     * @return An Optional of the matcher object or an empty matcher object if the string doesn't match the pattern
+     */
+    public static Optional<Matcher> getRegexMatcher(Pattern regexPattern, String stringValue) {
+
+        // Compiling the pattern
+        Matcher matcher = regexPattern.matcher(stringValue);
+
+        if (matcher.matches()) {
+            return Optional.of(matcher);
+        } else {
+            return Optional.empty();
+        }
+    }
+
+    /**
+     * Method to separate text block fields and return a string list.
+     *
+     * @param textBlock Text Block string excluding block identifier and enclosing curly brackets
+     * @return A list of text block field strings
+     */
+    public static Optional<List<String>> getTextBlockFields(String textBlock) {
+
+        List<String> fields = List.of(textBlock.split("\\R:"));
+
+        if (!fields.isEmpty() && fields.get(0).isEmpty() ) {
+            return Optional.of(fields.subList(1, fields.size()));
+        } else {
+            return Optional.empty();
+        }
     }
 
 }

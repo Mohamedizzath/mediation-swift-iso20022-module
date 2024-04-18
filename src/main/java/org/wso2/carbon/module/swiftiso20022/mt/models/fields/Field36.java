@@ -18,6 +18,14 @@
 
 package org.wso2.carbon.module.swiftiso20022.mt.models.fields;
 
+import java.util.Optional;
+import java.util.regex.Matcher;
+import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
+import org.wso2.carbon.module.swiftiso20022.constants.MT103Constants;
+import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
+import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
+import org.wso2.carbon.module.swiftiso20022.utils.MTParserUtils;
+
 /**
  * Model for exchange rate in Text Block (Block 04).
  * <p>
@@ -39,5 +47,38 @@ public class Field36 {
 
     public void setValue(String value) {
         this.value = value;
+    }
+
+    /**
+     * Method to set value of the field and return the instance.
+     *
+     * @param value Value to be set.
+     * @return object itself
+     */
+    public Field36 withValue(String value) {
+        setValue(value);
+        return this;
+    }
+
+    /**
+     * Method to parse and get Field36 object.
+     *
+     * @param field36String String containing value of 36 field in Text Block
+     * @return An instance of this model.
+     * @throws MTMessageParsingException if the value is invalid
+     */
+    public static Field36 parse(String field36String) throws MTMessageParsingException {
+
+        Optional<Matcher> field26Matcher = MTParserUtils.getRegexMatcher(
+                MTParserConstants.FIELD_36_REGEX_PATTERN, field36String);
+
+        if (field26Matcher.isPresent()) {
+
+            return new Field36()
+                    .withValue(field26Matcher.get().group());
+        } else {
+            throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
+                    MT103Constants.EXCHANGE_RATE, ConnectorConstants.TEXT_BLOCK));
+        }
     }
 }

@@ -18,6 +18,15 @@
 
 package org.wso2.carbon.module.swiftiso20022.mt.models.fields;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.regex.Matcher;
+import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
+import org.wso2.carbon.module.swiftiso20022.constants.MT103Constants;
+import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
+import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
+import org.wso2.carbon.module.swiftiso20022.utils.MTParserUtils;
+
 /**
  * Model for envelope contents in Text Block (Block 04).
  * <p>
@@ -38,5 +47,37 @@ public class Field77T {
 
     public void setValue(String value) {
         this.value = value;
+    }
+    /**
+     * Method to set value of the field and return the instance.
+     *
+     * @param value Value to be set.
+     * @return object itself
+     */
+    public Field77T withValue(String value) {
+        setValue(value);
+        return this;
+    }
+
+    /**
+     * Method to parse and get Field77T object.
+     *
+     * @param field77TString String containing value of 77T field in Text Block
+     * @return An instance of this model.
+     * @throws MTMessageParsingException if the value is invalid
+     */
+    public static Field77T parse(String field77TString) throws MTMessageParsingException {
+
+        Optional<Matcher> field77TMatcher = MTParserUtils.getRegexMatcher(
+                MTParserConstants.FIELD_77T_REGEX_PATTERN, field77TString);
+
+        if (field77TMatcher.isPresent()) {
+
+            return new Field77T()
+                    .withValue(field77TMatcher.get().group());
+        } else {
+            throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
+                    MT103Constants.ENVELOPE_CONTENTS, ConnectorConstants.TEXT_BLOCK));
+        }
     }
 }

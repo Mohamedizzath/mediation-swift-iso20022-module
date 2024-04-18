@@ -19,6 +19,13 @@
 package org.wso2.carbon.module.swiftiso20022.mt.models.fields;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.regex.Matcher;
+import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
+import org.wso2.carbon.module.swiftiso20022.constants.MT103Constants;
+import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
+import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
+import org.wso2.carbon.module.swiftiso20022.utils.MTParserUtils;
 
 /**
  * Model for ordering customer with option F in Text Block (Block 04).
@@ -63,5 +70,57 @@ public class Field50F {
 
     public void setDetails(List<String> details) {
         this.details = details;
+    }
+
+    /**
+     * Method to set party identifier of the field and return the instance.
+     *
+     * @param partyIdentifier Party Identifier to be set.
+     * @return object itself
+     */
+    public Field50F withPartyIdentifier(String partyIdentifier) {
+        setPartyIdentifier(partyIdentifier);
+        return this;
+    }
+
+    /**
+     * Method to set details of the field and return the instance.
+     *
+     * @param details Details to be set.
+     * @return object itself
+     */
+    public Field50F withDetails(List<String> details) {
+        setDetails(details);
+        return this;
+    }
+
+    /**
+     * Method to parse and get Field50F object.
+     *
+     * @param field50FString String containing value of 50F field in Text Block
+     * @return An instance of this model.
+     * @throws MTMessageParsingException if the value is invalid
+     */
+    public static Field50F parse(String field50FString) throws MTMessageParsingException {
+
+        // Get matcher to the regex matching -> (Party Identifier)
+        //                                      (Details)
+        Optional<Matcher> field50FMatcher = MTParserUtils.getRegexMatcher(
+                MTParserConstants.PARTY_IDENTIFIER_OPTION_F_REGEX_PATTERN, field50FString);
+
+        if (field50FMatcher.isPresent()) {
+
+            Matcher matcher = field50FMatcher.get();
+
+            // group 1 -> Party Identifier
+            // group 2 -> Details
+            return new Field50F()
+                    .withPartyIdentifier(matcher.group(1))
+                    // Details group -> "val1\nval2\n" -> ["val1", "val2"]
+                    .withDetails(List.of(matcher.group(2).split(MTParserConstants.LINE_BREAK_REGEX_PATTERN)));
+        } else {
+            throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
+                    MT103Constants.ORDERING_CUSTOMER, ConnectorConstants.TEXT_BLOCK));
+        }
     }
 }

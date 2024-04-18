@@ -18,6 +18,14 @@
 
 package org.wso2.carbon.module.swiftiso20022.mt.models.fields;
 
+import java.util.Optional;
+import java.util.regex.Matcher;
+import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
+import org.wso2.carbon.module.swiftiso20022.constants.MT103Constants;
+import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
+import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
+import org.wso2.carbon.module.swiftiso20022.utils.MTParserUtils;
+
 /**
  * Model for ordering customer with option A in Text Block (Block 04).
  *
@@ -58,5 +66,57 @@ public class Field50A {
 
     public void setIdentifierCode(String identifierCode) {
         this.identifierCode = identifierCode;
+    }
+
+    /**
+     * Method to set account of the field and return the instance.
+     *
+     * @param account Account to be set.
+     * @return object itself
+     */
+    public Field50A withAccount(String account) {
+        setAccount(account);
+        return this;
+    }
+
+    /**
+     * Method to set identifier code of the field and return the instance.
+     *
+     * @param identifierCode Identifier Code to be set.
+     * @return object itself
+     */
+    public Field50A withIdentifierCode(String identifierCode) {
+        setIdentifierCode(identifierCode);
+        return this;
+    }
+
+    /**
+     * Method to parse and get Field50A object.
+     *
+     * @param field50AString String containing value of 50A field in Text Block
+     * @return An instance of this model.
+     * @throws MTMessageParsingException if the value is invalid
+     */
+    public static Field50A parse(String field50AString) throws MTMessageParsingException {
+
+        // Get matcher to the regex matching -> [/(Account)]
+        //                                      (Identifier Code)
+        Optional<Matcher> field50AMatcher = MTParserUtils.getRegexMatcher(
+                MTParserConstants.FIELD_50A_REGEX_PATTERN, field50AString);
+
+        if (field50AMatcher.isPresent()) {
+
+            Matcher matcher = field50AMatcher.get();
+
+            // group 1 -> /Account
+            // group 2 -> Account
+            // group 3 -> Identifier Code
+            return new Field50A()
+                    .withAccount(matcher.group(2))
+                    .withIdentifierCode(matcher.group(3));
+        } else {
+            throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
+                    MT103Constants.ORDERING_CUSTOMER, ConnectorConstants.TEXT_BLOCK));
+        }
     }
 }

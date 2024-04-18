@@ -18,10 +18,20 @@
 
 package org.wso2.carbon.module.swiftiso20022.mt.models.messages;
 
+import org.wso2.carbon.module.swiftiso20022.mt.models.blocks.text.MT103TextBlock;
+
 /**
  * Model of MT103 Message.
  */
 public class MT103Message extends MTMessage {
 
-    // TODO: add text block fields
+    private MT103TextBlock textBlock;
+
+    public MT103TextBlock getTextBlock() {
+        return textBlock;
+    }
+
+    public void setTextBlock(MT103TextBlock textBlock) {
+        this.textBlock = textBlock;
+    }
 }

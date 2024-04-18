@@ -18,6 +18,14 @@
 
 package org.wso2.carbon.module.swiftiso20022.mt.models.fields;
 
+import java.util.Optional;
+import java.util.regex.Matcher;
+import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
+import org.wso2.carbon.module.swiftiso20022.constants.MT103Constants;
+import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
+import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
+import org.wso2.carbon.module.swiftiso20022.utils.MTParserUtils;
+
 /**
  * Model for time indication in Text Block (Block 04).
  * <p>
@@ -76,5 +84,81 @@ public class Field13C {
 
     public void setOffset(String offset) {
         this.offset = offset;
+    }
+
+    /**
+     * Method to set code of the field and return the instance.
+     *
+     * @param code Code to be set.
+     * @return object itself
+     */
+    public Field13C withCode(String code) {
+        setCode(code);
+        return this;
+    }
+
+    /**
+     * Method to set time of the field and return the instance.
+     *
+     * @param time Time to be set.
+     * @return object itself
+     */
+    public Field13C withTime(String time) {
+        setTime(time);
+        return this;
+    }
+
+    /**
+     * Method to set sign of the field and return the instance.
+     *
+     * @param sign Sign to be set.
+     * @return object itself
+     */
+    public Field13C withSign(String sign) {
+        setSign(sign);
+        return this;
+    }
+
+    /**
+     * Method to set offset of the field and return the instance.
+     *
+     * @param offset Offset to be set.
+     * @return object itself
+     */
+    public Field13C withOffset(String offset) {
+        setOffset(offset);
+        return this;
+    }
+
+    /**
+     * Method to parse and get Field13C object.
+     *
+     * @param field13CString String containing value of 13C field in Text Block
+     * @return An instance of this model.
+     * @throws MTMessageParsingException if the value is invalid
+     */
+    public static Field13C parse(String field13CString) throws MTMessageParsingException {
+
+        // Get matcher to the regex matching -> /(Code)/(Time)(Sign)(Offset)
+        Optional<Matcher> field13CMatcher = MTParserUtils.getRegexMatcher(
+                MTParserConstants.FIELD_13C_REGEX_PATTERN, field13CString);
+
+        if (field13CMatcher.isPresent()) {
+
+            Matcher matcher = field13CMatcher.get();
+
+            // group 1 -> Code
+            // group 2 -> Time
+            // group 3 -> Sign
+            // group 4 -> Offset
+            return  new Field13C()
+                    .withCode(matcher.group(1))
+                    .withTime(matcher.group(2))
+                    .withSign(matcher.group(3))
+                    .withOffset(matcher.group(4));
+        } else {
+            throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
+                    MT103Constants.TIME_INDICATION, ConnectorConstants.TEXT_BLOCK));
+        }
     }
 }

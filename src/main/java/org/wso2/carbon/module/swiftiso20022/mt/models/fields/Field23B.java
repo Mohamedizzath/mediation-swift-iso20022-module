@@ -18,6 +18,14 @@
 
 package org.wso2.carbon.module.swiftiso20022.mt.models.fields;
 
+import java.util.Optional;
+import java.util.regex.Matcher;
+import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
+import org.wso2.carbon.module.swiftiso20022.constants.MT103Constants;
+import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
+import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
+import org.wso2.carbon.module.swiftiso20022.utils.MTParserUtils;
+
 /**
  * Model for bank operation code in Text Block (Block 04).
  * Value can only be one of predefined 4 character codes.
@@ -41,4 +49,38 @@ public class Field23B {
     public void setValue(String value) {
         this.value = value;
     }
+
+    /**
+     * Method to set value of the field and return the instance.
+     *
+     * @param value Value to be set.
+     * @return object itself
+     */
+    public Field23B withValue(String value) {
+        setValue(value);
+        return this;
+    }
+
+    /**
+     * Method to parse and get Field23B object.
+     *
+     * @param field23BString String containing value of 23B field in Text Block
+     * @return An instance of this model.
+     * @throws MTMessageParsingException if the value is invalid
+     */
+    public static Field23B parse(String field23BString) throws MTMessageParsingException {
+
+        Optional<Matcher> field23BMatcher = MTParserUtils.getRegexMatcher(
+                MTParserConstants.FIELD_23B_REGEX_PATTERN, field23BString);
+
+        if (field23BMatcher.isPresent()) {
+
+            return new Field23B()
+                    .withValue(field23BMatcher.get().group());
+        } else {
+            throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
+                    MT103Constants.BANK_OPERATION_CODE, ConnectorConstants.TEXT_BLOCK));
+        }
+    }
+
 }

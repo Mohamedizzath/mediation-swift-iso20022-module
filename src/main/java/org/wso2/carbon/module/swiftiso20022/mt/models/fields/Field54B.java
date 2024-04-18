@@ -18,6 +18,14 @@
 
 package org.wso2.carbon.module.swiftiso20022.mt.models.fields;
 
+import java.util.Optional;
+import java.util.regex.Matcher;
+import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
+import org.wso2.carbon.module.swiftiso20022.constants.MT103Constants;
+import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
+import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
+import org.wso2.carbon.module.swiftiso20022.utils.MTParserUtils;
+
 /**
  * Model for receiver's correspondent with option B in Text Block (Block 04).
  *
@@ -50,5 +58,58 @@ public class Field54B {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    /**
+     * Method to set party identifier of the field and return the instance.
+     *
+     * @param partyIdentifier Party Identifier to be set.
+     * @return object itself
+     */
+    public Field54B withPartyIdentifier(String partyIdentifier) {
+        setPartyIdentifier(partyIdentifier);
+        return this;
+    }
+
+    /**
+     * Method to set location of the field and return the instance.
+     *
+     * @param location Location to be set.
+     * @return object itself
+     */
+    public Field54B withLocation(String location) {
+        setLocation(location);
+        return this;
+    }
+
+    /**
+     * Method to parse and get Field54B object.
+     *
+     * @param field54BString String containing value of 54B field in Text Block
+     * @return An instance of this model.
+     * @throws MTMessageParsingException if the value is invalid
+     */
+    public static Field54B parse(String field54BString) throws MTMessageParsingException {
+
+        // Get matcher to the regex matching -> [/(Party Identifier)]
+        //                                      [Location]
+        Optional<Matcher> field54BMatcher = MTParserUtils.getRegexMatcher(
+                MTParserConstants.PARTY_IDENTIFIER_OPTION_B_REGEX_PATTERN, field54BString);
+
+        if (field54BMatcher.isPresent()) {
+
+            Matcher matcher = field54BMatcher.get();
+
+            // group 1 -> /Party Identifier
+            // group 2 is not assigned because of OR operator
+            // group 3 -> Party Identifier
+            // group 4 -> Location
+            return new Field54B()
+                    .withPartyIdentifier(matcher.group(3))
+                    .withLocation(matcher.group(4));
+        } else {
+            throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
+                    MT103Constants.RECEIVERS_CORRESPONDENT, ConnectorConstants.TEXT_BLOCK));
+        }
     }
 }

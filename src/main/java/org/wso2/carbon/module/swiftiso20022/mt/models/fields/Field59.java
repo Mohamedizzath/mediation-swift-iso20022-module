@@ -19,6 +19,13 @@
 package org.wso2.carbon.module.swiftiso20022.mt.models.fields;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.regex.Matcher;
+import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
+import org.wso2.carbon.module.swiftiso20022.constants.MT103Constants;
+import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
+import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
+import org.wso2.carbon.module.swiftiso20022.utils.MTParserUtils;
 
 /**
  * Model for beneficiary customer with no letter option in Text Block (Block 04).
@@ -59,5 +66,58 @@ public class Field59 {
 
     public void setDetails(List<String> details) {
         this.details = details;
+    }
+
+    /**
+     * Method to set account of the field and return the instance.
+     *
+     * @param account Account to be set.
+     * @return object itself
+     */
+    public Field59 withAccount(String account) {
+        setAccount(account);
+        return this;
+    }
+
+    /**
+     * Method to set details of the field and return the instance.
+     *
+     * @param details Details to be set.
+     * @return object itself
+     */
+    public Field59 withDetails(List<String> details) {
+        setDetails(details);
+        return this;
+    }
+
+    /**
+     * Method to parse and get Field59 object.
+     *
+     * @param field59String String containing value of 59 field in Text Block
+     * @return An instance of this model.
+     * @throws MTMessageParsingException if the value is invalid
+     */
+    public static Field59 parse(String field59String) throws MTMessageParsingException {
+
+        // Get matcher to the regex matching -> [/(Account)]
+        //                                      (Details)
+        Optional<Matcher> field59Matcher = MTParserUtils.getRegexMatcher(
+                MTParserConstants.PARTY_IDENTIFIER_NO_LETTER_OPTION_REGEX_PATTERN, field59String);
+
+        if (field59Matcher.isPresent()) {
+
+            Matcher matcher = field59Matcher.get();
+
+            // group 1 -> /Account
+            // group 2 -> Account
+            // group 3 -> details
+            return new Field59()
+                    .withAccount(matcher.group(2))
+                    // Details group -> "val1\nval2\n" -> ["val1", "val2"]
+                    .withDetails(List.of(matcher.group(3).split(MTParserConstants.LINE_BREAK_REGEX_PATTERN)));
+        } else {
+            throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
+                    MT103Constants.BENEFICIARY_CUSTOMER, ConnectorConstants.TEXT_BLOCK));
+        }
     }
 }

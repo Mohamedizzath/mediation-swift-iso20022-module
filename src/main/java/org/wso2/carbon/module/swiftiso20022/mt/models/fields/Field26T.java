@@ -18,6 +18,14 @@
 
 package org.wso2.carbon.module.swiftiso20022.mt.models.fields;
 
+import java.util.Optional;
+import java.util.regex.Matcher;
+import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
+import org.wso2.carbon.module.swiftiso20022.constants.MT103Constants;
+import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
+import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
+import org.wso2.carbon.module.swiftiso20022.utils.MTParserUtils;
+
 /**
  * Model for transaction type code in Text Block (Block 04).
  * <p>
@@ -39,5 +47,38 @@ public class Field26T {
 
     public void setValue(String value) {
         this.value = value;
+    }
+
+    /**
+     * Method to set value of the field and return the instance.
+     *
+     * @param value Value to be set.
+     * @return object itself
+     */
+    public Field26T withValue(String value) {
+        setValue(value);
+        return this;
+    }
+
+    /**
+     * Method to parse and get Field26T object.
+     *
+     * @param field26TString String containing value of 26T field in Text Block
+     * @return An instance of this model.
+     * @throws MTMessageParsingException if the value is invalid
+     */
+    public static Field26T parse(String field26TString) throws MTMessageParsingException {
+
+        Optional<Matcher> field26TMatcher = MTParserUtils.getRegexMatcher(
+                MTParserConstants.FIELD_26T_REGEX_PATTERN, field26TString);
+
+        if (field26TMatcher.isPresent()) {
+
+            return new Field26T()
+                    .withValue(field26TMatcher.get().group());
+        } else {
+            throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
+                    MT103Constants.TRANSACTION_TYPE_CODE, ConnectorConstants.TEXT_BLOCK));
+        }
     }
 }

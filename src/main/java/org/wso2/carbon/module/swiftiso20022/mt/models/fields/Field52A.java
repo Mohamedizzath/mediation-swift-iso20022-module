@@ -18,6 +18,14 @@
 
 package org.wso2.carbon.module.swiftiso20022.mt.models.fields;
 
+import java.util.Optional;
+import java.util.regex.Matcher;
+import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
+import org.wso2.carbon.module.swiftiso20022.constants.MT103Constants;
+import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
+import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
+import org.wso2.carbon.module.swiftiso20022.utils.MTParserUtils;
+
 /**
  * Model for ordering institution with option A in Text Block (Block 04).
  *
@@ -53,5 +61,58 @@ public class Field52A {
 
     public void setIdentifierCode(String identifierCode) {
         this.identifierCode = identifierCode;
+    }
+
+    /**
+     * Method to set party identifier of the field and return the instance.
+     *
+     * @param partyIdentifier Party Identifier to be set.
+     * @return object itself
+     */
+    public Field52A withPartyIdentifier(String partyIdentifier) {
+        setPartyIdentifier(partyIdentifier);
+        return this;
+    }
+
+    /**
+     * Method to set identifier code of the field and return the instance.
+     *
+     * @param identifierCode Identifier Code to be set.
+     * @return object itself
+     */
+    public Field52A withIdentifierCode(String identifierCode) {
+        setIdentifierCode(identifierCode);
+        return this;
+    }
+
+    /**
+     * Method to parse and get Field52A object.
+     *
+     * @param field52AString String containing value of 52A field in Text Block
+     * @return An instance of this model.
+     * @throws MTMessageParsingException if the value is invalid
+     */
+    public static Field52A parse(String field52AString) throws MTMessageParsingException {
+
+        // Get matcher to the regex matching -> [/(Party Identifier)]
+        //                                      (Identifier Code)
+        Optional<Matcher> field52AMatcher = MTParserUtils.getRegexMatcher(
+                MTParserConstants.PARTY_IDENTIFIER_OPTION_A_REGEX_PATTERN, field52AString);
+
+        if (field52AMatcher.isPresent()) {
+
+            Matcher matcher = field52AMatcher.get();
+
+            // group 1 -> /Party Identifier
+            // group 2 is not assigned because of OR operator
+            // group 3 -> Party Identifier
+            // group 4 -> Identifier Code
+            return new Field52A()
+                    .withPartyIdentifier(matcher.group(3))
+                    .withIdentifierCode(matcher.group(4));
+        } else {
+            throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
+                    MT103Constants.ORDERING_INSTITUTION, ConnectorConstants.TEXT_BLOCK));
+        }
     }
 }
