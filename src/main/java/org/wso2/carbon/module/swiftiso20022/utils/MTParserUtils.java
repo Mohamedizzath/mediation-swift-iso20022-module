@@ -22,9 +22,7 @@ import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Utility class for MT message parsing.

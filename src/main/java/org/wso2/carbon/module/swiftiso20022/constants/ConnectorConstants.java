@@ -47,11 +47,13 @@ public class ConnectorConstants {
     public static final char CLOSING_CURLY_BRACKET = '}';
     public static final String ENUM_KEY = "enumClassName";
     public static final String FIXED_VALUE_KEY = "fixedValue";
-    public static final String USER_HEADER_BLOCK_KEY = "3:";
-    public static final String TRAILER_BLOCK_KEY = "5:";
+    public static final String USER_HEADER_BLOCK_KEY = "3";
+    public static final String TEXT_BLOCK_KEY = "4";
+    public static final String TRAILER_BLOCK_KEY = "5";
 
     // MT message block names
     public static final String USER_HEADER_BLOCK = "User Header Block";
+    public static final String TEXT_BLOCK = "Text Block";
     public static final String TRAILER_BLOCK = "Trailer Block";
 
     // Block01 (Basic Header) Related Constants
@@ -164,6 +166,7 @@ public class ConnectorConstants {
     public static final String ERROR_111_BEFORE_121 =
             "Service Type Identifier cannot appear before field End To End Reference";
     public static final String ERROR_BLOCK_INVALID_FORMAT = "%s format is invalid";
+    public static final String ERROR_FIELD_ORDER = "Order of field %s in %s is invalid";
 
     //Common Error Codes
     public static final String ERROR_CODE_MISSING_BLOCK = "missing_block";

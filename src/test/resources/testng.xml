@@ -30,6 +30,8 @@
             <class name="org.wso2.carbon.module.swiftiso20022.payloadfactory.ISO20022ToMT940PayloadFactoryTests" />
             <class name="org.wso2.carbon.module.swiftiso20022.JsonToMT103ValidatorTests"/>
             <class name="org.wso2.carbon.module.swiftiso20022.MTParserTests"/>
+            <class name="org.wso2.carbon.module.swiftiso20022.MTBlockFormatValidatorTests"/>
+            <class name="org.wso2.carbon.module.swiftiso20022.MT103BlockFormatValidatorTests"/>
         </classes>
     </test>
 </suite>

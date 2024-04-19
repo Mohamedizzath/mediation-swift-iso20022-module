@@ -40,6 +40,10 @@ public class ValidationResult {
         this(false, errorCode, errorMessage);
     }
 
+    public ValidationResult(String errorMessage) {
+        this(false, null, errorMessage);
+    }
+
     public boolean isValid() {
         return this.isValid;
     }
