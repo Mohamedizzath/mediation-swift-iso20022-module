@@ -51,11 +51,11 @@ public class MTParserUtils {
      *         <br/>Ex - {2:O9400400190425GSCRUS30XXX0000000002403141137N}<br/><br/>
      *      </li>
      *
-     *      <li>(\\{3:(\\{\\d{3}:[^\\{\\}]*\\})+\\})?- Regex for user header block. Inner contents of user header block, next ()
-     *      represents inner groups to match tag:value. \\{ matches exact match of starting curly bracket of tag:value,
-     *      \\d{3} matches tag which is exact three digits following by exact match of : and for the value [^\\{\\}]*
-     *      matches zero or more occurrence of any character except {}. Note that there should be at least one tag.
-     *         <br/>Ex - {3:{113:URGT}}<br/><br/>
+     *      <li>(\\{3:(\\{\\d{3}:[^\\{\\}]*\\})+\\})?- Regex for user header block. Inner contents of user header block,
+     *      next () represents inner groups to match tag:value. \\{ matches exact match of starting curly bracket of
+     *      tag:value, \\d{3} matches tag which is exact three digits following by exact match of : and for the value
+     *      [^\\{\\}]* matches zero or more occurrence of any character except {}. Note that there should be at least
+     *       one tag.  <br/>Ex - {3:{113:URGT}}<br/><br/>
      *      </li>
      *
      *      <li>(\\{4:[^\\{\\}]+\\R-\\})-Regex for text block. [^\\{\\}]+ after {4: matches the contents of
