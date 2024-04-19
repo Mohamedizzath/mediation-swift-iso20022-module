@@ -26,16 +26,16 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 
 /**
- * Model for Swift MT Tag 60F
+ * Model for Swift MT Tag 64
  * <p>
  *     format: (D/C Mark)(Date)(Currency)(Amount)<br/>
- *     example: 60F:D230930USD843686,20
+ *     example: 64:D230930USD843686,20
  *     @see <a href="https://www2.swift.com/knowledgecentre/publications/
- *     us9m_20210723/1.0?topic=con_sfld_G-krqduqEeqF57jgqTEwJQ_317764331fld.htm">Tag 60F</a>
+ *     us9m_20230720/2.0?topic=con_sfld_MaOr3wQQEe2AI4OK6vBjrg_1271498157fld.htm">Tag 64</a>
  * </p>
  */
-public class Field60F {
-    public static final String TAG = "60F";
+public class Field64 {
+    public static final String TAG = "64";
 
     // Example - D
     private String dcMark;
@@ -83,62 +83,62 @@ public class Field60F {
 
     /**
      * Method for set D/C mark and return the instance
-     * @param dcMark      D/C mark of Field60F
-     * @return            Created instance of Field60F
+     * @param dcMark      D/C mark of Field64
+     * @return            Created instance of Field64
      */
-    public Field60F withDCMark(String dcMark) {
+    public Field64 withDCMark(String dcMark) {
         setDcMark(dcMark);
         return this;
     }
 
     /**
      * Method for set date value and return the instance
-     * @param date        Date value of Field60F
-     * @return            Created instance of Field60F
+     * @param date        Date value of Field64
+     * @return            Created instance of Field64
      */
-    public Field60F withDate(String date) {
+    public Field64 withDate(String date) {
         setDate(date);
         return this;
     }
 
     /**
      * Method for set currency and return the instance
-     * @param currency    Currency value of Field60F
-     * @return            Created instance of Field60F
+     * @param currency    Currency value of Field64
+     * @return            Created instance of Field64
      */
-    public Field60F withCurrency(String currency) {
+    public Field64 withCurrency(String currency) {
         setCurrency(currency);
         return this;
     }
 
     /**
      * Method for set amount and return the instance
-     * @param amount      Amount value of Field60F
-     * @return            Created instance of Field60F
+     * @param amount      Amount value of Field64
+     * @return            Created instance of Field64
      */
-    public Field60F withAmount(String amount) {
+    public Field64 withAmount(String amount) {
         setAmount(amount);
         return this;
     }
 
     /**
-     * Method for parse and get Field60F object
-     * @param field60FString       String which contains value of Field60F
-     * @return                     Created instance of Field60F
+     * Method for parse and get Field64 object
+     * @param field64String       String which contains value of Field64
+     * @return                     Created instance of Field64
      * @throws MTMessageParsingException
      */
-    public static Field60F parse(String field60FString) throws MTMessageParsingException {
-        Optional<Matcher> field60FMatcher = MTParserUtils.getRegexMatcher(
-                MTParserConstants.FIELD_60F_REGEX_PATTERN, field60FString);
+    public static Field64 parse(String field64String) throws MTMessageParsingException {
+        Optional<Matcher> field64Matcher = MTParserUtils.getRegexMatcher(
+                MTParserConstants.FIELD_64_REGEX_PATTERN, field64String);
 
-        if (field60FMatcher.isPresent()) {
-            return new Field60F().withDCMark(field60FMatcher.get().group(1))
-                    .withDate(field60FMatcher.get().group(2))
-                    .withCurrency(field60FMatcher.get().group(3))
-                    .withAmount(field60FMatcher.get().group(4));
+        if (field64Matcher.isPresent()) {
+            return new Field64().withDCMark(field64Matcher.get().group(1))
+                    .withDate(field64Matcher.get().group(2))
+                    .withCurrency(field64Matcher.get().group(3))
+                    .withAmount(field64Matcher.get().group(4));
         } else {
             throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_FORMAT,
-                    Field60F.TAG));
+                    Field64.TAG));
         }
     }
 }

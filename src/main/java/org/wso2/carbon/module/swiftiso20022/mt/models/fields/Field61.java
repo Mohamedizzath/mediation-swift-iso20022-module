@@ -30,22 +30,43 @@ import java.util.regex.Matcher;
  * <p>
  *     format: (Value Date)(Entry Date)(Debit/Credit Mark)(Funds Code)(Amount)[(Transaction type)(Identification Code)
  *     (Reference to Account Owner)//(Reference to Account Servicing Institution)CRLF(Supplementary Details)<br/>
- *     example: :61:2310011001RCD10,00ACHPGSGWGDNCTAHQM8
+ *     example: :61:2310011001RCD10,00FCHK304955//4958843 ADDITIONAL INFORMATION
+ *              SUPPLEMENTARY DETAILS
  *     @see <a href="https://www2.swift.com/knowledgecentre/publications/
  *     us9m_20230720/2.0?topic=con_sfld_MaOrowQQEe2AI4OK6vBjrg_1576699121fld.htm">Tag 61</a>
  * </p>
  */
 public class Field61 {
     public static final String TAG = "61";
+
+    // Example - 231001
     private String valueDate;
+
+    // Example - 1001
     private String entryDate;
+
+    // Example - RC
     private String dcMark;
+
+    // Example - D
     private String fundsCode;
+
+    // Example - 10,00
     private String amount;
+
+    // Example - F
     private String transactionType;
+
+    // Example - CHK
     private String identificationCode;
+
+    // Example - 304955
     private String refToAccountOwner;
+
+    // Example - ADDITIONAL INFORMATION
     private String refToAccountServicingInstitution;
+
+    // Example - SUPPLEMENTARY DETAILS
     private String supplementaryDetails;
 
     public String getValueDate() {
@@ -154,7 +175,7 @@ public class Field61 {
      * @return              Created instance of Field61
      */
     public Field61 withDCMark(String dcMark) {
-        setDcMark(entryDate);
+        setDcMark(dcMark);
         return this;
     }
 
@@ -247,8 +268,8 @@ public class Field61 {
                     .withTransactionType(field61Matcher.get().group(6))
                     .withIdentificationCode(field61Matcher.get().group(7))
                     .withRefToAccountOwner(field61Matcher.get().group(8))
-                    .withRefToAccountServicingInstitution(field61Matcher.get().group(9))
-                    .withSupplementaryDetails(field61Matcher.get().group(10));
+                    .withRefToAccountServicingInstitution(field61Matcher.get().group(10))
+                    .withSupplementaryDetails(field61Matcher.get().group(12));
         } else {
             throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_FORMAT,
                     Field61.TAG));

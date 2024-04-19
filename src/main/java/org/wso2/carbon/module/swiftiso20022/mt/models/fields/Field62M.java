@@ -26,16 +26,16 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 
 /**
- * Model for Swift MT Tag 60F
+ * Model for Swift MT Tag 62M
  * <p>
  *     format: (D/C Mark)(Date)(Currency)(Amount)<br/>
- *     example: 60F:D230930USD843686,20
+ *     example: 62M:D230930USD843686,20
  *     @see <a href="https://www2.swift.com/knowledgecentre/publications/
- *     us9m_20210723/1.0?topic=con_sfld_G-krqduqEeqF57jgqTEwJQ_317764331fld.htm">Tag 60F</a>
+ *     us9m_20230720/2.0?topic=con_sfld_MaOrywQQEe2AI4OK6vBjrg_195910183fld.htm">Tag 62M</a>
  * </p>
  */
-public class Field60F {
-    public static final String TAG = "60F";
+public class Field62M {
+    public static final String TAG = "62M";
 
     // Example - D
     private String dcMark;
@@ -83,62 +83,62 @@ public class Field60F {
 
     /**
      * Method for set D/C mark and return the instance
-     * @param dcMark      D/C mark of Field60F
-     * @return            Created instance of Field60F
+     * @param dcMark      D/C mark of Field62M
+     * @return            Created instance of Field62M
      */
-    public Field60F withDCMark(String dcMark) {
+    public Field62M withDCMark(String dcMark) {
         setDcMark(dcMark);
         return this;
     }
 
     /**
      * Method for set date value and return the instance
-     * @param date        Date value of Field60F
-     * @return            Created instance of Field60F
+     * @param date        Date value of Field62M
+     * @return            Created instance of Field62M
      */
-    public Field60F withDate(String date) {
+    public Field62M withDate(String date) {
         setDate(date);
         return this;
     }
 
     /**
      * Method for set currency and return the instance
-     * @param currency    Currency value of Field60F
-     * @return            Created instance of Field60F
+     * @param currency    Currency value of Field62M
+     * @return            Created instance of Field62M
      */
-    public Field60F withCurrency(String currency) {
+    public Field62M withCurrency(String currency) {
         setCurrency(currency);
         return this;
     }
 
     /**
      * Method for set amount and return the instance
-     * @param amount      Amount value of Field60F
-     * @return            Created instance of Field60F
+     * @param amount      Amount value of Field62M
+     * @return            Created instance of Field62M
      */
-    public Field60F withAmount(String amount) {
+    public Field62M withAmount(String amount) {
         setAmount(amount);
         return this;
     }
 
     /**
-     * Method for parse and get Field60F object
-     * @param field60FString       String which contains value of Field60F
-     * @return                     Created instance of Field60F
+     * Method for parse and get Field62M object
+     * @param field62MString       String which contains value of Field62M
+     * @return                     Created instance of Field62M
      * @throws MTMessageParsingException
      */
-    public static Field60F parse(String field60FString) throws MTMessageParsingException {
-        Optional<Matcher> field60FMatcher = MTParserUtils.getRegexMatcher(
-                MTParserConstants.FIELD_60F_REGEX_PATTERN, field60FString);
+    public static Field62M parse(String field62MString) throws MTMessageParsingException {
+        Optional<Matcher> field62MMatcher = MTParserUtils.getRegexMatcher(
+                MTParserConstants.FIELD_62M_REGEX_PATTERN, field62MString);
 
-        if (field60FMatcher.isPresent()) {
-            return new Field60F().withDCMark(field60FMatcher.get().group(1))
-                    .withDate(field60FMatcher.get().group(2))
-                    .withCurrency(field60FMatcher.get().group(3))
-                    .withAmount(field60FMatcher.get().group(4));
+        if (field62MMatcher.isPresent()) {
+            return new Field62M().withDCMark(field62MMatcher.get().group(1))
+                    .withDate(field62MMatcher.get().group(2))
+                    .withCurrency(field62MMatcher.get().group(3))
+                    .withAmount(field62MMatcher.get().group(4));
         } else {
             throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_FORMAT,
-                    Field60F.TAG));
+                    Field62M.TAG));
         }
     }
 }

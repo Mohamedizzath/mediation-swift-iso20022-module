@@ -37,7 +37,11 @@ import java.util.regex.Matcher;
  */
 public class Field28C {
     public static final String TAG = "28C";
+
+    // Example - 235
     private String statementNumber;
+
+    // Example - 2
     private String sequenceNumber;
 
     public String getStatementNumber() {
@@ -82,13 +86,13 @@ public class Field28C {
      * @return                     Created instance of Field28C
      * @throws MTMessageParsingException
      */
-    public Field28C parse(String field28CString) throws MTMessageParsingException {
+    public static Field28C parse(String field28CString) throws MTMessageParsingException {
         Optional<Matcher> field28CPMatcher = MTParserUtils.getRegexMatcher(
                 MTParserConstants.FIELD_28C_REGEX_PATTERN, field28CString);
 
         if (field28CPMatcher.isPresent()) {
             return new Field28C().withStatementNumber(field28CPMatcher.get().group(1))
-                    .withSequenceNumber(field28CPMatcher.get().group(2));
+                    .withSequenceNumber(field28CPMatcher.get().group(3));
         } else {
             throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_FORMAT,
                     Field28C.TAG));

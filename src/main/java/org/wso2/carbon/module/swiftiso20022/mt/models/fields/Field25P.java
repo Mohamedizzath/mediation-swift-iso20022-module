@@ -39,7 +39,10 @@ import java.util.regex.Matcher;
 public class Field25P {
     public static final String TAG = "25P";
 
+    // Example - DD01100056869
     private String account;
+
+    // Example - GSCRUS30XXX
     private String identifierCode;
 
     public String getAccount() {
@@ -90,7 +93,7 @@ public class Field25P {
 
         if (field25PMatcher.isPresent()) {
             return new Field25P().withAccount(field25PMatcher.get().group(1))
-                        .withIdentifierCode(field25PMatcher.get().group(2));
+                        .withIdentifierCode(field25PMatcher.get().group(3));
         } else {
             throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_FORMAT,
                     Field25P.TAG));

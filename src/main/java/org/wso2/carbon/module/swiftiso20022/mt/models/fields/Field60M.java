@@ -36,9 +36,17 @@ import java.util.regex.Matcher;
  */
 public class Field60M {
     public static final String TAG = "60M";
+
+    // Example - D
     private String dcMark;
+
+    // Example - 230930
     private String date;
+
+    // Example - USD
     private String currency;
+
+    // Example - 843686,20
     private String amount;
 
     public String getDcMark() {
@@ -119,7 +127,7 @@ public class Field60M {
      * @return                     Created instance of Field60M
      * @throws MTMessageParsingException
      */
-    public Field60M parse(String field60MString) throws MTMessageParsingException {
+    public static Field60M parse(String field60MString) throws MTMessageParsingException {
         Optional<Matcher> field60FMatcher = MTParserUtils.getRegexMatcher(
                 MTParserConstants.FIELD_60M_REGEX_PATTERN, field60MString);
 

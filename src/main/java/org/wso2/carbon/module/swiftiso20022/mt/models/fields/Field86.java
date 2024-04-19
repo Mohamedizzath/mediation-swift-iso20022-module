@@ -36,6 +36,8 @@ import java.util.regex.Matcher;
  */
 public class Field86 {
     public static final String TAG = "86";
+
+    // Example - EREF/GSGWGDNCTAHQM8/PREF/RP/GS/CTFILERP0002/CTBA0003
     private String value;
 
     public String getValue() {
@@ -67,7 +69,7 @@ public class Field86 {
                 MTParserConstants.FIELD_86_REGEX_PATTERN, field86String);
 
         if (field86Matcher.isPresent()) {
-            return new Field86().withValue(field86Matcher.get().group(1));
+            return new Field86().withValue(field86Matcher.get().group(3));
         } else {
             throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_FORMAT,
                     Field86.TAG));
