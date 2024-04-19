@@ -26,11 +26,11 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 
 /**
- * Model for Swift MT Tag 28C
+ * Model for Swift MT Tag 28C.
  *<p>
  *     format: (Statement Number)(Sequence Number)<br/>
  *     example: 28C:235/2
- * </p>
+ *
  *@see <a href="https://www2.swift.com/knowledgecentre/publications/
  * us9m_20230720/2.0?topic=con_sfld_MaOreQQQEe2AI4OK6vBjrg_-1223640171fld.htm">Tag 28C</a>
  * </p>
@@ -61,7 +61,7 @@ public class Field28C {
     }
 
     /**
-     * Method for set statement number and return the instance
+     * Method for set statement number and return the instance.
      * @param statementNumber    Value of statement number
      * @return                   Created instance of Field28C
      */
@@ -71,7 +71,7 @@ public class Field28C {
     }
 
     /**
-     * Method for set sequence number and return the instance
+     * Method for set sequence number and return the instance.
      * @param sequenceNumber    Value of sequence number
      * @return                   Created instance of Field28C
      */
@@ -81,7 +81,7 @@ public class Field28C {
     }
 
     /**
-     * Method for parse and get Field28C object
+     * Method for parse and get Field28C object.
      * @param field28CString       String which contains value of Field28C
      * @return                     Created instance of Field28C
      * @throws MTMessageParsingException

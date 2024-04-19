@@ -22,16 +22,10 @@ import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
 import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
 import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
 import org.wso2.carbon.module.swiftiso20022.mt.models.blocks.text.MT940TextBlock;
-import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field20;
-import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field21;
-import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field25;
 import org.wso2.carbon.module.swiftiso20022.mt.models.messages.MT940Message;
 import org.wso2.carbon.module.swiftiso20022.utils.MTParserUtils;
 
-import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Parser class for parsing MT940 messages.

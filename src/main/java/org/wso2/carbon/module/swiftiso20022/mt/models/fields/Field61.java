@@ -26,7 +26,7 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 
 /**
- * Model for Swift MT Tag 61
+ * Model for Swift MT Tag 61.
  * <p>
  *     format: (Value Date)(Entry Date)(Debit/Credit Mark)(Funds Code)(Amount)[(Transaction type)(Identification Code)
  *     (Reference to Account Owner)//(Reference to Account Servicing Institution)CRLF(Supplementary Details)<br/>
@@ -150,7 +150,7 @@ public class Field61 {
     }
 
     /**
-     * Method for set value date and return the instance
+     * Method for set value date and return the instance.
      * @param valueDate     D/C mark of Field61
      * @return              Created instance of Field61
      */
@@ -160,7 +160,7 @@ public class Field61 {
     }
 
     /**
-     * Method for set entry date and return the instance
+     * Method for set entry date and return the instance.
      * @param entryDate     Entry date of Field61
      * @return              Created instance of Field61
      */
@@ -170,7 +170,7 @@ public class Field61 {
     }
 
     /**
-     * Method for set D/C mark and return the instance
+     * Method for set D/C mark and return the instance.
      * @param dcMark        D/C mark of Field61
      * @return              Created instance of Field61
      */
@@ -180,7 +180,7 @@ public class Field61 {
     }
 
     /**
-     * Method for set funds code and return the instance
+     * Method for set funds code and return the instance.
      * @param fundsCode        Funds code of Field61
      * @return              Created instance of Field61
      */
@@ -190,7 +190,7 @@ public class Field61 {
     }
 
     /**
-     * Method for set amount and return the instance
+     * Method for set amount and return the instance.
      * @param amount        Amount of Field61
      * @return              Created instance of Field61
      */
@@ -200,7 +200,7 @@ public class Field61 {
     }
 
     /**
-     * Method for set transaction type and return the instance
+     * Method for set transaction type and return the instance.
      * @param transactionType        Transaction type of Field61
      * @return              Created instance of Field61
      */
@@ -210,7 +210,7 @@ public class Field61 {
     }
 
     /**
-     * Method for set identification code and return the instance
+     * Method for set identification code and return the instance.
      * @param identificationCode      Identification code of Field61
      * @return                        Created instance of Field61
      */
@@ -220,7 +220,7 @@ public class Field61 {
     }
 
     /**
-     * Method for set reference to account owner and return the instance
+     * Method for set reference to account owner and return the instance.
      * @param refToAccountOwner       Reference to account owner code of Field61
      * @return                        Created instance of Field61
      */
@@ -230,7 +230,7 @@ public class Field61 {
     }
 
     /**
-     * Method for set reference to account servicing institution and return the instance
+     * Method for set reference to account servicing institution and return the instance.
      * @param refToAccountServicingInstitution       Reference to account servicing institution of Field61
      * @return                                       Created instance of Field61
      */
@@ -240,7 +240,7 @@ public class Field61 {
     }
 
     /**
-     * Method for set supplementary details and return the instance
+     * Method for set supplementary details and return the instance.
      * @param supplementaryDetails      Supplementary details of Field61
      * @return                          Created instance of Field61
      */
@@ -250,7 +250,7 @@ public class Field61 {
     }
 
     /**
-     * Method for parse and get Field61 object
+     * Method for parse and get Field61 object.
      * @param field61String        String which contains value of Field61
      * @return                     Created instance of Field61
      * @throws MTMessageParsingException

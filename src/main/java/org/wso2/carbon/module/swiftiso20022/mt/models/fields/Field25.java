@@ -26,7 +26,7 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 
 /**
- * Model for Swift MT Tag 25
+ * Model for Swift MT Tag 25.
  * <p>
  *     format: (Account)
  *     example: 25:DD01100056869
@@ -49,7 +49,7 @@ public class Field25 {
     }
 
     /**
-     * Method to set value of Field25 and return the instance
+     * Method to set value of Field25 and return the instance.
      * @param value   Value of Field25
      * @return        Created instance of Field25
      */
@@ -59,7 +59,7 @@ public class Field25 {
     }
 
     /**
-     * Method for parse and get Field25 object
+     * Method for parse and get Field25 object.
      * @param field25String       String which contains value of Field25
      * @return                    Created instance of Field25
      * @throws MTMessageParsingException

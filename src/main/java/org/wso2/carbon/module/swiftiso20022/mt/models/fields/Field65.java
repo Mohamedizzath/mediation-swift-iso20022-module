@@ -26,7 +26,7 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 
 /**
- * Model for Swift MT Tag 65
+ * Model for Swift MT Tag 65.
  * <p>
  *     format: (D/C Mark)(Date)(Currency)(Amount)<br/>
  *     example: 65:D230930USD843686,20
@@ -82,7 +82,7 @@ public class Field65 {
     }
 
     /**
-     * Method for set D/C mark and return the instance
+     * Method for set D/C mark and return the instance.
      * @param dcMark      D/C mark of Field65
      * @return            Created instance of Field65
      */
@@ -92,7 +92,7 @@ public class Field65 {
     }
 
     /**
-     * Method for set date value and return the instance
+     * Method for set date value and return the instance.
      * @param date        Date value of Field65
      * @return            Created instance of Field65
      */
@@ -102,7 +102,7 @@ public class Field65 {
     }
 
     /**
-     * Method for set currency and return the instance
+     * Method for set currency and return the instance.
      * @param currency    Currency value of Field65
      * @return            Created instance of Field65
      */
@@ -112,7 +112,7 @@ public class Field65 {
     }
 
     /**
-     * Method for set amount and return the instance
+     * Method for set amount and return the instance.
      * @param amount      Amount value of Field65
      * @return            Created instance of Field65
      */
@@ -122,7 +122,7 @@ public class Field65 {
     }
 
     /**
-     * Method for parse and get Field65 object
+     * Method for parse and get Field65 object.
      * @param field65String       String which contains value of Field65
      * @return                     Created instance of Field65
      * @throws MTMessageParsingException

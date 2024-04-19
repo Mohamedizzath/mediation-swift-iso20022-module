@@ -26,7 +26,7 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 
 /**
- * Model for Swift MT Tag 86
+ * Model for Swift MT Tag 86.
  * <p>
  *     format: (Narrative)<br/>
  *     example: :86:EREF/GSGWGDNCTAHQM8/PREF/RP/GS/CTFILERP0002/CTBA0003
@@ -49,7 +49,7 @@ public class Field86 {
     }
 
     /**
-     * Method to set value of Field86 and return the instance
+     * Method to set value of Field86 and return the instance.
      * @param value     Value of Field86
      * @return          Created instance of Field86
      */
@@ -59,7 +59,7 @@ public class Field86 {
     }
 
     /**
-     * Method for parse and get Field86 object
+     * Method for parse and get Field86 object.
      * @param field86String       String which contains value of Field86
      * @return                    Created instance of Field86
      * @throws MTMessageParsingException
