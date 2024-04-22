@@ -148,7 +148,6 @@ public class MTParserUtils {
             // group 1 -> Tag
             // group 2 -> Field Value
             fields.put(matcher.group(1), matcher.group(2));
-
         }
 
         return fields;

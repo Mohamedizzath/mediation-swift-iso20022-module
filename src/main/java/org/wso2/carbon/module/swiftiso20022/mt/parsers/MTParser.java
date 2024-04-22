@@ -46,7 +46,7 @@ import org.wso2.carbon.module.swiftiso20022.mt.models.fields.FieldMRF;
 import org.wso2.carbon.module.swiftiso20022.mt.models.fields.FieldPDE;
 import org.wso2.carbon.module.swiftiso20022.mt.models.fields.FieldPDM;
 import org.wso2.carbon.module.swiftiso20022.mt.models.fields.FieldSYS;
-import org.wso2.carbon.module.swiftiso20022.mt.models.mtmessages.MTMessage;
+import org.wso2.carbon.module.swiftiso20022.mt.models.messages.MTMessage;
 import org.wso2.carbon.module.swiftiso20022.utils.MTParserUtils;
 
 import java.util.Map;
@@ -70,7 +70,8 @@ public class MTParser {
             throws MTMessageParsingException {
 
         if (blocks.containsKey(ConnectorConstants.BASIC_HEADER_BLOCK_KEY)) {
-            mtMessage.setBasicHeaderBlock(parserBasicHeaderBlock(blocks.get(ConnectorConstants.BASIC_HEADER_BLOCK_KEY)));
+            mtMessage.setBasicHeaderBlock(parserBasicHeaderBlock(
+                    blocks.get(ConnectorConstants.BASIC_HEADER_BLOCK_KEY)));
         } else {
             // Basic header block is mandatory for MT messages
             throw new MTMessageParsingException(MTParserConstants.EMPTY_MT_MESSAGE_BLOCKS);
@@ -132,7 +133,7 @@ public class MTParser {
      *      <li>([A-Z0-9]{12}) - Logical terminal address</li>
      *      <li>(S|U|N|) - Priority</li>
      *      <li>(\d)? - Delivery monitor</li>
-     *      <li>(\d{3})? - Obsolecene period</li>
+     *      <li>(\d{3})? - Obsolescence period</li>
      *    </ol>
      *<br/>Regex explanation for output message-^O(\d{3})(\d{4})(\d{6}[A-Z0-9]{12}[0-9]{10})(\d{6})?(\d{4})?(S|U|N)?$
      *    <ol>
@@ -219,9 +220,7 @@ public class MTParser {
         UserHeaderBlock userHeaderBlock = new UserHeaderBlock();
 
         for (String key : fields.keySet()) {
-
             switch (key) {
-
                 case Field103.TAG:
                     userHeaderBlock.setServiceIdentifier(Field103.parse(fields.get(key)));
                     break;
@@ -261,10 +260,8 @@ public class MTParser {
                 case Field434.TAG:
                     userHeaderBlock.setPaymentControlsInformation(Field434.parse(fields.get(key)));
                     break;
-
                 // If tag didn't match any of the above tags, it is not allowed
                 default:
-
                     String errorMessage = String.format(ConnectorConstants.ERROR_FIELD_NOT_ALLOWED_IN_BLOCK,
                             key, ConnectorConstants.USER_HEADER_BLOCK);
                     log.error(errorMessage);
@@ -303,9 +300,7 @@ public class MTParser {
         TrailerBlock trailerBlock = new TrailerBlock();
 
         for (String key : fields.keySet()) {
-
             switch (key) {
-
                 case MTParserConstants.FIELD_DLM_TAG:
                     trailerBlock.setDelayedMessage(true);
                     break;
@@ -327,9 +322,7 @@ public class MTParser {
                 case FieldSYS.TAG:
                     trailerBlock.setSystemOriginatedMessage(FieldSYS.parse(fields.get(key)));
                     break;
-
                 default:
-
                     String errorMessage = String.format(ConnectorConstants.ERROR_FIELD_NOT_ALLOWED_IN_BLOCK,
                             key, ConnectorConstants.TRAILER_BLOCK);
                     log.error(errorMessage);

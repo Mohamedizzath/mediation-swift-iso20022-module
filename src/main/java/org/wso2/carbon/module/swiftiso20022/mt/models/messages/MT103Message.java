@@ -16,7 +16,7 @@
  * under the License.
  */
 
-package org.wso2.carbon.module.swiftiso20022.mt.models.mtmessages;
+package org.wso2.carbon.module.swiftiso20022.mt.models.messages;
 
 /**
  * Model of MT103 Message.

@@ -144,7 +144,7 @@ public class MTParserConstants {
                 (params.getOrDefault(ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
                 "{2:O9400400190425GSCRUS30XXXX00000000002403290912N}")) +
                 (params.getOrDefault(ConnectorConstants.USER_HEADER_BLOCK_KEY,
-                "{3:{113:URGT}{108:INTLPMTS}{121:5798a701-effe-43e5-8d14-eec27ea3d8ec}}")) +
+                "{3:{113:URGT}{108:REF0140862562/01}{121:5798a701-effe-43e5-8d14-eec27ea3d8ec}}")) +
                 (params.getOrDefault(ConnectorConstants.TEXT_BLOCK_KEY, "{4:\n:20:258158850\n" +
                 ":21:258158850\n" +
                 ":25:DD01100056869\n" +

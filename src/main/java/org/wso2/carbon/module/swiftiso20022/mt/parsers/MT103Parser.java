@@ -18,7 +18,7 @@
 
 package org.wso2.carbon.module.swiftiso20022.mt.parsers;
 
-import org.wso2.carbon.module.swiftiso20022.mt.models.mtmessages.MT103Message;
+import org.wso2.carbon.module.swiftiso20022.mt.models.messages.MT103Message;
 
 /**
  * Parser class for MT103 Message.
