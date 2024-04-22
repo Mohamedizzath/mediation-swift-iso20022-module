@@ -32,7 +32,6 @@ import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field424;
 import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field433;
 import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field434;
 
-
 /**
  * Model for User Header Block (Block 03).
  */

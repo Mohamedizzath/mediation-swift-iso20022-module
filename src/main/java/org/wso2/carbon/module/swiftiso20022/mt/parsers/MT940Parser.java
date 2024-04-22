@@ -1,13 +1,13 @@
 /**
  * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
- * <p>
+ *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
- * <p>
- * http://www.apache.org/licenses/LICENSE-2.0
- * <p>
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -19,23 +19,29 @@
 package org.wso2.carbon.module.swiftiso20022.mt.parsers;
 
 import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
-import org.wso2.carbon.module.swiftiso20022.mt.models.messages.MT103Message;
+import org.wso2.carbon.module.swiftiso20022.mt.models.messages.MT940Message;
 import org.wso2.carbon.module.swiftiso20022.utils.MTParserUtils;
 
 import java.util.Map;
 
 /**
- * Parser class for MT103 Message.
+ * Parser class for parsing MT940 messages.
  */
-public class MT103Parser {
+public class MT940Parser {
+    /**
+     * Parser method for parsing MT940 message.
+     * @param mtMessage       MT940 message as String
+     * @return                MT940 message object
+     */
+    public static MT940Message parse(String mtMessage) throws MTMessageParsingException {
+        Map<String, String> blocks = MTParserUtils.getMessageBlocks(mtMessage);
 
-    public static MT103Message parse(String mt103Message) throws MTMessageParsingException {
+        MT940Message mt940Message = new MT940Message();
+        MTParser.parse(blocks, mt940Message);
 
-        Map<String, String> blocks = MTParserUtils.getMessageBlocks(mt103Message);
-        // TODO: Do the format validations
-        MT103Message mt103MessageModel = new MT103Message();
-        MTParser.parse(blocks, mt103MessageModel);
-        // TODO: implement parsing logic for the text block and set the text block
-        return null;
+        // Implementation on parsing text block
+        // mt940Message.setTextBlock(MT940TextBlock textBlock);
+
+        return mt940Message;
     }
 }
