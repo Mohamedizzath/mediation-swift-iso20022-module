@@ -18,17 +18,23 @@
 
 package org.wso2.carbon.module.swiftiso20022.mt.parsers;
 
+import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
 import org.wso2.carbon.module.swiftiso20022.mt.models.messages.MT103Message;
+import org.wso2.carbon.module.swiftiso20022.utils.MTParserUtils;
+
+import java.util.Map;
 
 /**
  * Parser class for MT103 Message.
  */
 public class MT103Parser {
 
-    public static MT103Message parse(String mt103message) {
+    public static MT103Message parse(String mt103Message) throws MTMessageParsingException {
 
-        // TODO: use utils method to break mt message to a map
-        // TODO: pass the map to MTParser.parse() and get the model
+        Map<String, String> blocks = MTParserUtils.getMessageBlocks(mt103Message);
+        // TODO: Do the format validations
+        MT103Message mt103MessageModel = new MT103Message();
+        MTParser.parse(blocks, mt103MessageModel);
         // TODO: implement parsing logic for the text block and set the text block
         return null;
     }

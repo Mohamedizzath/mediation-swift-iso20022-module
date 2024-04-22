@@ -69,14 +69,17 @@ public class MTParser {
     public static void parse(Map<String, String> blocks, MTMessage mtMessage)
             throws MTMessageParsingException {
 
+        log.debug("Parsing Basic Header Block String");
         if (blocks.containsKey(ConnectorConstants.BASIC_HEADER_BLOCK_KEY)) {
             mtMessage.setBasicHeaderBlock(parserBasicHeaderBlock(
                     blocks.get(ConnectorConstants.BASIC_HEADER_BLOCK_KEY)));
         } else {
             // Basic header block is mandatory for MT messages
+            log.error(MTParserConstants.EMPTY_MT_MESSAGE_BLOCKS);
             throw new MTMessageParsingException(MTParserConstants.EMPTY_MT_MESSAGE_BLOCKS);
         }
 
+        log.debug("Parsing Application Header Block String");
         if (blocks.containsKey(ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY)) {
             mtMessage.setApplicationHeaderBlock(parseApplicationHeaderBlock(
                     blocks.get(ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY)
@@ -95,20 +98,22 @@ public class MTParser {
      * Parser method for parsing basic header block into BasicHeaderBlock object.
      * <br/> <a href="https://www.paiementor.com/swift-mt-message-block-1-basic-header-description/">Reference</a>
      * <br/>Regex explanation - ^(F|A|L)(\d{2})([A-Z0-9]{12})(\d{4})(\d{6})$
-     *    <ol>
-     *      <li>(F|A|L) - Application identifier</li>
-     *      <li>(\d{2}) - Service identifier</li>
-     *      <li>([A-Z0-9]{12}) - Logical terminal address</li>
-     *      <li>(\d{4}) - Session number</li>
-     *      <li>(\d{6}) - Sequence number</li>
-     *    </ol>
-     * @param block       Basic header block as a String
-     * @return            Constructed BasicHeaderBlock object
+     * <ol>
+     *   <li>(F|A|L) - Application identifier</li>
+     *   <li>(\d{2}) - Service identifier</li>
+     *   <li>([A-Z0-9]{12}) - Logical terminal address</li>
+     *   <li>(\d{4}) - Session number</li>
+     *   <li>(\d{6}) - Sequence number</li>
+     * </ol>
+     *
+     * @param block Basic header block as a String
+     * @return Constructed BasicHeaderBlock object
      */
     private static BasicHeaderBlock parserBasicHeaderBlock(String block) throws MTMessageParsingException {
         Matcher basicHeaderMatcher = MTParserConstants.BASIC_HEADER_REGEX.matcher(block);
 
         if (!basicHeaderMatcher.matches()) {
+            log.error(MTParserConstants.INVALID_BASIC_HEADER);
             throw new MTMessageParsingException(MTParserConstants.INVALID_BASIC_HEADER);
         }
 
@@ -135,7 +140,7 @@ public class MTParser {
      *      <li>(\d)? - Delivery monitor</li>
      *      <li>(\d{3})? - Obsolescence period</li>
      *    </ol>
-     *<br/>Regex explanation for output message-^O(\d{3})(\d{4})(\d{6}[A-Z0-9]{12}[0-9]{10})(\d{6})?(\d{4})?(S|U|N)?$
+     * <br/>Regex explanation for output message-^O(\d{3})(\d{4})(\d{6}[A-Z0-9]{12}[0-9]{10})(\d{6})?(\d{4})?(S|U|N)?$
      *    <ol>
      *        <li>O - Input/Output identifier</li>
      *        <li>(\d{3}) - Message type</li>
@@ -145,12 +150,14 @@ public class MTParser {
      *        <li>(\d{4})? - Output time</li>
      *        <li>(S|U|N)? - Priority</li>
      *    </ol>
-     * @param block         Application header block as a String
-     * @return              Constructed ApplicationHeaderBlock object
+     *
+     * @param block Application header block as a String
+     * @return Constructed ApplicationHeaderBlock object
      */
     private static ApplicationHeaderBlock parseApplicationHeaderBlock(String block) throws MTMessageParsingException {
         if (StringUtils.isEmpty(block) || (!block.startsWith(ConnectorConstants.INPUT_IDENTIFIER)
                 && !block.startsWith(ConnectorConstants.OUTPUT_IDENTIFIER))) {
+            log.error(MTParserConstants.INVALID_APPLICATION_HEADER);
             throw new MTMessageParsingException(MTParserConstants.INVALID_APPLICATION_HEADER);
         }
 
@@ -164,6 +171,7 @@ public class MTParser {
             Matcher inputMsgMatcher = MTParserConstants.INPUT_APPLICATION_HEADER_REGEX.matcher(block);
 
             if (!inputMsgMatcher.matches()) {
+                log.error(MTParserConstants.INVALID_APPLICATION_HEADER);
                 throw new MTMessageParsingException(MTParserConstants.INVALID_APPLICATION_HEADER);
             }
 
@@ -177,6 +185,7 @@ public class MTParser {
             Matcher outputMsgMatcher = MTParserConstants.OUTPUT_APPLICATION_HEADER_REGEX.matcher(block);
 
             if (!outputMsgMatcher.matches()) {
+                log.error(MTParserConstants.INVALID_APPLICATION_HEADER);
                 throw new MTMessageParsingException(MTParserConstants.INVALID_APPLICATION_HEADER);
             }
 
