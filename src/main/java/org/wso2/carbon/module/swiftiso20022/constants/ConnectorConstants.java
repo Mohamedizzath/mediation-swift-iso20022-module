@@ -40,6 +40,22 @@ public class ConnectorConstants {
     public static final String LINE_BREAK = "\n";
     public static final String SPACE = " ";
 
+    public static final String BASIC_HEADER_BLOCK_KEY = "1";
+    public static final String APPLICATION_HEADER_BLOCK_KEY = "2";
+    public static final String USER_HEADER_BLOCK_KEY = "3";
+    public static final String TEXT_BLOCK_KEY = "4";
+    public static final String TRAILER_BLOCK_KEY = "5";
+
+    public static final String INPUT_IDENTIFIER = "I";
+    public static final String OUTPUT_IDENTIFIER = "O";
+
+    public static final char BLOCK_STARTING_CHARACTER = '{';
+    public static final char BLOCK_ENDING_CHARACTER = '}';
+    public static final String BASIC_HEADER_BLOCK_START = "{1:";
+    public static final String APPLICATION_HEADER_BLOCK_START = "{2:";
+    public static final String USER_HEADER_BLOCK_START = "{3:";
+    public static final String TEXT_BLOCK_START = "{4:";
+    public static final String TRAILER_BLOCK_START = "{5:";
     public static final String COLON = ":";
     public static final String SLASH = "/";
     public static final String DOUBLE_SLASH = "//";
@@ -161,6 +177,9 @@ public class ConnectorConstants {
     public static final String ERROR_T52 = "T52";
     public static final String ERROR_T53 = "T53";
     public static final String ERROR_M50 = "M50";
+
+    // MT Parser Error codes
+    public static final String ERROR_INCORRECT_BLOCKS_FORMAT = "Blocks are not in the correct format";
 
     public static final int ACC_IDENTIFICATION_LENGTH = 35;
     public static final int REFERENCE_LENGTH = 16;
