@@ -23,7 +23,9 @@ import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
 import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
 import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 
@@ -32,11 +34,15 @@ import java.util.regex.Matcher;
  */
 public class MTParserUtils {
 
+    private MTParserUtils() {
+        // Private constructor to prevent instantiation.
+    }
+
     /**
      * Util methods for parsing blocks in MT messages.<br/>
      * Regex explanation - ^(\\{1:([^\\W_]+)\\})(\\{2:([^\\W_]+)\\})?(\\{3:(\\{\\d{3}:[^\\{\\}]*\\})+\\})?
-     *                     (\\{4:[^\\{\\}]+\\R-\\})(\\{5:(\\{[A-Z]{3}:[^\\{\\}]*\\})+\\})?$
-     *<ol>
+     * (\\{4:[^\\{\\}]+\\R-\\})(\\{5:(\\{[A-Z]{3}:[^\\{\\}]*\\})+\\})?$
+     * <ol>
      *      <li>(\\{1:([^\\W_]+)\\})-Regex for basic header block. Starting ( and ending ) marks group to match, {1:
      *      exact match of starting characters of basic header block, [^\\W_]+ matches one or more characters 0-9A-Za-z
      *      without _.
@@ -77,8 +83,8 @@ public class MTParserUtils {
      *      </li>
      * </ol>
      *
-     * @param mtMessage     Complete MT messages as string
-     * @return              Blocks stored in Map with key as block name(basic-header-block, application-header-block...)
+     * @param mtMessage Complete MT messages as string
+     * @return Blocks stored in Map with key as block name(basic-header-block, application-header-block...)
      */
     public static Map<String, String> getMessageBlocks(String mtMessage) throws MTMessageParsingException {
         Map<String, String> blocksMap = new HashMap<>();
@@ -153,4 +159,43 @@ public class MTParserUtils {
         return fields;
     }
 
+    /**
+     * Method to separate text block fields and return a string list.
+     *
+     * @param textBlock Text Block string excluding "{4:" and "-}"
+     * @return A list of text block field strings
+     */
+    public static List<String> getTextBlockFields(String textBlock) {
+
+        return List.of(textBlock
+                // remove first and last line break
+                .trim()
+                // exclude first ":"
+                .substring(1)
+                // break string by "\\R:", pattern
+                .split(MTParserConstants.LINE_BREAK_WITH_COLON_REGEX_PATTERN));
+    }
+
+    /**
+     * Method to extract details from the matcher with created with
+     * {@link MTParserConstants#PARTY_IDENTIFIER_REGEX_PATTERN}.
+     *
+     * @param partyIdentifierMatcher Matcher object created with party identifier regex.
+     * @return String array if details are present, otherwise null.
+     */
+    public static List<String> getDetailsAsList(Matcher partyIdentifierMatcher) {
+
+        // group 12 -> details in format (Number)/(Name and Address)
+        if (partyIdentifierMatcher.group(12) != null) {
+            // Details group -> "val1\nval2\n" -> ["val1", "val2"]
+            return Arrays.asList(partyIdentifierMatcher.group(12).split(MTParserConstants.LINE_BREAK_REGEX_PATTERN));
+        }
+        // group 14 -> details in format (Name and Address)
+        if (partyIdentifierMatcher.group(14) != null) {
+            // Details group -> "val1\nval2\n" -> ["val1", "val2"]
+            return Arrays.asList(partyIdentifierMatcher.group(14).split(MTParserConstants.LINE_BREAK_REGEX_PATTERN));
+        }
+
+        return null;
+    }
 }

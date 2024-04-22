@@ -27,6 +27,7 @@ public class MT103Constants {
         // Private constructor to prevent instantiation
     }
 
+    public static final String MT103 = "MT103";
     public static final String MT103_APPLICATION_ID = "F";
     public static final String MT103_SERVICE_ID = "01";
     public static final String MT103_MESSAGE_TYPE = "103";

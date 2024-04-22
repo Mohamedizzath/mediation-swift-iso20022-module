@@ -67,6 +67,34 @@ public class JsonToMT103ValidatorTests extends PowerMockTestCase {
         jsonToMT103Transformer.connect(msgCxt);
     }
 
+    @Test(expectedExceptions = SynapseException.class)
+    public void tesEmptyPayload() throws Exception {
+        Axis2MessageContext msgCxt = Mockito.mock(Axis2MessageContext.class);
+        Mockito.doReturn(messageContext).when(msgCxt).getAxis2MessageContext();
+
+        PowerMockito.mockStatic(ConnectorUtils.class);
+        PowerMockito.when(ConnectorUtils.buildMessagePayloadFromMessageContext(messageContext))
+                .thenReturn(Optional.empty());
+        PowerMockito.doNothing().when(ConnectorUtils.class, "appendErrorToMessageContext",
+                Mockito.any(), Mockito.anyString(), Mockito.anyString());
+
+        jsonToMT103Transformer.connect(msgCxt);
+    }
+
+    @Test(expectedExceptions = SynapseException.class)
+    public void testInvalidFormatPayload() throws Exception {
+        Axis2MessageContext msgCxt = Mockito.mock(Axis2MessageContext.class);
+        Mockito.doReturn(messageContext).when(msgCxt).getAxis2MessageContext();
+
+        PowerMockito.mockStatic(ConnectorUtils.class);
+        PowerMockito.when(ConnectorUtils.buildMessagePayloadFromMessageContext(messageContext))
+                .thenReturn(Optional.of(JsonToMT103ValidatorTestConstants.INVALID_FORMAT_PAYLOAD));
+        PowerMockito.doNothing().when(ConnectorUtils.class, "appendErrorToMessageContext",
+                Mockito.any(), Mockito.anyString(), Mockito.anyString());
+
+        jsonToMT103Transformer.connect(msgCxt);
+    }
+
     @Test(expectedExceptions = SynapseException.class, dataProvider = "emptyMandatoryBlockDataProvider",
             dataProviderClass = JsonToMT103ValidatorTestConstants.class)
     public void testEmptyMandatoryBlock(String payload) throws Exception {

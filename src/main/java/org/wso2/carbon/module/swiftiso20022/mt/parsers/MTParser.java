@@ -59,6 +59,10 @@ public class MTParser {
 
     private static final Log log = LogFactory.getLog(MTParser.class);
 
+    private MTParser() {
+        // Private constructor to prevent instantiation.
+    }
+
     /**
      * Method to get MT message object extended from {@link MTMessage} by parsing MT message blocks.
      *
