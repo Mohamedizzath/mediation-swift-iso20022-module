@@ -28,6 +28,7 @@ public class MT103Parser {
     public static MT103Message parse(String mt103message) {
 
         // TODO: use utils method to break mt message to a map
+        // TODO: call format validator to validate the format of the blocks
         // TODO: pass the map to MTParser.parse() and get the model
         // TODO: implement parsing logic for the text block and set the text block
         return null;

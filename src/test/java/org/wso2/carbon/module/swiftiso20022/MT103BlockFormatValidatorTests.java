@@ -36,6 +36,8 @@ public class MT103BlockFormatValidatorTests {
 
     private static final String VALID_TEXT_BLOCK = "\n" +
             ":20:TXNREF1234567890\n" +
+            ":13C:/CLSTIME/1000-0430\n" +
+            ":13C:/SNDTIME/1000-0430\n" +
             ":23B:CRED\n" +
             ":32A:230523EUR100000,50\n" +
             ":50K:/12345678\n" +
@@ -86,6 +88,22 @@ public class MT103BlockFormatValidatorTests {
 
         ValidationResult validationResult = MT103BlockFormatValidator.validateMTMessageBlockFormat(
                 Map.of(ConnectorConstants.TEXT_BLOCK_KEY, textBlock));
+
+        Assert.assertTrue(validationResult.isNotValid());
+    }
+
+    @DataProvider(name = "invalidBlockFormatsDataProvider")
+    Object[][] getInvalidBlockFormatsDataProvider() {
+        return new Object[][] {
+                {Map.of(ConnectorConstants.USER_HEADER_BLOCK_KEY, "{111:value}{121:another value}")},
+                {Map.of(ConnectorConstants.TRAILER_BLOCK_KEY, "{CHK:1234567890ABC}{121:some value}")}
+        };
+    }
+
+    @Test(dataProvider = "invalidBlockFormatsDataProvider")
+    public void testInvalidBlockFormats(Map<String, String> blocks) {
+
+        ValidationResult validationResult = MT103BlockFormatValidator.validateMTMessageBlockFormat(blocks);
 
         Assert.assertTrue(validationResult.isNotValid());
     }
