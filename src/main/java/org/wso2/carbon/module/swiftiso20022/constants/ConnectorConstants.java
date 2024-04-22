@@ -40,15 +40,27 @@ public class ConnectorConstants {
     public static final String LINE_BREAK = "\n";
     public static final String SPACE = " ";
 
+    public static final String BASIC_HEADER_BLOCK_KEY = "1";
+    public static final String APPLICATION_HEADER_BLOCK_KEY = "2";
+    public static final String USER_HEADER_BLOCK_KEY = "3";
+    public static final String TEXT_BLOCK_KEY = "4";
+    public static final String TRAILER_BLOCK_KEY = "5";
+
+    public static final String INPUT_IDENTIFIER = "I";
+    public static final String OUTPUT_IDENTIFIER = "O";
+
+    public static final char BLOCK_STARTING_CHARACTER = '{';
+    public static final char BLOCK_ENDING_CHARACTER = '}';
+    public static final String BASIC_HEADER_BLOCK_START = "{1:";
+    public static final String APPLICATION_HEADER_BLOCK_START = "{2:";
+    public static final String USER_HEADER_BLOCK_START = "{3:";
+    public static final String TEXT_BLOCK_START = "{4:";
+    public static final String TRAILER_BLOCK_START = "{5:";
     public static final String COLON = ":";
     public static final String SLASH = "/";
     public static final String DOUBLE_SLASH = "//";
-    public static final char OPENING_CURLY_BRACKET = '{';
-    public static final char CLOSING_CURLY_BRACKET = '}';
     public static final String ENUM_KEY = "enumClassName";
     public static final String FIXED_VALUE_KEY = "fixedValue";
-    public static final String USER_HEADER_BLOCK_KEY = "3:";
-    public static final String TRAILER_BLOCK_KEY = "5:";
 
     // MT message block names
     public static final String USER_HEADER_BLOCK = "User Header Block";
@@ -63,8 +75,6 @@ public class ConnectorConstants {
 
     // Block02 (Application Header) Related Constants
     public static final String INPUT_OUTPUT_IDENTIFIER = "Input Output Identifier";
-    public static final String INPUT_IDENTIFIER = "I";
-    public static final String OUTPUT_IDENTIFIER = "O";
     public static final String MESSAGE_TYPE = "Message Type";
     public static final String DESTINATION_LOGICAL_TERMINAL_ADDRESS = "Destination Logical Terminal Address";
     public static final String INPUT_TIME = "Input Time";
@@ -186,13 +196,8 @@ public class ConnectorConstants {
     public static final String ERROR_T53 = "T53";
     public static final String ERROR_M50 = "M50";
 
-    // User Header Block Error Codes
-    public static final String ERROR_U00 = "U00";
-    public static final String ERROR_U03 = "U03";
-    public static final String ERROR_U12 = "U12";
-
-    // Trailer Block Error Codes
-    public static final String ERROR_Z00 = "Z00";
+    // MT Parser Error codes
+    public static final String ERROR_INCORRECT_BLOCKS_FORMAT = "Blocks are not in the correct format";
 
     public static final int ACC_IDENTIFICATION_LENGTH = 35;
     public static final int REFERENCE_LENGTH = 16;

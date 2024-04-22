@@ -29,6 +29,20 @@ public class MTParserConstants {
         // Private constructor to prevent instantiation.
     }
 
+    public static final Pattern MT_MESSAGE_BLOCKS_REGEX = Pattern.compile(
+                    "^(\\{1:([^\\W_]+)\\})(\\{2:([^\\W_]+)\\})?(\\{3:(\\{\\d{3}:[^\\{\\}]*\\})+\\})?" +
+                    "(\\{4:[^\\{\\}]+\\R-\\})(\\{5:(\\{[A-Z]{3}:[^\\{\\}]*\\})+\\})?$", Pattern.DOTALL);
+    public static final Pattern BASIC_HEADER_REGEX = Pattern.compile(
+            "^(F|A|L)(\\d{2})([A-Z0-9]{12})(\\d{4})(\\d{6})$");
+    public static final Pattern INPUT_APPLICATION_HEADER_REGEX = Pattern.compile(
+            "^I(\\d{3})([A-Z0-9]{12})(S|U|N)?(\\d)?(\\d{3})?$");
+    public static final Pattern OUTPUT_APPLICATION_HEADER_REGEX = Pattern.compile(
+            "^O(\\d{3})(\\d{4})(\\d{6}[A-Z0-9]{12}[0-9]{10})(\\d{6})?(\\d{4})?(S|U|N)?$");
+
+    public static final String INVALID_MT_MESSAGE_BLOCKS = "MT message blocks are not in the correct format";
+    public static final String INVALID_BASIC_HEADER = "Basic header block is not in the correct format";
+    public static final String EMPTY_MT_MESSAGE_BLOCKS = "Basic header block is not present in MT message";
+    public static final String INVALID_APPLICATION_HEADER = "Application header block is not in the correct format";
     public static final String FIELD_DLM_TAG = "DLM";
     public static final String FIELD_TNG_TAG = "TNG";
 
