@@ -46,7 +46,6 @@ public class MTParserConstants {
     public static final String INVALID_TEXT_BLOCK = "Text block is not in the correct format";
     public static final String TEXT_BLOCK_FIELD_REGEX = "^(\\d{2}[a-zA-Z]?):(.*)$";
     public static final String INVALID_FIELD_FORMAT = "%s field not in the correct format";
-    // TODO: Update the patterns
     public static final Pattern FIELD_20_REGEX_PATTERN = Pattern.compile(
             "^([a-zA-Z0-9/\\-?:().,'+ ]{1,16})$");
     public static final Pattern FIELD_21_REGEX_PATTERN = Pattern.compile(

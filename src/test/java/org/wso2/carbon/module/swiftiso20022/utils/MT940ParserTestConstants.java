@@ -41,7 +41,7 @@ import java.util.Map;
 /**
  * Test constants for MTParser.
  */
-public class MT940ParserConstants {
+public class MT940ParserTestConstants {
     // Params contains all the field except Field60 and Field60 related Field86.
     // List of Field60 and corresponding Field86 will in the stmtParams list parameter
     // Ex - stmtParams -> ['61:2310011001RCD10,00ACHPGSGWGDNCTAHQM8\n86:EREF/GSGWGDNCTAHQM8',

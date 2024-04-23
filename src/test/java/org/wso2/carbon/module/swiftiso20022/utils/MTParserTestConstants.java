@@ -32,7 +32,7 @@ import java.util.Map;
 /**
  * Test constants for MTParser.
  */
-public class MTParserConstants {
+public class MTParserTestConstants {
     public static String getBasicHeaderBlockText(Map<String, String> params) {
         return  (params.getOrDefault("AppID", "F")) +
                 (params.getOrDefault("ServiceID", "01")) +

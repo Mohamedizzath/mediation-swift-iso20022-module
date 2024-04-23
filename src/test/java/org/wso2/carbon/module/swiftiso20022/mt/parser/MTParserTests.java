@@ -16,7 +16,7 @@
  * under the License.
  */
 
-package org.wso2.carbon.module.swiftiso20022.mtmessageparser;
+package org.wso2.carbon.module.swiftiso20022.mt.parser;
 
 import org.mockito.internal.matchers.apachecommons.ReflectionEquals;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
@@ -28,7 +28,7 @@ import org.wso2.carbon.module.swiftiso20022.mt.models.blocks.BasicHeaderBlock;
 import org.wso2.carbon.module.swiftiso20022.mt.models.messages.MT940Message;
 import org.wso2.carbon.module.swiftiso20022.mt.parsers.MT940Parser;
 import org.wso2.carbon.module.swiftiso20022.mt.parsers.MTParser;
-import org.wso2.carbon.module.swiftiso20022.utils.MTParserConstants;
+import org.wso2.carbon.module.swiftiso20022.utils.MTParserTestConstants;
 import org.wso2.carbon.module.swiftiso20022.utils.MTParserUtils;
 
 import java.util.List;
@@ -39,7 +39,7 @@ import java.util.Map;
  */
 @PowerMockIgnore("jdk.internal.reflect.*")
 public class MTParserTests {
-    @Test(dataProvider = "parseMTMessage", dataProviderClass = MTParserConstants.class)
+    @Test(dataProvider = "parseMTMessage", dataProviderClass = MTParserTestConstants.class)
     public void testParseMTMessageScenario(String mtMessageText, MT940Message mt940Message) throws Exception {
         MT940Message mtMessage = MT940Parser.parse(mtMessageText);
 
@@ -51,12 +51,12 @@ public class MTParserTests {
 
     @Test(expectedExceptions = MTMessageParsingException.class, expectedExceptionsMessageRegExp =
             "MT message blocks are not in the correct format",
-            dataProvider = "parseInvalidMTMessage", dataProviderClass = MTParserConstants.class)
+            dataProvider = "parseInvalidMTMessage", dataProviderClass = MTParserTestConstants.class)
     public void testParseInvalidMTMessageScenario(String mtMessageText, MT940Message mt940Message) throws Exception {
         MT940Message mtMessage = MT940Parser.parse(mtMessageText);
     }
 
-    @Test(dataProvider = "parseMTMessageBlocks", dataProviderClass = MTParserConstants.class)
+    @Test(dataProvider = "parseMTMessageBlocks", dataProviderClass = MTParserTestConstants.class)
     public void testParseMTMessageBlocksScenario(String mtMessage, Map<String, String> block) throws Exception {
         Map<String, String> parseBlocks = MTParserUtils.getMessageBlocks(mtMessage);
 
@@ -65,19 +65,19 @@ public class MTParserTests {
 
     @Test(expectedExceptions = MTMessageParsingException.class, expectedExceptionsMessageRegExp =
             "MT message blocks are not in the correct format", dataProvider = "parseInvalidMTMessageBlocks",
-            dataProviderClass = MTParserConstants.class)
+            dataProviderClass = MTParserTestConstants.class)
     public void testParseInvalidMTMessageBlocksScenario(String mtMessage) throws Exception {
         Map<String, String> parseBlocks = MTParserUtils.getMessageBlocks(mtMessage);
     }
 
-    @Test(dataProvider = "parseTextBlockFields", dataProviderClass = MTParserConstants.class)
+    @Test(dataProvider = "parseTextBlockFields", dataProviderClass = MTParserTestConstants.class)
     public void testParseTextBlockFields(String textBlock, List<String> fields) throws Exception {
         List<String> parsedFields = MTParserUtils.getTextBlockFields(textBlock);
 
         Assert.assertEquals(parsedFields, fields);
     }
 
-    @Test(dataProvider = "parserBasicHeaderApplicationID", dataProviderClass = MTParserConstants.class)
+    @Test(dataProvider = "parserBasicHeaderApplicationID", dataProviderClass = MTParserTestConstants.class)
     public void testParserBasicHeaderApplicationIDScenario(Map<String, String> block, BasicHeaderBlock basicHeaderBlock)
             throws Exception {
         MT940Message mt940Message = new MT940Message();
@@ -88,14 +88,14 @@ public class MTParserTests {
 
     @Test(expectedExceptions = MTMessageParsingException.class, expectedExceptionsMessageRegExp =
             "Basic header block is not in the correct format", dataProvider = "parserInvalidBasicHeaderApplicationID",
-            dataProviderClass = MTParserConstants.class)
+            dataProviderClass = MTParserTestConstants.class)
     public void testParserInvalidBasicHeaderApplicationIDScenario(Map<String, String> block)
             throws Exception {
         MT940Message mt940Message = new MT940Message();
         MTParser.parse(block, mt940Message);
     }
 
-    @Test(dataProvider = "parserBasicHeaderServiceID", dataProviderClass = MTParserConstants.class)
+    @Test(dataProvider = "parserBasicHeaderServiceID", dataProviderClass = MTParserTestConstants.class)
     public void testParserBasicHeaderServiceIDScenario(Map<String, String> block, BasicHeaderBlock basicHeaderBlock)
             throws Exception {
         MT940Message mt940Message = new MT940Message();
@@ -106,14 +106,14 @@ public class MTParserTests {
 
     @Test(expectedExceptions = MTMessageParsingException.class, expectedExceptionsMessageRegExp =
             "Basic header block is not in the correct format", dataProvider = "parserInvalidBasicHeaderServiceID",
-            dataProviderClass = MTParserConstants.class)
+            dataProviderClass = MTParserTestConstants.class)
     public void testParserInvalidBasicHeaderServiceIDScenario(Map<String, String> block)
             throws Exception {
         MT940Message mt940Message = new MT940Message();
         MTParser.parse(block, mt940Message);
     }
 
-    @Test(dataProvider = "parserBasicHeaderLTAddress", dataProviderClass = MTParserConstants.class)
+    @Test(dataProvider = "parserBasicHeaderLTAddress", dataProviderClass = MTParserTestConstants.class)
     public void testParserBasicHeaderLTAddressScenario(Map<String, String> block, BasicHeaderBlock basicHeaderBlock)
             throws Exception {
         MT940Message mt940Message = new MT940Message();
@@ -124,14 +124,14 @@ public class MTParserTests {
 
     @Test(expectedExceptions = MTMessageParsingException.class,
             expectedExceptionsMessageRegExp = "Basic header block is not in the correct format",
-            dataProvider = "parserInvalidBasicHeaderLTAddress", dataProviderClass = MTParserConstants.class)
+            dataProvider = "parserInvalidBasicHeaderLTAddress", dataProviderClass = MTParserTestConstants.class)
     public void testParserInvalidBasicHeaderLTAddressScenario(Map<String, String> block)
             throws Exception {
         MT940Message mt940Message = new MT940Message();
         MTParser.parse(block, mt940Message);
     }
 
-    @Test(dataProvider = "parserBasicHeaderSessionNumber", dataProviderClass = MTParserConstants.class)
+    @Test(dataProvider = "parserBasicHeaderSessionNumber", dataProviderClass = MTParserTestConstants.class)
     public void testParserBasicHeaderSessionNumberScenario(Map<String, String> block, BasicHeaderBlock basicHeaderBlock)
             throws Exception {
         MT940Message mt940Message = new MT940Message();
@@ -142,14 +142,14 @@ public class MTParserTests {
 
     @Test(expectedExceptions = MTMessageParsingException.class,
             expectedExceptionsMessageRegExp = "Basic header block is not in the correct format",
-            dataProvider = "parserInvalidBasicHeaderSessionNumber", dataProviderClass = MTParserConstants.class)
+            dataProvider = "parserInvalidBasicHeaderSessionNumber", dataProviderClass = MTParserTestConstants.class)
     public void testParserInvalidBasicHeaderSessionNumberScenario(Map<String, String> block)
             throws Exception {
         MT940Message mt940Message = new MT940Message();
         MTParser.parse(block, mt940Message);
     }
 
-    @Test(dataProvider = "parserBasicHeaderSequenceNumber", dataProviderClass = MTParserConstants.class)
+    @Test(dataProvider = "parserBasicHeaderSequenceNumber", dataProviderClass = MTParserTestConstants.class)
     public void testParserBasicHeaderSequenceNumberScenario(Map<String, String> block,
                                                             BasicHeaderBlock basicHeaderBlock) throws Exception {
         MT940Message mt940Message = new MT940Message();
@@ -160,13 +160,13 @@ public class MTParserTests {
 
     @Test(expectedExceptions = MTMessageParsingException.class,
             expectedExceptionsMessageRegExp = "Basic header block is not in the correct format",
-            dataProvider = "parserInvalidBasicHeaderSequenceNumber", dataProviderClass = MTParserConstants.class)
+            dataProvider = "parserInvalidBasicHeaderSequenceNumber", dataProviderClass = MTParserTestConstants.class)
     public void testParserInvalidBasicHeaderSequenceNumberScenario(Map<String, String> block) throws Exception {
         MT940Message mt940Message = new MT940Message();
         MTParser.parse(block, mt940Message);
     }
 
-    @Test(dataProvider = "parserApplicationHeaderInputOutputID", dataProviderClass = MTParserConstants.class)
+    @Test(dataProvider = "parserApplicationHeaderInputOutputID", dataProviderClass = MTParserTestConstants.class)
     public void testParserApplicationHeaderInputOutputIDScenario(Map<String, String> block,
                                            ApplicationHeaderBlock applicationHeaderBlock) throws Exception {
         MT940Message mt940Message = new MT940Message();
@@ -178,13 +178,13 @@ public class MTParserTests {
 
     @Test(expectedExceptions = MTMessageParsingException.class,
             expectedExceptionsMessageRegExp = "Application header block is not in the correct format",
-            dataProvider = "parserInvalidApplicationHeaderInputOutputID", dataProviderClass = MTParserConstants.class)
+    dataProvider = "parserInvalidApplicationHeaderInputOutputID", dataProviderClass = MTParserTestConstants.class)
     public void testParserInvalidApplicationHeaderInputOutputIDScenario(Map<String, String> block) throws Exception {
         MT940Message mt940Message = new MT940Message();
         MTParser.parse(block, mt940Message);
     }
 
-    @Test(dataProvider = "parserApplicationHeaderMessageType", dataProviderClass = MTParserConstants.class)
+    @Test(dataProvider = "parserApplicationHeaderMessageType", dataProviderClass = MTParserTestConstants.class)
     public void testParserApplicationHeaderMessageTypeScenario(Map<String, String> block,
                                      ApplicationHeaderBlock applicationHeaderBlock) throws Exception {
         MT940Message mt940Message = new MT940Message();
@@ -196,13 +196,13 @@ public class MTParserTests {
 
     @Test(expectedExceptions = MTMessageParsingException.class, expectedExceptionsMessageRegExp =
             "Application header block is not in the correct format",
-            dataProvider = "parserInvalidApplicationHeaderMessageType", dataProviderClass = MTParserConstants.class)
+    dataProvider = "parserInvalidApplicationHeaderMessageType", dataProviderClass = MTParserTestConstants.class)
     public void testParserInvalidApplicationHeaderMessageTypeScenario(Map<String, String> block) throws Exception {
         MT940Message mt940Message = new MT940Message();
         MTParser.parse(block, mt940Message);
     }
 
-    @Test(dataProvider = "parserApplicationHeaderPriority", dataProviderClass = MTParserConstants.class)
+    @Test(dataProvider = "parserApplicationHeaderPriority", dataProviderClass = MTParserTestConstants.class)
     public void testParserApplicationHeaderPriorityScenario(Map<String, String> block,
                                      ApplicationHeaderBlock applicationHeaderBlock) throws Exception {
         MT940Message mt940Message = new MT940Message();
@@ -214,13 +214,13 @@ public class MTParserTests {
 
     @Test(expectedExceptions = MTMessageParsingException.class, expectedExceptionsMessageRegExp =
             "Application header block is not in the correct format",
-            dataProvider = "parserInvalidApplicationHeaderPriority", dataProviderClass = MTParserConstants.class)
+            dataProvider = "parserInvalidApplicationHeaderPriority", dataProviderClass = MTParserTestConstants.class)
     public void testParserInvalidApplicationHeaderPriorityScenario(Map<String, String> block) throws Exception {
         MT940Message mt940Message = new MT940Message();
         MTParser.parse(block, mt940Message);
     }
 
-    @Test(dataProvider = "parserApplicationHeaderDestinationAddress", dataProviderClass = MTParserConstants.class)
+    @Test(dataProvider = "parserApplicationHeaderDestinationAddress", dataProviderClass = MTParserTestConstants.class)
     public void testParserApplicationHeaderDestinationAddressScenario(Map<String, String> block,
                                      ApplicationHeaderBlock applicationHeaderBlock) throws Exception {
         MT940Message mt940Message = new MT940Message();
@@ -232,14 +232,14 @@ public class MTParserTests {
 
     @Test(expectedExceptions = MTMessageParsingException.class, expectedExceptionsMessageRegExp =
             "Application header block is not in the correct format",
-       dataProvider = "parserInvalidApplicationHeaderDestinationAddress", dataProviderClass = MTParserConstants.class)
+    dataProvider = "parserInvalidApplicationHeaderDestinationAddress", dataProviderClass = MTParserTestConstants.class)
     public void testParserInvalidApplicationHeaderDestinationAddressScenario(Map<String, String> block)
             throws Exception {
         MT940Message mt940Message = new MT940Message();
         MTParser.parse(block, mt940Message);
     }
 
-    @Test(dataProvider = "parserApplicationHeaderDeliveryMonitor", dataProviderClass = MTParserConstants.class)
+    @Test(dataProvider = "parserApplicationHeaderDeliveryMonitor", dataProviderClass = MTParserTestConstants.class)
     public void testParserApplicationHeaderDeliveryMonitorScenario(Map<String, String> block,
                                      ApplicationHeaderBlock applicationHeaderBlock) throws Exception {
         MT940Message mt940Message = new MT940Message();
@@ -251,13 +251,13 @@ public class MTParserTests {
 
     @Test(expectedExceptions = MTMessageParsingException.class, expectedExceptionsMessageRegExp =
             "Application header block is not in the correct format",
-            dataProvider = "parserInvalidApplicationHeaderDeliveryMonitor", dataProviderClass = MTParserConstants.class)
+    dataProvider = "parserInvalidApplicationHeaderDeliveryMonitor", dataProviderClass = MTParserTestConstants.class)
     public void testParserInvalidApplicationHeaderDeliveryMonitorScenario(Map<String, String> block) throws Exception {
         MT940Message mt940Message = new MT940Message();
         MTParser.parse(block, mt940Message);
     }
 
-    @Test(dataProvider = "parserApplicationHeaderObsolescencePeriod", dataProviderClass = MTParserConstants.class)
+    @Test(dataProvider = "parserApplicationHeaderObsolescencePeriod", dataProviderClass = MTParserTestConstants.class)
     public void testParserApplicationHeaderObsolescencePeriodScenario(Map<String, String> block,
                                      ApplicationHeaderBlock applicationHeaderBlock) throws Exception {
         MT940Message mt940Message = new MT940Message();
@@ -269,14 +269,14 @@ public class MTParserTests {
 
     @Test(expectedExceptions = MTMessageParsingException.class, expectedExceptionsMessageRegExp =
             "Application header block is not in the correct format",
-        dataProvider = "parserInvalidApplicationHeaderObsolescencePeriod", dataProviderClass = MTParserConstants.class)
+    dataProvider = "parserInvalidApplicationHeaderObsolescencePeriod", dataProviderClass = MTParserTestConstants.class)
     public void testParserInvalidApplicationHeaderObsolescencePeriodScenario(Map<String, String> block)
             throws Exception {
         MT940Message mt940Message = new MT940Message();
         MTParser.parse(block, mt940Message);
     }
 
-    @Test(dataProvider = "parserApplicationHeaderInputTime", dataProviderClass = MTParserConstants.class)
+    @Test(dataProvider = "parserApplicationHeaderInputTime", dataProviderClass = MTParserTestConstants.class)
     public void testParserApplicationHeaderInputTimePeriodScenario(Map<String, String> block,
                                      ApplicationHeaderBlock applicationHeaderBlock) throws Exception {
         MT940Message mt940Message = new MT940Message();
@@ -288,13 +288,14 @@ public class MTParserTests {
 
     @Test(expectedExceptions = MTMessageParsingException.class, expectedExceptionsMessageRegExp =
             "Application header block is not in the correct format",
-            dataProvider = "parserInvalidApplicationHeaderInputTime", dataProviderClass = MTParserConstants.class)
+            dataProvider = "parserInvalidApplicationHeaderInputTime", dataProviderClass = MTParserTestConstants.class)
     public void testParserInvalidApplicationHeaderInputTimePeriodScenario(Map<String, String> block) throws Exception {
         MT940Message mt940Message = new MT940Message();
         MTParser.parse(block, mt940Message);
     }
 
-    @Test(dataProvider = "parserApplicationHeaderMessageInputReference", dataProviderClass = MTParserConstants.class)
+    @Test(dataProvider = "parserApplicationHeaderMessageInputReference",
+            dataProviderClass = MTParserTestConstants.class)
     public void testParserApplicationHeaderMessageInputReferencePeriodScenario(Map<String, String> block,
                                            ApplicationHeaderBlock applicationHeaderBlock) throws Exception {
         MT940Message mt940Message = new MT940Message();
@@ -306,14 +307,15 @@ public class MTParserTests {
 
     @Test(expectedExceptions = MTMessageParsingException.class, expectedExceptionsMessageRegExp =
             "Application header block is not in the correct format",
-    dataProvider = "parserInvalidApplicationHeaderMessageInputReference", dataProviderClass = MTParserConstants.class)
+    dataProvider = "parserInvalidApplicationHeaderMessageInputReference",
+            dataProviderClass = MTParserTestConstants.class)
     public void testParserInvalidApplicationHeaderMessageInputReferencePeriodScenario(Map<String, String> block)
             throws Exception {
         MT940Message mt940Message = new MT940Message();
         MTParser.parse(block, mt940Message);
     }
 
-    @Test(dataProvider = "parserApplicationHeaderOutputDate", dataProviderClass = MTParserConstants.class)
+    @Test(dataProvider = "parserApplicationHeaderOutputDate", dataProviderClass = MTParserTestConstants.class)
     public void testParserApplicationHeaderOutputDateScenario(Map<String, String> block,
                                      ApplicationHeaderBlock applicationHeaderBlock) throws Exception {
         MT940Message mt940Message = new MT940Message();
@@ -325,13 +327,13 @@ public class MTParserTests {
 
     @Test(expectedExceptions = MTMessageParsingException.class,
             expectedExceptionsMessageRegExp = "Application header block is not in the correct format",
-            dataProvider = "parserInvalidApplicationHeaderOutputDate", dataProviderClass = MTParserConstants.class)
+            dataProvider = "parserInvalidApplicationHeaderOutputDate", dataProviderClass = MTParserTestConstants.class)
     public void testParserInvalidApplicationHeaderOutputDateScenario(Map<String, String> block) throws Exception {
         MT940Message mt940Message = new MT940Message();
         MTParser.parse(block, mt940Message);
     }
 
-    @Test(dataProvider = "parserApplicationHeaderOutputTime", dataProviderClass = MTParserConstants.class)
+    @Test(dataProvider = "parserApplicationHeaderOutputTime", dataProviderClass = MTParserTestConstants.class)
     public void testParserApplicationHeaderOutputTimeScenario(Map<String, String> block,
                                      ApplicationHeaderBlock applicationHeaderBlock) throws Exception {
         MT940Message mt940Message = new MT940Message();
@@ -343,7 +345,7 @@ public class MTParserTests {
 
     @Test(expectedExceptions = MTMessageParsingException.class,
             expectedExceptionsMessageRegExp = "Application header block is not in the correct format",
-            dataProvider = "parserInvalidApplicationHeaderOutputTime", dataProviderClass = MTParserConstants.class)
+            dataProvider = "parserInvalidApplicationHeaderOutputTime", dataProviderClass = MTParserTestConstants.class)
     public void testParserInvalidApplicationHeaderOutputTimeScenario(Map<String, String> block) throws Exception {
         MT940Message mt940Message = new MT940Message();
         MTParser.parse(block, mt940Message);
