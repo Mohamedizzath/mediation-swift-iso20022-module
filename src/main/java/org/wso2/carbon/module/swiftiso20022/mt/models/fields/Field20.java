@@ -20,9 +20,7 @@ package org.wso2.carbon.module.swiftiso20022.mt.models.fields;
 
 import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
 import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
-import org.wso2.carbon.module.swiftiso20022.utils.MTParserUtils;
 
-import java.util.Optional;
 import java.util.regex.Matcher;
 
 /**
@@ -66,11 +64,10 @@ public class Field20 {
      * @throws MTMessageParsingException
      */
     public static Field20 parse(String field20String) throws MTMessageParsingException {
-        Optional<Matcher> field20Matcher = MTParserUtils.getRegexMatcher(
-                MTParserConstants.FIELD_20_REGEX_PATTERN, field20String);
+        Matcher field20Matcher = MTParserConstants.FIELD_20_REGEX_PATTERN.matcher(field20String);
 
-        if (field20Matcher.isPresent()) {
-            return new Field20().withValue(field20Matcher.get().group(1));
+        if (field20Matcher.matches()) {
+            return new Field20().withValue(field20Matcher.group(1));
         } else {
             throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_FORMAT,
                     Field20.TAG));

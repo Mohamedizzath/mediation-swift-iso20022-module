@@ -64,7 +64,8 @@ public class MTParserConstants {
             "([\\d,]{1,15})([A-Z])([A-Z0-9]{3})([a-zA-Z0-9/\\-?:().,'+ ]{1,35})" +
             "(//([a-zA-Z0-9/\\-?:().,'+ ]{1,35}))?(\\R([a-zA-Z0-9/\\-?:().,'+ ]{1,34}))?$");
     public static final Pattern FIELD_86_REGEX_PATTERN = Pattern.compile(
-            "^((\\R)?([a-zA-Z0-9/\\-?:().,'+ ]{1,65})){1,6}$");
+            "^([a-zA-Z0-9/\\-?:().,'+ ]{1,65}" +
+                   "(\\R[a-zA-Z0-9/\\-?:().,'+ ]{1,65}){0,5})$");
     public static final Pattern FIELD_62F_REGEX_PATTERN = Pattern.compile(
             "^(D|C)([0-9]{6})([A-Z]{3})([\\d,]{1,15})$");
     public static final Pattern FIELD_62M_REGEX_PATTERN = Pattern.compile(

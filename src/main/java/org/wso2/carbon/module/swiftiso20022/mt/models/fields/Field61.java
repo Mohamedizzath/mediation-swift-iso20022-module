@@ -20,9 +20,7 @@ package org.wso2.carbon.module.swiftiso20022.mt.models.fields;
 
 import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
 import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
-import org.wso2.carbon.module.swiftiso20022.utils.MTParserUtils;
 
-import java.util.Optional;
 import java.util.regex.Matcher;
 
 /**
@@ -256,20 +254,19 @@ public class Field61 {
      * @throws MTMessageParsingException
      */
     public static Field61 parse(String field61String) throws MTMessageParsingException {
-        Optional<Matcher> field61Matcher = MTParserUtils.getRegexMatcher(
-                MTParserConstants.FIELD_61_REGEX_PATTERN, field61String);
+        Matcher field61Matcher = MTParserConstants.FIELD_61_REGEX_PATTERN.matcher(field61String);
 
-        if (field61Matcher.isPresent()) {
-            return new Field61().withValueDate(field61Matcher.get().group(1))
-                    .withEntryDate(field61Matcher.get().group(2))
-                    .withDCMark(field61Matcher.get().group(3))
-                    .withFundsCode(field61Matcher.get().group(4))
-                    .withAmount(field61Matcher.get().group(5))
-                    .withTransactionType(field61Matcher.get().group(6))
-                    .withIdentificationCode(field61Matcher.get().group(7))
-                    .withRefToAccountOwner(field61Matcher.get().group(8))
-                    .withRefToAccountServicingInstitution(field61Matcher.get().group(10))
-                    .withSupplementaryDetails(field61Matcher.get().group(12));
+        if (field61Matcher.matches()) {
+            return new Field61().withValueDate(field61Matcher.group(1))
+                    .withEntryDate(field61Matcher.group(2))
+                    .withDCMark(field61Matcher.group(3))
+                    .withFundsCode(field61Matcher.group(4))
+                    .withAmount(field61Matcher.group(5))
+                    .withTransactionType(field61Matcher.group(6))
+                    .withIdentificationCode(field61Matcher.group(7))
+                    .withRefToAccountOwner(field61Matcher.group(8))
+                    .withRefToAccountServicingInstitution(field61Matcher.group(10))
+                    .withSupplementaryDetails(field61Matcher.group(12));
         } else {
             throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_FORMAT,
                     Field61.TAG));
