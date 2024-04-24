@@ -142,7 +142,8 @@ public class MT103BlockFormatValidator {
                 // check if tag is allowed to be repeated
                 if (!FIELDS_WITH_REPETITIONS_ALLOWED.contains(tag)) {
                     return new ValidationResult(
-                            String.format(ConnectorConstants.ERROR_FIELD_REPEATED, tag, ConnectorConstants.TEXT_BLOCK));
+                            String.format(ConnectorConstants.ERROR_FIELD_REPEATED,
+                                    ALLOWED_FIELDS.get(matchingIndex), ConnectorConstants.TEXT_BLOCK));
                 }
 
                 // check if the order is wrong

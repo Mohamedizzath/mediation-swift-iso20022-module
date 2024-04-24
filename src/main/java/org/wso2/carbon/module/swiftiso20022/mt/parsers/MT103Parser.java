@@ -19,8 +19,10 @@
 package org.wso2.carbon.module.swiftiso20022.mt.parsers;
 
 import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
+import org.wso2.carbon.module.swiftiso20022.mt.format.validators.MT103BlockFormatValidator;
 import org.wso2.carbon.module.swiftiso20022.mt.models.messages.MT103Message;
 import org.wso2.carbon.module.swiftiso20022.utils.MTParserUtils;
+import org.wso2.carbon.module.swiftiso20022.validation.common.ValidationResult;
 
 import java.util.Map;
 
@@ -32,7 +34,13 @@ public class MT103Parser {
     public static MT103Message parse(String mt103Message) throws MTMessageParsingException {
 
         Map<String, String> blocks = MTParserUtils.getMessageBlocks(mt103Message);
-        // TODO: Do the format validations
+
+        ValidationResult validationResult = MT103BlockFormatValidator.validateMTMessageBlockFormat(blocks);
+
+        if (validationResult.isNotValid()) {
+            throw new MTMessageParsingException(validationResult.getErrorMessage());
+        }
+
         MT103Message mt103MessageModel = new MT103Message();
         MTParser.parse(blocks, mt103MessageModel);
         // TODO: implement parsing logic for the text block and set the text block

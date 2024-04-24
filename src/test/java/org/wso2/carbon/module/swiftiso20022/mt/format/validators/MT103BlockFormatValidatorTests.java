@@ -16,17 +16,17 @@
  * under the License.
  */
 
-package org.wso2.carbon.module.swiftiso20022;
+package org.wso2.carbon.module.swiftiso20022.mt.format.validators;
 
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
-import org.wso2.carbon.module.swiftiso20022.mt.format.validators.MT103BlockFormatValidator;
 import org.wso2.carbon.module.swiftiso20022.validation.common.ValidationResult;
 
 import java.util.Map;
+import java.util.regex.Pattern;
 
 /**
  * Test class for MTBlockFormatFormatValidator.
@@ -76,10 +76,6 @@ public class MT103BlockFormatValidatorTests {
                 {"{119:STP}"},
                 {"{CHK:1234567890ABC}"},
                 {"\n:20:TXNREF1234567890:\n:23B:CRED\n"},
-                {"\n:20:TXNREF1234567890\n:45:Some Value\n"},
-                {"\n:20:TXNREF1234567890\n:20:TXNREF1234567890\n:23B:CRED\n"},
-                {"\n:23B:CRED\n:20:TXNREF1234567890"},
-                {"\n:20:TXNREF1234567890\n:23E:CHQB\n:26T:K90\n:23E:TELI/3226553478"},
         };
     }
 
@@ -90,21 +86,46 @@ public class MT103BlockFormatValidatorTests {
                 Map.of(ConnectorConstants.TEXT_BLOCK_KEY, textBlock));
 
         Assert.assertTrue(validationResult.isNotValid());
+        Assert.assertEquals("Text Block format is invalid", validationResult.getErrorMessage());
     }
 
-    @DataProvider(name = "invalidBlockFormatsDataProvider")
-    Object[][] getInvalidBlockFormatsDataProvider() {
+    @DataProvider(name = "invalidFieldRepetitionsDataProvider")
+    Object[][] getInvalidFieldRepetitionsDataProvider() {
         return new Object[][] {
-                {Map.of(ConnectorConstants.USER_HEADER_BLOCK_KEY, "{111:value}{121:another value}")},
-                {Map.of(ConnectorConstants.TRAILER_BLOCK_KEY, "{CHK:1234567890ABC}{121:some value}")}
+                {"\n:20:TXNREF1234567890\n:20:TXNREF1234567890\n:23B:CRED\n"},
+                {"\n:20:TXNREF1234567890\n:50A:CHQB\n:50F:TELI/3226553478"},
         };
     }
 
-    @Test(dataProvider = "invalidBlockFormatsDataProvider")
-    public void testInvalidBlockFormats(Map<String, String> blocks) {
+    @Test(dataProvider = "invalidFieldRepetitionsDataProvider")
+    public void testInvalidFieldRepetitions(String textBlock) {
 
-        ValidationResult validationResult = MT103BlockFormatValidator.validateMTMessageBlockFormat(blocks);
+        ValidationResult validationResult = MT103BlockFormatValidator.validateMTMessageBlockFormat(
+                Map.of(ConnectorConstants.TEXT_BLOCK_KEY, textBlock));
 
         Assert.assertTrue(validationResult.isNotValid());
+        Assert.assertTrue(Pattern.matches(
+                "Field .* in Text Block cannot repeat",
+                validationResult.getErrorMessage()));
+    }
+
+    @DataProvider(name = "invalidFieldOrderDataProvider")
+    Object[][] getInvalidFieldOrderDataProvider() {
+        return new Object[][] {
+                {"\n:23B:CRED\n:20:TXNREF1234567890"},
+                {"\n:20:TXNREF1234567890\n:23E:CHQB\n:26T:K90\n:23E:TELI/3226553478"},
+        };
+    }
+
+    @Test(dataProvider = "invalidFieldOrderDataProvider")
+    public void testInvalidFieldOrder(String textBlock) {
+
+        ValidationResult validationResult = MT103BlockFormatValidator.validateMTMessageBlockFormat(
+                Map.of(ConnectorConstants.TEXT_BLOCK_KEY, textBlock));
+
+        Assert.assertTrue(validationResult.isNotValid());
+        Assert.assertTrue(Pattern.matches(
+                "Order of field .* in Text Block is invalid",
+                validationResult.getErrorMessage()));
     }
 }

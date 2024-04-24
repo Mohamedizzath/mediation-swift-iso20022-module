@@ -169,7 +169,7 @@ public class ConnectorConstants {
     public static final String ERROR_LINE_COUNT = "Field %s should not contain more than %s lines";
     public static final String ERROR_INCORRECT_FORMAT = "%s is incorrectly formatted";
     public static final String ERROR_INVALID_FIELD_AND_VALUE = "\"%s\" in %s is invalid";
-    public static final String ERROR_FIELD_REPEATED = "%s in %s cannot repeated";
+    public static final String ERROR_FIELD_REPEATED = "Field %s in %s cannot repeat";
     public static final String ERROR_FIELD_INVALID_IN_BLOCK = "Value of field %s in %s is invalid";
     public static final String ERROR_FIELD_NOT_ALLOWED_IN_BLOCK = "%s field is not allowed in %s";
     public static final String ERROR_111_BEFORE_121 =
