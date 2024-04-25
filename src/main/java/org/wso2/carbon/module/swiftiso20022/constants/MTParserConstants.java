@@ -46,31 +46,4 @@ public class MTParserConstants {
     public static final String INVALID_TEXT_BLOCK = "Text block is not in the correct format";
     public static final String TEXT_BLOCK_FIELD_REGEX = "^(\\d{2}[a-zA-Z]?):(.*)$";
     public static final String INVALID_FIELD_FORMAT = "%s field not in the correct format";
-    public static final Pattern FIELD_20_REGEX_PATTERN = Pattern.compile(
-            "^([a-zA-Z0-9/\\-?:().,'+ ]{1,16})$");
-    public static final Pattern FIELD_21_REGEX_PATTERN = Pattern.compile(
-            "^([a-zA-Z0-9/\\-?:().,'+ ]{1,16})$");
-    public static final Pattern FIELD_25_REGEX_PATTERN = Pattern.compile(
-            "^([a-zA-Z0-9/\\-?:().,'+ ]{1,35})$");
-    public static final Pattern FIELD_25P_REGEX_PATTERN = Pattern.compile(
-            "^([a-zA-Z0-9/\\-?:().,'+ ]{1,35})(\\R([A-Z]{6}[A-Z0-9]{2}([A-Z0-9]{3})?))?$");
-    public static final Pattern FIELD_28C_REGEX_PATTERN = Pattern.compile("^(\\d{1,5})(/(\\d{1,5}))?$");
-    public static final Pattern FIELD_60F_REGEX_PATTERN = Pattern.compile(
-            "^(D|C)([0-9]{6})([A-Z]{3})([\\d,]{1,15})$");
-    public static final Pattern FIELD_60M_REGEX_PATTERN = Pattern.compile(
-            "^(D|C)([0-9]{6})([A-Z]{3})([\\d,]{1,15})$");
-    public static final Pattern FIELD_61_REGEX_PATTERN = Pattern.compile("^(\\d{6})(\\d{4})?(C|D|RC|RD)([A-Z])?" +
-            "([\\d,]{1,15})([A-Z])([A-Z0-9]{3})([a-zA-Z0-9/\\-?:().,'+ ]{1,35})" +
-            "(//([a-zA-Z0-9/\\-?:().,'+ ]{1,35}))?(\\R([a-zA-Z0-9/\\-?:().,'+ ]{1,34}))?$");
-    public static final Pattern FIELD_86_REGEX_PATTERN = Pattern.compile(
-            "^([a-zA-Z0-9/\\-?:().,'+ ]{1,65}" +
-                   "(\\R[a-zA-Z0-9/\\-?:().,'+ ]{1,65}){0,5})$");
-    public static final Pattern FIELD_62F_REGEX_PATTERN = Pattern.compile(
-            "^(D|C)([0-9]{6})([A-Z]{3})([\\d,]{1,15})$");
-    public static final Pattern FIELD_62M_REGEX_PATTERN = Pattern.compile(
-            "^(D|C)([0-9]{6})([A-Z]{3})([\\d,]{1,15})$");
-    public static final Pattern FIELD_64_REGEX_PATTERN = Pattern.compile(
-            "^(D|C)([0-9]{6})([A-Z]{3})([\\d,]{1,15})$");
-    public static final Pattern FIELD_65_REGEX_PATTERN = Pattern.compile(
-            "^(D|C)([0-9]{6})([A-Z]{3})([\\d,]{1,15})$");
 }

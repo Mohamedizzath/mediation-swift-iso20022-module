@@ -18,6 +18,7 @@
 
 package org.wso2.carbon.module.swiftiso20022.mt.models.fields;
 
+import org.wso2.carbon.module.swiftiso20022.constants.MT940ParserConstants;
 import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
 import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
 
@@ -63,7 +64,7 @@ public class Field86 {
      * @throws MTMessageParsingException
      */
     public static Field86 parse(String field86String) throws MTMessageParsingException {
-        Matcher field86Matcher = MTParserConstants.FIELD_86_REGEX_PATTERN.matcher(field86String);
+        Matcher field86Matcher = MT940ParserConstants.FIELD_86_REGEX_PATTERN.matcher(field86String);
 
         if (field86Matcher.matches()) {
             return new Field86().withValue(field86Matcher.group(1));

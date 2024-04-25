@@ -18,6 +18,7 @@
 
 package org.wso2.carbon.module.swiftiso20022.mt.models.fields;
 
+import org.wso2.carbon.module.swiftiso20022.constants.MT940ParserConstants;
 import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
 import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
 
@@ -254,9 +255,54 @@ public class Field61 {
      * @throws MTMessageParsingException
      */
     public static Field61 parse(String field61String) throws MTMessageParsingException {
-        Matcher field61Matcher = MTParserConstants.FIELD_61_REGEX_PATTERN.matcher(field61String);
+        Matcher field61Matcher = MT940ParserConstants.FIELD_61_REGEX_PATTERN.matcher(field61String);
 
         if (field61Matcher.matches()) {
+            // Extract the Ref to account owner and Ref to account servicing institution
+            String references = field61Matcher.group(8);
+
+            String refToAccOwner = null;
+            String refToAccServicingInstitute = null;
+
+            if (references.contains(MT940ParserConstants.FIELD_61_REFS_DIVIDER)) {
+                // String contains both reference
+                String[] referencesList = references.split(MT940ParserConstants.FIELD_61_REFS_DIVIDER);
+
+                if (referencesList.length != 2) {
+                    throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_FORMAT,
+                            Field61.TAG));
+                }
+
+                // Matching the ref to account owner
+                Matcher field61RefToAccOwnerMatcher = MT940ParserConstants.FIELD_61_REFTOACCOWNER_REGEX
+                        .matcher(referencesList[0]);
+                if (!field61RefToAccOwnerMatcher.matches()) {
+                    throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_FORMAT,
+                            Field61.TAG));
+                }
+                refToAccOwner = referencesList[0];
+
+                // Matching the ref to account servicing institution
+                Matcher field61RefToAccServicingInstituteMatcher =
+                        MT940ParserConstants.FIELD_61_REFTOACCSERVICEINSTITUTION_REGEX.matcher(referencesList[1]);
+                if (!field61RefToAccServicingInstituteMatcher.matches()) {
+                    throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_FORMAT,
+                            Field61.TAG));
+                }
+                refToAccServicingInstitute = referencesList[1];
+            } else {
+                // String only contains account owner references and matching the ref to account owner
+                Matcher field61RefToAccOwnerMatcher = MT940ParserConstants.FIELD_61_REFTOACCOWNER_REGEX
+                        .matcher(references);
+
+                if (!field61RefToAccOwnerMatcher.matches()) {
+                    throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_FORMAT,
+                            Field61.TAG));
+                }
+
+                refToAccOwner = references;
+            }
+
             return new Field61().withValueDate(field61Matcher.group(1))
                     .withEntryDate(field61Matcher.group(2))
                     .withDCMark(field61Matcher.group(3))
@@ -264,9 +310,9 @@ public class Field61 {
                     .withAmount(field61Matcher.group(5))
                     .withTransactionType(field61Matcher.group(6))
                     .withIdentificationCode(field61Matcher.group(7))
-                    .withRefToAccountOwner(field61Matcher.group(8))
-                    .withRefToAccountServicingInstitution(field61Matcher.group(10))
-                    .withSupplementaryDetails(field61Matcher.group(12));
+                    .withRefToAccountOwner(refToAccOwner)
+                    .withRefToAccountServicingInstitution(refToAccServicingInstitute)
+                    .withSupplementaryDetails(field61Matcher.group(10));
         } else {
             throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_FORMAT,
                     Field61.TAG));

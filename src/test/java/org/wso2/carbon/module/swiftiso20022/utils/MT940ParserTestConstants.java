@@ -421,7 +421,7 @@ public class MT940ParserTestConstants {
                         List.of(":61:2310011001RCD10,00ACHPGSGWGDNCTAHQM8\n",
                             ":86:EREF/GSGWGDNCTAHQM8/PREF/RP/GS/CTFILERP0002/CTBA0003\n",
                             ":61:2310011001DD10,00ACHPNONREF\n",
-                            ":61:2310011001CD10,00ASHP20230928LTERMID2000003//ADDITIONAL INFO\nADDITIONAL INFO\n")),
+                            ":61:2310011001CD10,00ASHP20230928LTERMID2//ADDITIONAL INFO\nADDITIONAL INFO\n")),
                     getMT940TextBlock(Map.ofEntries(Map.entry("Field20", "258158850"),
                         Map.entry("Field21", "258158850"), Map.entry("Field25", "DD01100056869"),
                         Map.entry("Field28CStmtNumber", "1"), Map.entry("Field28CSeqNumber", "1"),
@@ -455,12 +455,32 @@ public class MT940ParserTestConstants {
         };
     }
 
+    @DataProvider(name = "validTransactionReferenceNumber")
+    Object[][] parseValidTransactionReferenceNumber() {
+        return new Object[][]{
+                { getMT940TextBlockText(Map.of("Field20", ":20:25\n"), List.of()),
+                        getMT940TextBlock(Map.of("Field20", "25"), List.of()) },
+                { getMT940TextBlockText(Map.of("Field20", ":20:2581588502581588\n"), List.of()),
+                        getMT940TextBlock(Map.of("Field20", "2581588502581588"), List.of()) },
+        };
+    }
+
     @DataProvider(name = "invalidTransactionReferenceNumber")
     Object[][] parseInvalidTransactionReferenceNumber() {
         return new Object[][]{
             { getMT940TextBlockText(Map.of("Field20", ":20:\n"), List.of()) },
             { getMT940TextBlockText(Map.of("Field20", ":20:<<<1234>>>>\n"), List.of()) },
             { getMT940TextBlockText(Map.of("Field20", ":20:258158850258158850258158850258158850\n"), List.of()) }
+        };
+    }
+
+    @DataProvider(name = "validRelatedReference")
+    Object[][] parseValidRelatedReference() {
+        return new Object[][]{
+                { getMT940TextBlockText(Map.of("Field21", ":21:25\n"), List.of()),
+                        getMT940TextBlock(Map.of("Field21", "25"), List.of()) },
+                { getMT940TextBlockText(Map.of("Field21", ":21:2581588502581588\n"), List.of()),
+                        getMT940TextBlock(Map.of("Field21", "2581588502581588"), List.of()) },
         };
     }
 
@@ -473,6 +493,19 @@ public class MT940ParserTestConstants {
         };
     }
 
+    @DataProvider(name = "validAccountIdentification")
+    Object[][] parseValidAccIdentification() {
+        return new Object[][]{
+                { getMT940TextBlockText(Map.of("Field25", ":25:DD\n"), List.of()),
+                        getMT940TextBlock(Map.of("Field25", "DD"), List.of()) },
+                { getMT940TextBlockText(Map.of("Field25", ":25:DD01100056869\n"), List.of()),
+                        getMT940TextBlock(Map.of("Field25", "DD01100056869"), List.of()) },
+                { getMT940TextBlockText(Map.of("Field25", ":25:DD01100056869DD01100056869DD0110005\n")
+                        , List.of()),
+                        getMT940TextBlock(Map.of("Field25", "DD01100056869DD01100056869DD0110005"), List.of()) }
+        };
+    }
+
     @DataProvider(name = "invalidAccountIdentification")
     Object[][] parseInvalidAccIdentification() {
         return new Object[][]{
@@ -480,6 +513,25 @@ public class MT940ParserTestConstants {
                 { getMT940TextBlockText(Map.of("Field25", ":25:<<<1234>>>>\n"), List.of()) },
                 { getMT940TextBlockText(Map.of("Field25", ":25:DD01100056869DD01100056869DD01100056869\n"),
                         List.of()) }
+        };
+    }
+
+    @DataProvider(name = "validAccountIdentificationOptP")
+    Object[][] parseValidAccIdentificationOptP() {
+        return new Object[][]{
+                { getMT940TextBlockText(Map.of("Field25P", ":25P:DD\nGSCRUS30XXX\n"), List.of()),
+                        getMT940TextBlock(Map.of("Field25PAccount", "DD",
+                                "Field25PIdentifierCode", "GSCRUS30XXX"), List.of()) },
+                { getMT940TextBlockText(Map.of("Field25P", ":25P:DD01100056869\nGSCRUS30XXX\n"), List.of()),
+                        getMT940TextBlock(Map.of("Field25PAccount", "DD01100056869",
+                                "Field25PIdentifierCode", "GSCRUS30XXX"), List.of()) },
+                { getMT940TextBlockText(Map.of("Field25P", ":25P:DD01100056869DD01100056869DD0110005" +
+                                "\nGSCRUS30XXX\n"), List.of()),
+                        getMT940TextBlock(Map.of("Field25PAccount", "DD01100056869DD01100056869DD0110005",
+                                "Field25PIdentifierCode", "GSCRUS30XXX"), List.of()) },
+                { getMT940TextBlockText(Map.of("Field25P", ":25P:DD01100056869\nGSCRUS30\n"), List.of()),
+                        getMT940TextBlock(Map.of("Field25PAccount", "DD01100056869",
+                                "Field25PIdentifierCode", "GSCRUS30"), List.of()) },
         };
     }
 
@@ -497,6 +549,25 @@ public class MT940ParserTestConstants {
         };
     }
 
+    @DataProvider(name = "validStmtSeqNumber")
+    Object[][] parseValidStmtSeqNumber() {
+        return new Object[][]{
+                { getMT940TextBlockText(Map.of("Field28C", ":28C:12\n"), List.of()),
+                        getMT940TextBlock(Map.of("Field28CStmtNumber", "12"), List.of())},
+                { getMT940TextBlockText(Map.of("Field28C", ":28C:12510\n"), List.of()),
+                        getMT940TextBlock(Map.of("Field28CStmtNumber", "12510"), List.of())},
+                { getMT940TextBlockText(Map.of("Field28C", ":28C:12/12\n"), List.of()),
+                        getMT940TextBlock(Map.of("Field28CStmtNumber", "12", "Field28CSeqNumber", "12"),
+                                List.of())},
+                { getMT940TextBlockText(Map.of("Field28C", ":28C:12/12510\n"), List.of()),
+                        getMT940TextBlock(Map.of("Field28CStmtNumber", "12", "Field28CSeqNumber", "12510"),
+                                List.of())},
+                { getMT940TextBlockText(Map.of("Field28C", ":28C:12891/12510\n"), List.of()),
+                        getMT940TextBlock(Map.of("Field28CStmtNumber", "12891", "Field28CSeqNumber", "12510"),
+                                List.of())},
+        };
+    }
+
     @DataProvider(name = "invalidStmtSeqNumber")
     Object[][] parseInvalidStmtSeqNumber() {
         return new Object[][]{
@@ -507,6 +578,24 @@ public class MT940ParserTestConstants {
                 { getMT940TextBlockText(Map.of("Field28C", ":28C:12*12\n"), List.of()) },
                 { getMT940TextBlockText(Map.of("Field28C", ":28C:12/ABC\n"), List.of()) },
                 { getMT940TextBlockText(Map.of("Field28C", ":28C:12/1204056\n"), List.of()) },
+        };
+    }
+
+    @DataProvider(name = "validOpeningBalanceOptF")
+    Object[][] parseValidOpeningBalanceOptF() {
+        return new Object[][]{
+                { getMT940TextBlockText(Map.of("Field60F", ":60F:D230930USD843686,20\n"), List.of()),
+                getMT940TextBlock(Map.of("Field60FDCMark", "D", "Field60FDate", "230930",
+                          "Field60FCurrency", "USD", "Field60FAmount", "843686,20"), List.of())},
+                { getMT940TextBlockText(Map.of("Field60F", ":60F:C230930USD843686,20\n"), List.of()),
+                getMT940TextBlock(Map.of("Field60FDCMark", "C", "Field60FDate", "230930",
+                    "Field60FCurrency", "USD", "Field60FAmount", "843686,20"), List.of())},
+                { getMT940TextBlockText(Map.of("Field60F", ":60F:D230930USD8\n"), List.of()),
+                getMT940TextBlock(Map.of("Field60FDCMark", "D", "Field60FDate", "230930",
+                        "Field60FCurrency", "USD", "Field60FAmount", "8"), List.of())},
+                { getMT940TextBlockText(Map.of("Field60F", ":60F:D230930USD843686843686,20\n"), List.of()),
+                getMT940TextBlock(Map.of("Field60FDCMark", "D", "Field60FDate", "230930",
+                        "Field60FCurrency", "USD", "Field60FAmount", "843686843686,20"), List.of())},
         };
     }
 
@@ -530,6 +619,24 @@ public class MT940ParserTestConstants {
         };
     }
 
+    @DataProvider(name = "validOpeningBalanceOptM")
+    Object[][] parseValidOpeningBalanceOptM() {
+        return new Object[][]{
+                { getMT940TextBlockText(Map.of("Field60M", ":60M:D230930USD843686,20\n"), List.of()),
+                        getMT940TextBlock(Map.of("Field60MDCMark", "D", "Field60MDate", "230930",
+                                "Field60MCurrency", "USD", "Field60MAmount", "843686,20"), List.of())},
+                { getMT940TextBlockText(Map.of("Field60M", ":60M:C230930USD843686,20\n"), List.of()),
+                        getMT940TextBlock(Map.of("Field60MDCMark", "C", "Field60MDate", "230930",
+                                "Field60MCurrency", "USD", "Field60MAmount", "843686,20"), List.of())},
+                { getMT940TextBlockText(Map.of("Field60M", ":60M:D230930USD8\n"), List.of()),
+                        getMT940TextBlock(Map.of("Field60MDCMark", "D", "Field60MDate", "230930",
+                                "Field60MCurrency", "USD", "Field60MAmount", "8"), List.of())},
+                { getMT940TextBlockText(Map.of("Field60M", ":60M:D230930USD843686843686,20\n"), List.of()),
+                        getMT940TextBlock(Map.of("Field60MDCMark", "D", "Field60MDate", "230930",
+                                "Field60MCurrency", "USD", "Field60MAmount", "843686843686,20"), List.of())},
+        };
+    }
+
     @DataProvider(name = "invalidOpeningBalanceOptM")
     Object[][] parseInvalidOpeningBalanceOptM() {
         return new Object[][]{
@@ -549,6 +656,120 @@ public class MT940ParserTestConstants {
                         List.of()) }
         };
     }
+
+    @DataProvider(name = "validStmtLine")
+    Object[][] parseValidStatementLine() {
+        return new Object[][]{
+                {getMT940TextBlockText(Map.of(), List.of(":61:2310011001RCD10,00ACHPGSGWGDNCTAHQM8" +
+                        "//ADDITIONAL INFO\nEREF/GSGWGDNCTAHQM8\n")),
+                 getMT940TextBlock(Map.of(), List.of(Map.of("Field61ValueDate", "231001",
+                         "Field61EntryDate", "1001", "Field61DCMark", "RC",
+                         "Field61FundsCode", "D", "Field61Amount", "10,00",
+                         "Field61TransactionType", "A", "Field61IdentificationCode", "CHP",
+                         "Field61RefToAccountOwner", "GSGWGDNCTAHQM8",
+                         "Field61RefToAccountServicingInstitution", "ADDITIONAL INFO",
+                         "Field61SupplementaryDetails", "EREF/GSGWGDNCTAHQM8")))},
+                {getMT940TextBlockText(Map.of(), List.of(":61:231001RCD10,00ACHPGSGWGDNCTAHQM8" +
+                        "//ADDITIONAL INFO\nEREF/GSGWGDNCTAHQM8\n")),
+                        getMT940TextBlock(Map.of(), List.of(Map.of("Field61ValueDate", "231001",
+                        "Field61DCMark", "RC", "Field61FundsCode", "D", "Field61Amount", "10,00",
+                        "Field61TransactionType", "A", "Field61IdentificationCode", "CHP",
+                        "Field61RefToAccountOwner", "GSGWGDNCTAHQM8",
+                        "Field61RefToAccountServicingInstitution", "ADDITIONAL INFO",
+                        "Field61SupplementaryDetails", "EREF/GSGWGDNCTAHQM8")))},
+                {getMT940TextBlockText(Map.of(), List.of(":61:2310011001RC10,00ACHPGSGWGDNCTAHQM8" +
+                        "//ADDITIONAL INFO\nEREF/GSGWGDNCTAHQM8\n")),
+                        getMT940TextBlock(Map.of(), List.of(Map.of("Field61ValueDate", "231001",
+                        "Field61EntryDate", "1001", "Field61DCMark", "RC", "Field61Amount", "10,00",
+                        "Field61TransactionType", "A", "Field61IdentificationCode", "CHP",
+                        "Field61RefToAccountOwner", "GSGWGDNCTAHQM8",
+                        "Field61RefToAccountServicingInstitution", "ADDITIONAL INFO",
+                        "Field61SupplementaryDetails", "EREF/GSGWGDNCTAHQM8")))},
+                {getMT940TextBlockText(Map.of(), List.of(":61:2310011001RCD1ACHPGSGWGDNCTAHQM8" +
+                        "//ADDITIONAL INFO\nEREF/GSGWGDNCTAHQM8\n")),
+                        getMT940TextBlock(Map.of(), List.of(Map.of("Field61ValueDate", "231001",
+                        "Field61EntryDate", "1001", "Field61DCMark", "RC",
+                        "Field61FundsCode", "D", "Field61Amount", "1",
+                        "Field61TransactionType", "A", "Field61IdentificationCode", "CHP",
+                        "Field61RefToAccountOwner", "GSGWGDNCTAHQM8",
+                        "Field61RefToAccountServicingInstitution", "ADDITIONAL INFO",
+                        "Field61SupplementaryDetails", "EREF/GSGWGDNCTAHQM8")))},
+                {getMT940TextBlockText(Map.of(), List.of(":61:2310011001RCD105348902112,00ACHPGSGWGDNCTAHQM8" +
+                        "//ADDITIONAL INFO\nEREF/GSGWGDNCTAHQM8\n")),
+                        getMT940TextBlock(Map.of(), List.of(Map.of("Field61ValueDate", "231001",
+                        "Field61EntryDate", "1001", "Field61DCMark", "RC",
+                        "Field61FundsCode", "D", "Field61Amount", "105348902112,00",
+                        "Field61TransactionType", "A", "Field61IdentificationCode", "CHP",
+                        "Field61RefToAccountOwner", "GSGWGDNCTAHQM8",
+                        "Field61RefToAccountServicingInstitution", "ADDITIONAL INFO",
+                        "Field61SupplementaryDetails", "EREF/GSGWGDNCTAHQM8")))},
+                {getMT940TextBlockText(Map.of(), List.of(":61:2310011001RCD10,00ACHPG" +
+                        "//ADDITIONAL INFO\nEREF/GSGWGDNCTAHQM8\n")),
+                        getMT940TextBlock(Map.of(), List.of(Map.of("Field61ValueDate", "231001",
+                        "Field61EntryDate", "1001", "Field61DCMark", "RC",
+                        "Field61FundsCode", "D", "Field61Amount", "10,00",
+                        "Field61TransactionType", "A", "Field61IdentificationCode", "CHP",
+                        "Field61RefToAccountOwner", "G",
+                        "Field61RefToAccountServicingInstitution", "ADDITIONAL INFO",
+                        "Field61SupplementaryDetails", "EREF/GSGWGDNCTAHQM8")))},
+                {getMT940TextBlockText(Map.of(), List.of(":61:2310011001RCD10,00ACHPGSGWGDNCTAHQM8GS" +
+                        "//ADDITIONAL INFO\nEREF/GSGWGDNCTAHQM8\n")),
+                        getMT940TextBlock(Map.of(), List.of(Map.of("Field61ValueDate", "231001",
+                        "Field61EntryDate", "1001", "Field61DCMark", "RC",
+                        "Field61FundsCode", "D", "Field61Amount", "10,00",
+                        "Field61TransactionType", "A", "Field61IdentificationCode", "CHP",
+                        "Field61RefToAccountOwner", "GSGWGDNCTAHQM8GS",
+                        "Field61RefToAccountServicingInstitution", "ADDITIONAL INFO",
+                        "Field61SupplementaryDetails", "EREF/GSGWGDNCTAHQM8")))},
+                {getMT940TextBlockText(Map.of(), List.of(":61:2310011001RCD10,00ACHPGSGWGDNCTAHQM8GS" +
+                        "//ADDITIONAL INFO\nEREF/GSGWGDNCTAHQM8\n")),
+                        getMT940TextBlock(Map.of(), List.of(Map.of("Field61ValueDate", "231001",
+                        "Field61EntryDate", "1001", "Field61DCMark", "RC",
+                        "Field61FundsCode", "D", "Field61Amount", "10,00",
+                        "Field61TransactionType", "A", "Field61IdentificationCode", "CHP",
+                        "Field61RefToAccountOwner", "GSGWGDNCTAHQM8GS",
+                        "Field61RefToAccountServicingInstitution", "ADDITIONAL INFO",
+                        "Field61SupplementaryDetails", "EREF/GSGWGDNCTAHQM8")))},
+                {getMT940TextBlockText(Map.of(), List.of(":61:2310011001RCD10,00ACHPGSGWGDNCTAHQM8" +
+                        "//AD\nEREF/GSGWGDNCTAHQM8\n")),
+                        getMT940TextBlock(Map.of(), List.of(Map.of("Field61ValueDate", "231001",
+                                "Field61EntryDate", "1001", "Field61DCMark", "RC",
+                                "Field61FundsCode", "D", "Field61Amount", "10,00",
+                                "Field61TransactionType", "A", "Field61IdentificationCode", "CHP",
+                                "Field61RefToAccountOwner", "GSGWGDNCTAHQM8",
+                                "Field61RefToAccountServicingInstitution", "AD",
+                                "Field61SupplementaryDetails", "EREF/GSGWGDNCTAHQM8")))},
+                {getMT940TextBlockText(Map.of(), List.of(":61:2310011001RCD10,00ACHPGSGWGDNCTAHQM8" +
+                        "//ADDITIONAL INFOA\nEREF/GSGWGDNCTAHQM8\n")),
+                        getMT940TextBlock(Map.of(), List.of(Map.of("Field61ValueDate", "231001",
+                                "Field61EntryDate", "1001", "Field61DCMark", "RC",
+                                "Field61FundsCode", "D", "Field61Amount", "10,00",
+                                "Field61TransactionType", "A", "Field61IdentificationCode", "CHP",
+                                "Field61RefToAccountOwner", "GSGWGDNCTAHQM8",
+                                "Field61RefToAccountServicingInstitution", "ADDITIONAL INFOA",
+                                "Field61SupplementaryDetails", "EREF/GSGWGDNCTAHQM8")))},
+                {getMT940TextBlockText(Map.of(), List.of(":61:2310011001RCD10,00ACHPGSGWGDNCTAHQM8" +
+                        "//ADDITIONAL INFO\nEREF\n")),
+                        getMT940TextBlock(Map.of(), List.of(Map.of("Field61ValueDate", "231001",
+                                "Field61EntryDate", "1001", "Field61DCMark", "RC",
+                                "Field61FundsCode", "D", "Field61Amount", "10,00",
+                                "Field61TransactionType", "A", "Field61IdentificationCode", "CHP",
+                                "Field61RefToAccountOwner", "GSGWGDNCTAHQM8",
+                                "Field61RefToAccountServicingInstitution", "ADDITIONAL INFO",
+                                "Field61SupplementaryDetails", "EREF")))},
+                {getMT940TextBlockText(Map.of(), List.of(":61:2310011001RCD10,00ACHPGSGWGDNCTAHQM8" +
+                        "//ADDITIONAL INFO\nEREF/GSGWGDNCTAHQM8/EREF/GSGWGDNCT\n")),
+                        getMT940TextBlock(Map.of(), List.of(Map.of("Field61ValueDate", "231001",
+                                "Field61EntryDate", "1001", "Field61DCMark", "RC",
+                                "Field61FundsCode", "D", "Field61Amount", "10,00",
+                                "Field61TransactionType", "A", "Field61IdentificationCode", "CHP",
+                                "Field61RefToAccountOwner", "GSGWGDNCTAHQM8",
+                                "Field61RefToAccountServicingInstitution", "ADDITIONAL INFO",
+                                "Field61SupplementaryDetails", "EREF/GSGWGDNCTAHQM8/EREF/GSGWGDNCT")))},
+        };
+    }
+
+
 
     @DataProvider(name = "invalidStmtLine")
     Object[][] parseInvalidStatementLine() {
@@ -593,6 +814,36 @@ public class MT940ParserTestConstants {
         };
     }
 
+    @DataProvider(name = "validStmtLineInfoAccountOwner")
+    Object[][] parseValidStatementLineInfoAccountOwner() {
+        return new Object[][]{
+                {getMT940TextBlockText(Map.of(), List.of(":61:2310011001RCD10,00ACHPGSGWGDNCTAHQM8\n",
+                        ":86:EREF/GSGWGDNCTAHQM8/PREF/RP/GS/CTFILERP0002/CTBA0003\n")),
+                        getMT940TextBlock(Map.of(), List.of(Map.of("Field61ValueDate", "231001",
+                            "Field61EntryDate", "1001", "Field61DCMark", "RC",
+                            "Field61FundsCode", "D", "Field61Amount", "10,00",
+                            "Field61TransactionType", "A", "Field61IdentificationCode", "CHP",
+                            "Field61RefToAccountOwner", "GSGWGDNCTAHQM8", "Field86",
+                            "EREF/GSGWGDNCTAHQM8/PREF/RP/GS/CTFILERP0002/CTBA0003")))},
+                {getMT940TextBlockText(Map.of(), List.of(":61:2310011001RCD10,00ACHPGSGWGDNCTAHQM8\n",
+                        ":86:EREF/GSGWGDNCTAHQM8/PREF/RP/GS/CTFILERP0002/CTBA0003CTBA000CTA000\n" +
+                                "EREF/GSGWGDNCTAHQM8/PREF/RP/GS/CTFILERP0002/CTBA0003CTBA000CTA000\n" +
+                                "EREF/GSGWGDNCTAHQM8/PREF/RP/GS/CTFILERP0002/CTBA0003CTBA000CTA000\n" +
+                                "EREF/GSGWGDNCTAHQM8/PREF/RP/GS/CTFILERP0002/CTBA0003CTBA000CTA000\n" +
+                                "EREF/GSGWGDNCTAHQM8/PREF/RP/GS/CTFILERP0002/CTBA0003CTBA000CTA000\n")),
+                        getMT940TextBlock(Map.of(), List.of(Map.of("Field61ValueDate", "231001",
+                                "Field61EntryDate", "1001", "Field61DCMark", "RC",
+                                "Field61FundsCode", "D", "Field61Amount", "10,00",
+                                "Field61TransactionType", "A", "Field61IdentificationCode", "CHP",
+                                "Field61RefToAccountOwner", "GSGWGDNCTAHQM8", "Field86",
+                                "EREF/GSGWGDNCTAHQM8/PREF/RP/GS/CTFILERP0002/CTBA0003CTBA000CTA000\n" +
+                                    "EREF/GSGWGDNCTAHQM8/PREF/RP/GS/CTFILERP0002/CTBA0003CTBA000CTA000\n" +
+                                    "EREF/GSGWGDNCTAHQM8/PREF/RP/GS/CTFILERP0002/CTBA0003CTBA000CTA000\n" +
+                                    "EREF/GSGWGDNCTAHQM8/PREF/RP/GS/CTFILERP0002/CTBA0003CTBA000CTA000\n" +
+                                    "EREF/GSGWGDNCTAHQM8/PREF/RP/GS/CTFILERP0002/CTBA0003CTBA000CTA000")))},
+        };
+    }
+
     @DataProvider(name = "invalidStmtLineInfoToAccOwner")
     Object[][] parseInvalidStmtLineInfoToAccOwner() {
         return new Object[][]{
@@ -608,6 +859,23 @@ public class MT940ParserTestConstants {
         };
     }
 
+    @DataProvider(name = "validClosingBalanceOptF")
+    Object[][] parseValidClosingBalanceOptF() {
+        return new Object[][]{
+                { getMT940TextBlockText(Map.of("Field62F", ":62F:D230930USD843686,20\n"), List.of()),
+                        getMT940TextBlock(Map.of("Field62FDCMark", "D", "Field62FDate", "230930",
+                                "Field62FCurrency", "USD", "Field62FAmount", "843686,20"), List.of())},
+                { getMT940TextBlockText(Map.of("Field62F", ":62F:C230930USD843686,20\n"), List.of()),
+                        getMT940TextBlock(Map.of("Field62FDCMark", "C", "Field62FDate", "230930",
+                                "Field62FCurrency", "USD", "Field62FAmount", "843686,20"), List.of())},
+                { getMT940TextBlockText(Map.of("Field62F", ":62F:D230930USD8\n"), List.of()),
+                        getMT940TextBlock(Map.of("Field62FDCMark", "D", "Field62FDate", "230930",
+                                "Field62FCurrency", "USD", "Field62FAmount", "8"), List.of())},
+                { getMT940TextBlockText(Map.of("Field62F", ":62F:D230930USD843686843686,20\n"), List.of()),
+                        getMT940TextBlock(Map.of("Field62FDCMark", "D", "Field62FDate", "230930",
+                                "Field62FCurrency", "USD", "Field62FAmount", "843686843686,20"), List.of())},
+        };
+    }
 
     @DataProvider(name = "invalidClosingBalanceOptF")
     Object[][] parseInvalidClosingBalanceOptF() {
@@ -626,6 +894,24 @@ public class MT940ParserTestConstants {
                 { getMT940TextBlockText(Map.of("Field62F", ":62F:D230930USD\n"), List.of()) },
                 { getMT940TextBlockText(Map.of("Field62F", ":62F:D230930USD843686843686843686843686,20\n"),
                         List.of()) }
+        };
+    }
+
+    @DataProvider(name = "validClosingBalanceOptM")
+    Object[][] parseValidClosingBalanceOptM() {
+        return new Object[][]{
+                { getMT940TextBlockText(Map.of("Field62M", ":62M:D230930USD843686,20\n"), List.of()),
+                        getMT940TextBlock(Map.of("Field62MDCMark", "D", "Field62MDate", "230930",
+                                "Field62MCurrency", "USD", "Field62MAmount", "843686,20"), List.of())},
+                { getMT940TextBlockText(Map.of("Field62M", ":62M:C230930USD843686,20\n"), List.of()),
+                        getMT940TextBlock(Map.of("Field62MDCMark", "C", "Field62MDate", "230930",
+                                "Field62MCurrency", "USD", "Field62MAmount", "843686,20"), List.of())},
+                { getMT940TextBlockText(Map.of("Field62M", ":62M:D230930USD8\n"), List.of()),
+                        getMT940TextBlock(Map.of("Field62MDCMark", "D", "Field62MDate", "230930",
+                                "Field62MCurrency", "USD", "Field62MAmount", "8"), List.of())},
+                { getMT940TextBlockText(Map.of("Field62M", ":62M:D230930USD843686843686,20\n"), List.of()),
+                        getMT940TextBlock(Map.of("Field62MDCMark", "D", "Field62MDate", "230930",
+                                "Field62MCurrency", "USD", "Field62MAmount", "843686843686,20"), List.of())},
         };
     }
 
@@ -649,6 +935,24 @@ public class MT940ParserTestConstants {
         };
     }
 
+    @DataProvider(name = "validClosingAvlBalance")
+    Object[][] parseValidClosingAvlBalance() {
+        return new Object[][]{
+                { getMT940TextBlockText(Map.of("Field64", ":64:D230930USD843686,20\n"), List.of()),
+                        getMT940TextBlock(Map.of("Field64DCMark", "D", "Field64Date", "230930",
+                                "Field64Currency", "USD", "Field64Amount", "843686,20"), List.of())},
+                { getMT940TextBlockText(Map.of("Field64", ":64:C230930USD843686,20\n"), List.of()),
+                        getMT940TextBlock(Map.of("Field64DCMark", "C", "Field64Date", "230930",
+                                "Field64Currency", "USD", "Field64Amount", "843686,20"), List.of())},
+                { getMT940TextBlockText(Map.of("Field64", ":64:D230930USD8\n"), List.of()),
+                        getMT940TextBlock(Map.of("Field64DCMark", "D", "Field64Date", "230930",
+                                "Field64Currency", "USD", "Field64Amount", "8"), List.of())},
+                { getMT940TextBlockText(Map.of("Field64", ":64:D230930USD843686843686,20\n"), List.of()),
+                        getMT940TextBlock(Map.of("Field64DCMark", "D", "Field64Date", "230930",
+                                "Field64Currency", "USD", "Field64Amount", "843686843686,20"), List.of())},
+        };
+    }
+
     @DataProvider(name = "invalidClosingAvlBalance")
     Object[][] parseInvalidClosingAvlBalance() {
         return new Object[][]{
@@ -666,6 +970,24 @@ public class MT940ParserTestConstants {
                 { getMT940TextBlockText(Map.of("Field64", ":64:D230930USD\n"), List.of()) },
                 { getMT940TextBlockText(Map.of("Field64", ":64:D230930USD843686843686843686843686,20\n"),
                         List.of()) }
+        };
+    }
+
+    @DataProvider(name = "validForwardAvlBalance")
+    Object[][] parseValidForwardAvlBalance() {
+        return new Object[][]{
+                { getMT940TextBlockText(Map.of("Field65", ":65:D230930USD843686,20\n"), List.of()),
+                        getMT940TextBlock(Map.of("Field65DCMark", "D", "Field65Date", "230930",
+                                "Field65Currency", "USD", "Field65Amount", "843686,20"), List.of())},
+                { getMT940TextBlockText(Map.of("Field65", ":65:C230930USD843686,20\n"), List.of()),
+                        getMT940TextBlock(Map.of("Field65DCMark", "C", "Field65Date", "230930",
+                                "Field65Currency", "USD", "Field65Amount", "843686,20"), List.of())},
+                { getMT940TextBlockText(Map.of("Field65", ":65:D230930USD8\n"), List.of()),
+                        getMT940TextBlock(Map.of("Field65DCMark", "D", "Field65Date", "230930",
+                                "Field65Currency", "USD", "Field65Amount", "8"), List.of())},
+                { getMT940TextBlockText(Map.of("Field65", ":65:D230930USD843686843686,20\n"), List.of()),
+                        getMT940TextBlock(Map.of("Field65DCMark", "D", "Field65Date", "230930",
+                                "Field65Currency", "USD", "Field65Amount", "843686843686,20"), List.of())},
         };
     }
 

@@ -60,11 +60,27 @@ public class MT940ParserTests {
                 .matches(parsedTextBlock.getForwardAvlBalance()));
     }
 
+    @Test(dataProvider = "validTransactionReferenceNumber", dataProviderClass = MT940ParserTestConstants.class)
+    public void testValidTransRefNumberScenario(String textBlockStr, MT940TextBlock textBlock) throws Exception {
+        MT940TextBlock parsedTextBlock = MT940TextBlock.parse(textBlockStr);
+
+        Assert.assertTrue(new ReflectionEquals(textBlock.getTransactionReferenceNumber())
+                .matches(parsedTextBlock.getTransactionReferenceNumber()));
+    }
+
     @Test(expectedExceptions = MTMessageParsingException.class,
             expectedExceptionsMessageRegExp = "20 field not in the correct format",
             dataProvider = "invalidTransactionReferenceNumber", dataProviderClass = MT940ParserTestConstants.class)
     public void testInvalidTransRefNumberScenario(String textBlockStr) throws Exception {
         MT940TextBlock parsedTextBlock = MT940TextBlock.parse(textBlockStr);
+    }
+
+    @Test(dataProvider = "validRelatedReference", dataProviderClass = MT940ParserTestConstants.class)
+    public void testValidRelatedReference(String textBlockStr, MT940TextBlock textBlock) throws Exception {
+        MT940TextBlock parsedTextBlock = MT940TextBlock.parse(textBlockStr);
+
+        Assert.assertTrue(new ReflectionEquals(textBlock.getRelatedReference())
+                .matches(parsedTextBlock.getRelatedReference()));
     }
 
     @Test(expectedExceptions = MTMessageParsingException.class,
@@ -74,11 +90,27 @@ public class MT940ParserTests {
         MT940TextBlock parsedTextBlock = MT940TextBlock.parse(textBlockStr);
     }
 
+    @Test(dataProvider = "validAccountIdentification", dataProviderClass = MT940ParserTestConstants.class)
+    public void testValidAccIdentificationScenario(String textBlockStr, MT940TextBlock textBlock) throws Exception {
+        MT940TextBlock parsedTextBlock = MT940TextBlock.parse(textBlockStr);
+
+        Assert.assertTrue(new ReflectionEquals(textBlock.getAccountIdentification())
+                .matches(parsedTextBlock.getAccountIdentification()));
+    }
+
     @Test(expectedExceptions = MTMessageParsingException.class,
             expectedExceptionsMessageRegExp = "25 field not in the correct format",
             dataProvider = "invalidAccountIdentification", dataProviderClass = MT940ParserTestConstants.class)
     public void testInvalidAccIdentificationScenario(String textBlockStr) throws Exception {
         MT940TextBlock parsedTextBlock = MT940TextBlock.parse(textBlockStr);
+    }
+
+    @Test(dataProvider = "validAccountIdentificationOptP", dataProviderClass = MT940ParserTestConstants.class)
+    public void testValidAccIdentificationOptPScenario(String textBlockStr, MT940TextBlock textBlock) throws Exception {
+        MT940TextBlock parsedTextBlock = MT940TextBlock.parse(textBlockStr);
+
+        Assert.assertTrue(new ReflectionEquals(textBlock.getAccountIdentificationOptP())
+                .matches(parsedTextBlock.getAccountIdentificationOptP()));
     }
 
     @Test(expectedExceptions = MTMessageParsingException.class,
@@ -88,11 +120,27 @@ public class MT940ParserTests {
         MT940TextBlock parsedTextBlock = MT940TextBlock.parse(textBlockStr);
     }
 
+    @Test(dataProvider = "validStmtSeqNumber", dataProviderClass = MT940ParserTestConstants.class)
+    public void testValidStmtSeqNumberScenario(String textBlockStr, MT940TextBlock textBlock) throws Exception {
+        MT940TextBlock parsedTextBlock = MT940TextBlock.parse(textBlockStr);
+
+        Assert.assertTrue(new ReflectionEquals(textBlock.getStatementSequenceNumber())
+                .matches(parsedTextBlock.getStatementSequenceNumber()));
+    }
+
     @Test(expectedExceptions = MTMessageParsingException.class,
             expectedExceptionsMessageRegExp = "28C field not in the correct format",
             dataProvider = "invalidStmtSeqNumber", dataProviderClass = MT940ParserTestConstants.class)
     public void testInvalidStmtSeqNumberScenario(String textBlockStr) throws Exception {
         MT940TextBlock parsedTextBlock = MT940TextBlock.parse(textBlockStr);
+    }
+
+    @Test(dataProvider = "validOpeningBalanceOptF", dataProviderClass = MT940ParserTestConstants.class)
+    public void testValidOpeningBalanceOptFScenario(String textBlockStr, MT940TextBlock textBlock) throws Exception {
+        MT940TextBlock parsedTextBlock = MT940TextBlock.parse(textBlockStr);
+
+        Assert.assertTrue(new ReflectionEquals(textBlock.getOpeningBalOptF())
+                .matches(parsedTextBlock.getOpeningBalOptF()));
     }
 
     @Test(expectedExceptions = MTMessageParsingException.class,
@@ -102,11 +150,34 @@ public class MT940ParserTests {
         MT940TextBlock parsedTextBlock = MT940TextBlock.parse(textBlockStr);
     }
 
+    @Test(dataProvider = "validOpeningBalanceOptM", dataProviderClass = MT940ParserTestConstants.class)
+    public void testValidOpeningBalanceOptMScenario(String textBlockStr, MT940TextBlock textBlock) throws Exception {
+        MT940TextBlock parsedTextBlock = MT940TextBlock.parse(textBlockStr);
+
+        Assert.assertTrue(new ReflectionEquals(textBlock.getOpeningBalOptM())
+                .matches(parsedTextBlock.getOpeningBalOptM()));
+    }
+
     @Test(expectedExceptions = MTMessageParsingException.class,
             expectedExceptionsMessageRegExp = "60M field not in the correct format",
             dataProvider = "invalidOpeningBalanceOptM", dataProviderClass = MT940ParserTestConstants.class)
     public void testInvalidOpeningBalanceOptMScenario(String textBlockStr) throws Exception {
         MT940TextBlock parsedTextBlock = MT940TextBlock.parse(textBlockStr);
+    }
+
+    @Test(dataProvider = "validStmtLine", dataProviderClass = MT940ParserTestConstants.class)
+    public void testValidStmtLineScenario(String textBlockStr, MT940TextBlock textBlock) throws Exception {
+        MT940TextBlock parsedTextBlock = MT940TextBlock.parse(textBlockStr);
+
+        Assert.assertEquals(parsedTextBlock.getStatementLines().size(), textBlock.getStatementLines().size());
+
+        int statementCount = parsedTextBlock.getStatementLines().size();
+
+        for (int i = 0; i < statementCount; i++) {
+            Assert.assertTrue(new ReflectionEquals(textBlock.getStatementLines().get(i))
+                    .matches(parsedTextBlock.getStatementLines().get(i)));
+        }
+
     }
 
     @Test(expectedExceptions = MTMessageParsingException.class,
@@ -116,11 +187,36 @@ public class MT940ParserTests {
         MT940TextBlock parsedTextBlock = MT940TextBlock.parse(textBlockStr);
     }
 
+    @Test(dataProvider = "validStmtLineInfoAccountOwner", dataProviderClass = MT940ParserTestConstants.class)
+    public void testValidStmtLineInfoToAccOwnerScenario(String textBlockStr, MT940TextBlock textBlock)
+            throws Exception {
+        MT940TextBlock parsedTextBlock = MT940TextBlock.parse(textBlockStr);
+
+        Assert.assertEquals(parsedTextBlock.getStatementLineInfoToAccountOwner().size(),
+                textBlock.getStatementLineInfoToAccountOwner().size());
+
+        int statementCount = parsedTextBlock.getStatementLineInfoToAccountOwner().size();
+
+        for (int i = 0; i < statementCount; i++) {
+            Assert.assertTrue(new ReflectionEquals(textBlock.getStatementLineInfoToAccountOwner().get(i))
+                    .matches(parsedTextBlock.getStatementLineInfoToAccountOwner().get(i)));
+        }
+
+    }
+
     @Test(expectedExceptions = MTMessageParsingException.class,
             expectedExceptionsMessageRegExp = "86 field not in the correct format",
             dataProvider = "invalidStmtLineInfoToAccOwner", dataProviderClass = MT940ParserTestConstants.class)
     public void testInvalidStmtLineInfoToAccOwnerScenario(String textBlockStr) throws Exception {
         MT940TextBlock parsedTextBlock = MT940TextBlock.parse(textBlockStr);
+    }
+
+    @Test(dataProvider = "validClosingBalanceOptF", dataProviderClass = MT940ParserTestConstants.class)
+    public void testValidClosingBalanceOptFScenario(String textBlockStr, MT940TextBlock textBlock) throws Exception {
+        MT940TextBlock parsedTextBlock = MT940TextBlock.parse(textBlockStr);
+
+        Assert.assertTrue(new ReflectionEquals(textBlock.getClosingBalOptF())
+                .matches(parsedTextBlock.getClosingBalOptF()));
     }
 
     @Test(expectedExceptions = MTMessageParsingException.class,
@@ -130,6 +226,14 @@ public class MT940ParserTests {
         MT940TextBlock parsedTextBlock = MT940TextBlock.parse(textBlockStr);
     }
 
+    @Test(dataProvider = "validClosingBalanceOptM", dataProviderClass = MT940ParserTestConstants.class)
+    public void testValidClosingBalanceOptMScenario(String textBlockStr, MT940TextBlock textBlock) throws Exception {
+        MT940TextBlock parsedTextBlock = MT940TextBlock.parse(textBlockStr);
+
+        Assert.assertTrue(new ReflectionEquals(textBlock.getClosingBalOptM())
+                .matches(parsedTextBlock.getClosingBalOptM()));
+    }
+
     @Test(expectedExceptions = MTMessageParsingException.class,
             expectedExceptionsMessageRegExp = "62M field not in the correct format",
             dataProvider = "invalidClosingBalanceOptM", dataProviderClass = MT940ParserTestConstants.class)
@@ -137,11 +241,27 @@ public class MT940ParserTests {
         MT940TextBlock parsedTextBlock = MT940TextBlock.parse(textBlockStr);
     }
 
+    @Test(dataProvider = "validClosingAvlBalance", dataProviderClass = MT940ParserTestConstants.class)
+    public void testValidClosingAvlBalanceScenario(String textBlockStr, MT940TextBlock textBlock) throws Exception {
+        MT940TextBlock parsedTextBlock = MT940TextBlock.parse(textBlockStr);
+
+        Assert.assertTrue(new ReflectionEquals(textBlock.getClosingAvlBalance())
+                .matches(parsedTextBlock.getClosingAvlBalance()));
+    }
+
     @Test(expectedExceptions = MTMessageParsingException.class,
             expectedExceptionsMessageRegExp = "64 field not in the correct format",
             dataProvider = "invalidClosingAvlBalance", dataProviderClass = MT940ParserTestConstants.class)
     public void testInvalidClosingAvlBalanceScenario(String textBlockStr) throws Exception {
         MT940TextBlock parsedTextBlock = MT940TextBlock.parse(textBlockStr);
+    }
+
+    @Test(dataProvider = "validForwardAvlBalance", dataProviderClass = MT940ParserTestConstants.class)
+    public void testValidForwardAvlBalanceScenario(String textBlockStr, MT940TextBlock textBlock) throws Exception {
+        MT940TextBlock parsedTextBlock = MT940TextBlock.parse(textBlockStr);
+
+        Assert.assertTrue(new ReflectionEquals(textBlock.getForwardAvlBalance())
+                .matches(parsedTextBlock.getForwardAvlBalance()));
     }
 
     @Test(expectedExceptions = MTMessageParsingException.class,
