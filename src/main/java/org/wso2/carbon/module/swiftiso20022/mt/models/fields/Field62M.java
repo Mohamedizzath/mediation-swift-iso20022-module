@@ -127,7 +127,7 @@ public class Field62M {
      * @throws MTMessageParsingException
      */
     public static Field62M parse(String field62MString) throws MTMessageParsingException {
-        Matcher field62MMatcher = MT940ParserConstants.FIELD_62M_REGEX_PATTERN.matcher(field62MString);
+        Matcher field62MMatcher = MT940ParserConstants.MT940_BALANCE_REGEX.matcher(field62MString);
 
         if (field62MMatcher.matches()) {
             return new Field62M().withDCMark(field62MMatcher.group(1))
