@@ -29,8 +29,8 @@ import java.util.regex.Matcher;
  * <p>
  *     format: (D/C Mark)(Date)(Currency)(Amount)<br/>
  *     example: 65:D230930USD843686,20
- *     @see <a href="https://www2.swift.com/knowledgecentre/publications/
- *     us9m_20230720/2.0?topic=con_sfld_MaOr7wQQEe2AI4OK6vBjrg_1578176041fld.htm">Tag 65</a>
+ *     @see <a href="https://www2.swift.com/knowledgecentre/
+ *     publications/usgf_20230720/2.0?topic=idx_fld_tag_65.htm">Tag 65</a>
  * </p>
  */
 public class Field65 {

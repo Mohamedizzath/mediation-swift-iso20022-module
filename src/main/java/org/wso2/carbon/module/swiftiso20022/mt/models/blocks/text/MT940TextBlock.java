@@ -5,13 +5,10 @@ import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException
 import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field20;
 import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field21;
 import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field25;
-import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field25P;
-import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field28C;
-import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field60F;
-import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field60M;
+import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field28;
+import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field60;
 import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field61;
-import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field62F;
-import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field62M;
+import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field62;
 import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field64;
 import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field65;
 import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field86;
@@ -20,8 +17,8 @@ import org.wso2.carbon.module.swiftiso20022.utils.MTParserUtils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Model class for MT940 text block.
@@ -30,14 +27,10 @@ public class MT940TextBlock {
     private Field20 transactionReferenceNumber;
     private Field21 relatedReference;
     private Field25 accountIdentification;
-    private Field25P accountIdentificationOptP;
-    private Field28C statementSequenceNumber;
-    private Field60F openingBalOptF;
-    private Field60M openingBalOptM;
-    private List<Field61> statementLines;
-    private List<Field86> statementLineInfoToAccountOwner;
-    private Field62F closingBalOptF;
-    private Field62M closingBalOptM;
+    private Field28 statementSequenceNumber;
+    private Field60 openingBal;
+    private List<Map<String, Object>> statementLines;
+    private Field62 closingBal;
     private Field64 closingAvlBalance;
     private Field65 forwardAvlBalance;
     private Field86 infoToAccountOwner;
@@ -66,84 +59,62 @@ public class MT940TextBlock {
         this.accountIdentification = accountIdentification;
     }
 
-    public Field25P getAccountIdentificationOptP() {
-        return accountIdentificationOptP;
-    }
-
-    public void setAccountIdentificationOptP(Field25P accountIdentificationOptP) {
-        this.accountIdentificationOptP = accountIdentificationOptP;
-    }
-
-    public Field28C getStatementSequenceNumber() {
+    public Field28 getStatementSequenceNumber() {
         return statementSequenceNumber;
     }
 
-    public void setStatementSequenceNumber(Field28C statementSequenceNumber) {
+    public void setStatementSequenceNumber(Field28 statementSequenceNumber) {
         this.statementSequenceNumber = statementSequenceNumber;
     }
 
-    public Field60F getOpeningBalOptF() {
-        return openingBalOptF;
+    public Field60 getOpeningBal() {
+        return openingBal;
     }
 
-    public void setOpeningBalOptF(Field60F openingBalOptF) {
-        this.openingBalOptF = openingBalOptF;
+    public void setOpeningBal(Field60 openingBal) {
+        this.openingBal = openingBal;
     }
 
-    public Field60M getOpeningBalOptM() {
-        return openingBalOptM;
-    }
-
-    public void setOpeningBalOptM(Field60M openingBalOptM) {
-        this.openingBalOptM = openingBalOptM;
-    }
-
-    public List<Field61> getStatementLines() {
+    public List<Map<String, Object>> getStatementLines() {
         return statementLines;
     }
 
-    public void setStatementLines(List<Field61> statementLines) {
+    public void setStatementLines(List<Map<String, Object>> statementLines) {
         this.statementLines = statementLines;
     }
 
+    /**
+     * Method for adding new element to statement line.
+     * @param statementLine  Field61 object which contains the transaction details
+     */
     public void addStatementLine(Field61 statementLine) {
         if (this.statementLines == null) {
-            setStatementLines(new ArrayList<>(Arrays.asList(statementLine)));
+            setStatementLines(new ArrayList<>(Arrays.asList(Map.of("Field61", statementLine))));
         } else {
-            this.statementLines.add(statementLine);
+            this.statementLines.add(Map.of("Field61", statementLine));
         }
     }
 
-    public List<Field86> getStatementLineInfoToAccountOwner() {
-        return statementLineInfoToAccountOwner;
-    }
-
-    public void setStatementLineInfoToAccountOwner(List<Field86> statementLineInfoToAccountOwner) {
-        this.statementLineInfoToAccountOwner = statementLineInfoToAccountOwner;
-    }
-
-    public void addStatementLineInfoToAccountOwner(Field86 statementLineInfoToAccountOwner) {
-        if (this.statementLineInfoToAccountOwner == null) {
-            setStatementLineInfoToAccountOwner(new ArrayList<>(Arrays.asList(statementLineInfoToAccountOwner)));
+    /**
+     * Method for adding new element to statement line.
+     * @param statementLine   Field61 object which contains the transaction details
+     * @param additionalInfo  Field86 object which contains additional info
+     */
+    public void addStatementLine(Field61 statementLine, Field86 additionalInfo) {
+        if (this.statementLines == null) {
+            setStatementLines(new ArrayList<>(Arrays.asList(Map.of(
+                    "Field61", statementLine, "Field86", additionalInfo))));
         } else {
-            this.statementLineInfoToAccountOwner.add(statementLineInfoToAccountOwner);
+            this.statementLines.add(Map.of("Field61", statementLine, "Field86", additionalInfo));
         }
     }
 
-    public Field62F getClosingBalOptF() {
-        return closingBalOptF;
+    public Field62 getClosingBal() {
+        return closingBal;
     }
 
-    public void setClosingBalOptF(Field62F closingBalOptF) {
-        this.closingBalOptF = closingBalOptF;
-    }
-
-    public Field62M getClosingBalOptM() {
-        return closingBalOptM;
-    }
-
-    public void setClosingBalOptM(Field62M closingBalOptM) {
-        this.closingBalOptM = closingBalOptM;
+    public void setClosingBal(Field62 closingBal) {
+        this.closingBal = closingBal;
     }
 
     public Field64 getClosingAvlBalance() {
@@ -179,67 +150,69 @@ public class MT940TextBlock {
         for (int i = 0; i < fieldsCount; i++) {
             String field = fields.get(i);
 
-            Pattern fieldPattern = Pattern.compile(MTParserConstants.TEXT_BLOCK_FIELD_REGEX, Pattern.DOTALL);
-            Matcher fieldMatcher = fieldPattern.matcher(field);
+            Matcher fieldMatcher = MTParserConstants.TEXT_BLOCK_FIELD_REGEX.matcher(field);
 
             if (!fieldMatcher.matches()) {
                 throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_FORMAT, field));
             }
 
-            String tag = fieldMatcher.group(1);
+            String tag = fieldMatcher.group(1).substring(0, 2);
+            char option = fieldMatcher.group(1).length() > 2 ? fieldMatcher.group(1).charAt(2)
+                    : MTParserConstants.FIELD_OPTION_NO_LETTER;
 
             switch (tag) {
                 case Field20.TAG:
-                    textBlock.setTransactionReferenceNumber(Field20.parse(fieldMatcher.group(2)));
+                    textBlock.setTransactionReferenceNumber(Field20.parse(option, fieldMatcher.group(2)));
                     break;
 
                 case Field21.TAG:
-                    textBlock.setRelatedReference(Field21.parse(fieldMatcher.group(2)));
+                    textBlock.setRelatedReference(Field21.parse(option, fieldMatcher.group(2)));
                     break;
 
                 case Field25.TAG:
-                    textBlock.setAccountIdentification(Field25.parse(fieldMatcher.group(2)));
+                    textBlock.setAccountIdentification(Field25.parse(option, fieldMatcher.group(2)));
                     break;
 
-                case Field25P.TAG:
-                    textBlock.setAccountIdentificationOptP(Field25P.parse(fieldMatcher.group(2)));
+                case Field28.TAG:
+                    textBlock.setStatementSequenceNumber(Field28.parse(option, fieldMatcher.group(2)));
                     break;
 
-                case Field28C.TAG:
-                    textBlock.setStatementSequenceNumber(Field28C.parse(fieldMatcher.group(2)));
-                    break;
-
-                case Field60F.TAG:
-                    textBlock.setOpeningBalOptF(Field60F.parse(fieldMatcher.group(2)));
-                    break;
-
-                case Field60M.TAG:
-                    textBlock.setOpeningBalOptM(Field60M.parse(fieldMatcher.group(2)));
+                case Field60.TAG:
+                    textBlock.setOpeningBal(Field60.parse(option, fieldMatcher.group(2)));
                     break;
 
                 case Field61.TAG:
-                    textBlock.addStatementLine(Field61.parse(fieldMatcher.group(2)));
+                    // Check the next field is Field86.
+                    if (i + 1 < fieldsCount && fields.get(i + 1).startsWith(Field86.TAG)) {
+                        // Matching the next Field86
+                        Matcher field86Matcher = MTParserConstants.TEXT_BLOCK_FIELD_REGEX.matcher(fields.get(i + 1));
 
-                    // Check the next field is Field86. If not mark as no associated Field86
-                    if (i + 1 < fieldsCount && !fields.get(i + 1).startsWith(Field86.TAG)) {
-                        textBlock.addStatementLineInfoToAccountOwner(null);
+                        if (!field86Matcher.matches()) {
+                            throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_FORMAT,
+                                    field));
+                        }
+
+                        char field86Option = field86Matcher.group(1).length() > 2 ? field86Matcher.group(1).charAt(2)
+                                : MTParserConstants.FIELD_OPTION_NO_LETTER;
+
+                        textBlock.addStatementLine(Field61.parse(fieldMatcher.group(2)),
+                                Field86.parse(field86Option, field86Matcher.group(2)));
+
+                        // Increment the counter because Field86 is created
+                        i = i + 1;
+                    } else {
+                        textBlock.addStatementLine(Field61.parse(fieldMatcher.group(2)));
                     }
                     break;
 
                 case Field86.TAG:
-                    if (i > 0 && fields.get(i - 1).startsWith(Field61.TAG)) {
-                        textBlock.addStatementLineInfoToAccountOwner(Field86.parse(fieldMatcher.group(2)));
-                    } else {
-                        textBlock.setInfoToAccountOwner(Field86.parse(fieldMatcher.group(2)));
-                    }
+                    // Since Field61 and Field86 pairs handle by Field61 switch this only executed for
+                    // final Field86 in the MT940 message
+                    textBlock.setInfoToAccountOwner(Field86.parse(option, fieldMatcher.group(2)));
                     break;
 
-                case Field62F.TAG:
-                    textBlock.setClosingBalOptF(Field62F.parse(fieldMatcher.group(2)));
-                    break;
-
-                case Field62M.TAG:
-                    textBlock.setClosingBalOptM(Field62M.parse(fieldMatcher.group(2)));
+                case Field62.TAG:
+                    textBlock.setClosingBal(Field62.parse(option, fieldMatcher.group(2)));
                     break;
 
                 case Field64.TAG:

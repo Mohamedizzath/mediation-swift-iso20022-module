@@ -31,8 +31,8 @@ import java.util.regex.Matcher;
  *     (Reference to Account Owner)//(Reference to Account Servicing Institution)CRLF(Supplementary Details)<br/>
  *     example: :61:2310011001RCD10,00FCHK304955//4958843 ADDITIONAL INFORMATION
  *              SUPPLEMENTARY DETAILS
- *     @see <a href="https://www2.swift.com/knowledgecentre/publications/
- *     us9m_20230720/2.0?topic=con_sfld_MaOrowQQEe2AI4OK6vBjrg_1576699121fld.htm">Tag 61</a>
+ *     @see <a href="https://www2.swift.com/knowledgecentre/
+ *     publications/usgf_20230720/2.0?topic=idx_fld_tag_61.htm">Tag 61</a>
  * </p>
  */
 public class Field61 {

@@ -136,15 +136,18 @@ public class MTParserUtils {
      * @throws MTMessageParsingException
      */
     public static List<String> getTextBlockFields(String textBlock) throws MTMessageParsingException {
+        // Match whether text block starting with newline and : (Should have at least one tag)
         Pattern textStartPattern = Pattern.compile("^\\R:.+", Pattern.DOTALL);
         Matcher textStartMatcher = textStartPattern.matcher(textBlock);
 
         if (textStartMatcher.matches()) {
+            // Remove the starting new line character and : from the text block
             textBlock = textBlock.substring(2);
         } else {
             throw new MTMessageParsingException("Text block not in the correct format");
         }
 
+        // Remove the final new line character
         return List.of(textBlock.trim().split("\\R:"));
     }
 }

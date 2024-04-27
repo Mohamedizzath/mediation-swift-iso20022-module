@@ -19,17 +19,15 @@
 package org.wso2.carbon.module.swiftiso20022.utils;
 
 import org.testng.annotations.DataProvider;
+import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
 import org.wso2.carbon.module.swiftiso20022.mt.models.blocks.text.MT940TextBlock;
 import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field20;
 import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field21;
 import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field25;
-import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field25P;
-import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field28C;
-import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field60F;
-import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field60M;
+import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field28;
+import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field60;
 import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field61;
-import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field62F;
-import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field62M;
+import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field62;
 import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field64;
 import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field65;
 import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field86;
@@ -58,10 +56,10 @@ public class MT940ParserTestConstants {
                 + (params.getOrDefault("Field21", ":21:258158850\n"))
                 + (params.getOrDefault("Field25", ":25:DD01100056869\n"))
                 + (params.getOrDefault("Field25P", ""))
-                + (params.getOrDefault("Field28C", ":28C:1/1\n"))
-                + (params.getOrDefault("Field60F", ":60F:D230930USD843686,20\n"))
-                + (params.getOrDefault("Field60M", ":60M:D230930USD843686,20\n")) + stmtLines
-                + (params.getOrDefault("Field62F", ":62F:D230930USD846665,15\n"))
+                + (params.getOrDefault("Field28", ":28C:1/1\n"))
+                + (params.getOrDefault("Field60", ":60F:D230930USD843686,20\n"))
+                + (params.getOrDefault("Field60M", "")) + stmtLines
+                + (params.getOrDefault("Field62", ":62F:D230930USD846665,15\n"))
                 + (params.getOrDefault("Field62M", ""))
                 + (params.getOrDefault("Field64", ":64:C231002USD334432401,27\n"))
                 + (params.getOrDefault("Field65", ":65:C231002USD334432401,27\n"))
@@ -82,39 +80,43 @@ public class MT940ParserTestConstants {
                 params.getOrDefault("Field20", "258158850")));
 
         if (params.containsKey("Field20")) {
-            textBlock.setTransactionReferenceNumber(new Field20().withValue(params.get("Field20")));
+            textBlock.setTransactionReferenceNumber(new Field20().withOption(MTParserConstants.FIELD_OPTION_NO_LETTER)
+                    .withValue(params.get("Field20")));
         }
 
         if (params.containsKey("Field21")) {
-            textBlock.setRelatedReference(new Field21().withValue(params.get("Field21")));
+            textBlock.setRelatedReference(new Field21().withOption(MTParserConstants.FIELD_OPTION_NO_LETTER)
+                    .withValue(params.get("Field21")));
         }
 
-        if (params.containsKey("Field25")) {
-            textBlock.setAccountIdentification(new Field25().withValue(params.get("Field25")));
+        if (params.containsKey("Field25Account")) {
+            textBlock.setAccountIdentification(new Field25().withOption(MTParserConstants.FIELD_OPTION_NO_LETTER)
+                    .withAccount(params.get("Field25Account")));
         }
 
         if (params.containsKey("Field25PAccount")) {
-            if (textBlock.getAccountIdentificationOptP() == null) {
-                textBlock.setAccountIdentificationOptP(new Field25P().withAccount(params.get("Field25PAccount")));
+            if (textBlock.getAccountIdentification() == null) {
+                textBlock.setAccountIdentification(new Field25().withOption(MTParserConstants.FIELD_OPTION_P)
+                        .withAccount(params.get("Field25PAccount")));
             } else {
-                textBlock.setAccountIdentificationOptP(textBlock.getAccountIdentificationOptP()
+                textBlock.setAccountIdentification(textBlock.getAccountIdentification()
                         .withAccount(params.get("Field25PAccount")));
             }
         }
 
         if (params.containsKey("Field25PIdentifierCode")) {
-            if (textBlock.getAccountIdentificationOptP() == null) {
-                textBlock.setAccountIdentificationOptP(new Field25P()
+            if (textBlock.getAccountIdentification() == null) {
+                textBlock.setAccountIdentification(new Field25().withOption(MTParserConstants.FIELD_OPTION_P)
                         .withIdentifierCode(params.get("Field25PIdentifierCode")));
             } else {
-                textBlock.setAccountIdentificationOptP(textBlock.getAccountIdentificationOptP()
+                textBlock.setAccountIdentification(textBlock.getAccountIdentification()
                         .withIdentifierCode(params.get("Field25PIdentifierCode")));
             }
         }
 
         if (params.containsKey("Field28CStmtNumber")) {
             if (textBlock.getStatementSequenceNumber() == null) {
-                textBlock.setStatementSequenceNumber(new Field28C()
+                textBlock.setStatementSequenceNumber(new Field28().withOption(MTParserConstants.FIELD_OPTION_C)
                         .withStatementNumber(params.get("Field28CStmtNumber")));
             } else {
                 textBlock.setStatementSequenceNumber(textBlock.getStatementSequenceNumber()
@@ -124,7 +126,7 @@ public class MT940ParserTestConstants {
 
         if (params.containsKey("Field28CSeqNumber")) {
             if (textBlock.getStatementSequenceNumber() == null) {
-                textBlock.setStatementSequenceNumber(new Field28C()
+                textBlock.setStatementSequenceNumber(new Field28().withOption(MTParserConstants.FIELD_OPTION_C)
                         .withSequenceNumber(params.get("Field28CSeqNumber")));
             } else {
                 textBlock.setStatementSequenceNumber(textBlock.getStatementSequenceNumber()
@@ -134,72 +136,79 @@ public class MT940ParserTestConstants {
 
         // Opening balance - Field 60F
         if (params.containsKey("Field60FDCMark")) {
-            if (textBlock.getOpeningBalOptF() == null) {
-                textBlock.setOpeningBalOptF(new Field60F().withDCMark(params.get("Field60FDCMark")));
+            if (textBlock.getOpeningBal() == null) {
+                textBlock.setOpeningBal(new Field60().withOption(MTParserConstants.FIELD_OPTION_F)
+                        .withDCMark(params.get("Field60FDCMark")));
             } else {
-                textBlock.setOpeningBalOptF(textBlock.getOpeningBalOptF().withDCMark(params.get("Field60FDCMark")));
+                textBlock.setOpeningBal(textBlock.getOpeningBal().withDCMark(params.get("Field60FDCMark")));
             }
         }
 
         if (params.containsKey("Field60FDate")) {
-            if (textBlock.getOpeningBalOptF() == null) {
-                textBlock.setOpeningBalOptF(new Field60F().withDate(params.get("Field60FDate")));
+            if (textBlock.getOpeningBal() == null) {
+                textBlock.setOpeningBal(new Field60().withOption(MTParserConstants.FIELD_OPTION_F)
+                        .withDate(params.get("Field60FDate")));
             } else {
-                textBlock.setOpeningBalOptF(textBlock.getOpeningBalOptF().withDate(params.get("Field60FDate")));
+                textBlock.setOpeningBal(textBlock.getOpeningBal().withDate(params.get("Field60FDate")));
             }
         }
 
         if (params.containsKey("Field60FCurrency")) {
-            if (textBlock.getOpeningBalOptF() == null) {
-                textBlock.setOpeningBalOptF(new Field60F().withCurrency(params.get("Field60FCurrency")));
+            if (textBlock.getOpeningBal() == null) {
+                textBlock.setOpeningBal(new Field60().withOption(MTParserConstants.FIELD_OPTION_F)
+                        .withCurrency(params.get("Field60FCurrency")));
             } else {
-                textBlock.setOpeningBalOptF(textBlock.getOpeningBalOptF().withCurrency(params.get("Field60FCurrency")));
+                textBlock.setOpeningBal(textBlock.getOpeningBal().withCurrency(params.get("Field60FCurrency")));
             }
         }
 
         if (params.containsKey("Field60FAmount")) {
-            if (textBlock.getOpeningBalOptF() == null) {
-                textBlock.setOpeningBalOptF(new Field60F().withAmount(params.get("Field60FAmount")));
+            if (textBlock.getOpeningBal() == null) {
+                textBlock.setOpeningBal(new Field60().withOption(MTParserConstants.FIELD_OPTION_F)
+                        .withAmount(params.get("Field60FAmount")));
             } else {
-                textBlock.setOpeningBalOptF(textBlock.getOpeningBalOptF().withAmount(params.get("Field60FAmount")));
+                textBlock.setOpeningBal(textBlock.getOpeningBal().withAmount(params.get("Field60FAmount")));
             }
         }
 
         // Opening balance - Field 60M
         if (params.containsKey("Field60MDCMark")) {
-            if (textBlock.getOpeningBalOptM() == null) {
-                textBlock.setOpeningBalOptM(new Field60M().withDCMark(params.get("Field60MDCMark")));
+            if (textBlock.getOpeningBal() == null) {
+                textBlock.setOpeningBal(new Field60().withOption(MTParserConstants.FIELD_OPTION_M)
+                        .withDCMark(params.get("Field60MDCMark")));
             } else {
-                textBlock.setOpeningBalOptM(textBlock.getOpeningBalOptM().withDCMark(params.get("Field60MDCMark")));
+                textBlock.setOpeningBal(textBlock.getOpeningBal().withDCMark(params.get("Field60MDCMark")));
             }
         }
 
         if (params.containsKey("Field60MDate")) {
-            if (textBlock.getOpeningBalOptM() == null) {
-                textBlock.setOpeningBalOptM(new Field60M().withDate(params.get("Field60MDate")));
+            if (textBlock.getOpeningBal() == null) {
+                textBlock.setOpeningBal(new Field60().withOption(MTParserConstants.FIELD_OPTION_M)
+                        .withDate(params.get("Field60MDate")));
             } else {
-                textBlock.setOpeningBalOptM(textBlock.getOpeningBalOptM().withDate(params.get("Field60MDate")));
+                textBlock.setOpeningBal(textBlock.getOpeningBal().withDate(params.get("Field60MDate")));
             }
         }
 
         if (params.containsKey("Field60MCurrency")) {
-            if (textBlock.getOpeningBalOptM() == null) {
-                textBlock.setOpeningBalOptM(new Field60M().withCurrency(params.get("Field60MCurrency")));
+            if (textBlock.getOpeningBal() == null) {
+                textBlock.setOpeningBal(new Field60().withOption(MTParserConstants.FIELD_OPTION_M)
+                        .withCurrency(params.get("Field60MCurrency")));
             } else {
-                textBlock.setOpeningBalOptM(textBlock.getOpeningBalOptM().withCurrency(params.get("Field60MCurrency")));
+                textBlock.setOpeningBal(textBlock.getOpeningBal().withCurrency(params.get("Field60MCurrency")));
             }
         }
 
         if (params.containsKey("Field60MAmount")) {
-            if (textBlock.getOpeningBalOptM() == null) {
-                textBlock.setOpeningBalOptM(new Field60M().withAmount(params.get("Field60MAmount")));
+            if (textBlock.getOpeningBal() == null) {
+                textBlock.setOpeningBal(new Field60().withOption(MTParserConstants.FIELD_OPTION_M)
+                        .withAmount(params.get("Field60MAmount")));
             } else {
-                textBlock.setOpeningBalOptM(textBlock.getOpeningBalOptM().withAmount(params.get("Field60MAmount")));
+                textBlock.setOpeningBal(textBlock.getOpeningBal().withAmount(params.get("Field60MAmount")));
             }
         }
 
-        List<Field61> statementsSet = new ArrayList<>();
-        List<Field86> addInfoSet = new ArrayList<>();
+        List<Map<String, Object>> statementsSet = new ArrayList<>();
 
         for (Map<String, String> statement : stmtParams) {
             // Adding statement lines
@@ -246,83 +255,90 @@ public class MT940ParserTestConstants {
                 field61.setSupplementaryDetails(statement.get("Field61SupplementaryDetails"));
             }
 
-            statementsSet.add(field61);
-
             // Adding additional info
             if (statement.containsKey("Field86")) {
-                addInfoSet.add(new Field86().withValue(statement.get("Field86")));
+                statementsSet.add(Map.of("Field61", field61, "Field86",
+                    new Field86().withOption(MTParserConstants.FIELD_OPTION_NO_LETTER)
+                    .withValue(statement.get("Field86"))));
             } else {
-                addInfoSet.add(null);
+                statementsSet.add(Map.of("Field61", field61));
             }
 
         }
 
         textBlock.setStatementLines(statementsSet);
-        textBlock.setStatementLineInfoToAccountOwner(addInfoSet);
 
         // Closing balance - Field 62F
         if (params.containsKey("Field62FDCMark")) {
-            if (textBlock.getClosingBalOptF() == null) {
-                textBlock.setClosingBalOptF(new Field62F().withDCMark(params.get("Field62FDCMark")));
+            if (textBlock.getClosingBal() == null) {
+                textBlock.setClosingBal(new Field62().withOption(MTParserConstants.FIELD_OPTION_F)
+                        .withDCMark(params.get("Field62FDCMark")));
             } else {
-                textBlock.setClosingBalOptF(textBlock.getClosingBalOptF().withDCMark(params.get("Field62FDCMark")));
+                textBlock.setClosingBal(textBlock.getClosingBal().withDCMark(params.get("Field62FDCMark")));
             }
         }
 
         if (params.containsKey("Field62FDate")) {
-            if (textBlock.getClosingBalOptF() == null) {
-                textBlock.setClosingBalOptF(new Field62F().withDate(params.get("Field62FDate")));
+            if (textBlock.getClosingBal() == null) {
+                textBlock.setClosingBal(new Field62().withOption(MTParserConstants.FIELD_OPTION_F)
+                        .withDate(params.get("Field62FDate")));
             } else {
-                textBlock.setClosingBalOptF(textBlock.getClosingBalOptF().withDate(params.get("Field62FDate")));
+                textBlock.setClosingBal(textBlock.getClosingBal().withDate(params.get("Field62FDate")));
             }
         }
 
         if (params.containsKey("Field62FCurrency")) {
-            if (textBlock.getClosingBalOptF() == null) {
-                textBlock.setClosingBalOptF(new Field62F().withCurrency(params.get("Field62FCurrency")));
+            if (textBlock.getClosingBal() == null) {
+                textBlock.setClosingBal(new Field62().withOption(MTParserConstants.FIELD_OPTION_F)
+                        .withCurrency(params.get("Field62FCurrency")));
             } else {
-                textBlock.setClosingBalOptF(textBlock.getClosingBalOptF().withCurrency(params.get("Field62FCurrency")));
+                textBlock.setClosingBal(textBlock.getClosingBal().withCurrency(params.get("Field62FCurrency")));
             }
         }
 
         if (params.containsKey("Field62FAmount")) {
-            if (textBlock.getClosingBalOptF() == null) {
-                textBlock.setClosingBalOptF(new Field62F().withAmount(params.get("Field62FAmount")));
+            if (textBlock.getClosingBal() == null) {
+                textBlock.setClosingBal(new Field62().withOption(MTParserConstants.FIELD_OPTION_F)
+                        .withAmount(params.get("Field62FAmount")));
             } else {
-                textBlock.setClosingBalOptF(textBlock.getClosingBalOptF().withAmount(params.get("Field62FAmount")));
+                textBlock.setClosingBal(textBlock.getClosingBal().withAmount(params.get("Field62FAmount")));
             }
         }
 
         // Closing balance - Field 62M
         if (params.containsKey("Field62MDCMark")) {
-            if (textBlock.getClosingBalOptM() == null) {
-                textBlock.setClosingBalOptM(new Field62M().withDCMark(params.get("Field62MDCMark")));
+            if (textBlock.getClosingBal() == null) {
+                textBlock.setClosingBal(new Field62().withOption(MTParserConstants.FIELD_OPTION_M)
+                        .withDCMark(params.get("Field62MDCMark")));
             } else {
-                textBlock.setClosingBalOptM(textBlock.getClosingBalOptM().withDCMark(params.get("Field62MDCMark")));
+                textBlock.setClosingBal(textBlock.getClosingBal().withDCMark(params.get("Field62MDCMark")));
             }
         }
 
         if (params.containsKey("Field62MDate")) {
-            if (textBlock.getClosingBalOptM() == null) {
-                textBlock.setClosingBalOptM(new Field62M().withDate(params.get("Field62MDate")));
+            if (textBlock.getClosingBal() == null) {
+                textBlock.setClosingBal(new Field62().withOption(MTParserConstants.FIELD_OPTION_M)
+                        .withDate(params.get("Field62MDate")));
             } else {
-                textBlock.setClosingBalOptM(textBlock.getClosingBalOptM().withDate(params.get("Field62MDate")));
+                textBlock.setClosingBal(textBlock.getClosingBal().withDate(params.get("Field62MDate")));
             }
         }
 
         if (params.containsKey("Field62MCurrency")) {
-            if (textBlock.getClosingBalOptM() == null) {
-                textBlock.setClosingBalOptM(new Field62M().withCurrency(params.get("Field62MCurrency")));
+            if (textBlock.getClosingBal() == null) {
+                textBlock.setClosingBal(new Field62().withOption(MTParserConstants.FIELD_OPTION_M)
+                        .withCurrency(params.get("Field62MCurrency")));
             } else {
-                textBlock.setClosingBalOptM(textBlock.getClosingBalOptM().withCurrency(params.get("Field62MCurrency")));
+                textBlock.setClosingBal(textBlock.getClosingBal().withCurrency(params.get("Field62MCurrency")));
             }
         }
 
         if (params.containsKey("Field62MAmount")) {
-            if (textBlock.getClosingBalOptM() == null) {
-                textBlock.setClosingBalOptM(new Field62M().withAmount(params.get("Field62MAmount")));
+            if (textBlock.getClosingBal() == null) {
+                textBlock.setClosingBal(new Field62().withOption(MTParserConstants.FIELD_OPTION_M)
+                        .withAmount(params.get("Field62MAmount")));
             } else {
-                textBlock.setClosingBalOptM(textBlock.getClosingBalOptM().withAmount(params.get("Field62MAmount")));
+                textBlock.setClosingBal(textBlock.getClosingBal().withAmount(params.get("Field62MAmount")));
             }
         }
 
@@ -400,7 +416,8 @@ public class MT940ParserTestConstants {
         }
 
         if (params.containsKey("Field86")) {
-            textBlock.setInfoToAccountOwner(new Field86().withValue(params.get("Field86")));
+            textBlock.setInfoToAccountOwner(new Field86().withOption(MTParserConstants.FIELD_OPTION_NO_LETTER)
+                    .withValue(params.get("Field86")));
         }
 
         return textBlock;
@@ -413,9 +430,9 @@ public class MT940ParserTestConstants {
                     getMT940TextBlockText(Map.of("Field20", ":20:258158850\n",
                         "Field21", ":21:258158850\n",
                         "Field25", ":25:DD01100056869\n",
-                        "Field28C", ":28C:1/1\n",
-                        "Field60F", ":60F:D230930USD843686,20\n",
-                        "Field62F", ":62F:D230930USD846665,15\n",
+                        "Field28", ":28C:1/1\n",
+                        "Field60", ":60F:D230930USD843686,20\n",
+                        "Field62", ":62F:D230930USD846665,15\n",
                         "Field64", ":64:C231002USD334432401,27\n",
                         "Field65", ":65:C231002USD334432401,27\n"),
                         List.of(":61:2310011001RCD10,00ACHPGSGWGDNCTAHQM8\n",
@@ -423,7 +440,7 @@ public class MT940ParserTestConstants {
                             ":61:2310011001DD10,00ACHPNONREF\n",
                             ":61:2310011001CD10,00ASHP20230928LTERMID2//ADDITIONAL INFO\nADDITIONAL INFO\n")),
                     getMT940TextBlock(Map.ofEntries(Map.entry("Field20", "258158850"),
-                        Map.entry("Field21", "258158850"), Map.entry("Field25", "DD01100056869"),
+                        Map.entry("Field21", "258158850"), Map.entry("Field25Account", "DD01100056869"),
                         Map.entry("Field28CStmtNumber", "1"), Map.entry("Field28CSeqNumber", "1"),
                         Map.entry("Field60FDCMark", "D"), Map.entry("Field60FDate", "230930"),
                         Map.entry("Field60FCurrency", "USD"), Map.entry("Field60FAmount", "843686,20"),
@@ -497,12 +514,12 @@ public class MT940ParserTestConstants {
     Object[][] parseValidAccIdentification() {
         return new Object[][]{
                 { getMT940TextBlockText(Map.of("Field25", ":25:DD\n"), List.of()),
-                        getMT940TextBlock(Map.of("Field25", "DD"), List.of()) },
+                        getMT940TextBlock(Map.of("Field25Account", "DD"), List.of()) },
                 { getMT940TextBlockText(Map.of("Field25", ":25:DD01100056869\n"), List.of()),
-                        getMT940TextBlock(Map.of("Field25", "DD01100056869"), List.of()) },
+                        getMT940TextBlock(Map.of("Field25Account", "DD01100056869"), List.of()) },
                 { getMT940TextBlockText(Map.of("Field25", ":25:DD01100056869DD01100056869DD0110005\n")
                         , List.of()),
-                        getMT940TextBlock(Map.of("Field25", "DD01100056869DD01100056869DD0110005"), List.of()) }
+                        getMT940TextBlock(Map.of("Field25Account", "DD01100056869DD01100056869DD0110005"), List.of()) }
         };
     }
 
@@ -552,17 +569,17 @@ public class MT940ParserTestConstants {
     @DataProvider(name = "validStmtSeqNumber")
     Object[][] parseValidStmtSeqNumber() {
         return new Object[][]{
-                { getMT940TextBlockText(Map.of("Field28C", ":28C:12\n"), List.of()),
+                { getMT940TextBlockText(Map.of("Field28", ":28C:12\n"), List.of()),
                         getMT940TextBlock(Map.of("Field28CStmtNumber", "12"), List.of())},
-                { getMT940TextBlockText(Map.of("Field28C", ":28C:12510\n"), List.of()),
+                { getMT940TextBlockText(Map.of("Field28", ":28C:12510\n"), List.of()),
                         getMT940TextBlock(Map.of("Field28CStmtNumber", "12510"), List.of())},
-                { getMT940TextBlockText(Map.of("Field28C", ":28C:12/12\n"), List.of()),
+                { getMT940TextBlockText(Map.of("Field28", ":28C:12/12\n"), List.of()),
                         getMT940TextBlock(Map.of("Field28CStmtNumber", "12", "Field28CSeqNumber", "12"),
                                 List.of())},
-                { getMT940TextBlockText(Map.of("Field28C", ":28C:12/12510\n"), List.of()),
+                { getMT940TextBlockText(Map.of("Field28", ":28C:12/12510\n"), List.of()),
                         getMT940TextBlock(Map.of("Field28CStmtNumber", "12", "Field28CSeqNumber", "12510"),
                                 List.of())},
-                { getMT940TextBlockText(Map.of("Field28C", ":28C:12891/12510\n"), List.of()),
+                { getMT940TextBlockText(Map.of("Field28", ":28C:12891/12510\n"), List.of()),
                         getMT940TextBlock(Map.of("Field28CStmtNumber", "12891", "Field28CSeqNumber", "12510"),
                                 List.of())},
         };
@@ -571,29 +588,29 @@ public class MT940ParserTestConstants {
     @DataProvider(name = "invalidStmtSeqNumber")
     Object[][] parseInvalidStmtSeqNumber() {
         return new Object[][]{
-                { getMT940TextBlockText(Map.of("Field28C", ":28C:\n"), List.of()) },
-                { getMT940TextBlockText(Map.of("Field28C", ":28C:ABC\n"), List.of()) },
-                { getMT940TextBlockText(Map.of("Field28C", ":28C:1204056\n"), List.of()) },
-                { getMT940TextBlockText(Map.of("Field28C", ":28C:12/\n"), List.of()) },
-                { getMT940TextBlockText(Map.of("Field28C", ":28C:12*12\n"), List.of()) },
-                { getMT940TextBlockText(Map.of("Field28C", ":28C:12/ABC\n"), List.of()) },
-                { getMT940TextBlockText(Map.of("Field28C", ":28C:12/1204056\n"), List.of()) },
+                { getMT940TextBlockText(Map.of("Field28", ":28C:\n"), List.of()) },
+                { getMT940TextBlockText(Map.of("Field28", ":28C:ABC\n"), List.of()) },
+                { getMT940TextBlockText(Map.of("Field28", ":28C:1204056\n"), List.of()) },
+                { getMT940TextBlockText(Map.of("Field28", ":28C:12/\n"), List.of()) },
+                { getMT940TextBlockText(Map.of("Field28", ":28C:12*12\n"), List.of()) },
+                { getMT940TextBlockText(Map.of("Field28", ":28C:12/ABC\n"), List.of()) },
+                { getMT940TextBlockText(Map.of("Field28", ":28C:12/1204056\n"), List.of()) },
         };
     }
 
     @DataProvider(name = "validOpeningBalanceOptF")
     Object[][] parseValidOpeningBalanceOptF() {
         return new Object[][]{
-                { getMT940TextBlockText(Map.of("Field60F", ":60F:D230930USD843686,20\n"), List.of()),
+                { getMT940TextBlockText(Map.of("Field60", ":60F:D230930USD843686,20\n"), List.of()),
                 getMT940TextBlock(Map.of("Field60FDCMark", "D", "Field60FDate", "230930",
                           "Field60FCurrency", "USD", "Field60FAmount", "843686,20"), List.of())},
-                { getMT940TextBlockText(Map.of("Field60F", ":60F:C230930USD843686,20\n"), List.of()),
+                { getMT940TextBlockText(Map.of("Field60", ":60F:C230930USD843686,20\n"), List.of()),
                 getMT940TextBlock(Map.of("Field60FDCMark", "C", "Field60FDate", "230930",
                     "Field60FCurrency", "USD", "Field60FAmount", "843686,20"), List.of())},
-                { getMT940TextBlockText(Map.of("Field60F", ":60F:D230930USD8\n"), List.of()),
+                { getMT940TextBlockText(Map.of("Field60", ":60F:D230930USD8\n"), List.of()),
                 getMT940TextBlock(Map.of("Field60FDCMark", "D", "Field60FDate", "230930",
                         "Field60FCurrency", "USD", "Field60FAmount", "8"), List.of())},
-                { getMT940TextBlockText(Map.of("Field60F", ":60F:D230930USD843686843686,20\n"), List.of()),
+                { getMT940TextBlockText(Map.of("Field60", ":60F:D230930USD843686843686,20\n"), List.of()),
                 getMT940TextBlock(Map.of("Field60FDCMark", "D", "Field60FDate", "230930",
                         "Field60FCurrency", "USD", "Field60FAmount", "843686843686,20"), List.of())},
         };
@@ -602,19 +619,19 @@ public class MT940ParserTestConstants {
     @DataProvider(name = "invalidOpeningBalanceOptF")
     Object[][] parseInvalidOpeningBalanceOptF() {
         return new Object[][]{
-            { getMT940TextBlockText(Map.of("Field60F", ":60F:\n"), List.of()) },
-            { getMT940TextBlockText(Map.of("Field60F", ":60F:E230930USD843686,20\n"), List.of()) },
-            { getMT940TextBlockText(Map.of("Field60F", ":60F:3230930USD843686,20\n"), List.of()) },
-            { getMT940TextBlockText(Map.of("Field60F", ":60F:230930USD843686,20\n"), List.of()) },
-            { getMT940TextBlockText(Map.of("Field60F", ":60F:D001USD843686,20\n"), List.of()) },
-            { getMT940TextBlockText(Map.of("Field60F", ":60F:D23423423USD843686,20\n"), List.of()) },
-            { getMT940TextBlockText(Map.of("Field60F", ":60F:DABCDEFUSD843686,20\n"), List.of()) },
-            { getMT940TextBlockText(Map.of("Field60F", ":60F:D230930843686,20\n"), List.of()) },
-            { getMT940TextBlockText(Map.of("Field60F", ":60F:D230930US843686,20\n"), List.of()) },
-            { getMT940TextBlockText(Map.of("Field60F", ":60F:D230930USDEF843686,20\n"), List.of()) },
-            { getMT940TextBlockText(Map.of("Field60F", ":60F:D230930123843686,20\n"), List.of()) },
-            { getMT940TextBlockText(Map.of("Field60F", ":60F:D230930USD\n"), List.of()) },
-            { getMT940TextBlockText(Map.of("Field60F", ":60F:D230930USD843686843686843686843686,20\n"),
+            { getMT940TextBlockText(Map.of("Field60", ":60F:\n"), List.of()) },
+            { getMT940TextBlockText(Map.of("Field60", ":60F:E230930USD843686,20\n"), List.of()) },
+            { getMT940TextBlockText(Map.of("Field60", ":60F:3230930USD843686,20\n"), List.of()) },
+            { getMT940TextBlockText(Map.of("Field60", ":60F:230930USD843686,20\n"), List.of()) },
+            { getMT940TextBlockText(Map.of("Field60", ":60F:D001USD843686,20\n"), List.of()) },
+            { getMT940TextBlockText(Map.of("Field60", ":60F:D23423423USD843686,20\n"), List.of()) },
+            { getMT940TextBlockText(Map.of("Field60", ":60F:DABCDEFUSD843686,20\n"), List.of()) },
+            { getMT940TextBlockText(Map.of("Field60", ":60F:D230930843686,20\n"), List.of()) },
+            { getMT940TextBlockText(Map.of("Field60", ":60F:D230930US843686,20\n"), List.of()) },
+            { getMT940TextBlockText(Map.of("Field60", ":60F:D230930USDEF843686,20\n"), List.of()) },
+            { getMT940TextBlockText(Map.of("Field60", ":60F:D230930123843686,20\n"), List.of()) },
+            { getMT940TextBlockText(Map.of("Field60", ":60F:D230930USD\n"), List.of()) },
+            { getMT940TextBlockText(Map.of("Field60", ":60F:D230930USD843686843686843686843686,20\n"),
                     List.of()) }
         };
     }
@@ -862,16 +879,16 @@ public class MT940ParserTestConstants {
     @DataProvider(name = "validClosingBalanceOptF")
     Object[][] parseValidClosingBalanceOptF() {
         return new Object[][]{
-                { getMT940TextBlockText(Map.of("Field62F", ":62F:D230930USD843686,20\n"), List.of()),
+                { getMT940TextBlockText(Map.of("Field62", ":62F:D230930USD843686,20\n"), List.of()),
                         getMT940TextBlock(Map.of("Field62FDCMark", "D", "Field62FDate", "230930",
                                 "Field62FCurrency", "USD", "Field62FAmount", "843686,20"), List.of())},
-                { getMT940TextBlockText(Map.of("Field62F", ":62F:C230930USD843686,20\n"), List.of()),
+                { getMT940TextBlockText(Map.of("Field62", ":62F:C230930USD843686,20\n"), List.of()),
                         getMT940TextBlock(Map.of("Field62FDCMark", "C", "Field62FDate", "230930",
                                 "Field62FCurrency", "USD", "Field62FAmount", "843686,20"), List.of())},
-                { getMT940TextBlockText(Map.of("Field62F", ":62F:D230930USD8\n"), List.of()),
+                { getMT940TextBlockText(Map.of("Field62", ":62F:D230930USD8\n"), List.of()),
                         getMT940TextBlock(Map.of("Field62FDCMark", "D", "Field62FDate", "230930",
                                 "Field62FCurrency", "USD", "Field62FAmount", "8"), List.of())},
-                { getMT940TextBlockText(Map.of("Field62F", ":62F:D230930USD843686843686,20\n"), List.of()),
+                { getMT940TextBlockText(Map.of("Field62", ":62F:D230930USD843686843686,20\n"), List.of()),
                         getMT940TextBlock(Map.of("Field62FDCMark", "D", "Field62FDate", "230930",
                                 "Field62FCurrency", "USD", "Field62FAmount", "843686843686,20"), List.of())},
         };
@@ -880,19 +897,19 @@ public class MT940ParserTestConstants {
     @DataProvider(name = "invalidClosingBalanceOptF")
     Object[][] parseInvalidClosingBalanceOptF() {
         return new Object[][]{
-                { getMT940TextBlockText(Map.of("Field62F", ":62F:\n"), List.of()) },
-                { getMT940TextBlockText(Map.of("Field62F", ":62F:E230930USD843686,20\n"), List.of()) },
-                { getMT940TextBlockText(Map.of("Field62F", ":62F:3230930USD843686,20\n"), List.of()) },
-                { getMT940TextBlockText(Map.of("Field62F", ":62F:230930USD843686,20\n"), List.of()) },
-                { getMT940TextBlockText(Map.of("Field62F", ":62F:D001USD843686,20\n"), List.of()) },
-                { getMT940TextBlockText(Map.of("Field62F", ":62F:D23423423USD843686,20\n"), List.of()) },
-                { getMT940TextBlockText(Map.of("Field62F", ":62F:DABCDEFUSD843686,20\n"), List.of()) },
-                { getMT940TextBlockText(Map.of("Field62F", ":62F:D230930843686,20\n"), List.of()) },
-                { getMT940TextBlockText(Map.of("Field62F", ":62F:D230930US843686,20\n"), List.of()) },
-                { getMT940TextBlockText(Map.of("Field62F", ":62F:D230930USDEF843686,20\n"), List.of()) },
-                { getMT940TextBlockText(Map.of("Field62F", ":62F:D230930123843686,20\n"), List.of()) },
-                { getMT940TextBlockText(Map.of("Field62F", ":62F:D230930USD\n"), List.of()) },
-                { getMT940TextBlockText(Map.of("Field62F", ":62F:D230930USD843686843686843686843686,20\n"),
+                { getMT940TextBlockText(Map.of("Field62", ":62F:\n"), List.of()) },
+                { getMT940TextBlockText(Map.of("Field62", ":62F:E230930USD843686,20\n"), List.of()) },
+                { getMT940TextBlockText(Map.of("Field62", ":62F:3230930USD843686,20\n"), List.of()) },
+                { getMT940TextBlockText(Map.of("Field62", ":62F:230930USD843686,20\n"), List.of()) },
+                { getMT940TextBlockText(Map.of("Field62", ":62F:D001USD843686,20\n"), List.of()) },
+                { getMT940TextBlockText(Map.of("Field62", ":62F:D23423423USD843686,20\n"), List.of()) },
+                { getMT940TextBlockText(Map.of("Field62", ":62F:DABCDEFUSD843686,20\n"), List.of()) },
+                { getMT940TextBlockText(Map.of("Field62", ":62F:D230930843686,20\n"), List.of()) },
+                { getMT940TextBlockText(Map.of("Field62", ":62F:D230930US843686,20\n"), List.of()) },
+                { getMT940TextBlockText(Map.of("Field62", ":62F:D230930USDEF843686,20\n"), List.of()) },
+                { getMT940TextBlockText(Map.of("Field62", ":62F:D230930123843686,20\n"), List.of()) },
+                { getMT940TextBlockText(Map.of("Field62", ":62F:D230930USD\n"), List.of()) },
+                { getMT940TextBlockText(Map.of("Field62", ":62F:D230930USD843686843686843686843686,20\n"),
                         List.of()) }
         };
     }

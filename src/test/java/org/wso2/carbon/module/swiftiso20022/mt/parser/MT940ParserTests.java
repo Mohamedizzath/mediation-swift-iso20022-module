@@ -40,8 +40,6 @@ public class MT940ParserTests {
                 .matches(parsedTextBlock.getRelatedReference()));
         Assert.assertTrue(new ReflectionEquals(textBlock.getAccountIdentification())
                 .matches(parsedTextBlock.getAccountIdentification()));
-        Assert.assertTrue(new ReflectionEquals(textBlock.getAccountIdentificationOptP())
-                .matches(parsedTextBlock.getAccountIdentificationOptP()));
         Assert.assertTrue(new ReflectionEquals(textBlock.getAccountIdentification())
                 .matches(parsedTextBlock.getAccountIdentification()));
         Assert.assertTrue(new ReflectionEquals(textBlock.getRelatedReference())
@@ -50,10 +48,8 @@ public class MT940ParserTests {
                 .matches(parsedTextBlock.getStatementLines()));
         Assert.assertTrue(new ReflectionEquals(textBlock.getInfoToAccountOwner())
                 .matches(parsedTextBlock.getInfoToAccountOwner()));
-        Assert.assertTrue(new ReflectionEquals(textBlock.getClosingBalOptF())
-                .matches(parsedTextBlock.getClosingBalOptF()));
-        Assert.assertTrue(new ReflectionEquals(textBlock.getClosingBalOptM())
-                .matches(parsedTextBlock.getClosingBalOptM()));
+        Assert.assertTrue(new ReflectionEquals(textBlock.getClosingBal())
+                .matches(parsedTextBlock.getClosingBal()));
         Assert.assertTrue(new ReflectionEquals(textBlock.getClosingAvlBalance())
                 .matches(parsedTextBlock.getClosingAvlBalance()));
         Assert.assertTrue(new ReflectionEquals(textBlock.getForwardAvlBalance())
@@ -109,8 +105,8 @@ public class MT940ParserTests {
     public void testValidAccIdentificationOptPScenario(String textBlockStr, MT940TextBlock textBlock) throws Exception {
         MT940TextBlock parsedTextBlock = MT940TextBlock.parse(textBlockStr);
 
-        Assert.assertTrue(new ReflectionEquals(textBlock.getAccountIdentificationOptP())
-                .matches(parsedTextBlock.getAccountIdentificationOptP()));
+        Assert.assertTrue(new ReflectionEquals(textBlock.getAccountIdentification())
+                .matches(parsedTextBlock.getAccountIdentification()));
     }
 
     @Test(expectedExceptions = MTMessageParsingException.class,
@@ -139,8 +135,8 @@ public class MT940ParserTests {
     public void testValidOpeningBalanceOptFScenario(String textBlockStr, MT940TextBlock textBlock) throws Exception {
         MT940TextBlock parsedTextBlock = MT940TextBlock.parse(textBlockStr);
 
-        Assert.assertTrue(new ReflectionEquals(textBlock.getOpeningBalOptF())
-                .matches(parsedTextBlock.getOpeningBalOptF()));
+        Assert.assertTrue(new ReflectionEquals(textBlock.getOpeningBal())
+                .matches(parsedTextBlock.getOpeningBal()));
     }
 
     @Test(expectedExceptions = MTMessageParsingException.class,
@@ -154,8 +150,8 @@ public class MT940ParserTests {
     public void testValidOpeningBalanceOptMScenario(String textBlockStr, MT940TextBlock textBlock) throws Exception {
         MT940TextBlock parsedTextBlock = MT940TextBlock.parse(textBlockStr);
 
-        Assert.assertTrue(new ReflectionEquals(textBlock.getOpeningBalOptM())
-                .matches(parsedTextBlock.getOpeningBalOptM()));
+        Assert.assertTrue(new ReflectionEquals(textBlock.getOpeningBal())
+                .matches(parsedTextBlock.getOpeningBal()));
     }
 
     @Test(expectedExceptions = MTMessageParsingException.class,
@@ -174,10 +170,9 @@ public class MT940ParserTests {
         int statementCount = parsedTextBlock.getStatementLines().size();
 
         for (int i = 0; i < statementCount; i++) {
-            Assert.assertTrue(new ReflectionEquals(textBlock.getStatementLines().get(i))
-                    .matches(parsedTextBlock.getStatementLines().get(i)));
+            Assert.assertTrue(new ReflectionEquals(textBlock.getStatementLines().get(i).get("Field61"))
+                    .matches(parsedTextBlock.getStatementLines().get(i).get("Field61")));
         }
-
     }
 
     @Test(expectedExceptions = MTMessageParsingException.class,
@@ -192,16 +187,14 @@ public class MT940ParserTests {
             throws Exception {
         MT940TextBlock parsedTextBlock = MT940TextBlock.parse(textBlockStr);
 
-        Assert.assertEquals(parsedTextBlock.getStatementLineInfoToAccountOwner().size(),
-                textBlock.getStatementLineInfoToAccountOwner().size());
+        Assert.assertEquals(parsedTextBlock.getStatementLines().size(), textBlock.getStatementLines().size());
 
-        int statementCount = parsedTextBlock.getStatementLineInfoToAccountOwner().size();
+        int statementCount = parsedTextBlock.getStatementLines().size();
 
         for (int i = 0; i < statementCount; i++) {
-            Assert.assertTrue(new ReflectionEquals(textBlock.getStatementLineInfoToAccountOwner().get(i))
-                    .matches(parsedTextBlock.getStatementLineInfoToAccountOwner().get(i)));
+            Assert.assertTrue(new ReflectionEquals(textBlock.getStatementLines().get(i).get("Field86"))
+                    .matches(parsedTextBlock.getStatementLines().get(i).get("Field86")));
         }
-
     }
 
     @Test(expectedExceptions = MTMessageParsingException.class,
@@ -215,8 +208,8 @@ public class MT940ParserTests {
     public void testValidClosingBalanceOptFScenario(String textBlockStr, MT940TextBlock textBlock) throws Exception {
         MT940TextBlock parsedTextBlock = MT940TextBlock.parse(textBlockStr);
 
-        Assert.assertTrue(new ReflectionEquals(textBlock.getClosingBalOptF())
-                .matches(parsedTextBlock.getClosingBalOptF()));
+        Assert.assertTrue(new ReflectionEquals(textBlock.getClosingBal())
+                .matches(parsedTextBlock.getClosingBal()));
     }
 
     @Test(expectedExceptions = MTMessageParsingException.class,
@@ -230,8 +223,8 @@ public class MT940ParserTests {
     public void testValidClosingBalanceOptMScenario(String textBlockStr, MT940TextBlock textBlock) throws Exception {
         MT940TextBlock parsedTextBlock = MT940TextBlock.parse(textBlockStr);
 
-        Assert.assertTrue(new ReflectionEquals(textBlock.getClosingBalOptM())
-                .matches(parsedTextBlock.getClosingBalOptM()));
+        Assert.assertTrue(new ReflectionEquals(textBlock.getClosingBal())
+                .matches(parsedTextBlock.getClosingBal()));
     }
 
     @Test(expectedExceptions = MTMessageParsingException.class,
