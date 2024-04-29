@@ -23,6 +23,7 @@ import org.wso2.carbon.module.swiftiso20022.constants.MT103Constants;
 import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
 import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -88,12 +89,12 @@ public class Field57 {
     public static final String OPTION_B_TAG = "57B";
     public static final String OPTION_C_TAG = "57C";
     public static final String OPTION_D_TAG = "57D";
-    private static final Map<String, Pattern> REGEX_PATTERN = Map.of(
-            OPTION_A_TAG, MTParserConstants.PARTY_IDENTIFIER_OPTION_A_REGEX_PATTERN,
-            OPTION_B_TAG, MTParserConstants.PARTY_IDENTIFIER_OPTION_B_REGEX_PATTERN,
-            OPTION_C_TAG, MTParserConstants.PARTY_IDENTIFIER_OPTION_C_REGEX_PATTERN,
-            OPTION_D_TAG, MTParserConstants.PARTY_IDENTIFIER_OPTION_D_REGEX_PATTERN
-    );
+    private static final Map<String, Pattern> REGEX_PATTERN = new HashMap<>() {{
+        put(OPTION_A_TAG, MTParserConstants.PARTY_IDENTIFIER_OPTION_A_REGEX_PATTERN);
+        put(OPTION_B_TAG, MTParserConstants.PARTY_IDENTIFIER_OPTION_B_REGEX_PATTERN);
+        put(OPTION_C_TAG, MTParserConstants.PARTY_IDENTIFIER_OPTION_C_REGEX_PATTERN);
+        put(OPTION_D_TAG, MTParserConstants.PARTY_IDENTIFIER_OPTION_D_REGEX_PATTERN);
+    }};
     private final ConnectorConstants.MTFieldDOption option;
     private String partyIdentifier;
     private String identifierCode;
