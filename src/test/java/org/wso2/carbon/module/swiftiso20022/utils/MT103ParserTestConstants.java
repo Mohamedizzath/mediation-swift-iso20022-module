@@ -66,8 +66,8 @@ public class MT103ParserTestConstants {
                 {String.format(VALID_MT103_MESSAGE_WITHOUT_TEXT_BLOCK, getTextBlockFromList(List.of(
                         ":20:TXNREF1234567890",
                         ":23B:CRED",
-                        ":32A:230523EUR100000,50",
                         ":26T:K90",
+                        ":32A:230523EUR100000,50",
                         ":33B:USD1000,00",
                         ":36:0,9236",
                         ":50K:/12345678\n" +

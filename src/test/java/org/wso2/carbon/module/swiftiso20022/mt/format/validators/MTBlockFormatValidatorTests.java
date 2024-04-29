@@ -95,7 +95,18 @@ public class MTBlockFormatValidatorTests {
                 Map.of(ConnectorConstants.USER_HEADER_BLOCK_KEY, "{111:some value}{121:another value}"));
 
         Assert.assertTrue(validationResult.isNotValid());
-        Assert.assertEquals("Service Type Identifier cannot appear before field End To End Reference",
+        Assert.assertEquals("Illegal occurrence of Service Type Identifier",
+                validationResult.getErrorMessage());
+    }
+
+    @Test
+    public void testField111WithoutField121Present() {
+
+        ValidationResult validationResult = MTBlockFormatValidator.validateMTMessageBlockFormat(
+                Map.of(ConnectorConstants.USER_HEADER_BLOCK_KEY, "{111:some value}{119:STP}"));
+
+        Assert.assertTrue(validationResult.isNotValid());
+        Assert.assertEquals("Illegal occurrence of Service Type Identifier",
                 validationResult.getErrorMessage());
     }
 

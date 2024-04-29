@@ -21,7 +21,6 @@ package org.wso2.carbon.module.swiftiso20022.mt.format.validators;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
-import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
 import org.wso2.carbon.module.swiftiso20022.validation.common.ValidationResult;
 
 import java.util.Arrays;
@@ -47,7 +46,7 @@ public class MT103BlockFormatValidator {
      * <dl>
      *     <dt>example: </dt>
      *     <dd>:52A:ABANWALA</dd>
-     *     <dd><s>:GONAWALA</s></dd>
+     *     <dd><s>:GONAWALA</dd>
      * </dl>
      */
     private static final String TEXT_BLOCK_FORMAT_REGEX = "^(\\R:\\d{2}[A-Z]?:.+(\\R[^:].*)*)+\\R$";
@@ -65,7 +64,7 @@ public class MT103BlockFormatValidator {
      */
     private static final List<String> ALLOWED_FIELDS = Arrays.asList(
             "20", "13C", "23B", "23E", "26T", "32A", "33B", "36", "50", "51A", "52", "53", "54", "55", "56",
-            "57", "59", "70", "71A", "71F", "72", "77B", "77T"
+            "57", "59", "70", "71A", "71F", "71G", "72", "77B", "77T"
     );
 
     /**

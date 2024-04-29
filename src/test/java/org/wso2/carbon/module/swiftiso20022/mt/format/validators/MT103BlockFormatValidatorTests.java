@@ -132,4 +132,14 @@ public class MT103BlockFormatValidatorTests {
                 "Order of field .* in Text Block is invalid",
                 validationResult.getErrorMessage()));
     }
+
+    @Test
+    public void testNotAllowedField() {
+
+        ValidationResult validationResult = MT103BlockFormatValidator.validateMTMessageBlockFormat(
+                Map.of(ConnectorConstants.TEXT_BLOCK_KEY, "\n:23B:CRED\n:95:TXNREF1234567890\n"));
+
+        Assert.assertTrue(validationResult.isNotValid());
+        Assert.assertEquals("95 field is not allowed in Text Block", validationResult.getErrorMessage());
+    }
 }
