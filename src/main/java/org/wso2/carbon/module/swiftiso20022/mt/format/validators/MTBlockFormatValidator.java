@@ -44,14 +44,14 @@ public class MTBlockFormatValidator {
      * tag -> 3 digits
      * value -> one or more character except {,},: and line break
      */
-    private static final String USER_HEADER_BLOCK_FORMAT_REGEX = "^(\\{\\d{3}:[^}]+})+$";
+    private static final String USER_HEADER_BLOCK_FORMAT_REGEX = "^(\\{\\d{3}:[^}]{1,36}})+$";
 
     /**
      * This regex captures global match in the format -> one or more of {tag:value} .
      * tag -> 3 uppercase letters
      * value -> zero or more character except {,},: and line break
      */
-    private static final String TRAILER_BLOCK_FORMAT_REGEX = "^(\\{[A-Z]{3}:[^}]*})+$";
+    private static final String TRAILER_BLOCK_FORMAT_REGEX = "^(\\{[A-Z]{3}:[^}]{0,38}})+$";
 
     private MTBlockFormatValidator() {
         // private constructor to prevent instantiation
@@ -59,6 +59,8 @@ public class MTBlockFormatValidator {
 
     /**
      * Method to validate User Header Block Format and Trailer Block Format.
+     * Basic Header Block and Application Header Block format will not be checked because both of them are single
+     * strings, no specific format like other two blocks
      *
      * @param blocks Map, with block identifiers as key and the block as the value
      * @return A {@link ValidationResult} with validation result and error message if not valid
@@ -82,12 +84,13 @@ public class MTBlockFormatValidator {
             return validationResult;
         }
 
-        return new ValidationResult();
+        return new ValidationResult(true);
     }
 
     /**
      * Method to validate User Header Block format.
      * Check field repetitions
+     * Check field 111 without field 121
      * Check field 121 and field 111 order
      *
      * @param userHeaderBlock User Header Block as string
@@ -96,7 +99,7 @@ public class MTBlockFormatValidator {
     private static ValidationResult validateUserHeaderBlock(String userHeaderBlock) {
 
         if (userHeaderBlock == null) {
-            return new ValidationResult();
+            return new ValidationResult(true);
         }
 
         if (!Pattern.matches(USER_HEADER_BLOCK_FORMAT_REGEX, userHeaderBlock)) {
@@ -116,8 +119,8 @@ public class MTBlockFormatValidator {
             String tag = userHeadBlockFieldMatcher.group(1);
 
             // condition to check field 111 appearing before 121
-            if (Field121.TAG.equals(tag) && matchedTags.contains(Field111.TAG)) {
-                return new ValidationResult(ConnectorConstants.ERROR_111_BEFORE_121);
+            if (Field111.TAG.equals(tag) && !matchedTags.contains(Field121.TAG)) {
+                return new ValidationResult(ConnectorConstants.ILLEGAL_OCCURRENCE_OF_FIELD_111);
             }
 
             // condition to check field repetition
@@ -129,7 +132,7 @@ public class MTBlockFormatValidator {
             }
         }
 
-        return new ValidationResult();
+        return new ValidationResult(true);
     }
 
     /**
@@ -142,7 +145,7 @@ public class MTBlockFormatValidator {
     private static ValidationResult validateTrailerBlock(String trailerBlock) {
 
         if (trailerBlock == null) {
-            return new ValidationResult();
+            return new ValidationResult(true);
         }
 
         if (!Pattern.matches(TRAILER_BLOCK_FORMAT_REGEX, trailerBlock)) {
@@ -170,6 +173,6 @@ public class MTBlockFormatValidator {
             }
         }
 
-        return new ValidationResult();
+        return new ValidationResult(true);
     }
 }

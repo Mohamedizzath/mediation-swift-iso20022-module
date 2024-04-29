@@ -142,6 +142,7 @@ public class ConnectorConstants {
     public static final String ERROR_INVALID_PAYLOAD = "Invalid Request Payload";
     public static final String PROCESSING_ERROR = "Error while processing the request";
     public static final String ERROR_MANDATORY_BLOCK_MISSING = "Mandatory block %s cannot be null";
+    public static final String ERROR_MANDATORY_BLOCK_EMPTY = "Mandatory block %s cannot be empty";
     public static final String ERROR_MANDATORY_PARAM_MISSING = "Mandatory parameter %s cannot be null or empty";
     public static final String ERROR_OPTIONAL_PARAM_MISSING = "Optional parameter %s cannot be empty";
     public static final String ERROR_PARAMETER_LENGTH = "%s should not contain more than %s characters";
@@ -172,8 +173,8 @@ public class ConnectorConstants {
     public static final String ERROR_FIELD_REPEATED = "Field %s in %s cannot repeat";
     public static final String ERROR_FIELD_INVALID_IN_BLOCK = "Value of field %s in %s is invalid";
     public static final String ERROR_FIELD_NOT_ALLOWED_IN_BLOCK = "%s field is not allowed in %s";
-    public static final String ERROR_111_BEFORE_121 =
-            "Service Type Identifier cannot appear before field End To End Reference";
+    public static final String ILLEGAL_OCCURRENCE_OF_FIELD_111 =
+            "Illegal occurrence of Service Type Identifier";
     public static final String ERROR_BLOCK_INVALID_FORMAT = "%s format is invalid";
     public static final String ERROR_FIELD_ORDER = "Order of field %s in %s is invalid";
 

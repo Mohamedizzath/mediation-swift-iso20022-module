@@ -21,8 +21,10 @@ package org.wso2.carbon.module.swiftiso20022.mt.format.validators;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
+import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
 import org.wso2.carbon.module.swiftiso20022.validation.common.ValidationResult;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -37,9 +39,16 @@ public class MT103BlockFormatValidator {
 
     /**
      * This regex captures global match in the format ->
-     *                          line break and one or more of (:tag:value):tag:value .
+     *                          one or more of (line break:tag:value) line break.
      * tag -> 2 digits and optional uppercase letter
-     * value -> contains all characters until next line break followed by a colon is found
+     * value -> contains all characters until next line break followed by a colon is found, if the next line starts
+     * with a colon and not follows tag value format it will not be matched
+     *
+     * <dl>
+     *     <dt>example: </dt>
+     *     <dd>:52A:ABANWALA</dd>
+     *     <dd><s>:GONAWALA</s></dd>
+     * </dl>
      */
     private static final String TEXT_BLOCK_FORMAT_REGEX = "^(\\R:\\d{2}[A-Z]?:.+(\\R[^:].*)*)+\\R$";
 
@@ -54,7 +63,7 @@ public class MT103BlockFormatValidator {
      * Only numerical identifier is included for fields with multiple options.
      * example: for 50A, 50F and 50K -> 50
      */
-    private static final List<String> ALLOWED_FIELDS = List.of(
+    private static final List<String> ALLOWED_FIELDS = Arrays.asList(
             "20", "13C", "23B", "23E", "26T", "32A", "33B", "36", "50", "51A", "52", "53", "54", "55", "56",
             "57", "59", "70", "71A", "71F", "72", "77B", "77T"
     );
@@ -62,7 +71,7 @@ public class MT103BlockFormatValidator {
     /**
      * Tags of fields where repetitions allowed in MT103 text block in order.
      */
-    private static final List<String> FIELDS_WITH_REPETITIONS_ALLOWED = List.of("13C", "23E", "71F");
+    private static final List<String> FIELDS_WITH_REPETITIONS_ALLOWED = Arrays.asList("13C", "23E", "71F");
 
     private MT103BlockFormatValidator() {
         // private constructor to prevent instantiation
@@ -92,7 +101,7 @@ public class MT103BlockFormatValidator {
             return validationResult;
         }
 
-        return new ValidationResult();
+        return new ValidationResult(true);
     }
 
     /**
@@ -106,7 +115,8 @@ public class MT103BlockFormatValidator {
     private static ValidationResult validateTextBlockFormat(String textBlock) {
 
         if (textBlock == null) {
-            return new ValidationResult();
+            return new ValidationResult(String.format(
+                    ConnectorConstants.ERROR_MANDATORY_BLOCK_EMPTY, ConnectorConstants.TEXT_BLOCK));
         }
 
         if (!Pattern.matches(TEXT_BLOCK_FORMAT_REGEX, textBlock)) {
@@ -156,6 +166,6 @@ public class MT103BlockFormatValidator {
             }
         }
 
-        return new ValidationResult();
+        return new ValidationResult(true);
     }
 }
