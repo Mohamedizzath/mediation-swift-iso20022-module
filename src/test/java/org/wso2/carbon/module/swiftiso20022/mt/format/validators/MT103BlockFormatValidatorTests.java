@@ -56,7 +56,8 @@ public class MT103BlockFormatValidatorTests {
             ":70:PAYMENT FOR INVOICE 998877\n" +
             ":71A:OUR\n" +
             ":72:/ACC/RENT/MAY\n" +
-            "/INV/998877";
+            "/INV/998877\n" +
+            ":77T:/UEDI/UNH+123A5+FINPAY:D:98A:UN'DOC+ ...\n";
 
     @Test
     public void testValidTextBlockFormat() {
@@ -75,7 +76,10 @@ public class MT103BlockFormatValidatorTests {
                 {":20:Some Reference"},
                 {"{119:STP}"},
                 {"{CHK:1234567890ABC}"},
-                {"\n:20:TXNREF1234567890:\n:23B:CRED\n"},
+                {"\n:20:TXNREF1234567890"},
+                {"\n:20:TXNREF1234567890:"},
+                {"\n:20:TXNREF1234567890\n::23B:CRED\n"},
+                {"\n:20:TXNREF1234567890:\n:23B:CRED\n:"},
         };
     }
 
@@ -93,7 +97,7 @@ public class MT103BlockFormatValidatorTests {
     Object[][] getInvalidFieldRepetitionsDataProvider() {
         return new Object[][] {
                 {"\n:20:TXNREF1234567890\n:20:TXNREF1234567890\n:23B:CRED\n"},
-                {"\n:20:TXNREF1234567890\n:50A:CHQB\n:50F:TELI/3226553478"},
+                {"\n:20:TXNREF1234567890\n:50A:CHQB\n:50F:TELI/3226553478\n"},
         };
     }
 
@@ -112,8 +116,8 @@ public class MT103BlockFormatValidatorTests {
     @DataProvider(name = "invalidFieldOrderDataProvider")
     Object[][] getInvalidFieldOrderDataProvider() {
         return new Object[][] {
-                {"\n:23B:CRED\n:20:TXNREF1234567890"},
-                {"\n:20:TXNREF1234567890\n:23E:CHQB\n:26T:K90\n:23E:TELI/3226553478"},
+                {"\n:23B:CRED\n:20:TXNREF1234567890\n"},
+                {"\n:20:TXNREF1234567890\n:23E:CHQB\n:26T:K90\n:23E:TELI/3226553478\n"},
         };
     }
 

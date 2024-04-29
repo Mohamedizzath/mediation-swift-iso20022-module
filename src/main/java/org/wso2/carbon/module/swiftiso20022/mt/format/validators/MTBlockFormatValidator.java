@@ -44,14 +44,14 @@ public class MTBlockFormatValidator {
      * tag -> 3 digits
      * value -> one or more character except {,},: and line break
      */
-    private static final String USER_HEADER_BLOCK_FORMAT_REGEX = "^(\\{\\d{3}:[^{}:\n]+})+$";
+    private static final String USER_HEADER_BLOCK_FORMAT_REGEX = "^(\\{\\d{3}:[^}]+})+$";
 
     /**
      * This regex captures global match in the format -> one or more of {tag:value} .
      * tag -> 3 uppercase letters
      * value -> zero or more character except {,},: and line break
      */
-    private static final String TRAILER_BLOCK_FORMAT_REGEX = "^(\\{[A-Z]{3}:[^{}:\n]*})+$";
+    private static final String TRAILER_BLOCK_FORMAT_REGEX = "^(\\{[A-Z]{3}:[^}]*})+$";
 
     private MTBlockFormatValidator() {
         // private constructor to prevent instantiation

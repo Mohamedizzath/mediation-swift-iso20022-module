@@ -48,7 +48,7 @@ public class MTParserConstants {
 
     // Regex patterns for MT parser and utils
     public static final Pattern CURLY_BRACKETS_FIELDS_MATCHING_PATTERN =
-            Pattern.compile("\\{([0-9A-Z]{3}):([^}:]*)}");
+            Pattern.compile("\\{([0-9A-Z]{3}):([^}]*)}");
     public static final Pattern FIELD_103_REGEX_PATTERN = Pattern.compile("^[A-Z]{3}$");
     public static final Pattern FIELD_106_REGEX_PATTERN =
             Pattern.compile("^([0-9]{6})([0-9A-Z]{12})([0-9]{4})([0-9]{6})$");

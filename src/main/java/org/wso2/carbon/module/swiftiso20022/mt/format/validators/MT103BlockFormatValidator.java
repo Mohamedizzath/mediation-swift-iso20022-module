@@ -36,17 +36,18 @@ public class MT103BlockFormatValidator {
     private static final Log log = LogFactory.getLog(MTBlockFormatValidator.class);
 
     /**
-     * This regex captures global match in the format -> line break and one or more of :tag:value .
+     * This regex captures global match in the format ->
+     *                          line break and one or more of (:tag:value):tag:value .
      * tag -> 2 digits and optional uppercase letter
-     * value -> one or more character except :
+     * value -> contains all characters until next line break followed by a colon is found
      */
-    private static final String TEXT_BLOCK_FORMAT_REGEX = "^\\R(:\\d{2}[A-Z]?:[^:]+)+$";
+    private static final String TEXT_BLOCK_FORMAT_REGEX = "^(\\R:\\d{2}[A-Z]?:.+(\\R[^:].*)*)+\\R$";
 
     /**
-     * This regex captures single match in the format ->  :tag: .
+     * This regex captures single match in the format ->  line break:tag: .
      * tag -> 2 digits and optional uppercase letter
      */
-    private static final Pattern TEXT_BLOCK_TAG_MATCHING_REGEX = Pattern.compile(":(\\d{2}[A-Z]?):");
+    private static final Pattern TEXT_BLOCK_TAG_MATCHING_REGEX = Pattern.compile("\\R:(\\d{2}[A-Z]?):");
 
     /**
      * Tags of fields allowed in MT103 text block in order.
