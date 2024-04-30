@@ -16,7 +16,7 @@
  * under the License.
  */
 
-package org.wso2.carbon.module.swiftiso20022.mt.parser;
+package org.wso2.carbon.module.swiftiso20022.mt.parsers;
 
 import org.mockito.internal.matchers.apachecommons.ReflectionEquals;
 import org.testng.Assert;
