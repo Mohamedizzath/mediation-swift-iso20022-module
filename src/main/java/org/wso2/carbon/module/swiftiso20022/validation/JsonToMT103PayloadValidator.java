@@ -37,49 +37,49 @@ public class JsonToMT103PayloadValidator {
     // List of mandatory fields in block 01
     private static final List<ValidatorContext> block01MandatoryFieldValidationParamList = List.of(
             new ValidatorContext(MT103Constants.BLOCK01_LOGICAL_TERMINAL_ADDRESS_KEY,
-                    ConnectorConstants.BLOCK01_LOGICAL_TERMINAL_ADDRESS),
+                    ConnectorConstants.LOGICAL_TERMINAL_ADDRESS),
             new ValidatorContext(MT103Constants.BLOCK01_SESSION_NUMBER_KEY,
-                    ConnectorConstants.BLOCK01_SESSION_NUMBER),
+                    ConnectorConstants.SESSION_NUMBER),
             new ValidatorContext(MT103Constants.BLOCK01_SEQUENCE_NUMBER_KEY,
-                    ConnectorConstants.BLOCK01_SEQUENCE_NUMBER)
+                    ConnectorConstants.SEQUENCE_NUMBER)
     );
 
     // List of fields with predefined values in block 01
     private static final List<ValidatorContext> block01FixedValueFieldValidationParamsList = List.of(
-            new ValidatorContext(MT103Constants.BLOCK01_APPLICATION_ID_KEY, ConnectorConstants.BLOCK01_APPLICATION_ID,
+            new ValidatorContext(MT103Constants.BLOCK01_APPLICATION_ID_KEY, ConnectorConstants.APPLICATION_IDENTIFIER,
                     Map.of(ConnectorConstants.FIXED_VALUE_KEY, MT103Constants.MT103_APPLICATION_ID)),
-            new ValidatorContext(MT103Constants.BLOCK01_SERVICE_ID_KEY, ConnectorConstants.BLOCK01_SERVICE_ID,
+            new ValidatorContext(MT103Constants.BLOCK01_SERVICE_ID_KEY, ConnectorConstants.SERVICE_IDENTIFIER,
                     Map.of(ConnectorConstants.FIXED_VALUE_KEY, MT103Constants.MT103_SERVICE_ID))
     );
 
     // List of numeric fields in block 01
     private static final List<ValidatorContext> block01NumericFieldValidationParamList = List.of(
             new ValidatorContext(MT103Constants.BLOCK01_SESSION_NUMBER_KEY,
-                    ConnectorConstants.BLOCK01_SESSION_NUMBER),
+                    ConnectorConstants.SESSION_NUMBER),
             new ValidatorContext(MT103Constants.BLOCK01_SEQUENCE_NUMBER_KEY,
-                    ConnectorConstants.BLOCK01_SEQUENCE_NUMBER)
+                    ConnectorConstants.SEQUENCE_NUMBER)
     );
 
     // List of fields with length validations in block 01
     private static final List<ValidatorContext> block01FieldsLengthValidationParamList = List.of(
             new ValidatorContext(MT103Constants.BLOCK01_LOGICAL_TERMINAL_ADDRESS_KEY,
-                    ConnectorConstants.BLOCK01_LOGICAL_TERMINAL_ADDRESS,
+                    ConnectorConstants.LOGICAL_TERMINAL_ADDRESS,
                     ConnectorConstants.LOGICAL_TERMINAL_ADDRESS_LENGTH),
             new ValidatorContext(MT103Constants.BLOCK01_SESSION_NUMBER_KEY,
-                    ConnectorConstants.BLOCK01_SESSION_NUMBER, ConnectorConstants.SESSION_NUMBER_LENGTH),
+                    ConnectorConstants.SESSION_NUMBER, ConnectorConstants.SESSION_NUMBER_LENGTH),
             new ValidatorContext(MT103Constants.BLOCK01_SEQUENCE_NUMBER_KEY,
-                    ConnectorConstants.BLOCK01_SEQUENCE_NUMBER, ConnectorConstants.SEQUENCE_NUMBER_LENGTH)
+                    ConnectorConstants.SEQUENCE_NUMBER, ConnectorConstants.SEQUENCE_NUMBER_LENGTH)
     );
 
     // List of fields with constant length in block 01
     private static final List<String> block01DefinedLengthFields =
             List.of(MT103Constants.BLOCK01_LOGICAL_TERMINAL_ADDRESS_KEY,
-                    MT103Constants.BLOCK01_SESSION_NUMBER_KEY, ConnectorConstants.BLOCK01_SEQUENCE_NUMBER);
+                    MT103Constants.BLOCK01_SESSION_NUMBER_KEY, ConnectorConstants.SEQUENCE_NUMBER);
 
     // List of alphanumeric fields in block 01
     private static final List<ValidatorContext> block02AlphanumericValidationParamsList = List.of(
             new ValidatorContext(MT103Constants.BLOCK01_LOGICAL_TERMINAL_ADDRESS_KEY,
-                    ConnectorConstants.BLOCK01_LOGICAL_TERMINAL_ADDRESS)
+                    ConnectorConstants.LOGICAL_TERMINAL_ADDRESS)
     );
 
     /**
@@ -99,36 +99,36 @@ public class JsonToMT103PayloadValidator {
     // List of mandatory fields in block 02 of a input message
     private static final List<ValidatorContext> inputBlock02MandatoryFieldValidationParamsList = List.of(
             new ValidatorContext(MT103Constants.BLOCK02_DESTINATION_LOGICAL_TERMINAL_ADDRESS_KEY,
-                    ConnectorConstants.BLOCK02_DESTINATION_LOGICAL_TERMINAL_ADDRESS)
+                    ConnectorConstants.DESTINATION_LOGICAL_TERMINAL_ADDRESS)
     );
 
     // List of optional fields in block 02 of a input message
     private static final List<ValidatorContext> inputBlock02OptionalFieldValidationParamsList = List.of(
-            new ValidatorContext(MT103Constants.BLOCK02_PRIORITY_KEY, ConnectorConstants.BLOCK02_PRIORITY),
+            new ValidatorContext(MT103Constants.BLOCK02_PRIORITY_KEY, ConnectorConstants.PRIORITY),
             new ValidatorContext(MT103Constants.BLOCK02_DELIVERY_MONITORING_CODE_KEY,
-                    ConnectorConstants.BLOCK02_DELIVERY_MONITORING_CODE),
+                    ConnectorConstants.DELIVERY_MONITORING_CODE),
             new ValidatorContext(MT103Constants.BLOCK02_OBSOLESCENCE_PERIOD_CODE_KEY,
-                    ConnectorConstants.BLOCK02_OBSOLESCENCE_PERIOD_CODE)
+                    ConnectorConstants.OBSOLESCENCE_PERIOD_CODE)
     );
 
     // List of fields with predefined values in block 02 of a input message
     private static final List<ValidatorContext> block02FixedValueFieldValidationParamsList = List.of(
-            new ValidatorContext(MT103Constants.BLOCK02_MESSAGE_TYPE_KEY, ConnectorConstants.BLOCK02_MESSAGE_TYPE,
+            new ValidatorContext(MT103Constants.BLOCK02_MESSAGE_TYPE_KEY, ConnectorConstants.MESSAGE_TYPE,
                     Map.of(ConnectorConstants.FIXED_VALUE_KEY, MT103Constants.MT103_MESSAGE_TYPE))
     );
 
     // List of fields with length validations in block 02 of a input message
     private static final List<ValidatorContext> inputBlock02LengthValidationParamsList = List.of(
             new ValidatorContext(MT103Constants.BLOCK02_DESTINATION_LOGICAL_TERMINAL_ADDRESS_KEY,
-                    ConnectorConstants.BLOCK02_DESTINATION_LOGICAL_TERMINAL_ADDRESS,
+                    ConnectorConstants.DESTINATION_LOGICAL_TERMINAL_ADDRESS,
                     ConnectorConstants.LOGICAL_TERMINAL_ADDRESS_LENGTH),
             new ValidatorContext(MT103Constants.BLOCK02_PRIORITY_KEY,
-                    ConnectorConstants.BLOCK02_PRIORITY, ConnectorConstants.BLOCK02_PRIORITY_LENGTH),
+                    ConnectorConstants.PRIORITY, ConnectorConstants.BLOCK02_PRIORITY_LENGTH),
             new ValidatorContext(MT103Constants.BLOCK02_DELIVERY_MONITORING_CODE_KEY,
-                    ConnectorConstants.BLOCK02_DELIVERY_MONITORING_CODE,
+                    ConnectorConstants.DELIVERY_MONITORING_CODE,
                     ConnectorConstants.BLOCK02_DELIVERY_MONITORING_CODE_LENGTH),
             new ValidatorContext(MT103Constants.BLOCK02_OBSOLESCENCE_PERIOD_CODE_KEY,
-                    ConnectorConstants.BLOCK02_OBSOLESCENCE_PERIOD_CODE,
+                    ConnectorConstants.OBSOLESCENCE_PERIOD_CODE,
                     ConnectorConstants.BLOCK02_OBSOLESCENCE_PERIOD_LENGTH)
     );
 
@@ -143,21 +143,21 @@ public class JsonToMT103PayloadValidator {
     // List of numeric fields in block 02 of a input message
     private static final List<ValidatorContext> inputBlock02NumericFieldValidationParamsList = List.of(
             new ValidatorContext(MT103Constants.BLOCK02_DELIVERY_MONITORING_CODE_KEY,
-                    ConnectorConstants.BLOCK02_DELIVERY_MONITORING_CODE),
+                    ConnectorConstants.DELIVERY_MONITORING_CODE),
             new ValidatorContext(MT103Constants.BLOCK02_OBSOLESCENCE_PERIOD_CODE_KEY,
-                    ConnectorConstants.BLOCK02_OBSOLESCENCE_PERIOD_CODE)
+                    ConnectorConstants.OBSOLESCENCE_PERIOD_CODE)
     );
 
     // List of alphabetic fields in block 02 of a input message
     private static final List<ValidatorContext> inputBlock02AlphaFieldValidationParamsList = List.of(
             new ValidatorContext(MT103Constants.BLOCK02_PRIORITY_KEY,
-                    ConnectorConstants.BLOCK02_PRIORITY)
+                    ConnectorConstants.PRIORITY)
     );
 
     // List of alphanumeric fields in block 02 of a input message
     private static final List<ValidatorContext> inputBlock02AlphaNumericFieldValidationParamsList = List.of(
             new ValidatorContext(MT103Constants.BLOCK02_DESTINATION_LOGICAL_TERMINAL_ADDRESS_KEY,
-                    ConnectorConstants.BLOCK02_DESTINATION_LOGICAL_TERMINAL_ADDRESS)
+                    ConnectorConstants.DESTINATION_LOGICAL_TERMINAL_ADDRESS)
     );
 
     /**
@@ -179,31 +179,31 @@ public class JsonToMT103PayloadValidator {
 
     // List of mandatory fields in block 02 of a output message
     private static final List<ValidatorContext> outputBlock02MandatoryFieldValidationParamsList = List.of(
-            new ValidatorContext(MT103Constants.BLOCK02_INPUT_TIME_KEY, ConnectorConstants.BLOCK02_INPUT_TIME),
+            new ValidatorContext(MT103Constants.BLOCK02_INPUT_TIME_KEY, ConnectorConstants.INPUT_TIME),
             new ValidatorContext(MT103Constants.BLOCK02_MESSAGE_INPUT_REFERENCE_KEY,
-                    ConnectorConstants.BLOCK02_MESSAGE_INPUT_REFERENCE),
-            new ValidatorContext(MT103Constants.BLOCK02_OUTPUT_DATE_KEY, ConnectorConstants.BLOCK02_OUTPUT_DATE),
-            new ValidatorContext(MT103Constants.BLOCK02_OUTPUT_TIME_KEY, ConnectorConstants.BLOCK02_OUTPUT_TIME)
+                    ConnectorConstants.MESSAGE_INPUT_REFERENCE),
+            new ValidatorContext(MT103Constants.BLOCK02_OUTPUT_DATE_KEY, ConnectorConstants.OUTPUT_DATE),
+            new ValidatorContext(MT103Constants.BLOCK02_OUTPUT_TIME_KEY, ConnectorConstants.OUTPUT_TIME)
 
     );
 
     // List of optional fields in block 02 of a output message
     private static final List<ValidatorContext> outputBlock02OptionalFieldValidationParamsList = List.of(
-            new ValidatorContext(MT103Constants.BLOCK02_PRIORITY_KEY, ConnectorConstants.BLOCK02_PRIORITY)
+            new ValidatorContext(MT103Constants.BLOCK02_PRIORITY_KEY, ConnectorConstants.PRIORITY)
     );
 
     // List of fields with length validations in block 02 of a output message
     private static final List<ValidatorContext> outputBlock02LengthValidationParamsList = List.of(
             new ValidatorContext(MT103Constants.BLOCK02_PRIORITY_KEY,
-                    ConnectorConstants.BLOCK02_PRIORITY, ConnectorConstants.BLOCK02_PRIORITY_LENGTH),
-            new ValidatorContext(MT103Constants.BLOCK02_INPUT_TIME_KEY, ConnectorConstants.BLOCK02_INPUT_TIME,
+                    ConnectorConstants.PRIORITY, ConnectorConstants.BLOCK02_PRIORITY_LENGTH),
+            new ValidatorContext(MT103Constants.BLOCK02_INPUT_TIME_KEY, ConnectorConstants.INPUT_TIME,
                     ConnectorConstants.TIME_LENGTH),
             new ValidatorContext(MT103Constants.BLOCK02_MESSAGE_INPUT_REFERENCE_KEY,
-                    ConnectorConstants.BLOCK02_MESSAGE_INPUT_REFERENCE,
+                    ConnectorConstants.MESSAGE_INPUT_REFERENCE,
                     ConnectorConstants.BLOCK02_MESSAGE_INPUT_REFERENCE_LENGTH),
-            new ValidatorContext(MT103Constants.BLOCK02_OUTPUT_DATE_KEY, ConnectorConstants.BLOCK02_OUTPUT_DATE,
+            new ValidatorContext(MT103Constants.BLOCK02_OUTPUT_DATE_KEY, ConnectorConstants.OUTPUT_DATE,
                     ConnectorConstants.DATE_LENGTH),
-            new ValidatorContext(MT103Constants.BLOCK02_OUTPUT_TIME_KEY, ConnectorConstants.BLOCK02_OUTPUT_TIME,
+            new ValidatorContext(MT103Constants.BLOCK02_OUTPUT_TIME_KEY, ConnectorConstants.OUTPUT_TIME,
                     ConnectorConstants.TIME_LENGTH)
     );
 
@@ -218,21 +218,21 @@ public class JsonToMT103PayloadValidator {
 
     // List of numeric fields in block 02 of a output message
     private static final List<ValidatorContext> outputBlock02NumericFieldValidationParamsList = List.of(
-            new ValidatorContext(MT103Constants.BLOCK02_INPUT_TIME_KEY, ConnectorConstants.BLOCK02_INPUT_TIME),
-            new ValidatorContext(MT103Constants.BLOCK02_OUTPUT_DATE_KEY, ConnectorConstants.BLOCK02_OUTPUT_DATE),
-            new ValidatorContext(MT103Constants.BLOCK02_OUTPUT_TIME_KEY, ConnectorConstants.BLOCK02_OUTPUT_TIME)
+            new ValidatorContext(MT103Constants.BLOCK02_INPUT_TIME_KEY, ConnectorConstants.INPUT_TIME),
+            new ValidatorContext(MT103Constants.BLOCK02_OUTPUT_DATE_KEY, ConnectorConstants.OUTPUT_DATE),
+            new ValidatorContext(MT103Constants.BLOCK02_OUTPUT_TIME_KEY, ConnectorConstants.OUTPUT_TIME)
     );
 
     // List of alphabetic fields in block 02 of a output message
     private static final List<ValidatorContext> outputBlock02AlphaFieldValidationParamsList = List.of(
             new ValidatorContext(MT103Constants.BLOCK02_PRIORITY_KEY,
-                    ConnectorConstants.BLOCK02_PRIORITY)
+                    ConnectorConstants.PRIORITY)
     );
 
     // List of alphanumeric fields in block 02 of a output message
     private static final List<ValidatorContext> outputBlock02AlphaNumericFieldValidationParamsList = List.of(
             new ValidatorContext(MT103Constants.BLOCK02_MESSAGE_INPUT_REFERENCE_KEY,
-                    ConnectorConstants.BLOCK02_MESSAGE_INPUT_REFERENCE)
+                    ConnectorConstants.MESSAGE_INPUT_REFERENCE)
     );
 
     /**
@@ -254,42 +254,42 @@ public class JsonToMT103PayloadValidator {
 
     // List of fields with predefined set of values in block 03
     private static final List<ValidatorContext> block03DefinedValueFields = List.of(
-            new ValidatorContext(MT103Constants.BLOCK03_VALIDATION_FLAG_KEY, ConnectorConstants.BLOCK03_VALIDATION_FLAG,
+            new ValidatorContext(MT103Constants.BLOCK03_VALIDATION_FLAG_KEY, ConnectorConstants.VALIDATION_FLAG,
                     Map.of(ConnectorConstants.ENUM_KEY, MT103Constants.ValidationFlag.class))
     );
 
     // List of mandatory fields in block 03
     private static final List<ValidatorContext> block03MandatoryFieldValidationParamsList = List.of(
             new ValidatorContext(MT103Constants.BLOCK03_SERVICE_IDENTIFIER_KEY,
-                    ConnectorConstants.BLOCK03_SERVICE_IDENTIFIER),
+                    ConnectorConstants.SERVICE_IDENTIFIER),
             new ValidatorContext(MT103Constants.BLOCK03_END_TO_END_REFERENCE_KEY,
-                    ConnectorConstants.BLOCK03_END_TO_END_REFERENCE)
+                    ConnectorConstants.END_TO_END_REFERENCE)
     );
 
     // List of optional fields in block 03
     private static final List<ValidatorContext> block03OptionalFieldValidationParamsList = List.of(
             new ValidatorContext(MT103Constants.BLOCK03_MESSAGE_USER_REFERENCE_KEY,
-                    ConnectorConstants.BLOCK03_MESSAGE_USER_REFERENCE),
+                    ConnectorConstants.MESSAGE_USER_REFERENCE),
             new ValidatorContext(MT103Constants.BLOCK03_SERVICE_TYPE_IDENTIFIER_KEY,
-                    ConnectorConstants.BLOCK03_SERVICE_TYPE_IDENTIFIER),
+                    ConnectorConstants.SERVICE_TYPE_IDENTIFIER),
             new ValidatorContext(MT103Constants.BLOCK03_BANKING_PRIORITY_KEY,
-                    ConnectorConstants.BLOCK03_BANKING_PRIORITY)
+                    ConnectorConstants.BANKING_PRIORITY)
     );
 
     // List of fields with length validations in block 03
     private static final List<ValidatorContext> block03LengthValidationParamsList = List.of(
             new ValidatorContext(MT103Constants.BLOCK03_SERVICE_IDENTIFIER_KEY,
-                    ConnectorConstants.BLOCK03_SERVICE_IDENTIFIER,
+                    ConnectorConstants.SERVICE_IDENTIFIER,
                     ConnectorConstants.BLOCK03_SERVICE_IDENTIFIER_LENGTH),
             new ValidatorContext(MT103Constants.BLOCK03_BANKING_PRIORITY_KEY,
-                    ConnectorConstants.BLOCK03_BANKING_PRIORITY, ConnectorConstants.BLOCK03_BANKING_PRIORITY_LENGTH),
+                    ConnectorConstants.BANKING_PRIORITY, ConnectorConstants.BLOCK03_BANKING_PRIORITY_LENGTH),
             new ValidatorContext(MT103Constants.BLOCK03_MESSAGE_USER_REFERENCE_KEY,
-                    ConnectorConstants.BLOCK03_MESSAGE_USER_REFERENCE,
+                    ConnectorConstants.MESSAGE_USER_REFERENCE,
                     ConnectorConstants.MESSAGE_USER_REFERENCE_LENGTH),
             new ValidatorContext(MT103Constants.BLOCK03_END_TO_END_REFERENCE_KEY,
-                    ConnectorConstants.BLOCK03_END_TO_END_REFERENCE, ConnectorConstants.END_TO_END_REFERENCE_LENGTH),
+                    ConnectorConstants.END_TO_END_REFERENCE, ConnectorConstants.END_TO_END_REFERENCE_LENGTH),
             new ValidatorContext(MT103Constants.BLOCK03_SERVICE_TYPE_IDENTIFIER_KEY,
-                    ConnectorConstants.BLOCK03_SERVICE_TYPE_IDENTIFIER,
+                    ConnectorConstants.SERVICE_TYPE_IDENTIFIER,
                     ConnectorConstants.BLOCK03_SERVICE_TYPE_IDENTIFIER_LENGTH)
     );
 
@@ -302,13 +302,13 @@ public class JsonToMT103PayloadValidator {
     // List of numeric fields in block 03
     private static final List<ValidatorContext> block03NumericFieldValidationParamsList = List.of(
             new ValidatorContext(MT103Constants.BLOCK03_SERVICE_TYPE_IDENTIFIER_KEY,
-                    ConnectorConstants.BLOCK03_SERVICE_TYPE_IDENTIFIER)
+                    ConnectorConstants.SERVICE_TYPE_IDENTIFIER)
     );
 
     // List of alphabetic fields in block 03
     private static final List<ValidatorContext> block03AlphaFieldValidationParamsList = List.of(
             new ValidatorContext(MT103Constants.BLOCK03_SERVICE_IDENTIFIER_KEY,
-                    ConnectorConstants.BLOCK03_SERVICE_IDENTIFIER)
+                    ConnectorConstants.SERVICE_IDENTIFIER)
     );
 
     /**
@@ -442,36 +442,36 @@ public class JsonToMT103PayloadValidator {
 
     // List of mandatory fields in block 05
     private static final List<ValidatorContext> block05MandatoryFieldValidationParamsList = List.of(
-            new ValidatorContext(MT103Constants.BLOCK05_CHECKSUM_KEY, ConnectorConstants.BLOCK05_CHECKSUM)
+            new ValidatorContext(MT103Constants.BLOCK05_CHECKSUM_KEY, ConnectorConstants.CHECKSUM)
     );
 
     // List of optional fields in block 05
     private static final List<ValidatorContext> block05OptionalFieldValidationParamsList = List.of(
             new ValidatorContext(MT103Constants.BLOCK05_POSSIBLE_DUPLICATE_EMISSION_KEY,
-                    ConnectorConstants.BLOCK05_POSSIBLE_DUPLICATE_EMISSION),
+                    ConnectorConstants.POSSIBLE_DUPLICATE_EMISSION),
             new ValidatorContext(MT103Constants.BLOCK05_MESSAGE_REFERENCE_KEY,
-                    ConnectorConstants.BLOCK05_MESSAGE_REFERENCE),
+                    ConnectorConstants.MESSAGE_REFERENCE),
             new ValidatorContext(MT103Constants.BLOCK05_POSSIBLE_DUPLICATE_MESSAGE_KEY,
-                    ConnectorConstants.BLOCK05_POSSIBLE_DUPLICATE_MESSAGE),
+                    ConnectorConstants.POSSIBLE_DUPLICATE_MESSAGE),
             new ValidatorContext(MT103Constants.BLOCK05_SYSTEM_ORIGINATED_MESSAGE_KEY,
-                    ConnectorConstants.BLOCK05_SYSTEM_ORIGINATED_MESSAGE)
+                    ConnectorConstants.SYSTEM_ORIGINATED_MESSAGE)
     );
 
     // List of fields with length validations in block 05
     private static final List<ValidatorContext> block05LengthValidationParamsList = List.of(
-            new ValidatorContext(MT103Constants.BLOCK05_CHECKSUM_KEY, ConnectorConstants.BLOCK05_CHECKSUM,
+            new ValidatorContext(MT103Constants.BLOCK05_CHECKSUM_KEY, ConnectorConstants.CHECKSUM,
                     ConnectorConstants.CHECKSUM_LENGTH),
             new ValidatorContext(MT103Constants.BLOCK05_POSSIBLE_DUPLICATE_EMISSION_KEY,
-                    ConnectorConstants.BLOCK05_POSSIBLE_DUPLICATE_EMISSION,
+                    ConnectorConstants.POSSIBLE_DUPLICATE_EMISSION,
                     ConnectorConstants.MESSAGE_REFERENCE_LENGTH),
             new ValidatorContext(MT103Constants.BLOCK05_MESSAGE_REFERENCE_KEY,
-                    ConnectorConstants.BLOCK05_MESSAGE_REFERENCE,
+                    ConnectorConstants.MESSAGE_REFERENCE,
                     ConnectorConstants.MESSAGE_REFERENCE_LENGTH_WITH_DATE),
             new ValidatorContext(MT103Constants.BLOCK05_POSSIBLE_DUPLICATE_MESSAGE_KEY,
-                    ConnectorConstants.BLOCK05_POSSIBLE_DUPLICATE_MESSAGE,
+                    ConnectorConstants.POSSIBLE_DUPLICATE_MESSAGE,
                     ConnectorConstants.MESSAGE_REFERENCE_LENGTH),
             new ValidatorContext(MT103Constants.BLOCK05_SYSTEM_ORIGINATED_MESSAGE_KEY,
-                    ConnectorConstants.BLOCK05_SYSTEM_ORIGINATED_MESSAGE,
+                    ConnectorConstants.SYSTEM_ORIGINATED_MESSAGE,
                     ConnectorConstants.MESSAGE_REFERENCE_LENGTH)
     );
 
@@ -487,13 +487,13 @@ public class JsonToMT103PayloadValidator {
     // List of alphanumeric fields in block 05
     private static final List<ValidatorContext> block05AlphaNumericFieldValidationParamsList = List.of(
             new ValidatorContext(MT103Constants.BLOCK05_POSSIBLE_DUPLICATE_EMISSION_KEY,
-                    ConnectorConstants.BLOCK05_POSSIBLE_DUPLICATE_EMISSION),
+                    ConnectorConstants.POSSIBLE_DUPLICATE_EMISSION),
             new ValidatorContext(MT103Constants.BLOCK05_MESSAGE_REFERENCE_KEY,
-                    ConnectorConstants.BLOCK05_MESSAGE_REFERENCE),
+                    ConnectorConstants.MESSAGE_REFERENCE),
             new ValidatorContext(MT103Constants.BLOCK05_POSSIBLE_DUPLICATE_MESSAGE_KEY,
-                    ConnectorConstants.BLOCK05_POSSIBLE_DUPLICATE_MESSAGE),
+                    ConnectorConstants.POSSIBLE_DUPLICATE_MESSAGE),
             new ValidatorContext(MT103Constants.BLOCK05_SYSTEM_ORIGINATED_MESSAGE_KEY,
-                    ConnectorConstants.BLOCK05_SYSTEM_ORIGINATED_MESSAGE)
+                    ConnectorConstants.SYSTEM_ORIGINATED_MESSAGE)
     );
 
     /**
