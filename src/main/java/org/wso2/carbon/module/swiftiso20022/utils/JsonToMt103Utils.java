@@ -79,24 +79,24 @@ public class JsonToMt103Utils {
         } else {
             return new ValidationResult(ConnectorConstants.ERROR_CODE_MISSING_PARAM,
                     String.format(ConnectorConstants.ERROR_PARAMETER_MISSING,
-                            ConnectorConstants.BLOCK02_INPUT_OUTPUT_ID));
+                            ConnectorConstants.INPUT_OUTPUT_IDENTIFIER));
         }
 
         // input output identifier can only be either "I" or "O"
         switch (inputOutputID) {
 
-            case ConnectorConstants.BLOCK02_INPUT_ID:
+            case ConnectorConstants.INPUT_IDENTIFIER:
                 // validate input block 02 header
                 return JsonToMT103PayloadValidator.getMT103InputBlock02ValidationEngine().validate(block02);
 
-            case ConnectorConstants.BLOCK02_OUTPUT_ID:
+            case ConnectorConstants.OUTPUT_IDENTIFIER:
                 // validate output block 02 header
                 return JsonToMT103PayloadValidator.getMT103OutputBlock02ValidationEngine().validate(block02);
             default:
                 // any other character is invalid
                 return new ValidationResult(ConnectorConstants.ERROR_CODE_INVALID_PARAM,
                         String.format(ConnectorConstants.ERROR_PARAMETER_INVALID,
-                                ConnectorConstants.BLOCK02_INPUT_OUTPUT_ID));
+                                ConnectorConstants.INPUT_OUTPUT_IDENTIFIER));
         }
     }
 
