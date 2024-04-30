@@ -18,6 +18,7 @@
 
 package org.wso2.carbon.module.swiftiso20022;
 
+import com.google.gson.Gson;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.synapse.MessageContext;
@@ -34,13 +35,16 @@ import org.wso2.carbon.module.swiftiso20022.mt.parsers.MT940Parser;
 public class MT940ToISOTransformer extends AbstractConnector {
     private static Log log = LogFactory.getLog(MT940ToISOTransformer.class);
 
+    private static final Gson gson = new Gson();
+
     @Override
     public void connect(MessageContext messageContext) throws ConnectException {
         try {
-            String message = PayloadHelper.getTextPayload(messageContext);
+            String message = PayloadHelper.getTextPayload(messageContext).trim();
 
             MT940Message mt940Message = MT940Parser.parse(message);
-
+            String json = gson.toJson(mt940Message);
+            log.debug(json);
         } catch (MTMessageParsingException e) {
             throw new ConnectException(e);
         }
