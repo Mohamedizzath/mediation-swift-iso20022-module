@@ -20,6 +20,8 @@ package org.wso2.carbon.module.swiftiso20022.mt.models.messages;
 
 import org.wso2.carbon.module.swiftiso20022.mt.models.blocks.ApplicationHeaderBlock;
 import org.wso2.carbon.module.swiftiso20022.mt.models.blocks.BasicHeaderBlock;
+import org.wso2.carbon.module.swiftiso20022.mt.models.blocks.TrailerBlock;
+import org.wso2.carbon.module.swiftiso20022.mt.models.blocks.UserHeaderBlock;
 
 /**
  * Base model class for MT messages which contains common blocks.
@@ -27,6 +29,8 @@ import org.wso2.carbon.module.swiftiso20022.mt.models.blocks.BasicHeaderBlock;
 public class MTMessage {
     private BasicHeaderBlock basicHeaderBlock;
     private ApplicationHeaderBlock applicationHeaderBlock;
+    private UserHeaderBlock userHeaderBlock;
+    private TrailerBlock trailerBlock;
 
     public BasicHeaderBlock getBasicHeaderBlock() {
         return basicHeaderBlock;
@@ -42,5 +46,21 @@ public class MTMessage {
 
     public void setApplicationHeaderBlock(ApplicationHeaderBlock applicationHeaderBlock) {
         this.applicationHeaderBlock = applicationHeaderBlock;
+    }
+
+    public UserHeaderBlock getUserHeaderBlock() {
+        return userHeaderBlock;
+    }
+
+    public void setUserHeaderBlock(UserHeaderBlock userHeaderBlock) {
+        this.userHeaderBlock = userHeaderBlock;
+    }
+
+    public TrailerBlock getTrailerBlock() {
+        return trailerBlock;
+    }
+
+    public void setTrailerBlock(TrailerBlock trailerBlock) {
+        this.trailerBlock = trailerBlock;
     }
 }
