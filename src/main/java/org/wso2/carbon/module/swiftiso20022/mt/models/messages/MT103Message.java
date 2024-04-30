@@ -16,20 +16,12 @@
  * under the License.
  */
 
-package org.wso2.carbon.module.swiftiso20022.exceptions;
+package org.wso2.carbon.module.swiftiso20022.mt.models.messages;
 
 /**
- * Exception to be thrown when parsing a MT message.
+ * Model of MT103 Message.
  */
-public class MTMessageParsingException extends Exception {
+public class MT103Message extends MTMessage {
 
-    /**
-     * Constructor to be thrown for general parsing error.
-     *
-     * @param errorMessage Parsing error message.
-     */
-    public MTMessageParsingException(String errorMessage) {
-        super(errorMessage);
-    }
-
+    // TODO: add text block fields
 }

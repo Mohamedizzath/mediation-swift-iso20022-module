@@ -29,8 +29,8 @@
             <class name="org.wso2.carbon.module.swiftiso20022.ISOMessageParserTests" />
             <class name="org.wso2.carbon.module.swiftiso20022.payloadfactory.ISO20022ToMT940PayloadFactoryTests" />
             <class name="org.wso2.carbon.module.swiftiso20022.JsonToMT103ValidatorTests"/>
-            <class name="org.wso2.carbon.module.swiftiso20022.mt.parser.MTParserTests" />
-            <class name="org.wso2.carbon.module.swiftiso20022.mt.parser.MT940ParserTests" />
+            <class name="org.wso2.carbon.module.swiftiso20022.mt.parsers.MTParserTests" />
+            <class name="org.wso2.carbon.module.swiftiso20022.mt.parsers.MT940ParserTests" />
         </classes>
     </test>
 </suite>

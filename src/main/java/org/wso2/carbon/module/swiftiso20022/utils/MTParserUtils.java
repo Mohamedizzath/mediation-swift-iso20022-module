@@ -1,13 +1,13 @@
 /**
  * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
- *
+ * <p>
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -29,11 +29,11 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
 /**
- * Util class for MT message parser.
+ * Utility class for MT message parsing.
  */
 public class MTParserUtils {
+
     /**
      * Util methods for parsing blocks in MT messages.<br/>
      * Regex explanation - ^(\\{1:([^\\W_]+)\\})(\\{2:([^\\W_]+)\\})?(\\{3:(\\{\\d{3}:[^\\{\\}]*\\})+\\})?
@@ -130,6 +130,32 @@ public class MTParserUtils {
     }
 
     /**
+     * Method to extract fields from block with fields enclosed in curly brackets.
+     * example: "{103:EBA}{119:STP}" -> ["103" -> "EBA", "119" -> "STP"]
+     *
+     * @param fieldsString Block containing fields enclosed in curly brackets
+     * @return Map of fields where tag as the key with the value
+     */
+    public static Map<String, String> extractFieldsWithinCurlyBrackets(String fieldsString) {
+
+        Map<String, String> fields = new HashMap<>();
+
+        // regex pattern initialization for matching curly brackets with fields
+        // {tag:value}, regex pattern matches tag and value in separate groups in each match
+        // Get matcher to the regex matching -> {(Tag):(Field Value)}
+        Matcher matcher = MTParserConstants.CURLY_BRACKETS_FIELDS_MATCHING_PATTERN.matcher(fieldsString);
+
+        while (matcher.find()) {
+
+            // group 1 -> Tag
+            // group 2 -> Field Value
+            fields.put(matcher.group(1), matcher.group(2));
+        }
+
+        return fields;
+    }
+
+  /**
      * Method for parsing fields in text block.
      * @param textBlock                     Text block as string to break into fields
      * @return                              Parsed field as a list of String
