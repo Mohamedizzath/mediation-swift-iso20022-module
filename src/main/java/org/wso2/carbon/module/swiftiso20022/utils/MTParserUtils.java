@@ -42,8 +42,8 @@ public class MTParserUtils {
     /**
      * Util methods for parsing blocks in MT messages.<br/>
      * Regex explanation - ^(\\{1:([^\\W_]+)\\})(\\{2:([^\\W_]+)\\})?(\\{3:(\\{\\d{3}:[^\\{\\}]*\\})+\\})?
-     *                     (\\{4:[^\\{\\}]+\\R-\\})(\\{5:(\\{[A-Z]{3}:[^\\{\\}]*\\})+\\})?$
-     *<ol>
+     * (\\{4:[^\\{\\}]+\\R-\\})(\\{5:(\\{[A-Z]{3}:[^\\{\\}]*\\})+\\})?$
+     * <ol>
      *      <li>(\\{1:([^\\W_]+)\\})-Regex for basic header block. Starting ( and ending ) marks group to match, {1:
      *      exact match of starting characters of basic header block, [^\\W_]+ matches one or more characters 0-9A-Za-z
      *      without _.
@@ -84,8 +84,8 @@ public class MTParserUtils {
      *      </li>
      * </ol>
      *
-     * @param mtMessage     Complete MT messages as string
-     * @return              Blocks stored in Map with key as block name(basic-header-block, application-header-block...)
+     * @param mtMessage Complete MT messages as string
+     * @return Blocks stored in Map with key as block name(basic-header-block, application-header-block...)
      */
     public static Map<String, String> getMessageBlocks(String mtMessage) throws MTMessageParsingException {
         Map<String, String> blocksMap = new HashMap<>();
@@ -165,7 +165,7 @@ public class MTParserUtils {
      * Only check one matching value.
      *
      * @param regexPattern Pattern object compiled with the regex pattern
-     * @param stringValue String value to be matched
+     * @param stringValue  String value to be matched
      * @return An Optional of the matcher object or an empty matcher object if the string doesn't match the pattern
      */
     public static Optional<Matcher> getRegexMatcher(Pattern regexPattern, String stringValue) {
@@ -188,10 +188,10 @@ public class MTParserUtils {
      */
     public static List<String> getTextBlockFields(String textBlock) {
 
-        List<String> fieldList = List.of(textBlock
-                .substring(0, textBlock.length() - 1)
+        return List.of(textBlock
+                .trim()
+                .substring(1)
                 .split(MTParserConstants.LINE_BREAK_WITH_COLON_REGEX_PATTERN));
-        return fieldList.subList(1, fieldList.size());
     }
 
 }
