@@ -30,8 +30,6 @@ import org.wso2.carbon.module.swiftiso20022.mt.models.messages.MT940Message;
 import org.wso2.carbon.module.swiftiso20022.mt.models.messages.MTMessage;
 import org.wso2.carbon.module.swiftiso20022.utils.MTParserTestConstants;
 import org.wso2.carbon.module.swiftiso20022.utils.MTParserUtils;
-import org.wso2.carbon.module.swiftiso20022.utils.MTParserTestConstants;
-import org.wso2.carbon.module.swiftiso20022.utils.MTParserUtils;
 
 import java.util.List;
 import java.util.Map;
