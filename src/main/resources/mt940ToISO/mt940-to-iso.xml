@@ -16,15 +16,8 @@
  ~ specific language governing permissions and limitations
  ~ under the License.
  -->
-<connector>
-    <component name="swiftISO20022" package="org.wso2.carbon.module.swiftiso20022">
-        <dependency component="jsonToMT940"/>
-        <dependency component="mt940Validator"/>
-        <dependency component="isoToMT940"/>
-        <dependency component="isoAppHeadValidator"/>
-        <dependency component="jsonToMT103"/>
-        <dependency component="mt940ToISO"/>
-        <description>WSO2 SWIFT ISO 20022 Mediation library</description>
-    </component>
-    <type>module</type>
-</connector>
+<template xmlns="http://ws.apache.org/ns/synapse" name="mt940ToISO">
+    <sequence>
+        <class name="org.wso2.carbon.module.swiftiso20022.MT940ToISOTransformer"/>
+    </sequence>
+</template>
