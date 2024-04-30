@@ -1,13 +1,13 @@
 /**
  * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
- *
+ * <p>
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -62,41 +62,50 @@ public class ConnectorConstants {
     public static final String ENUM_KEY = "enumClassName";
     public static final String FIXED_VALUE_KEY = "fixedValue";
 
+    // MT message block names
+    public static final String USER_HEADER_BLOCK = "User Header Block";
+    public static final String TRAILER_BLOCK = "Trailer Block";
+
     // Block01 (Basic Header) Related Constants
-    public static final String BLOCK01_APPLICATION_ID = "Application Identifier";
-    public static final String BLOCK01_SERVICE_ID = "Service Identifier";
-    public static final String BLOCK01_LOGICAL_TERMINAL_ADDRESS = "Logical Terminal Address";
-    public static final String BLOCK01_SESSION_NUMBER = "Session Number";
-    public static final String BLOCK01_SEQUENCE_NUMBER = "Sequence Number";
+    public static final String APPLICATION_IDENTIFIER = "Application Identifier";
+    public static final String SERVICE_IDENTIFIER = "Service Identifier";
+    public static final String LOGICAL_TERMINAL_ADDRESS = "Logical Terminal Address";
+    public static final String SESSION_NUMBER = "Session Number";
+    public static final String SEQUENCE_NUMBER = "Sequence Number";
 
     // Block02 (Application Header) Related Constants
-    public static  final String BLOCK02_INPUT_OUTPUT_ID = "Input Output Identifier";
-    public static  final String BLOCK02_INPUT_ID = "I";
-    public static  final String BLOCK02_OUTPUT_ID = "O";
-    public static  final String BLOCK02_MESSAGE_TYPE = "Message Type";
-    public static  final String BLOCK02_DESTINATION_LOGICAL_TERMINAL_ADDRESS = "Destination Logical Terminal Address";
-    public static  final String BLOCK02_INPUT_TIME = "Input Time";
-    public static  final String BLOCK02_MESSAGE_INPUT_REFERENCE = "Message Input Reference";
-    public static  final String BLOCK02_OUTPUT_DATE = "Output Date";
-    public static  final String BLOCK02_OUTPUT_TIME = "Output Time";
-    public static  final String BLOCK02_PRIORITY = "Priority";
-    public static  final String BLOCK02_DELIVERY_MONITORING_CODE = "Delivery Monitoring Code";
-    public static  final String BLOCK02_OBSOLESCENCE_PERIOD_CODE = "Obsolescence Period Code";
+    public static final String INPUT_OUTPUT_IDENTIFIER = "Input Output Identifier";
+    public static final String MESSAGE_TYPE = "Message Type";
+    public static final String DESTINATION_LOGICAL_TERMINAL_ADDRESS = "Destination Logical Terminal Address";
+    public static final String INPUT_TIME = "Input Time";
+    public static final String MESSAGE_INPUT_REFERENCE = "Message Input Reference";
+    public static final String OUTPUT_DATE = "Output Date";
+    public static final String OUTPUT_TIME = "Output Time";
+    public static final String PRIORITY = "Priority";
+    public static final String DELIVERY_MONITORING_CODE = "Delivery Monitoring Code";
+    public static final String OBSOLESCENCE_PERIOD_CODE = "Obsolescence Period Code";
 
     // Block03 (User Header) Related Constants
-    public static final String BLOCK03_SERVICE_IDENTIFIER = "Service Identifier";
-    public static final String BLOCK03_BANKING_PRIORITY = "Banking Priority";
-    public static final String BLOCK03_MESSAGE_USER_REFERENCE = "Message User Reference";
-    public static final String BLOCK03_VALIDATION_FLAG = "Validation Flag";
-    public static final String BLOCK03_END_TO_END_REFERENCE = "End to End Reference";
-    public static final String BLOCK03_SERVICE_TYPE_IDENTIFIER = "Service Type Identifier";
+    public static final String BANKING_PRIORITY = "Banking Priority";
+    public static final String MESSAGE_USER_REFERENCE = "Message User Reference";
+    public static final String VALIDATION_FLAG = "Validation Flag";
+    public static final String END_TO_END_REFERENCE = "End to End Reference";
+    public static final String SERVICE_TYPE_IDENTIFIER = "Service Type Identifier";
+    public static final String ADDRESSEE_INFORMATION = "Addressee Information";
+    public static final String PAYMENT_RELEASE_INFORMATION = "Payment Release Information";
+    public static final String BALANCE_CHECKPOINT = "Balance Checkpoint";
+    public static final String RELATED_REFERENCE = "Related Reference";
+    public static final String SANCTIONS_SCREENING_INFORMATION = "Sanctions Screening Information";
+    public static final String PAYMENT_CONTROLS_INFORMATION = "Payment Controls Information";
 
     // Block05 (Trailer) Related Constants
-    public static final String BLOCK05_CHECKSUM = "Checksum";
-    public static final String BLOCK05_POSSIBLE_DUPLICATE_EMISSION = "Possible Duplicate Emission";
-    public static final String BLOCK05_MESSAGE_REFERENCE = "Message Reference";
-    public static final String BLOCK05_POSSIBLE_DUPLICATE_MESSAGE = "Possible Duplicate Message";
-    public static final String BLOCK05_SYSTEM_ORIGINATED_MESSAGE = "System Originated Message";
+    public static final String CHECKSUM = "Checksum";
+    public static final String POSSIBLE_DUPLICATE_EMISSION = "Possible Duplicate Emission";
+    public static final String MESSAGE_REFERENCE = "Message Reference";
+    public static final String POSSIBLE_DUPLICATE_MESSAGE = "Possible Duplicate Message";
+    public static final String SYSTEM_ORIGINATED_MESSAGE = "System Originated Message";
+    public static final String DELAYED_MESSAGE = "Delayed Message";
+    public static final String TEST_AND_TRAINING_MESSAGE = "Test And Training Message";
 
     // ISO 20022 Related Constants
     public static final String SOAP_PREFIX = "soapenv";
@@ -126,6 +135,7 @@ public class ConnectorConstants {
     public static final String MISSING_REQUEST_PAYLOAD = "missing_request_payload";
     public static final String INVALID_REQUEST_PAYLOAD = "invalid_request_payload";
     public static final String SERVER_ERROR = "server_error";
+    public static final String RUNTIME_ERROR = "runtime_error";
     public static final String ERROR_VALIDATION_FAILED = "Validation failed";
     public static final String ERROR_MISSING_PAYLOAD = "Missing Request Payload";
     public static final String ERROR_INVALID_PAYLOAD = "Invalid Request Payload";
@@ -156,6 +166,14 @@ public class ConnectorConstants {
     public static final String ERROR_AMOUNT_NULL = "Amount cannot be null";
     public static final String ERROR_AMOUNT_SIZE_INVALID = "Amount should not be empty";
     public static final String ERROR_LINE_COUNT = "Field %s should not contain more than %s lines";
+    public static final String ERROR_INCORRECT_FORMAT = "%s is incorrectly formatted";
+    public static final String ERROR_INVALID_FIELD_AND_VALUE = "\"%s\" in %s is invalid";
+    public static final String ERROR_FIELD_REPEATED = "%s in %s cannot repeated";
+    public static final String ERROR_FIELD_INVALID_IN_BLOCK = "Value of field %s in %s is invalid";
+    public static final String ERROR_FIELD_NOT_ALLOWED_IN_BLOCK = "%s field is not allowed in %s";
+    public static final String ERROR_111_BEFORE_121 =
+            "Service Type Identifier cannot appear before field End To End Reference";
+    public static final String ERROR_BLOCK_INVALID_FORMAT = "%s format is invalid";
 
     //Common Error Codes
     public static final String ERROR_CODE_MISSING_BLOCK = "missing_block";
@@ -186,6 +204,8 @@ public class ConnectorConstants {
     public static final int SEQUENCE_NO_LENGTH = 3;
     public static final int DATE_LENGTH = 6;
     public static final int TIME_LENGTH = 4;
+    public static final int HHMMSS_TIME_LENGTH = 6;
+    public static final int HHMMSSSS_TIME_LENGTH = 8;
     public static final int CURRENCY_LENGTH = 3;
     public static final int AMOUNT_LENGTH = 16;
     public static final int INDICATOR_LENGTH = 1;
@@ -193,6 +213,8 @@ public class ConnectorConstants {
     public static final int TRANSACTION_TYPE_LENGTH = 4;
     public static final int STATEMENT_NO_LENGTH = 5;
     public static final int BALANCE_LENGTH = 25;
+    public static final int COUNTRY_CODE_LENGTH = 2;
+    public static final int THREE_CHARACTER_CODE_LENGTH = 3;
     public static final int LOGICAL_TERMINAL_ADDRESS_LENGTH = 12;
     public static final int SESSION_NUMBER_LENGTH = 4;
     public static final int SEQUENCE_NUMBER_LENGTH = 6;

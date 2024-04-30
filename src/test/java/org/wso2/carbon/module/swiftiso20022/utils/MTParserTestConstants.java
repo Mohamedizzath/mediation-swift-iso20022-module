@@ -1,13 +1,13 @@
 /**
  * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
- *
+ * <p>
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -29,9 +29,242 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Test constants for MTParser.
+ * Test constants for MTParserTests.
  */
-public class MTParserConstants {
+public class MTParserTestConstants {
+
+    public static final String VALID_BASIC_HEADER_BLOCK = "F01BANKFRPPAXXX2222123456";
+
+    public static final String VALID_USER_HEADER_BLOCK = "{103:EBA}{113:xxxx}{108:REF0140862562/15}" +
+            "{115:121413121413DEBANKDECDA123}{119:STP}{423:18071715301204}{106:120811BANKBEBBAXXX2222123456}" +
+            "{424:PQAB1234}{121:180f1e65-90e0-44d5-a49a-92b55eb3025f}{165:/123/abcdefghi-abcdefghi-abcdefghi-abcd}" +
+            "{433:/AOK}{434:/FPO/Some information}{111:255}";
+
+    public static final String VALID_TRAILER_BLOCK = "{CHK:123456789ABC}{TNG:}{PDE:1348120811BANKFRPPAXXX2222123456}" +
+            "{DLM:}{MRF:1806271539180626BANKFRPPAXXX2222123456}{PDM:1213120811BANKFRPPAXXX2222123456}" +
+            "{SYS:1454120811BANKFRPPAXXX2222123456}";
+
+    @DataProvider(name = "validMTMessageMapDataProvider")
+    Object[][] getValidMTMessageMapDataProvider() {
+        return new Object[][] {
+                {Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY, VALID_BASIC_HEADER_BLOCK)},
+                {Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY, VALID_BASIC_HEADER_BLOCK,
+                        ConnectorConstants.USER_HEADER_BLOCK_KEY, VALID_USER_HEADER_BLOCK)},
+                {Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY, VALID_BASIC_HEADER_BLOCK,
+                        ConnectorConstants.TRAILER_BLOCK_KEY, VALID_TRAILER_BLOCK)},
+                {Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY, VALID_BASIC_HEADER_BLOCK,
+                        ConnectorConstants.USER_HEADER_BLOCK_KEY, VALID_USER_HEADER_BLOCK,
+                        ConnectorConstants.TRAILER_BLOCK_KEY, VALID_TRAILER_BLOCK)}
+        };
+    }
+
+    @DataProvider(name = "invalidUserHeaderBlockDataProvider")
+    Object[][] getInvalidUserHeaderBlockDataProvider() {
+        return new Object[][] {
+                {"  "},
+                {"{"},
+                {"}"},
+                {"{  { }"},
+                {" some string "},
+                {"{:245689393}"},
+                {"{567:245689393}"},
+                {"{567:245689393}}"}
+        };
+    }
+
+    @DataProvider(name = "invalidServiceIdentifierDataProvider")
+    Object[][] getInvalidServiceIdentifierDataProvider() {
+        return new Object[][] {
+                {"{103:}"},
+                {"{103:123}"},
+                {"{103:AB}"},
+                {"{103:ABCD}"},
+        };
+    }
+
+    @DataProvider(name = "invalidBankingPriorityDataProvider")
+    Object[][] getInvalidBankingPriorityDataProvider() {
+        return new Object[][] {
+                {"{113:}"},
+                {"{113:ABCDE}"},
+                {"{113:<<>>}"},
+                {"{113:123}"},
+        };
+    }
+
+    @DataProvider(name = "invalidMessageUserReferenceDataProvider")
+    Object[][] getInvalidMessageUserReferenceDataProvider() {
+        return new Object[][] {
+                {"{108:}"},
+                {"{108:REF}"},
+                {"{108:<<<<<<<<>>>>>>>>}"},
+                {"{108:REF0140862562/015}"},
+        };
+    }
+
+    @DataProvider(name = "invalidValidationFlagDataProvider")
+    Object[][] getInvalidValidationFlagDataProvider() {
+        return new Object[][] {
+                {"{119:}"},
+                {"{119:ABCDEFGHIJK}"},
+        };
+    }
+
+    @DataProvider(name = "invalidBalanceCheckpointDataProvider")
+    Object[][] getInvalidBalanceCheckpointDataProvider() {
+        return new Object[][] {
+                {"{423:}"},
+                {"{423:123456}"},
+                {"{423:ABCDEFABCDEFGH}"},
+        };
+    }
+
+    @DataProvider(name = "invalidMessageInputReferenceDataProvider")
+    Object[][] getInvalidMessageInputReferenceDataProvider() {
+        return new Object[][] {
+                {"{106:}"},
+                {"{106:120811}"},
+                {"{106:120811BANKBEBBAXXX222212345634}"}
+        };
+    }
+
+    @DataProvider(name = "invalidRelatedReferenceDataProvider")
+    Object[][] getInvalidRelatedReferenceDataProvider() {
+        return new Object[][] {
+                {"{424:}"},
+                {"{424:<<<<<<<<>>>>>>>>}"},
+                {"{424:PQAB1234PQAB1234PQAB1234}"}
+        };
+    }
+
+    @DataProvider(name = "invalidServiceTypeIdentifierDataProvider")
+    Object[][] getInvalidServiceTypeIdentifierDataProvider() {
+        return new Object[][] {
+                {"{111:}"},
+                {"{111:ABC}"},
+                {"{111:1234}"}
+        };
+    }
+
+    @DataProvider(name = "invalidEndToEndReferenceDataProvider")
+    Object[][] getInvalidEndToEndReferenceInformationDataProvider() {
+        return new Object[][] {
+                {"{121:}"},
+                {"{121:180f1e65-90e0-44d5-a49a-92b55eb3025f-abc}"},
+                {"{121:180F1E65-90E0-44D5-A49A-92B55EB3025F}"}
+        };
+    }
+
+    @DataProvider(name = "invalidAddresseeInformationDataProvider")
+    Object[][] getInvalidAddresseeInformationDataProvider() {
+        return new Object[][] {
+                {"{115:}"},
+                {"{115:121413}"},
+                {"{115:12141312141325BANKDECDA123}"},
+                {"{115:121413ABCDEFDEBANKDECDA123}"}
+        };
+    }
+
+    @DataProvider(name = "invalidPaymentReleaseInformationDataProvider")
+    Object[][] getInvalidPaymentReleaseInformationDataProvider() {
+        return new Object[][] {
+                {"{165:}"},
+                {"{165:FIN}"},
+                {"{165:/FIN}"},
+                {"{165:/FIN/}"},
+                {"{165:/FIN/This sentence is longer than 34 characters}"},
+                {"{165:/FINexample sentences}"},
+        };
+    }
+
+    @DataProvider(name = "invalidSanctionsScreeningInformationDataProvider")
+    Object[][] getInvalidSanctionsScreeningInformationDataProvider() {
+        return new Object[][] {
+                {"{433:}"},
+                {"{433:AOK}"},
+                {"{433:/AOK/}"},
+                {"{433:/AOK/This sentence is longer than 20 characters}"},
+                {"{433:/AOKexample sentence}"},
+        };
+    }
+
+    @DataProvider(name = "invalidPaymentControlsInformationDataProvider")
+    Object[][] getInvalidPaymentControlsInformationDataProvider() {
+        return new Object[][] {
+                {"{434:}"},
+                {"{434:FPO}"},
+                {"{434:/FPO/}"},
+                {"{434:/FPO/This sentence is longer than 20 characters}"},
+                {"{434:/FPOexample sentence}"},
+        };
+    }
+
+    @DataProvider(name = "invalidTrailerBlockDataProvider")
+    Object[][] getInvalidTrailerBlockDataProvider() {
+        return new Object[][] {
+                {"  "},
+                {"{"},
+                {"}"},
+                {"{  { }"},
+                {" some string "},
+                {"TNG:some value"},
+                {"FFF:"},
+                {"{:245689393}"},
+                {"{567:245689393}"},
+                {"{567:245689393}}"},
+                {"{567:245689393:adadaf}"}
+        };
+    }
+
+    @DataProvider(name = "invalidChecksumDataProvider")
+    Object[][] getInvalidChecksumDataProvider() {
+        return new Object[][] {
+                {"{CHK:}"},
+                {"{CHK:123456789abc}"},
+                {"{CHK:123456789ABCD}"},
+        };
+    }
+
+    @DataProvider(name = "invalidPossibleDuplicateEmissionDataProvider")
+    Object[][] getInvalidPossibleDuplicateEmissionDataProvider() {
+        return new Object[][] {
+                {"{PDE:}"},
+                {"{PDE:1348120811}"},
+                {"{PDE:ABCD120811BANKFRPPAXXX2222123456}"},
+                {"{PDE:1348120811BANKFRPPAXXX2222123456AB}"},
+        };
+    }
+
+    @DataProvider(name = "invalidMessageReferenceDataProvider")
+    Object[][] getInvalidMessageReferenceDataProvider() {
+        return new Object[][] {
+                {"{MRF:}"},
+                {"{MRF:1806271539180626}"},
+                {"{MRF:ABCDEF1539180626BANKFRPPAXXX2222123456}"},
+                {"{MRF:1806271539180626BANKFRPPAXXX2222123456AB}"}
+        };
+    }
+
+    @DataProvider(name = "invalidPossibleDuplicateMessageDataProvider")
+    Object[][] getInvalidPossibleDuplicateMessageDataProvider() {
+        return new Object[][] {
+                {"{PDM:}"},
+                {"{PDM:1348120811}"},
+                {"{PDM:ABCD120811BANKFRPPAXXX2222123456}"},
+                {"{PDM:1348120811BANKFRPPAXXX2222123456AB}"}
+        };
+    }
+
+    @DataProvider(name = "invalidSystemOriginatedMessageDataProvider")
+    Object[][] getInvalidSystemOriginatedMessageDataProvider() {
+        return new Object[][] {
+                {"{SYS:}"},
+                {"{SYS:1348120811}"},
+                {"{SYS:ABCD120811BANKFRPPAXXX2222123456}"},
+                {"{SYS:1348120811BANKFRPPAXXX2222123456AB}"}
+        };
+    }
+
     public static String getBasicHeaderBlockText(Map<String, String> params) {
         return  (params.getOrDefault("AppID", "F")) +
                 (params.getOrDefault("ServiceID", "01")) +
@@ -142,22 +375,22 @@ public class MTParserConstants {
         return  (params.getOrDefault(ConnectorConstants.BASIC_HEADER_BLOCK_KEY,
                 "{1:F01GSCRUS30XXXX0000000000}")) +
                 (params.getOrDefault(ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
-                "{2:O9400400190425GSCRUS30XXXX00000000002403290912N}")) +
+                        "{2:O9400400190425GSCRUS30XXXX00000000002403290912N}")) +
                 (params.getOrDefault(ConnectorConstants.USER_HEADER_BLOCK_KEY,
-                "{3:{113:URGT}{108:INTLPMTS}{121:5798a701-effe-43e5-8d14-eec27ea3d8ec}}")) +
+                        "{3:{113:URGT}{108:REF0140862562/01}{121:5798a701-effe-43e5-8d14-eec27ea3d8ec}}")) +
                 (params.getOrDefault(ConnectorConstants.TEXT_BLOCK_KEY, "{4:\n:20:258158850\n" +
-                ":21:258158850\n" +
-                ":25:DD01100056869\n" +
-                ":28C:1/1\n" +
-                ":60F:D230930USD843686,20\n" +
-                ":61:2310011001RCD10,00ACHPGSGWGDNCTAHQM8\n" +
-                ":86:EREF/GSGWGDNCTAHQM8/PREF/RP/GS/CTFILERP0002/CTBA0003\n" +
-                ":61:2310011001DD10,00ACHPNONREF\n" +
-                ":86:PREF/RP/GS/CTFILERP0002/CTBA0003\n" +
-                ":61:2310011001CD10,00ASHP20230928LTERMID2000003\n" +
-                ":86:EREF/20230928LTERMID2000003/PREF/RP/GS/CTFILERP0002/CTBA0003\n" +
-                ":62F:D230930USD846665,15\n" +
-                ":64:C231002USD334432401,27\n-}")) +
+                        ":21:258158850\n" +
+                        ":25:DD01100056869\n" +
+                        ":28C:1/1\n" +
+                        ":60F:D230930USD843686,20\n" +
+                        ":61:2310011001RCD10,00ACHPGSGWGDNCTAHQM8\n" +
+                        ":86:EREF/GSGWGDNCTAHQM8/PREF/RP/GS/CTFILERP0002/CTBA0003\n" +
+                        ":61:2310011001DD10,00ACHPNONREF\n" +
+                        ":86:PREF/RP/GS/CTFILERP0002/CTBA0003\n" +
+                        ":61:2310011001CD10,00ASHP20230928LTERMID2000003\n" +
+                        ":86:EREF/20230928LTERMID2000003/PREF/RP/GS/CTFILERP0002/CTBA0003\n" +
+                        ":62F:D230930USD846665,15\n" +
+                        ":64:C231002USD334432401,27\n-}")) +
                 (params.getOrDefault(ConnectorConstants.TRAILER_BLOCK_KEY, "{5:{CHK:123456789ABC}}"));
     }
 
@@ -165,15 +398,15 @@ public class MTParserConstants {
     Object[][] parseMTMessage() throws Exception {
         return new Object[][] {
                 {getMTMessageText(Map.of()),
-                 getMTMessage(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY,
-                         getBasicHeaderBlock(Map.of(
-                         "AppID", "F", "ServiceID", "01", "LTAddress", "GSCRUS30XXXX",
-                         "SessionNumber", "0000", "SequenceNumber", "000000")),
-                         ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
-                         getApplicationHeaderBlock(Map.of("IOID", "O", "MessageType", "940",
-                                 "InputTime", "0400", "MessageInputReference",
-                                 "190425GSCRUS30XXXX0000000000", "OutputDate", "240329"
-                                 , "OutputTime", "0912", "Priority", "N"))), MT940Message.class)
+                        getMTMessage(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY,
+                                getBasicHeaderBlock(Map.of(
+                                        "AppID", "F", "ServiceID", "01", "LTAddress", "GSCRUS30XXXX",
+                                        "SessionNumber", "0000", "SequenceNumber", "000000")),
+                                ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
+                                getApplicationHeaderBlock(Map.of("IOID", "O", "MessageType", "940",
+                                        "InputTime", "0400", "MessageInputReference",
+                                        "190425GSCRUS30XXXX0000000000", "OutputDate", "240329"
+                                        , "OutputTime", "0912", "Priority", "N"))), MT940Message.class)
                 },
                 {getMTMessageText(Map.of(ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY, "")),
                         getMTMessage(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY,
@@ -212,96 +445,96 @@ public class MTParserConstants {
     Object[][] parseMTMessageBlocks() {
         return new Object[][] {
                 {getMTMessageText(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY,
-                "{1:F01GSCRUS30XXXX0000000000}",
-                ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
-                "{2:O9400400190425GSCRUS30XXX00000000002403290912N}")),
-                getMTMessageMap(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY,
-                "F01GSCRUS30XXXX0000000000",
-                ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
-                "O9400400190425GSCRUS30XXX00000000002403290912N",
-                ConnectorConstants.USER_HEADER_BLOCK_KEY,
-                "{113:URGT}{108:INTLPMTS}{121:5798a701-effe-43e5-8d14-eec27ea3d8ec}",
-                ConnectorConstants.TEXT_BLOCK_KEY,
-                "\n:20:258158850\n" +
-                ":21:258158850\n" +
-                ":25:DD01100056869\n" +
-                ":28C:1/1\n" +
-                ":60F:D230930USD843686,20\n" +
-                ":61:2310011001RCD10,00ACHPGSGWGDNCTAHQM8\n" +
-                ":86:EREF/GSGWGDNCTAHQM8/PREF/RP/GS/CTFILERP0002/CTBA0003\n" +
-                ":61:2310011001DD10,00ACHPNONREF\n" +
-                ":86:PREF/RP/GS/CTFILERP0002/CTBA0003\n" +
-                ":61:2310011001CD10,00ASHP20230928LTERMID2000003\n" +
-                ":86:EREF/20230928LTERMID2000003/PREF/RP/GS/CTFILERP0002/CTBA0003\n" +
-                ":62F:D230930USD846665,15\n" +
-                ":64:C231002USD334432401,27\n",
-                ConnectorConstants.TRAILER_BLOCK_KEY, "{CHK:123456789ABC}"))},
+                        "{1:F01GSCRUS30XXXX0000000000}",
+                        ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
+                        "{2:O9400400190425GSCRUS30XXX00000000002403290912N}")),
+                        getMTMessageMap(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY,
+                                "F01GSCRUS30XXXX0000000000",
+                                ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
+                                "O9400400190425GSCRUS30XXX00000000002403290912N",
+                                ConnectorConstants.USER_HEADER_BLOCK_KEY,
+                                "{113:URGT}{108:INTLPMTS}{121:5798a701-effe-43e5-8d14-eec27ea3d8ec}",
+                                ConnectorConstants.TEXT_BLOCK_KEY,
+                                "\n:20:258158850\n" +
+                                        ":21:258158850\n" +
+                                        ":25:DD01100056869\n" +
+                                        ":28C:1/1\n" +
+                                        ":60F:D230930USD843686,20\n" +
+                                        ":61:2310011001RCD10,00ACHPGSGWGDNCTAHQM8\n" +
+                                        ":86:EREF/GSGWGDNCTAHQM8/PREF/RP/GS/CTFILERP0002/CTBA0003\n" +
+                                        ":61:2310011001DD10,00ACHPNONREF\n" +
+                                        ":86:PREF/RP/GS/CTFILERP0002/CTBA0003\n" +
+                                        ":61:2310011001CD10,00ASHP20230928LTERMID2000003\n" +
+                                        ":86:EREF/20230928LTERMID2000003/PREF/RP/GS/CTFILERP0002/CTBA0003\n" +
+                                        ":62F:D230930USD846665,15\n" +
+                                        ":64:C231002USD334432401,27\n",
+                                ConnectorConstants.TRAILER_BLOCK_KEY, "{CHK:123456789ABC}"))},
 
                 {getMTMessageText(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY,
-                "{1:F01GSCRUS30XXXX0000000000}",
-                ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY, "")),
-                getMTMessageMap(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY,
-                "F01GSCRUS30XXXX0000000000",
-                ConnectorConstants.USER_HEADER_BLOCK_KEY,
-                "{113:URGT}{108:INTLPMTS}{121:5798a701-effe-43e5-8d14-eec27ea3d8ec}",
-                ConnectorConstants.TEXT_BLOCK_KEY,
-                "\n:20:258158850\n" +
-                ":21:258158850\n" +
-                ":25:DD01100056869\n" +
-                ":28C:1/1\n" +
-                ":60F:D230930USD843686,20\n" +
-                ":61:2310011001RCD10,00ACHPGSGWGDNCTAHQM8\n" +
-                ":86:EREF/GSGWGDNCTAHQM8/PREF/RP/GS/CTFILERP0002/CTBA0003\n" +
-                ":61:2310011001DD10,00ACHPNONREF\n" +
-                ":86:PREF/RP/GS/CTFILERP0002/CTBA0003\n" +
-                ":61:2310011001CD10,00ASHP20230928LTERMID2000003\n" +
-                ":86:EREF/20230928LTERMID2000003/PREF/RP/GS/CTFILERP0002/CTBA0003\n" +
-                ":62F:D230930USD846665,15\n" +
-                ":64:C231002USD334432401,27\n",
-                ConnectorConstants.TRAILER_BLOCK_KEY, "{CHK:123456789ABC}"))},
+                        "{1:F01GSCRUS30XXXX0000000000}",
+                        ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY, "")),
+                        getMTMessageMap(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY,
+                                "F01GSCRUS30XXXX0000000000",
+                                ConnectorConstants.USER_HEADER_BLOCK_KEY,
+                                "{113:URGT}{108:INTLPMTS}{121:5798a701-effe-43e5-8d14-eec27ea3d8ec}",
+                                ConnectorConstants.TEXT_BLOCK_KEY,
+                                "\n:20:258158850\n" +
+                                        ":21:258158850\n" +
+                                        ":25:DD01100056869\n" +
+                                        ":28C:1/1\n" +
+                                        ":60F:D230930USD843686,20\n" +
+                                        ":61:2310011001RCD10,00ACHPGSGWGDNCTAHQM8\n" +
+                                        ":86:EREF/GSGWGDNCTAHQM8/PREF/RP/GS/CTFILERP0002/CTBA0003\n" +
+                                        ":61:2310011001DD10,00ACHPNONREF\n" +
+                                        ":86:PREF/RP/GS/CTFILERP0002/CTBA0003\n" +
+                                        ":61:2310011001CD10,00ASHP20230928LTERMID2000003\n" +
+                                        ":86:EREF/20230928LTERMID2000003/PREF/RP/GS/CTFILERP0002/CTBA0003\n" +
+                                        ":62F:D230930USD846665,15\n" +
+                                        ":64:C231002USD334432401,27\n",
+                                ConnectorConstants.TRAILER_BLOCK_KEY, "{CHK:123456789ABC}"))},
 
                 {getMTMessageText(Map.of(ConnectorConstants.USER_HEADER_BLOCK_KEY, "")),
-                getMTMessageMap(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY,
-                "F01GSCRUS30XXXX0000000000",
-                ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
-                "O9400400190425GSCRUS30XXX00000000002403290912N",
-                ConnectorConstants.TEXT_BLOCK_KEY,
-                "\n:20:258158850\n" +
-                ":21:258158850\n" +
-                ":25:DD01100056869\n" +
-                ":28C:1/1\n" +
-                ":60F:D230930USD843686,20\n" +
-                ":61:2310011001RCD10,00ACHPGSGWGDNCTAHQM8\n" +
-                ":86:EREF/GSGWGDNCTAHQM8/PREF/RP/GS/CTFILERP0002/CTBA0003\n" +
-                ":61:2310011001DD10,00ACHPNONREF\n" +
-                ":86:PREF/RP/GS/CTFILERP0002/CTBA0003\n" +
-                ":61:2310011001CD10,00ASHP20230928LTERMID2000003\n" +
-                ":86:EREF/20230928LTERMID2000003/PREF/RP/GS/CTFILERP0002/CTBA0003\n" +
-                ":62F:D230930USD846665,15\n" +
-                ":64:C231002USD334432401,27\n",
-                ConnectorConstants.TRAILER_BLOCK_KEY, "{CHK:123456789ABC}"))},
+                        getMTMessageMap(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY,
+                                "F01GSCRUS30XXXX0000000000",
+                                ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
+                                "O9400400190425GSCRUS30XXX00000000002403290912N",
+                                ConnectorConstants.TEXT_BLOCK_KEY,
+                                "\n:20:258158850\n" +
+                                        ":21:258158850\n" +
+                                        ":25:DD01100056869\n" +
+                                        ":28C:1/1\n" +
+                                        ":60F:D230930USD843686,20\n" +
+                                        ":61:2310011001RCD10,00ACHPGSGWGDNCTAHQM8\n" +
+                                        ":86:EREF/GSGWGDNCTAHQM8/PREF/RP/GS/CTFILERP0002/CTBA0003\n" +
+                                        ":61:2310011001DD10,00ACHPNONREF\n" +
+                                        ":86:PREF/RP/GS/CTFILERP0002/CTBA0003\n" +
+                                        ":61:2310011001CD10,00ASHP20230928LTERMID2000003\n" +
+                                        ":86:EREF/20230928LTERMID2000003/PREF/RP/GS/CTFILERP0002/CTBA0003\n" +
+                                        ":62F:D230930USD846665,15\n" +
+                                        ":64:C231002USD334432401,27\n",
+                                ConnectorConstants.TRAILER_BLOCK_KEY, "{CHK:123456789ABC}"))},
 
                 {getMTMessageText(Map.of(ConnectorConstants.TRAILER_BLOCK_KEY, "")),
-                getMTMessageMap(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY,
-                "F01GSCRUS30XXXX0000000000",
-                ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
-                "O9400400190425GSCRUS30XXX00000000002403290912N",
-                ConnectorConstants.USER_HEADER_BLOCK_KEY,
-                "{113:URGT}{108:INTLPMTS}{121:5798a701-effe-43e5-8d14-eec27ea3d8ec}",
-                ConnectorConstants.TEXT_BLOCK_KEY,
-            "\n:20:258158850\n" +
-                ":21:258158850\n" +
-                ":25:DD01100056869\n" +
-                ":28C:1/1\n" +
-                ":60F:D230930USD843686,20\n" +
-                ":61:2310011001RCD10,00ACHPGSGWGDNCTAHQM8\n" +
-                ":86:EREF/GSGWGDNCTAHQM8/PREF/RP/GS/CTFILERP0002/CTBA0003\n" +
-                ":61:2310011001DD10,00ACHPNONREF\n" +
-                ":86:PREF/RP/GS/CTFILERP0002/CTBA0003\n" +
-                ":61:2310011001CD10,00ASHP20230928LTERMID2000003\n" +
-                ":86:EREF/20230928LTERMID2000003/PREF/RP/GS/CTFILERP0002/CTBA0003\n" +
-                ":62F:D230930USD846665,15\n" +
-                ":64:C231002USD334432401,27\n"))}
+                        getMTMessageMap(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY,
+                                "F01GSCRUS30XXXX0000000000",
+                                ConnectorConstants.APPLICATION_HEADER_BLOCK_KEY,
+                                "O9400400190425GSCRUS30XXX00000000002403290912N",
+                                ConnectorConstants.USER_HEADER_BLOCK_KEY,
+                                "{113:URGT}{108:INTLPMTS}{121:5798a701-effe-43e5-8d14-eec27ea3d8ec}",
+                                ConnectorConstants.TEXT_BLOCK_KEY,
+                                "\n:20:258158850\n" +
+                                        ":21:258158850\n" +
+                                        ":25:DD01100056869\n" +
+                                        ":28C:1/1\n" +
+                                        ":60F:D230930USD843686,20\n" +
+                                        ":61:2310011001RCD10,00ACHPGSGWGDNCTAHQM8\n" +
+                                        ":86:EREF/GSGWGDNCTAHQM8/PREF/RP/GS/CTFILERP0002/CTBA0003\n" +
+                                        ":61:2310011001DD10,00ACHPNONREF\n" +
+                                        ":86:PREF/RP/GS/CTFILERP0002/CTBA0003\n" +
+                                        ":61:2310011001CD10,00ASHP20230928LTERMID2000003\n" +
+                                        ":86:EREF/20230928LTERMID2000003/PREF/RP/GS/CTFILERP0002/CTBA0003\n" +
+                                        ":62F:D230930USD846665,15\n" +
+                                        ":64:C231002USD334432401,27\n"))}
         };
     }
 
@@ -367,16 +600,16 @@ public class MTParserConstants {
                         "{4:"))},
                 {getMTMessageText(Map.of(ConnectorConstants.TEXT_BLOCK_KEY,
                         "{4:\n" +
-                            ":20:258158850\n" +
-                            ":21:258158850\n" +
-                            ":25:DD01100056869\n" +
-                            ":28C:1/1\n" +
-                            ":60F:D230930USD843686,20\n" +
-                            ":61:2310011001RCD10,00ACHPGSGWGDNCTAHQM8\n" +
-                            ":86:EREF/GSGWGDNCTAHQM8/PREF/RP/GS/CTFILERP0002/CTBA0003\n" +
-                            ":62F:D230930USD846665,15\n" +
-                            ":64:C231002USD334432401,27\n" +
-                            "-"))},
+                                ":20:258158850\n" +
+                                ":21:258158850\n" +
+                                ":25:DD01100056869\n" +
+                                ":28C:1/1\n" +
+                                ":60F:D230930USD843686,20\n" +
+                                ":61:2310011001RCD10,00ACHPGSGWGDNCTAHQM8\n" +
+                                ":86:EREF/GSGWGDNCTAHQM8/PREF/RP/GS/CTFILERP0002/CTBA0003\n" +
+                                ":62F:D230930USD846665,15\n" +
+                                ":64:C231002USD334432401,27\n" +
+                                "-"))},
                 {getMTMessageText(Map.of(ConnectorConstants.TEXT_BLOCK_KEY,
                         "{4:\n" +
                                 ":20:258158850\n" +
@@ -889,4 +1122,3 @@ public class MTParserConstants {
         };
     }
 }
-
