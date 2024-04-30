@@ -388,7 +388,7 @@ public class MTParserTestConstants {
                         ":86:EREF/GSGWGDNCTAHQM8/PREF/RP/GS/CTFILERP0002/CTBA0003\n" +
                         ":61:2310011001DD10,00ACHPNONREF\n" +
                         ":86:PREF/RP/GS/CTFILERP0002/CTBA0003\n" +
-                        ":61:2310011001CD10,00ASHP20230928LTERMID2000003\n" +
+                        ":61:2310011001CD10,00ASHP20230928LTERMID2\n" +
                         ":86:EREF/20230928LTERMID2000003/PREF/RP/GS/CTFILERP0002/CTBA0003\n" +
                         ":62F:D230930USD846665,15\n" +
                         ":64:C231002USD334432401,27\n-}")) +
