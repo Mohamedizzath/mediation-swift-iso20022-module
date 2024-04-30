@@ -49,6 +49,10 @@ public class MTParserConstants {
     // Regex patterns for MT parser and utils
     public static final Pattern CURLY_BRACKETS_FIELDS_MATCHING_PATTERN =
             Pattern.compile("\\{([0-9A-Z]{3}):([^}:]*)}");
+    public static final String LINE_BREAK_REGEX_PATTERN = "\\R";
+    public static final String LINE_BREAK_WITH_COLON_REGEX_PATTERN = "\\R:";
+
+    // User Header Block Regex Patterns
     public static final Pattern FIELD_103_REGEX_PATTERN = Pattern.compile("^[A-Z]{3}$");
     public static final Pattern FIELD_106_REGEX_PATTERN =
             Pattern.compile("^([0-9]{6})([0-9A-Z]{12})([0-9]{4})([0-9]{6})$");
@@ -63,6 +67,8 @@ public class MTParserConstants {
     public static final Pattern FIELD_424_REGEX_PATTERN = Pattern.compile("^[\\da-zA-Z/\\-?:().,'+ ]{1,16}$");
     public static final Pattern FIELD_433_REGEX_PATTERN = Pattern.compile("^/([A-Z]{3})(/([^/]{1,20}))?$");
     public static final Pattern FIELD_434_REGEX_PATTERN = Pattern.compile("^/([A-Z]{3})(/([^/]{1,20}))?$");
+
+    // Trailer Block Regex Patterns
     public static final Pattern FIELD_CHK_REGEX_PATTERN = Pattern.compile("^[0-9A-F]{12}$");
     public static final Pattern FIELD_MRF_REGEX_PATTERN =
             Pattern.compile("^([0-9]{6})([0-9]{4})([0-9]{6})([0-9A-Z]{12})([0-9]{4})([0-9]{6})$");
@@ -73,8 +79,59 @@ public class MTParserConstants {
     public static final Pattern FIELD_SYS_REGEX_PATTERN =
             Pattern.compile("^([0-9]{4})([0-9]{6})([0-9A-Z]{12})([0-9]{4})([0-9]{6})$");
 
+    // Text Block Regex Patterns
+    public static final Pattern TAG_AND_VALUE_REGEX_PATTERN_TEXT_BLOCK =
+            Pattern.compile("^(\\d{2}[A-Z]?):(.*)$", Pattern.DOTALL);
+    public static final Pattern FIELD_13C_REGEX_PATTERN = Pattern.compile("^/([A-Z]{1,8})/([0-9]{4})([+-])([0-9]{4})$");
+    public static final Pattern FIELD_20_REGEX_PATTERN = Pattern.compile("^[\\da-zA-Z/\\-?:().,'+ ]{1,16}$");
+    public static final Pattern FIELD_23B_REGEX_PATTERN = Pattern.compile("^[\\dA-Z]{4}$");
+    public static final Pattern FIELD_23E_REGEX_PATTERN =
+            Pattern.compile("^([A-Z\\d]{4})(/([\\da-zA-Z/\\-?:().,'+ ]{1,30}))?$");
+    public static final Pattern FIELD_26T_REGEX_PATTERN = Pattern.compile("^([\\dA-Z]{3})$");
+    public static final Pattern FIELD_32A_REGEX_PATTERN = Pattern.compile("^([0-9]{6})([A-Z]{3})([\\d,]{1,15})$");
+    public static final Pattern FIELD_33B_REGEX_PATTERN = Pattern.compile("^([A-Z]{3})([\\d,]{1,15})$");
+    public static final Pattern FIELD_36_REGEX_PATTERN = Pattern.compile("^[\\d,]{1,12}$");
+    public static final Pattern FIELD_50_REGEX_PATTERN =
+            Pattern.compile("(([\\da-zA-Z/\\-?:().,'+ ]{1,35})\\R)?" +
+                    "(([\\dA-Z]{8,11})|([\\da-zA-Z/\\-?:().,'+ ]{1,33}((\\R[\\da-zA-Z/\\-?:().,'+ ]{1,33}){0,3})))");
+    public static final Pattern FIELD_50A_REGEX_PATTERN =
+            Pattern.compile("^(/([\\da-zA-Z/\\-?:().,'+ ]{1,34})\\R)?([\\dA-Z]{8,11})$");
+    public static final Pattern FIELD_59A_REGEX_PATTERN =
+            Pattern.compile("^(/([\\da-zA-Z/\\-?:().,'+ ]{1,34})\\R)?([\\dA-Z]{8,11})$");
+    public static final Pattern FIELD_70_REGEX_PATTERN =
+            Pattern.compile("^([\\da-zA-Z/\\-?:().,'+ ]{1,35}(\\R[\\da-zA-Z/\\-?:().,'+ ]{1,35}){0,3})$");
+    public static final Pattern FIELD_71A_REGEX_PATTERN = Pattern.compile("^[A-Z]{3}$");
+    public static final Pattern FIELD_71F_REGEX_PATTERN = Pattern.compile("^([A-Z]{3})([\\d,]{1,15})$");
+    public static final Pattern FIELD_71G_REGEX_PATTERN = Pattern.compile("^([A-Z]{3})([\\d,]{1,15})$");
+    public static final Pattern FIELD_72_REGEX_PATTERN =
+            Pattern.compile("^([\\da-zA-Z/\\-?:().,'+ ]{1,35}(\\R[\\da-zA-Z/\\-?:().,'+ ]{1,35}){0,5})$");
+    public static final Pattern FIELD_77B_REGEX_PATTERN =
+            Pattern.compile("^([\\da-zA-Z/\\-?:().,'+ ]{1,35}(\\R[\\da-zA-Z/\\-?:().,'+ ]{1,35}){0,5})$");
+    public static final Pattern FIELD_77T_REGEX_PATTERN =
+            Pattern.compile("^[\\w.,\\-()/='+:?!\"%&*<>;{@# ]{1,9000}$");
+
+    // Party Identifier Regex Patterns
+    public static final Pattern PARTY_IDENTIFIER_NO_LETTER_OPTION_REGEX_PATTERN =
+            Pattern.compile("^(/([\\da-zA-Z/\\-?:().,'+ ]{1,34})\\R)?" +
+                    "([\\da-zA-Z/\\-?:().,'+ ]{1,35}(\\R[\\da-zA-Z/\\-?:().,'+ ]{1,35}){0,3})$");
+    public static final Pattern PARTY_IDENTIFIER_OPTION_A_REGEX_PATTERN =
+            Pattern.compile("^(/([A-Z])!\\R|/([\\da-zA-Z/\\-?:().,'+ ]{1,34})\\R)?([\\dA-Z]{8,11})$");
+    public static final Pattern PARTY_IDENTIFIER_OPTION_B_REGEX_PATTERN = Pattern.compile(
+            "^(/([A-Z])!\\R?|/([\\da-zA-Z/\\-?:().,'+ ]{1,34})\\R?)?([\\da-zA-Z/\\-?:().,'+ ]{1,35})?$");
+    public static final Pattern PARTY_IDENTIFIER_OPTION_C_REGEX_PATTERN =
+            Pattern.compile("^/([\\da-zA-Z/\\-?:().,'+ ]{1,34})$");
+    public static final Pattern PARTY_IDENTIFIER_OPTION_D_REGEX_PATTERN = Pattern.compile(
+            "^(/([A-Z])!\\R|/([\\da-zA-Z/\\-?:().,'+ ]{1,34})\\R)?" +
+                    "([\\da-zA-Z/\\-?:().,'+ ]{1,35}(\\R[\\da-zA-Z/\\-?:().,'+ ]{1,35}){0,3})$");
+    public static final Pattern PARTY_IDENTIFIER_OPTION_F_REGEX_PATTERN =
+            Pattern.compile("^([\\da-zA-Z/\\-?:().,'+ ]{1,35})\\R" +
+                    "(\\d/[\\da-zA-Z/\\-?:().,'+ ]{1,33}(\\R\\d/[\\da-zA-Z/\\-?:().,'+ ]{1,33}){0,3})$");
+    public static final Pattern PARTY_IDENTIFIER_OPTION_K_REGEX_PATTERN =
+            Pattern.compile("^(/([\\da-zA-Z/\\-?:().,'+ ]{1,34})\\R)?" +
+                    "([\\da-zA-Z/\\-?:().,'+ ]{1,35}(\\R[\\da-zA-Z/\\-?:().,'+ ]{1,35}){0,3})$");
+
     // Error message related constants
-    public static final String EMPTY_BLOCK_MESSAGE = "Empty %s cannot be parsed";
     public static final String INVALID_FIELD_IN_BLOCK_MESSAGE = "%s in %s is in invalid format";
+    public static final String INVALID_OPTION_FOR_FIELD = "Option for %s in Text Block is invalid";
 
 }

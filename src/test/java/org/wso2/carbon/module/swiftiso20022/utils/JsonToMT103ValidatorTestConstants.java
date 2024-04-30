@@ -125,6 +125,13 @@ public class JsonToMT103ValidatorTestConstants {
             "    \"block05\": " + VALID_BLOCK05_PAYLOAD + "\n" +
             "}";
 
+    public static final String INVALID_FORMAT_PAYLOAD = "{\n" +
+            "    \"block01\": [" + VALID_BLOCK01_PAYLOAD + "],\n" +
+            "    \"block03\": " + VALID_BLOCK03_PAYLOAD + ",\n" +
+            "    \"block04\": [" + VALID_BLOCK04_PAYLOAD + "],\n" +
+            "    \"block05\": " + VALID_BLOCK05_PAYLOAD + "\n" +
+            "}";
+
     @DataProvider(name = "emptyMandatoryBlockDataProvider")
     Object[][] getEmptyMandatoryBlockDataProvider() {
         return new Object[][]{

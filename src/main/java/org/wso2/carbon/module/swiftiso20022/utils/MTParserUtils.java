@@ -24,13 +24,20 @@ import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
 import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Utility class for MT message parsing.
  */
 public class MTParserUtils {
+
+    private MTParserUtils() {
+        // Private constructor to prevent instantiation.
+    }
 
     /**
      * Util methods for parsing blocks in MT messages.<br/>
@@ -151,6 +158,40 @@ public class MTParserUtils {
         }
 
         return fields;
+    }
+
+    /**
+     * Method to match a regex pattern with passed string value.
+     * Only check one matching value.
+     *
+     * @param regexPattern Pattern object compiled with the regex pattern
+     * @param stringValue String value to be matched
+     * @return An Optional of the matcher object or an empty matcher object if the string doesn't match the pattern
+     */
+    public static Optional<Matcher> getRegexMatcher(Pattern regexPattern, String stringValue) {
+
+        // Compiling the pattern
+        Matcher matcher = regexPattern.matcher(stringValue);
+
+        if (matcher.matches()) {
+            return Optional.of(matcher);
+        } else {
+            return Optional.empty();
+        }
+    }
+
+    /**
+     * Method to separate text block fields and return a string list.
+     *
+     * @param textBlock Text Block string excluding block identifier and enclosing curly brackets
+     * @return A list of text block field strings
+     */
+    public static List<String> getTextBlockFields(String textBlock) {
+
+        List<String> fieldList = List.of(textBlock
+                .substring(0, textBlock.length() - 1)
+                .split(MTParserConstants.LINE_BREAK_WITH_COLON_REGEX_PATTERN));
+        return fieldList.subList(1, fieldList.size());
     }
 
 }
