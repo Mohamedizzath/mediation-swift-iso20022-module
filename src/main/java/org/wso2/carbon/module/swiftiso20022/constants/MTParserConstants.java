@@ -43,6 +43,7 @@ public class MTParserConstants {
     public static final String INVALID_BASIC_HEADER = "Basic header block is not in the correct format";
     public static final String EMPTY_MT_MESSAGE_BLOCKS = "Basic header block is not present in MT message";
     public static final String INVALID_APPLICATION_HEADER = "Application header block is not in the correct format";
+
     public static final String FIELD_DLM_TAG = "DLM";
     public static final String FIELD_TNG_TAG = "TNG";
 
@@ -77,4 +78,15 @@ public class MTParserConstants {
     public static final String EMPTY_BLOCK_MESSAGE = "Empty %s cannot be parsed";
     public static final String INVALID_FIELD_IN_BLOCK_MESSAGE = "%s in %s is in invalid format";
 
+    public static final String INVALID_TEXT_BLOCK = "Text block is not in the correct format";
+    public static final Pattern TEXT_BLOCK_FIELD_REGEX = Pattern.compile("^(\\d{2}[A-Z]?):(.*)$", Pattern.DOTALL);
+    public static final String INVALID_FIELD_FORMAT = "%s field not in the correct format";
+    public static final String INVALID_FIELD_OPTION = "Invalid %s option for field %s";
+
+    // Field options
+    public static final char FIELD_OPTION_NO_LETTER = '0';
+    public static final char FIELD_OPTION_C = 'C';
+    public static final char FIELD_OPTION_F = 'F';
+    public static final char FIELD_OPTION_M = 'M';
+    public static final char FIELD_OPTION_P = 'P';
 }

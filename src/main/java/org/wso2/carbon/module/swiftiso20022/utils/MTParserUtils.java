@@ -24,8 +24,10 @@ import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
 import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Utility class for MT message parsing.
@@ -153,4 +155,25 @@ public class MTParserUtils {
         return fields;
     }
 
+  /**
+     * Method for parsing fields in text block.
+     * @param textBlock                     Text block as string to break into fields
+     * @return                              Parsed field as a list of String
+     * @throws MTMessageParsingException
+     */
+    public static List<String> getTextBlockFields(String textBlock) throws MTMessageParsingException {
+        // Match whether text block starting with newline and : (Should have at least one tag)
+        Pattern textStartPattern = Pattern.compile("^\\R:.+", Pattern.DOTALL);
+        Matcher textStartMatcher = textStartPattern.matcher(textBlock);
+
+        if (textStartMatcher.matches()) {
+            // Remove the starting new line character and : from the text block
+            textBlock = textBlock.substring(2);
+        } else {
+            throw new MTMessageParsingException("Text block not in the correct format");
+        }
+
+        // Remove the final new line character
+        return List.of(textBlock.trim().split("\\R:"));
+    }
 }

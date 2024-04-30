@@ -18,7 +18,10 @@
 
 package org.wso2.carbon.module.swiftiso20022.mt.parsers;
 
+import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
+import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
 import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
+import org.wso2.carbon.module.swiftiso20022.mt.models.blocks.text.MT940TextBlock;
 import org.wso2.carbon.module.swiftiso20022.mt.models.messages.MT940Message;
 import org.wso2.carbon.module.swiftiso20022.utils.MTParserUtils;
 
@@ -39,8 +42,12 @@ public class MT940Parser {
         MT940Message mt940Message = new MT940Message();
         MTParser.parse(blocks, mt940Message);
 
-        // Implementation on parsing text block
-        // mt940Message.setTextBlock(MT940TextBlock textBlock);
+        if (!blocks.containsKey(ConnectorConstants.TEXT_BLOCK_KEY)) {
+            // Text block is mandatory for any MT message
+            throw new MTMessageParsingException(MTParserConstants.INVALID_TEXT_BLOCK);
+        }
+
+        mt940Message.setTextBlock(MT940TextBlock.parse(blocks.get(ConnectorConstants.TEXT_BLOCK_KEY)));
 
         return mt940Message;
     }
