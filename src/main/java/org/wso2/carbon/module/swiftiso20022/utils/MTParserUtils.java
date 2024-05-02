@@ -183,14 +183,17 @@ public class MTParserUtils {
     /**
      * Method to separate text block fields and return a string list.
      *
-     * @param textBlock Text Block string excluding block identifier and enclosing curly brackets
+     * @param textBlock Text Block string excluding "{4:" and "-}"
      * @return A list of text block field strings
      */
     public static List<String> getTextBlockFields(String textBlock) {
 
         return List.of(textBlock
+                // remove first and last line break
                 .trim()
+                // exclude first ":"
                 .substring(1)
+                // break string by "\\R:", pattern
                 .split(MTParserConstants.LINE_BREAK_WITH_COLON_REGEX_PATTERN));
     }
 

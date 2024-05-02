@@ -19,6 +19,7 @@
 package org.wso2.carbon.module.swiftiso20022.mt.models.fields;
 
 import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
+import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants.MTFieldOption;
 import org.wso2.carbon.module.swiftiso20022.constants.MT103Constants;
 import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
 import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
@@ -88,9 +89,14 @@ public class Field50 {
        put(OPTION_F_TAG, MTParserConstants.PARTY_IDENTIFIER_OPTION_F_REGEX_PATTERN);
        put(OPTION_K_TAG, MTParserConstants.PARTY_IDENTIFIER_OPTION_K_REGEX_PATTERN);
     }};
-    private final ConnectorConstants.MTFieldDOption option;
+    private final MTFieldOption option;
 
-    public Field50(ConnectorConstants.MTFieldDOption option) {
+    /**
+     * Constructor to get the instance with the option.
+     *
+     * @param option Option from enum {@link MTFieldOption}
+     */
+    public Field50(MTFieldOption option) {
         this.option = option;
     }
 
@@ -107,7 +113,7 @@ public class Field50 {
     // example for 50F: 1/MANN GEORG
     private List<String> details;
 
-    public ConnectorConstants.MTFieldDOption getOption() {
+    public MTFieldOption getOption() {
         return option;
     }
 
@@ -206,14 +212,14 @@ public class Field50 {
                     // group 1 -> /Account
                     // group 2 -> Account
                     // group 3 -> Identifier Code
-                    return new Field50(ConnectorConstants.MTFieldDOption.A)
+                    return new Field50(MTFieldOption.A)
                             .withAccount(field50Matcher.group(2))
                             .withIdentifierCode(field50Matcher.group(3));
 
                 case OPTION_F_TAG:
                     // group 1 -> Party Identifier
                     // group 2 -> details
-                    return new Field50(ConnectorConstants.MTFieldDOption.F)
+                    return new Field50(MTFieldOption.F)
                             .withPartyIdentifier(field50Matcher.group(1))
                             // Details group -> "val1\nval2\n" -> ["val1", "val2"]
                             .withDetails(List.of(field50Matcher.group(2)
@@ -223,7 +229,7 @@ public class Field50 {
                     // group 1 -> /Account
                     // group 2 -> Account
                     // group 3 -> details
-                    return new Field50(ConnectorConstants.MTFieldDOption.K)
+                    return new Field50(MTFieldOption.K)
                             .withAccount(field50Matcher.group(2))
                             // Details group -> "val1\nval2\n" -> ["val1", "val2"]
                             .withDetails(List.of(field50Matcher.group(3)

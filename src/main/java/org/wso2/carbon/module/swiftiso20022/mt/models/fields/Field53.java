@@ -81,17 +81,22 @@ public class Field53 {
         put(OPTION_B_TAG, MTParserConstants.PARTY_IDENTIFIER_OPTION_B_REGEX_PATTERN);
         put(OPTION_D_TAG, MTParserConstants.PARTY_IDENTIFIER_OPTION_D_REGEX_PATTERN);
     }};
-    private final ConnectorConstants.MTFieldDOption option;
+    private final ConnectorConstants.MTFieldOption option;
     private String partyIdentifier;
     private String identifierCode;
     private String location;
     private List<String> details;
 
-    public Field53(ConnectorConstants.MTFieldDOption option) {
+    /**
+     * Constructor to get the instance with the option.
+     *
+     * @param option Option from enum {@link ConnectorConstants.MTFieldOption}
+     */
+    public Field53(ConnectorConstants.MTFieldOption option) {
         this.option = option;
     }
 
-    public ConnectorConstants.MTFieldDOption getOption() {
+    public ConnectorConstants.MTFieldOption getOption() {
         return option;
     }
 
@@ -187,30 +192,28 @@ public class Field53 {
             switch (tag) {
                 case OPTION_A_TAG:
                     // group 1 -> /Party Identifier
-                    // group 2 is not assigned because of OR operator
-                    // group 3 -> Party Identifier
-                    // group 4 -> Identifier Code
-                    return new Field53(ConnectorConstants.MTFieldDOption.A)
-                            .withPartyIdentifier(field53Matcher.group(3))
-                            .withIdentifierCode(field53Matcher.group(4));
+                    // group 2 -> Party Identifier
+                    // group 3 -> Identifier Code
+                    return new Field53(ConnectorConstants.MTFieldOption.A)
+                            .withPartyIdentifier(field53Matcher.group(2))
+                            .withIdentifierCode(field53Matcher.group(3));
 
                 case OPTION_B_TAG:
-                    // group 2 is not assigned because of OR operator
-                    // group 3 -> Party Identifier
-                    // group 4 -> Location
-                    return new Field53(ConnectorConstants.MTFieldDOption.B)
-                            .withPartyIdentifier(field53Matcher.group(3))
-                            .withLocation(field53Matcher.group(4));
+                    // group 1 -> /Party Identifier
+                    // group 2 -> Party Identifier
+                    // group 3 -> Location
+                    return new Field53(ConnectorConstants.MTFieldOption.B)
+                            .withPartyIdentifier(field53Matcher.group(2))
+                            .withLocation(field53Matcher.group(3));
 
                 case OPTION_D_TAG:
                     // group 1 -> /Party Identifier
-                    // group 2 is not assigned because of OR operator
-                    // group 3 -> Party Identifier
-                    // group 4 -> details
-                    return new Field53(ConnectorConstants.MTFieldDOption.D)
-                            .withPartyIdentifier(field53Matcher.group(3))
+                    // group 2 -> Party Identifier
+                    // group 3 -> details
+                    return new Field53(ConnectorConstants.MTFieldOption.D)
+                            .withPartyIdentifier(field53Matcher.group(2))
                             // Details group -> "val1\nval2\n" -> ["val1", "val2"]
-                            .withDetails(List.of(field53Matcher.group(4)
+                            .withDetails(List.of(field53Matcher.group(3)
                                     .split(MTParserConstants.LINE_BREAK_REGEX_PATTERN)));
 
                 default:

@@ -75,7 +75,7 @@ public class Field72 {
             return new Field72()
                     // Values group -> "line1\nline2\n" -> ["line1", "line2"]
                     .withValues(
-                            List.of(field72Matcher.group(1).split(MTParserConstants.LINE_BREAK_REGEX_PATTERN)));
+                            List.of(field72Matcher.group().split(MTParserConstants.LINE_BREAK_REGEX_PATTERN)));
         } else {
             throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
                     MT103Constants.SENDER_TO_RECEIVER_INFORMATION, ConnectorConstants.TEXT_BLOCK));

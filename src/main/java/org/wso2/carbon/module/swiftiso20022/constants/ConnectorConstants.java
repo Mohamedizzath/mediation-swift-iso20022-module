@@ -111,7 +111,7 @@ public class ConnectorConstants {
     /**
      * Includes the options available for a Text Block field.
      */
-    public static enum MTFieldDOption {
+    public enum MTFieldOption {
         NO_LETTER,
         A,
         B,

@@ -544,8 +544,7 @@ public class MT103ParserTestConstants {
     Object[][] getInvalidField77TDataProvider() {
         return new Object[][] {
                 {""},
-                {"This is more than\n" +
-                    "allowed line count\n"},
+                {"Character } is not allowed"},
 
         };
     }

@@ -95,17 +95,23 @@ public class Field57 {
         put(OPTION_C_TAG, MTParserConstants.PARTY_IDENTIFIER_OPTION_C_REGEX_PATTERN);
         put(OPTION_D_TAG, MTParserConstants.PARTY_IDENTIFIER_OPTION_D_REGEX_PATTERN);
     }};
-    private final ConnectorConstants.MTFieldDOption option;
+
+    /**
+     * Constructor to get the instance with the option.
+     *
+     * @param option Option from enum {@link ConnectorConstants.MTFieldOption}
+     */
+    private final ConnectorConstants.MTFieldOption option;
     private String partyIdentifier;
     private String identifierCode;
     private String location;
     private List<String> details;
 
-    public Field57(ConnectorConstants.MTFieldDOption option) {
+    public Field57(ConnectorConstants.MTFieldOption option) {
         this.option = option;
     }
 
-    public ConnectorConstants.MTFieldDOption getOption() {
+    public ConnectorConstants.MTFieldOption getOption() {
         return option;
     }
 
@@ -201,36 +207,34 @@ public class Field57 {
             switch (tag) {
                 case OPTION_A_TAG:
                     // group 1 -> /Party Identifier
-                    // group 2 is not assigned because of OR operator
-                    // group 3 -> Party Identifier
-                    // group 4 -> Identifier Code
-                    return new Field57(ConnectorConstants.MTFieldDOption.A)
-                            .withPartyIdentifier(field57Matcher.group(3))
-                            .withIdentifierCode(field57Matcher.group(4));
+                    // group 2 -> Party Identifier
+                    // group 3 -> Identifier Code
+                    return new Field57(ConnectorConstants.MTFieldOption.A)
+                            .withPartyIdentifier(field57Matcher.group(2))
+                            .withIdentifierCode(field57Matcher.group(3));
 
                 case OPTION_B_TAG:
                     // group 1 -> /Party Identifier
-                    // group 2 is not assigned because of OR operator
-                    // group 3 -> Party Identifier
-                    // group 4 -> Location
-                    return new Field57(ConnectorConstants.MTFieldDOption.B)
-                            .withPartyIdentifier(field57Matcher.group(3))
-                            .withLocation(field57Matcher.group(4));
+                    // group 2 -> Party Identifier
+                    // group 3 -> Location
+                    return new Field57(ConnectorConstants.MTFieldOption.B)
+                            .withPartyIdentifier(field57Matcher.group(2))
+                            .withLocation(field57Matcher.group(3));
 
                 case OPTION_C_TAG:
                     // group 0 -> /Party Identifier
                     // group 1 -> Party Identifier
-                    return new Field57(ConnectorConstants.MTFieldDOption.C)
+                    return new Field57(ConnectorConstants.MTFieldOption.C)
                             .withPartyIdentifier(field57Matcher.group(1));
 
                 case OPTION_D_TAG:
                     // group 1 -> /Party Identifier
                     // group 2 -> Party Identifier
-                    // group 3 -> Details
-                    return new Field57(ConnectorConstants.MTFieldDOption.D)
-                            .withPartyIdentifier(field57Matcher.group(3))
+                    // group 3 -> details
+                    return new Field57(ConnectorConstants.MTFieldOption.D)
+                            .withPartyIdentifier(field57Matcher.group(2))
                             // Details group -> "val1\nval2\n" -> ["val1", "val2"]
-                            .withDetails(List.of(field57Matcher.group(4)
+                            .withDetails(List.of(field57Matcher.group(3)
                                     .split(MTParserConstants.LINE_BREAK_REGEX_PATTERN)));
 
                 default:

@@ -103,12 +103,11 @@ public class Field51A {
         if (field51AMatcher.matches()) {
 
             // group 1 -> /Party Identifier
-            // group 2 is not assigned because of OR operator
-            // group 3 -> Party Identifier
-            // group 4 -> Identifier Code
+            // group 2 -> Party Identifier
+            // group 3 -> Identifier Code
             return new Field51A()
-                    .withPartyIdentifier(field51AMatcher.group(3))
-                    .withIdentifierCode(field51AMatcher.group(4));
+                    .withPartyIdentifier(field51AMatcher.group(2))
+                    .withIdentifierCode(field51AMatcher.group(3));
         } else {
             throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
                     MT103Constants.SENDING_INSTITUTION, ConnectorConstants.TEXT_BLOCK));

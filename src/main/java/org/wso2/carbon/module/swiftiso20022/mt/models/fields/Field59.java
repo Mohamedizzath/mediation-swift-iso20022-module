@@ -87,16 +87,22 @@ public class Field59 {
         put(OPTION_A_TAG, MTParserConstants.FIELD_59A_REGEX_PATTERN);
         put(OPTION_F_TAG, MTParserConstants.PARTY_IDENTIFIER_OPTION_F_REGEX_PATTERN);
     }};
-    private final ConnectorConstants.MTFieldDOption option;
+
+    /**
+     * Constructor to get the instance with the option.
+     *
+     * @param option Option from enum {@link ConnectorConstants.MTFieldOption}
+     */
+    private final ConnectorConstants.MTFieldOption option;
     private String account;
     private List<String> details;
     private String identifierCode;
 
-    public Field59(ConnectorConstants.MTFieldDOption option) {
+    public Field59(ConnectorConstants.MTFieldOption option) {
         this.option = option;
     }
 
-    public ConnectorConstants.MTFieldDOption getOption() {
+    public ConnectorConstants.MTFieldOption getOption() {
         return option;
     }
 
@@ -175,7 +181,7 @@ public class Field59 {
                     // group 1 -> /Account
                     // group 2 -> Account
                     // group 3 -> details
-                    return new Field59(ConnectorConstants.MTFieldDOption.NO_LETTER)
+                    return new Field59(ConnectorConstants.MTFieldOption.NO_LETTER)
                             .withAccount(field59Matcher.group(2))
                             // Details group -> "val1\nval2\n" -> ["val1", "val2"]
                             .withDetails(List.of(field59Matcher.group(3)
@@ -185,14 +191,14 @@ public class Field59 {
                     // group 1 -> /Account
                     // group 2 -> Account
                     // group 3 -> Identifier Code
-                    return new Field59(ConnectorConstants.MTFieldDOption.A)
+                    return new Field59(ConnectorConstants.MTFieldOption.A)
                             .withAccount(field59Matcher.group(2))
                             .withIdentifierCode(field59Matcher.group(3));
 
                 case OPTION_F_TAG:
                     // group 1 -> Party Identifier
                     // group 2 -> Details
-                    return new Field59(ConnectorConstants.MTFieldDOption.F)
+                    return new Field59(ConnectorConstants.MTFieldOption.F)
                             .withAccount(field59Matcher.group(1))
                             // Details group -> "val1\nval2\n" -> ["val1", "val2"]
                             .withDetails(List.of(field59Matcher.group(2)
