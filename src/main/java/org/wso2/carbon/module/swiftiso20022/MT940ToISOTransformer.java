@@ -19,6 +19,7 @@
 package org.wso2.carbon.module.swiftiso20022;
 
 import com.google.gson.Gson;
+import org.apache.axis2.AxisFault;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.synapse.MessageContext;
@@ -28,6 +29,7 @@ import org.wso2.carbon.connector.core.ConnectException;
 import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
 import org.wso2.carbon.module.swiftiso20022.mt.models.messages.MT940Message;
 import org.wso2.carbon.module.swiftiso20022.mt.parsers.MT940Parser;
+import org.wso2.carbon.module.swiftiso20022.utils.ConnectorUtils;
 
 /**
  * Transform MT940 to ISO20022.camt.053.
@@ -44,8 +46,9 @@ public class MT940ToISOTransformer extends AbstractConnector {
 
             MT940Message mt940Message = MT940Parser.parse(message);
             String json = gson.toJson(mt940Message);
-            log.debug(json);
-        } catch (MTMessageParsingException e) {
+
+            ConnectorUtils.appendJsonResponseToMessageContext(messageContext, json);
+        } catch (AxisFault | MTMessageParsingException e) {
             throw new ConnectException(e);
         }
     }
