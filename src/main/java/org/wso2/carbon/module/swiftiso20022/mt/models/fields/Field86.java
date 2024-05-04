@@ -60,38 +60,23 @@ public class Field86 {
     }
 
     /**
-     * Method to set option of Field86 and return the instance.
-     * @param option     Option of Field86
-     * @return          Created instance of Field86
+     * Default constructor for Field86.
      */
-    public Field86 withOption(char option) {
-        setOption(option);
-        return this;
-    }
+    public Field86() { }
 
     /**
-     * Method to set value of Field86 and return the instance.
-     * @param value     Value of Field86
-     * @return          Created instance of Field86
-     */
-    public Field86 withValue(String value) {
-        setValue(value);
-        return this;
-    }
-
-    /**
-     * Method for parse and get Field86 object.
+     * Constructor for parse and get Field86 object.
      * @param option              Option of the Field86
      * @param field86String       String which contains value of Field86
-     * @return                    Created instance of Field86
      * @throws MTMessageParsingException
      */
-    public static Field86 parse(char option, String field86String) throws MTMessageParsingException {
+    public Field86(char option, String field86String) throws MTMessageParsingException {
         if (option == MTParserConstants.FIELD_OPTION_NO_LETTER) {
             Matcher field86Matcher = MT940ParserConstants.FIELD_86_REGEX_PATTERN.matcher(field86String);
 
             if (field86Matcher.matches()) {
-                return new Field86().withOption(option).withValue(field86Matcher.group(1));
+                this.value = field86Matcher.group(1);
+                this.option = option;
             } else {
                 throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_FORMAT,
                         Field86.TAG));

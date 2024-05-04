@@ -76,62 +76,31 @@ public class Field25 {
     }
 
     /**
-     * Method to set option of Field25 and return the instance.
-     * @param option   Value of Field25
-     * @return        Created instance of Field25
+     * Default constructor for Field25.
      */
-    public Field25 withOption(char option) {
-        setOption(option);
-        return this;
-    }
-
-    /**
-     * Method to set account  of Field25 and return the instance.
-     * @param account   Value of Field25
-     * @return        Created instance of Field25
-     */
-    public Field25 withAccount(String account) {
-        setAccount(account);
-        return this;
-    }
-
-    /**
-     * Method to set identifier code of Field25 and return the instance.
-     * @param identifierCode   Identifier code of Field25
-     * @return                 Created instance of Field25
-     */
-    public Field25 withIdentifierCode(String identifierCode) {
-        setIdentifierCode(identifierCode);
-        return this;
-    }
+    public Field25() {}
 
     /**
      * Method for parse and get Field25 object.
      * @param option              Option of the Field25
      * @param field25String       String which contains value of Field25
-     * @return                    Created instance of Field25
      * @throws MTMessageParsingException
      */
-    public static Field25 parse(char option, String field25String) throws MTMessageParsingException {
-        if (option == 'P') {
-            Matcher field25PMatcher = MT940ParserConstants.FIELD_25P_REGEX_PATTERN.matcher(field25String);
-
-            if (field25PMatcher.matches()) {
-                return new Field25().withOption(option).withAccount(field25PMatcher.group(1))
-                        .withIdentifierCode(field25PMatcher.group(3));
-            } else {
-                throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_FORMAT,
-                        Field25.TAG + option));
-            }
-        } else {
+    public Field25(char option, String field25String) throws MTMessageParsingException {
+        if (option == MTParserConstants.FIELD_OPTION_NO_LETTER || option == MTParserConstants.FIELD_OPTION_P) {
             Matcher field25Matcher = MT940ParserConstants.FIELD_25_REGEX_PATTERN.matcher(field25String);
 
-            if (field25Matcher.matches()) {
-                return new Field25().withOption(option).withAccount(field25Matcher.group(1));
-            } else {
+            if (!field25Matcher.matches()) {
                 throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_FORMAT,
-                        Field25.TAG));
+                        option != MTParserConstants.FIELD_OPTION_NO_LETTER ? Field25.TAG + option : Field25.TAG));
             }
+
+            this.account = field25Matcher.group(1);
+            this.identifierCode = field25Matcher.group(3);
+            this.option = option;
+        } else {
+            throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_OPTION,
+                    Field60.TAG, option));
         }
     }
 }

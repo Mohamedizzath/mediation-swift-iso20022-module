@@ -72,49 +72,24 @@ public class Field28 {
     }
 
     /**
-     * Method for set option and return the instance.
-     * @param option             Option of Field
-     * @return                   Created instance of Field28
+     * Default constructor for Field28.
      */
-    public Field28 withOption(char option) {
-        setOption(option);
-        return this;
-    }
+    public Field28() {}
 
     /**
-     * Method for set statement number and return the instance.
-     * @param statementNumber    Value of statement number
-     * @return                   Created instance of Field28
-     */
-    public Field28 withStatementNumber(String statementNumber) {
-        setStatementNumber(statementNumber);
-        return this;
-    }
-
-    /**
-     * Method for set sequence number and return the instance.
-     * @param sequenceNumber    Value of sequence number
-     * @return                   Created instance of Field28
-     */
-    public Field28 withSequenceNumber(String sequenceNumber) {
-        setSequenceNumber(sequenceNumber);
-        return this;
-    }
-
-    /**
-     * Method for parse and get Field28 object.
+     * Constructor for parse and get Field28 object.
      * @param option              Option of the Field28
      * @param field28CString       String which contains value of Field28
-     * @return                     Created instance of Field28
      * @throws MTMessageParsingException
      */
-    public static Field28 parse(char option, String field28CString) throws MTMessageParsingException {
+    public Field28(char option, String field28CString) throws MTMessageParsingException {
         if (option == 'C') {
-            Matcher field28CPMatcher = MT940ParserConstants.FIELD_28C_REGEX_PATTERN.matcher(field28CString);
+            Matcher field28CPMatcher = MT940ParserConstants.FIELD_28_REGEX_PATTERN.matcher(field28CString);
 
             if (field28CPMatcher.matches()) {
-                return new Field28().withOption(option).withStatementNumber(field28CPMatcher.group(1))
-                        .withSequenceNumber(field28CPMatcher.group(3));
+                this.statementNumber = field28CPMatcher.group(1);
+                this.sequenceNumber = field28CPMatcher.group(3);
+                this.option = option;
             } else {
                 throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_FORMAT,
                         Field28.TAG + option));
