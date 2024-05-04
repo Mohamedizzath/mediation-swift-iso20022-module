@@ -18,11 +18,8 @@
 
 package org.wso2.carbon.module.swiftiso20022.mt.models.fields;
 
-import org.wso2.carbon.module.swiftiso20022.constants.MT940ParserConstants;
 import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
 import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
-
-import java.util.regex.Matcher;
 
 /**
  * Model for Swift MT Tag 62.
@@ -37,23 +34,11 @@ import java.util.regex.Matcher;
  *     publications/usgf_20230720/2.0?topic=idx_fld_tag_mul_62a.htm">Tag 62</a>
  * </p>
  */
-public class Field62 {
+public class Field62 extends BalanceField {
     public static final String TAG = "62";
 
     // Example - F, M
     private char option;
-
-    // Example - D
-    private String dcMark;
-
-    // Example - 230930
-    private String date;
-
-    // Example - USD
-    private String currency;
-
-    // Example - 843686,20
-    private String amount;
 
     public char getOption() {
         return option;
@@ -63,111 +48,27 @@ public class Field62 {
         this.option = option;
     }
 
-    public String getDcMark() {
-        return dcMark;
-    }
-
-    public void setDcMark(String dcMark) {
-        this.dcMark = dcMark;
-    }
-
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
-
-    public String getCurrency() {
-        return currency;
-    }
-
-    public void setCurrency(String currency) {
-        this.currency = currency;
-    }
-
-    public String getAmount() {
-        return amount;
-    }
-
-    public void setAmount(String amount) {
-        this.amount = amount;
-    }
-
     /**
-     * Method for set the option and return the instance.
-     * @param option    Option of the Field62
-     * @return          Created instance of Field62
+     * Default constructor for Field62.
      */
-    public Field62 withOption(char option) {
-        setOption(option);
-        return this;
+    public Field62() {
+        super();
     }
 
     /**
-     * Method for set D/C mark and return the instance.
-     * @param dcMark      D/C mark of Field62
-     * @return            Created instance of Field62
-     */
-    public Field62 withDCMark(String dcMark) {
-        setDcMark(dcMark);
-        return this;
-    }
-
-    /**
-     * Method for set date value and return the instance.
-     * @param date        Date value of Field62
-     * @return            Created instance of Field62
-     */
-    public Field62 withDate(String date) {
-        setDate(date);
-        return this;
-    }
-
-    /**
-     * Method for set currency and return the instance.
-     * @param currency    Currency value of Field62
-     * @return            Created instance of Field62
-     */
-    public Field62 withCurrency(String currency) {
-        setCurrency(currency);
-        return this;
-    }
-
-    /**
-     * Method for set amount and return the instance.
-     * @param amount      Amount value of Field62
-     * @return            Created instance of Field62
-     */
-    public Field62 withAmount(String amount) {
-        setAmount(amount);
-        return this;
-    }
-
-    /**
-     * Method for parse and get Field62 object.
+     * Constructor for parse and get Field62 object.
      * @param option              Option of the Field62
-     * @param field62FString       String which contains value of Field62
-     * @return                     Created instance of Field62
+     * @param field62String       String which contains value of Field62
      * @throws MTMessageParsingException
      */
-    public static Field62 parse(char option, String field62FString) throws MTMessageParsingException {
-        if (option == MTParserConstants.FIELD_OPTION_F || option == MTParserConstants.FIELD_OPTION_M) {
-            Matcher field62FMatcher = MT940ParserConstants.MT940_BALANCE_REGEX.matcher(field62FString);
+    public Field62(char option, String field62String) throws MTMessageParsingException {
+        super(Field62.TAG + option, field62String);
 
-            if (field62FMatcher.matches()) {
-                return new Field62().withOption(option).withDCMark(field62FMatcher.group(1))
-                        .withDate(field62FMatcher.group(2))
-                        .withCurrency(field62FMatcher.group(3))
-                        .withAmount(field62FMatcher.group(4));
-            } else {
-                throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_FORMAT,
-                        Field62.TAG + option));
-            }
+        if (option == MTParserConstants.FIELD_OPTION_F || option == MTParserConstants.FIELD_OPTION_M) {
+            this.option = option;
         } else {
             throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_OPTION,
-                    Field60.TAG, option));
+                    option, Field62.TAG));
         }
     }
 }
