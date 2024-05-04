@@ -61,38 +61,23 @@ public class Field20 {
     }
 
     /**
-     * Method to set option of Field20 and return the instance.
-     * @param option     Option of Field20
-     * @return          Created instance of Field20
+     * Default constructor for Field20.
      */
-    public Field20 withOption(char option) {
-        setOption(option);
-        return this;
-    }
+    public Field20() {}
 
     /**
-     * Method to set value of Field20 and return the instance.
-     * @param value     Value of Field20
-     * @return          Created instance of Field20
-     */
-    public Field20 withValue(String value) {
-        setValue(value);
-        return this;
-    }
-
-    /**
-     * Method for parse and get Field20 object.
+     * Constructor for parse and get Field20 object.
      * @param option              Option of the Field20
      * @param field20String       String which contains value of Field20
-     * @return                    Created instance of Field20
      * @throws MTMessageParsingException
      */
-    public static Field20 parse(char option, String field20String) throws MTMessageParsingException {
+    public Field20(char option, String field20String) throws MTMessageParsingException {
         if (option == MTParserConstants.FIELD_OPTION_NO_LETTER) {
             Matcher field20Matcher = MT940ParserConstants.FIELD_20_REGEX_PATTERN.matcher(field20String);
 
             if (field20Matcher.matches()) {
-                return new Field20().withOption(option).withValue(field20Matcher.group(1));
+                this.value = field20Matcher.group(1);
+                this.option = option;
             } else {
                 throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_FORMAT,
                         Field20.TAG));

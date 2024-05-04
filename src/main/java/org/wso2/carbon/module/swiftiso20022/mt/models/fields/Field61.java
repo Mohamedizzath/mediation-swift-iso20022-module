@@ -149,112 +149,16 @@ public class Field61 {
     }
 
     /**
-     * Method for set value date and return the instance.
-     * @param valueDate     D/C mark of Field61
-     * @return              Created instance of Field61
+     * Default constructor for Field61.
      */
-    public Field61 withValueDate(String valueDate) {
-        setValueDate(valueDate);
-        return this;
-    }
+    public Field61() {  }
 
     /**
-     * Method for set entry date and return the instance.
-     * @param entryDate     Entry date of Field61
-     * @return              Created instance of Field61
-     */
-    public Field61 withEntryDate(String entryDate) {
-        setEntryDate(entryDate);
-        return this;
-    }
-
-    /**
-     * Method for set D/C mark and return the instance.
-     * @param dcMark        D/C mark of Field61
-     * @return              Created instance of Field61
-     */
-    public Field61 withDCMark(String dcMark) {
-        setDcMark(dcMark);
-        return this;
-    }
-
-    /**
-     * Method for set funds code and return the instance.
-     * @param fundsCode        Funds code of Field61
-     * @return              Created instance of Field61
-     */
-    public Field61 withFundsCode(String fundsCode) {
-        setFundsCode(fundsCode);
-        return this;
-    }
-
-    /**
-     * Method for set amount and return the instance.
-     * @param amount        Amount of Field61
-     * @return              Created instance of Field61
-     */
-    public Field61 withAmount(String amount) {
-        setAmount(amount);
-        return this;
-    }
-
-    /**
-     * Method for set transaction type and return the instance.
-     * @param transactionType        Transaction type of Field61
-     * @return              Created instance of Field61
-     */
-    public Field61 withTransactionType(String transactionType) {
-        setTransactionType(transactionType);
-        return this;
-    }
-
-    /**
-     * Method for set identification code and return the instance.
-     * @param identificationCode      Identification code of Field61
-     * @return                        Created instance of Field61
-     */
-    public Field61 withIdentificationCode(String identificationCode) {
-        setIdentificationCode(identificationCode);
-        return this;
-    }
-
-    /**
-     * Method for set reference to account owner and return the instance.
-     * @param refToAccountOwner       Reference to account owner code of Field61
-     * @return                        Created instance of Field61
-     */
-    public Field61 withRefToAccountOwner(String refToAccountOwner) {
-        setRefToAccountOwner(refToAccountOwner);
-        return this;
-    }
-
-    /**
-     * Method for set reference to account servicing institution and return the instance.
-     * @param refToAccountServicingInstitution       Reference to account servicing institution of Field61
-     * @return                                       Created instance of Field61
-     */
-    public Field61 withRefToAccountServicingInstitution(String refToAccountServicingInstitution) {
-        setRefToAccountServicingInstitution(refToAccountServicingInstitution);
-        return this;
-    }
-
-    /**
-     * Method for set supplementary details and return the instance.
-     * @param supplementaryDetails      Supplementary details of Field61
-     * @return                          Created instance of Field61
-     */
-    public Field61 withSupplementaryDetails(String supplementaryDetails) {
-        setSupplementaryDetails(supplementaryDetails);
-        return this;
-    }
-
-    /**
-     * Method for parse and get Field61 object.
+     * Constructor for parse and get Field61 object.
      * @param field61String        String which contains value of Field61
-     * @return                     Created instance of Field61
      * @throws MTMessageParsingException
      */
-    public static Field61 parse(String field61String) throws MTMessageParsingException {
+    public Field61(String field61String) throws MTMessageParsingException {
         Matcher field61Matcher = MT940ParserConstants.FIELD_61_REGEX_PATTERN.matcher(field61String);
 
         if (field61Matcher.matches()) {
@@ -303,16 +207,16 @@ public class Field61 {
                 refToAccOwner = references;
             }
 
-            return new Field61().withValueDate(field61Matcher.group(1))
-                    .withEntryDate(field61Matcher.group(2))
-                    .withDCMark(field61Matcher.group(3))
-                    .withFundsCode(field61Matcher.group(4))
-                    .withAmount(field61Matcher.group(5))
-                    .withTransactionType(field61Matcher.group(6))
-                    .withIdentificationCode(field61Matcher.group(7))
-                    .withRefToAccountOwner(refToAccOwner)
-                    .withRefToAccountServicingInstitution(refToAccServicingInstitute)
-                    .withSupplementaryDetails(field61Matcher.group(10));
+            this.valueDate = field61Matcher.group(1);
+            this.entryDate = field61Matcher.group(2);
+            this.dcMark = field61Matcher.group(3);
+            this.fundsCode = field61Matcher.group(4);
+            this.amount = field61Matcher.group(5);
+            this.transactionType = field61Matcher.group(6);
+            this.identificationCode = field61Matcher.group(7);
+            this.refToAccountOwner = refToAccOwner;
+            this.refToAccountServicingInstitution = refToAccServicingInstitute;
+            this.supplementaryDetails = field61Matcher.group(10);
         } else {
             throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_FORMAT,
                     Field61.TAG));
