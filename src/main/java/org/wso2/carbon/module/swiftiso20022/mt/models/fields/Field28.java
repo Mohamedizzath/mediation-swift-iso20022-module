@@ -79,17 +79,29 @@ public class Field28 {
     /**
      * Constructor for parse and get Field28 object.
      * @param option              Option of the Field28
-     * @param field28CString       String which contains value of Field28
+     * @param statementNumber     Statement number of Field28
+     * @param sequenceNumber      Sequence number of Field28
      * @throws MTMessageParsingException
      */
-    public Field28(char option, String field28CString) throws MTMessageParsingException {
-        if (option == 'C') {
+    public Field28(char option, String statementNumber, String sequenceNumber) throws MTMessageParsingException {
+        this.statementNumber = statementNumber;
+        this.sequenceNumber = sequenceNumber;
+        this.option = option;
+    }
+
+    /**
+     * Method for parse and get Field28 object.
+     * @param option              Option of the Field28
+     * @param field28CString       String which contains value of Field28
+     * @return                     Created instance of Field28
+     * @throws MTMessageParsingException
+     */
+    public static Field28 parse(char option, String field28CString) throws MTMessageParsingException {
+        if (option == MTParserConstants.FIELD_OPTION_C) {
             Matcher field28CPMatcher = MT940ParserConstants.FIELD_28_REGEX_PATTERN.matcher(field28CString);
 
             if (field28CPMatcher.matches()) {
-                this.statementNumber = field28CPMatcher.group(1);
-                this.sequenceNumber = field28CPMatcher.group(3);
-                this.option = option;
+                return new Field28(option, field28CPMatcher.group(1), field28CPMatcher.group(3));
             } else {
                 throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_FORMAT,
                         Field28.TAG + option));
