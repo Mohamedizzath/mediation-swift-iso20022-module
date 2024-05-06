@@ -18,7 +18,11 @@
 
 package org.wso2.carbon.module.swiftiso20022.mt.models.fields;
 
+import org.wso2.carbon.module.swiftiso20022.constants.MT940ParserConstants;
+import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
 import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
+
+import java.util.regex.Matcher;
 
 /**
  * Model for Swift MT Tag 64.
@@ -41,10 +45,31 @@ public class Field64 extends BalanceField {
 
     /**
      * Constructor for parse and get Field64 object.
-     * @param field64String       String which contains value of Field64
+     * @param dcMark              DCMark of the Field64
+     * @param date                Date of the Field64
+     * @param currency            Currency of the Field64
+     * @param amount              Amount of the Field64
      * @throws MTMessageParsingException
      */
-    public Field64(String field64String) throws MTMessageParsingException {
-        super(Field64.TAG, field64String);
+    public Field64(String dcMark, String date, String currency, String amount) throws MTMessageParsingException {
+        super(dcMark, date, currency, amount);
+    }
+
+    /**
+     * Method for parse and get Field64 object.
+     * @param field64String       String which contains value of Field64
+     * @return                     Created instance of Field64
+     * @throws MTMessageParsingException
+     */
+    public static Field64 parse(String field64String) throws MTMessageParsingException {
+        Matcher field64Matcher = MT940ParserConstants.MT940_BALANCE_REGEX.matcher(field64String);
+
+        if (field64Matcher.matches()) {
+            return new Field64(field64Matcher.group(1), field64Matcher.group(2), field64Matcher.group(3),
+                    field64Matcher.group(4));
+        } else {
+            throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_FORMAT,
+                    Field64.TAG));
+        }
     }
 }

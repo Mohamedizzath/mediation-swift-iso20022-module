@@ -162,23 +162,23 @@ public class MT940TextBlock {
 
             switch (tag) {
                 case Field20.TAG:
-                    textBlock.setTransactionReferenceNumber(new Field20(option, fieldMatcher.group(2)));
+                    textBlock.setTransactionReferenceNumber(Field20.parse(option, fieldMatcher.group(2)));
                     break;
 
                 case Field21.TAG:
-                    textBlock.setRelatedReference(new Field21(option, fieldMatcher.group(2)));
+                    textBlock.setRelatedReference(Field21.parse(option, fieldMatcher.group(2)));
                     break;
 
                 case Field25.TAG:
-                    textBlock.setAccountIdentification(new Field25(option, fieldMatcher.group(2)));
+                    textBlock.setAccountIdentification(Field25.parse(option, fieldMatcher.group(2)));
                     break;
 
                 case Field28.TAG:
-                    textBlock.setStatementSequenceNumber(new Field28(option, fieldMatcher.group(2)));
+                    textBlock.setStatementSequenceNumber(Field28.parse(option, fieldMatcher.group(2)));
                     break;
 
                 case Field60.TAG:
-                    textBlock.setOpeningBal(new Field60(option, fieldMatcher.group(2)));
+                    textBlock.setOpeningBal(Field60.parse(option, fieldMatcher.group(2)));
                     break;
 
                 case Field61.TAG:
@@ -195,32 +195,32 @@ public class MT940TextBlock {
                         char field86Option = field86Matcher.group(1).length() > 2 ? field86Matcher.group(1).charAt(2)
                                 : MTParserConstants.FIELD_OPTION_NO_LETTER;
 
-                        textBlock.addStatementLine(new Field61(fieldMatcher.group(2)),
-                                new Field86(field86Option, field86Matcher.group(2)));
+                        textBlock.addStatementLine(Field61.parse(fieldMatcher.group(2)),
+                                Field86.parse(field86Option, field86Matcher.group(2)));
 
                         // Increment the counter because Field86 is created
                         i = i + 1;
                     } else {
-                        textBlock.addStatementLine(new Field61(fieldMatcher.group(2)));
+                        textBlock.addStatementLine(Field61.parse(fieldMatcher.group(2)));
                     }
                     break;
 
                 case Field86.TAG:
                     // Since Field61 and Field86 pairs handle by Field61 switch this only executed for
                     // final Field86 in the MT940 message
-                    textBlock.setInfoToAccountOwner(new Field86(option, fieldMatcher.group(2)));
+                    textBlock.setInfoToAccountOwner(Field86.parse(option, fieldMatcher.group(2)));
                     break;
 
                 case Field62.TAG:
-                    textBlock.setClosingBal(new Field62(option, fieldMatcher.group(2)));
+                    textBlock.setClosingBal(Field62.parse(option, fieldMatcher.group(2)));
                     break;
 
                 case Field64.TAG:
-                    textBlock.setClosingAvlBalance(new Field64(fieldMatcher.group(2)));
+                    textBlock.setClosingAvlBalance(Field64.parse(fieldMatcher.group(2)));
                     break;
 
                 case Field65.TAG:
-                    textBlock.setForwardAvlBalance(new Field65(fieldMatcher.group(2)));
+                    textBlock.setForwardAvlBalance(Field65.parse(fieldMatcher.group(2)));
                     break;
 
                 default:

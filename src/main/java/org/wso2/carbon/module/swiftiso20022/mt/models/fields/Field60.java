@@ -18,8 +18,11 @@
 
 package org.wso2.carbon.module.swiftiso20022.mt.models.fields;
 
+import org.wso2.carbon.module.swiftiso20022.constants.MT940ParserConstants;
 import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
 import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
+
+import java.util.regex.Matcher;
 
 /**
  * Model for Swift MT Tag 60.
@@ -58,17 +61,39 @@ public class Field60 extends BalanceField {
     /**
      * Constructor for parse and get Field60 object.
      * @param option              Option of the Field60
-     * @param field60String       String which contains value of Field60
+     * @param dcMark              DCMark of the Field60
+     * @param date                Date of the Field60
+     * @param currency            Currency of the Field60
+     * @param amount              Amount of the Field60
      * @throws MTMessageParsingException
      */
-    public Field60(char option, String field60String) throws MTMessageParsingException {
-        super(Field60.TAG + option, field60String);
+    public Field60(char option, String dcMark, String date, String currency, String amount)
+            throws MTMessageParsingException {
+        super(dcMark, date, currency, amount);
+        this.option = option;
+    }
 
+    /**
+     * Method for parse and get Field60 object.
+     * @param option              Option of the Field60
+     * @param field60String       String which contains value of Field60
+     * @return                     Created instance of Field60
+     * @throws MTMessageParsingException
+     */
+    public static Field60 parse(char option, String field60String) throws MTMessageParsingException {
         if (option == MTParserConstants.FIELD_OPTION_F || option == MTParserConstants.FIELD_OPTION_M) {
-            this.option = option;
+            Matcher field60Matcher = MT940ParserConstants.MT940_BALANCE_REGEX.matcher(field60String);
+
+            if (field60Matcher.matches()) {
+                return new Field60(option, field60Matcher.group(1), field60Matcher.group(2), field60Matcher.group(3),
+                        field60Matcher.group(4));
+            } else {
+                throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_FORMAT,
+                        Field60.TAG + option));
+            }
         } else {
             throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_OPTION,
-                    option, Field60.TAG));
+                    Field60.TAG, option));
         }
     }
 }

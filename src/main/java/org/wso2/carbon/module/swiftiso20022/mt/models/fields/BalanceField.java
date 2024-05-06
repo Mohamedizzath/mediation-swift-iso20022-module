@@ -18,11 +18,7 @@
 
 package org.wso2.carbon.module.swiftiso20022.mt.models.fields;
 
-import org.wso2.carbon.module.swiftiso20022.constants.MT940ParserConstants;
-import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
 import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
-
-import java.util.regex.Matcher;
 
 /**
  * Model for Balance Fields(Field 60, Field 62, Field 64, and Field 65).
@@ -79,20 +75,16 @@ public class BalanceField {
 
     /**
      * Constructor method for Balance field.
-     * @param tagValue                      Actual tag - 60F, 60M, 62F, 62M, 64, 65
-     * @param fieldValue                    Value of the field
+     * @param dcMark              DCMark of the BalanceField
+     * @param date                Date of the BalanceField
+     * @param currency            Currency of the BalanceField
+     * @param amount              Amount of the Balance
      * @throws MTMessageParsingException
      */
-    public BalanceField(String tagValue, String fieldValue) throws MTMessageParsingException {
-        Matcher balanceMatcher = MT940ParserConstants.MT940_BALANCE_REGEX.matcher(fieldValue);
-
-        if (balanceMatcher.matches()) {
-            this.dcMark = balanceMatcher.group(1);
-            this.date = balanceMatcher.group(2);
-            this.currency = balanceMatcher.group(3);
-            this.amount = balanceMatcher.group(4);
-        } else {
-            throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_FORMAT, tagValue));
-        }
+    public BalanceField(String dcMark, String date, String currency, String amount) throws MTMessageParsingException {
+            this.dcMark = dcMark;
+            this.date = date;
+            this.currency = currency;
+            this.amount = amount;
     }
 }

@@ -155,10 +155,40 @@ public class Field61 {
 
     /**
      * Constructor for parse and get Field61 object.
+     * @param valueDate                              Value date of Field61
+     * @param entryDate                              Entry date of Field61
+     * @param dcMark                                 DC Mark of Field61
+     * @param fundsCode                              Funds Code of Field61
+     * @param amount                                 Amount of Field61
+     * @param transactionType                        Transaction type of Field61
+     * @param identificationCode                    Identification code of Field61
+     * @param refToAccountOwner                     Ref to account owner of Field61
+     * @param refToAccountServicingInstitution      Ref to account servicing institution of Field61
+     * @param supplementaryDetails                  Supplementary details of Field61
+     */
+    public Field61(String valueDate, String entryDate, String dcMark, String fundsCode, String amount,
+                   String transactionType, String identificationCode, String refToAccountOwner,
+                   String refToAccountServicingInstitution, String supplementaryDetails) {
+
+            this.valueDate = valueDate;
+            this.entryDate = entryDate;
+            this.dcMark = dcMark;
+            this.fundsCode = fundsCode;
+            this.amount = amount;
+            this.transactionType = transactionType;
+            this.identificationCode = identificationCode;
+            this.refToAccountOwner = refToAccountOwner;
+            this.refToAccountServicingInstitution = refToAccountServicingInstitution;
+            this.supplementaryDetails = supplementaryDetails;
+    }
+
+    /**
+     * Method for parse and get Field61 object.
      * @param field61String        String which contains value of Field61
+     * @return                     Created instance of Field61
      * @throws MTMessageParsingException
      */
-    public Field61(String field61String) throws MTMessageParsingException {
+    public static Field61 parse(String field61String) throws MTMessageParsingException {
         Matcher field61Matcher = MT940ParserConstants.FIELD_61_REGEX_PATTERN.matcher(field61String);
 
         if (field61Matcher.matches()) {
@@ -207,16 +237,9 @@ public class Field61 {
                 refToAccOwner = references;
             }
 
-            this.valueDate = field61Matcher.group(1);
-            this.entryDate = field61Matcher.group(2);
-            this.dcMark = field61Matcher.group(3);
-            this.fundsCode = field61Matcher.group(4);
-            this.amount = field61Matcher.group(5);
-            this.transactionType = field61Matcher.group(6);
-            this.identificationCode = field61Matcher.group(7);
-            this.refToAccountOwner = refToAccOwner;
-            this.refToAccountServicingInstitution = refToAccServicingInstitute;
-            this.supplementaryDetails = field61Matcher.group(10);
+            return new Field61(field61Matcher.group(1), field61Matcher.group(2), field61Matcher.group(3),
+                    field61Matcher.group(4), field61Matcher.group(5), field61Matcher.group(6), field61Matcher.group(7),
+                    refToAccOwner, refToAccServicingInstitute, field61Matcher.group(10));
         } else {
             throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_FORMAT,
                     Field61.TAG));
