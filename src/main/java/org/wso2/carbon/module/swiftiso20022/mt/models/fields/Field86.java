@@ -67,23 +67,33 @@ public class Field86 {
     /**
      * Constructor for parse and get Field86 object.
      * @param option              Option of the Field86
+     * @param value       String which contains value of Field86
+     */
+    public Field86(char option, String value) {
+        this.value = value;
+        this.option = option;
+    }
+
+    /**
+     * Method for parse and get Field86 object.
+     * @param option              Option of the Field86
      * @param field86String       String which contains value of Field86
+     * @return                    Created instance of Field86
      * @throws MTMessageParsingException
      */
-    public Field86(char option, String field86String) throws MTMessageParsingException {
+    public static Field86 parse(char option, String field86String) throws MTMessageParsingException {
         if (option == MTParserConstants.FIELD_OPTION_NO_LETTER) {
             Matcher field86Matcher = MT940ParserConstants.FIELD_86_REGEX_PATTERN.matcher(field86String);
 
             if (field86Matcher.matches()) {
-                this.value = field86Matcher.group(1);
-                this.option = option;
+                return new Field86(option, field86Matcher.group(1));
             } else {
                 throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_FORMAT,
                         Field86.TAG));
             }
         } else {
             throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_OPTION,
-                    Field60.TAG, option));
+                    Field86.TAG, option));
         }
     }
 }
