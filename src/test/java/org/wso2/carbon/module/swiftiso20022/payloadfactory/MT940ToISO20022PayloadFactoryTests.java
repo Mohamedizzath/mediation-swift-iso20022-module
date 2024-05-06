@@ -22,9 +22,8 @@ import com.google.gson.Gson;
 import freemarker.template.Template;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import org.wso2.carbon.module.swiftiso20022.mt.models.messages.MT940Message;
 import org.wso2.carbon.module.swiftiso20022.utils.FreemarkerTemplateTestUtils;
-import org.wso2.carbon.module.swiftiso20022.utils.ISO20022ToMT940PayloadFactoryTestConstants;
+import org.wso2.carbon.module.swiftiso20022.utils.MT940ToISO20022PayloadFactoryTestConstants;
 
 import java.io.InputStream;
 import java.io.StringWriter;
@@ -39,23 +38,24 @@ public class MT940ToISO20022PayloadFactoryTests {
 
     private static final Gson gson = new Gson();
 
-    @Test
-    public void testValidMT940MessageScenario(String mt940Message, String isoMessage) throws Exception {
+    @Test(dataProvider = "parseAppHdrToElement", dataProviderClass = MT940ToISO20022PayloadFactoryTestConstants.class)
+    public void testValidMT940MessageScenario(String mt940Message, String targetValue) throws Exception {
         // Get the ftl file as input stream
         InputStream freemarkerTempStream = getClass().getClassLoader()
                 .getResourceAsStream("freemarkerTemplates/MT940ToISO.ftl");
 
         // Create the map from the MT940 JSON
-        Map<String, Object> mt940Map = gson.fromJson(mt940Message, Map.class);
+        Map<String, Object> mt940Map = Map.of("payload", gson.fromJson(mt940Message, Map.class));
 
         Template template = FreemarkerTemplateTestUtils
                 .getFreemarkerTemplate(freemarkerTempStream, "ISOToMT940");
 
         Writer stringwriter = new StringWriter();
         template.process(mt940Map, stringwriter);
-        String freemarkerOutput = stringwriter.toString().replace("\r", "");
+        String freemarkerOutput = stringwriter.toString();
 
-        Assert.assertEquals(freemarkerOutput, isoMessage);
+        Assert.assertEquals(MT940ToISO20022PayloadFactoryTestConstants.
+                getXMLElement(freemarkerOutput, "/BizMsgEnvlp/app:AppHdr/app:To/app:FIId/app:FinInstnId/app:BICFI"), targetValue);
 
     }
 }

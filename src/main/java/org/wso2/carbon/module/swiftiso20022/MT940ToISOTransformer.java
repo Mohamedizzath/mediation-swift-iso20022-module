@@ -20,12 +20,14 @@ package org.wso2.carbon.module.swiftiso20022;
 
 import com.google.gson.Gson;
 import org.apache.axis2.AxisFault;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.synapse.MessageContext;
 import org.apache.synapse.util.PayloadHelper;
 import org.wso2.carbon.connector.core.AbstractConnector;
 import org.wso2.carbon.connector.core.ConnectException;
+import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
 import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
 import org.wso2.carbon.module.swiftiso20022.mt.models.messages.MT940Message;
 import org.wso2.carbon.module.swiftiso20022.mt.parsers.MT940Parser;
@@ -44,12 +46,20 @@ public class MT940ToISOTransformer extends AbstractConnector {
         try {
             String message = PayloadHelper.getTextPayload(messageContext).trim();
 
+            if (StringUtils.isBlank(message)) {
+                throw new MTMessageParsingException(String.format(ConnectorConstants.ERROR_PARSING_MT_MESSAGE, "940"));
+            }
+
             MT940Message mt940Message = MT940Parser.parse(message);
             String json = gson.toJson(mt940Message);
 
             ConnectorUtils.appendJsonResponseToMessageContext(messageContext, json);
         } catch (AxisFault | MTMessageParsingException e) {
-            throw new ConnectException(e);
+            log.error(e.getMessage(), e);
+            ConnectorUtils.appendErrorToMessageContext(messageContext,
+                    String.format(ConnectorConstants.ERROR_PARSING_MT_MESSAGE, "940"), e.getMessage());
+
+            throw new ConnectException(e, String.format(ConnectorConstants.ERROR_PARSING_MT_MESSAGE, "940"));
         }
     }
 }

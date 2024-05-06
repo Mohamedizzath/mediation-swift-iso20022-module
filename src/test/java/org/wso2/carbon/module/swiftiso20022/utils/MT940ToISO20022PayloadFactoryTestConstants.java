@@ -18,6 +18,34 @@
 
 package org.wso2.carbon.module.swiftiso20022.utils;
 
+import com.google.gson.Gson;
+import org.apache.axiom.om.OMAbstractFactory;
+import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMNode;
+import org.apache.axiom.om.OMXMLBuilderFactory;
+import org.apache.axiom.om.OMXMLParserWrapper;
+import org.apache.axiom.om.impl.builder.StAXOMBuilder;
+import org.apache.axiom.om.util.AXIOMUtil;
+import org.apache.axiom.om.xpath.AXIOMXPath;
+import org.apache.axiom.soap.SOAPEnvelope;
+import org.apache.axiom.soap.SOAPFactory;
+import org.testng.annotations.DataProvider;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
+import org.wso2.carbon.module.swiftiso20022.mt.parsers.MT940Parser;
+
+import javax.xml.namespace.NamespaceContext;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpression;
+import javax.xml.xpath.XPathFactory;
+import java.io.ByteArrayInputStream;
+import java.io.StringReader;
+import java.nio.charset.StandardCharsets;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -26,4 +54,32 @@ import java.util.Map;
  * converting MT940 message to ISO20022.
  */
 public class MT940ToISO20022PayloadFactoryTestConstants {
+    private static final Gson gson = new Gson();
+    public static String getMT940JSON(Map<String, String> params) throws Exception {
+        String mtMessageText = MTParserTestConstants.getMTMessageText(params);
+
+        return gson.toJson(MT940Parser.parse(mtMessageText));
+    }
+
+    public static String getXMLElement(String xmlMessage, String xPath) throws Exception {
+        AXIOMXPath xpathExp = new AXIOMXPath(xPath);
+
+        // Setting up XML namespaces for AXIOM SOAP, AppHdr, and Document
+        xpathExp.addNamespace(ConnectorConstants.APPHDR_PREFIX, ConnectorConstants.XML_INPUT_APPHDR_NAMESPACE);
+        xpathExp.addNamespace(ConnectorConstants.DOCUMENT_PREFIX, ConnectorConstants.XML_INPUT_DOCUMENT_NAMESPACE);
+
+          // OMElement rootElement = AXIOMUtil.stringToOM(xmlMessage);
+          OMNode rootElement = OMXMLBuilderFactory.createOMBuilder(new StringReader(xmlMessage)).getDocumentElement();
+          OMElement targetNode = (OMElement) xpathExp.selectSingleNode(rootElement);
+
+          return targetNode != null ? targetNode.getText() : null;
+    }
+    // Add the AppHdrFrom element
+    @DataProvider(name = "parseAppHdrToElement")
+    Object[][] parseAppHdrToElement() throws Exception {
+        return new Object[][] {
+                {getMT940JSON(Map.of(ConnectorConstants.BASIC_HEADER_BLOCK_KEY, "{1:F01GSCRUS30MXXX0000000000}")),
+                "GSCRUS30XXX"}
+        };
+    }
 }
