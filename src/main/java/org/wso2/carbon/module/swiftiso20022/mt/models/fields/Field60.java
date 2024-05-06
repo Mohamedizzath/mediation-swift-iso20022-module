@@ -93,7 +93,7 @@ public class Field60 extends BalanceField {
             }
         } else {
             throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_OPTION,
-                    Field60.TAG, option));
+                    option, Field60.TAG));
         }
     }
 }

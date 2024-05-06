@@ -108,7 +108,7 @@ public class Field28 {
             }
         } else {
             throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_OPTION,
-                    Field28.TAG, option));
+                    option, Field28.TAG));
         }
     }
 }
