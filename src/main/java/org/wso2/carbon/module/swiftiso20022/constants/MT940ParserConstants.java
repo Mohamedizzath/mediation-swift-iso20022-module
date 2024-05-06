@@ -48,5 +48,5 @@ public class MT940ParserConstants {
 
     public static final Pattern FIELD_86_REGEX_PATTERN = Pattern.compile(
             "^([a-zA-Z0-9/\\-?:().,'+ ]{1,65}" +
-                    "(\\R[a-zA-Z0-9/\\-?:().,'+ ]{1,65}){0,5})$");
+                    "(\\R[a-zA-Z0-9/\\-?:().,'+ ]{1,64}){0,5})$");
 }

@@ -71,6 +71,13 @@ public class MT940ParserTests {
         MT940TextBlock parsedTextBlock = MT940TextBlock.parse(textBlockStr);
     }
 
+    @Test(expectedExceptions = MTMessageParsingException.class,
+            expectedExceptionsMessageRegExp = "Invalid [A-Z] option for field 20",
+            dataProvider = "invalidTransactionReferenceNumberOpt", dataProviderClass = MT940ParserTestConstants.class)
+    public void testInvalidTransRefNumberOptScenario(String textBlockStr) throws Exception {
+        MT940TextBlock parsedTextBlock = MT940TextBlock.parse(textBlockStr);
+    }
+
     @Test(dataProvider = "validRelatedReference", dataProviderClass = MT940ParserTestConstants.class)
     public void testValidRelatedReference(String textBlockStr, MT940TextBlock textBlock) throws Exception {
         MT940TextBlock parsedTextBlock = MT940TextBlock.parse(textBlockStr);
@@ -83,6 +90,13 @@ public class MT940ParserTests {
             expectedExceptionsMessageRegExp = "21 field not in the correct format",
             dataProvider = "invalidRelatedReference", dataProviderClass = MT940ParserTestConstants.class)
     public void testInvalidRelatedRefScenario(String textBlockStr) throws Exception {
+        MT940TextBlock parsedTextBlock = MT940TextBlock.parse(textBlockStr);
+    }
+
+    @Test(expectedExceptions = MTMessageParsingException.class,
+            expectedExceptionsMessageRegExp = "Invalid [A-Z] option for field 21",
+            dataProvider = "invalidRelatedReferenceNumberOpt", dataProviderClass = MT940ParserTestConstants.class)
+    public void testInvalidRelatedRefOptScenario(String textBlockStr) throws Exception {
         MT940TextBlock parsedTextBlock = MT940TextBlock.parse(textBlockStr);
     }
 
@@ -101,6 +115,12 @@ public class MT940ParserTests {
         MT940TextBlock parsedTextBlock = MT940TextBlock.parse(textBlockStr);
     }
 
+    @Test(expectedExceptions = MTMessageParsingException.class,
+            expectedExceptionsMessageRegExp = "Invalid [A-Z] option for field 25",
+            dataProvider = "invalidAccIdentificationOpt", dataProviderClass = MT940ParserTestConstants.class)
+    public void testInvalidAccIdentificationOptScenario(String textBlockStr) throws Exception {
+        MT940TextBlock parsedTextBlock = MT940TextBlock.parse(textBlockStr);
+    }
     @Test(dataProvider = "validAccountIdentificationOptP", dataProviderClass = MT940ParserTestConstants.class)
     public void testValidAccIdentificationOptPScenario(String textBlockStr, MT940TextBlock textBlock) throws Exception {
         MT940TextBlock parsedTextBlock = MT940TextBlock.parse(textBlockStr);
@@ -131,12 +151,26 @@ public class MT940ParserTests {
         MT940TextBlock parsedTextBlock = MT940TextBlock.parse(textBlockStr);
     }
 
+    @Test(expectedExceptions = MTMessageParsingException.class,
+            expectedExceptionsMessageRegExp = "Invalid [A-Z] option for field 28",
+            dataProvider = "invalidStmtSeqNumberOpt", dataProviderClass = MT940ParserTestConstants.class)
+    public void testInvalidStmtSeqNumberOptScenario(String textBlockStr) throws Exception {
+        MT940TextBlock parsedTextBlock = MT940TextBlock.parse(textBlockStr);
+    }
+
     @Test(dataProvider = "validOpeningBalanceOptF", dataProviderClass = MT940ParserTestConstants.class)
     public void testValidOpeningBalanceOptFScenario(String textBlockStr, MT940TextBlock textBlock) throws Exception {
         MT940TextBlock parsedTextBlock = MT940TextBlock.parse(textBlockStr);
 
         Assert.assertTrue(new ReflectionEquals(textBlock.getOpeningBal())
                 .matches(parsedTextBlock.getOpeningBal()));
+    }
+
+    @Test(expectedExceptions = MTMessageParsingException.class,
+            expectedExceptionsMessageRegExp = "Invalid [A-Z] option for field 60",
+            dataProvider = "invalidOpeningBalanceOpt", dataProviderClass = MT940ParserTestConstants.class)
+    public void testInvalidOpeningBalanceOptScenario(String textBlockStr) throws Exception {
+        MT940TextBlock parsedTextBlock = MT940TextBlock.parse(textBlockStr);
     }
 
     @Test(expectedExceptions = MTMessageParsingException.class,
@@ -213,6 +247,13 @@ public class MT940ParserTests {
     }
 
     @Test(expectedExceptions = MTMessageParsingException.class,
+            expectedExceptionsMessageRegExp = "Invalid [A-Z] option for field 62",
+            dataProvider = "invalidClosingBalanceOpt", dataProviderClass = MT940ParserTestConstants.class)
+    public void testInvalidClosingBalanceOptScenario(String textBlockStr) throws Exception {
+        MT940TextBlock parsedTextBlock = MT940TextBlock.parse(textBlockStr);
+    }
+
+    @Test(expectedExceptions = MTMessageParsingException.class,
             expectedExceptionsMessageRegExp = "62F field not in the correct format",
             dataProvider = "invalidClosingBalanceOptF", dataProviderClass = MT940ParserTestConstants.class)
     public void testInvalidClosingBalanceOptFScenario(String textBlockStr) throws Exception {
@@ -264,10 +305,25 @@ public class MT940ParserTests {
         MT940TextBlock parsedTextBlock = MT940TextBlock.parse(textBlockStr);
     }
 
+    @Test(dataProvider = "validInfoToAccOwner", dataProviderClass = MT940ParserTestConstants.class)
+    public void testValidInfoToAccOwnerScenario(String textBlockStr, MT940TextBlock textBlock) throws Exception {
+        MT940TextBlock parsedTextBlock = MT940TextBlock.parse(textBlockStr);
+
+        Assert.assertTrue(new ReflectionEquals(textBlock.getInfoToAccountOwner())
+                .matches(parsedTextBlock.getInfoToAccountOwner()));
+    }
+
     @Test(expectedExceptions = MTMessageParsingException.class,
             expectedExceptionsMessageRegExp = "86 field not in the correct format",
             dataProvider = "invalidInfoToAccOwner", dataProviderClass = MT940ParserTestConstants.class)
     public void testInvalidInfoToAccOwnerScenario(String textBlockStr) throws Exception {
+        MT940TextBlock parsedTextBlock = MT940TextBlock.parse(textBlockStr);
+    }
+
+    @Test(expectedExceptions = MTMessageParsingException.class,
+            expectedExceptionsMessageRegExp = "Invalid [A-Z] option for field 86",
+            dataProvider = "invalidInfoToAccOwnerOpt", dataProviderClass = MT940ParserTestConstants.class)
+    public void testInvalidInfoToAccOwnerOptScenario(String textBlockStr) throws Exception {
         MT940TextBlock parsedTextBlock = MT940TextBlock.parse(textBlockStr);
     }
 }
