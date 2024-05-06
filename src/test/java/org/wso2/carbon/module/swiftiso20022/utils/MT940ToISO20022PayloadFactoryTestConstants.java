@@ -19,34 +19,15 @@
 package org.wso2.carbon.module.swiftiso20022.utils;
 
 import com.google.gson.Gson;
-import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLBuilderFactory;
-import org.apache.axiom.om.OMXMLParserWrapper;
-import org.apache.axiom.om.impl.builder.StAXOMBuilder;
-import org.apache.axiom.om.util.AXIOMUtil;
 import org.apache.axiom.om.xpath.AXIOMXPath;
-import org.apache.axiom.soap.SOAPEnvelope;
-import org.apache.axiom.soap.SOAPFactory;
 import org.testng.annotations.DataProvider;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
 import org.wso2.carbon.module.swiftiso20022.mt.parsers.MT940Parser;
 
-import javax.xml.namespace.NamespaceContext;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpression;
-import javax.xml.xpath.XPathFactory;
-import java.io.ByteArrayInputStream;
 import java.io.StringReader;
-import java.nio.charset.StandardCharsets;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 /**

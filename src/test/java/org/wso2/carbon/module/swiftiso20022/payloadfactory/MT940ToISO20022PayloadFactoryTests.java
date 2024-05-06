@@ -54,8 +54,8 @@ public class MT940ToISO20022PayloadFactoryTests {
         template.process(mt940Map, stringwriter);
         String freemarkerOutput = stringwriter.toString();
 
-        Assert.assertEquals(MT940ToISO20022PayloadFactoryTestConstants.
-                getXMLElement(freemarkerOutput, "/BizMsgEnvlp/app:AppHdr/app:To/app:FIId/app:FinInstnId/app:BICFI"), targetValue);
+        Assert.assertEquals(MT940ToISO20022PayloadFactoryTestConstants.getXMLElement(freemarkerOutput,
+                    "/BizMsgEnvlp/app:AppHdr/app:To/app:FIId/app:FinInstnId/app:BICFI"), targetValue);
 
     }
 }
