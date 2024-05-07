@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 
 /**
- * 55A -> Model for third reimbursement institution with option A in Text Block (Block 04).
+ * Model for sending institution with option A in Text Block (Block 04).
  *
  * <dl>
  *     <dt>format:</dt>
@@ -37,50 +37,20 @@ import java.util.regex.Matcher;
  *     <dd>(Identifier Code)</dd>
  *
  *     <dt>example:</dt>
- *     <dd>:55A:IRVTUS3N</dd>
- * </dl>
- * <p>
- * 55B -> Model for third reimbursement institution with option B in Text Block (Block 04).
- *
- * <dl>
- *     <dt>format:</dt>
- *     <dd>[/(Party Identifier)]</dd>
- *     <dd>[Location]</dd>
- *
- *     <dt>example:</dt>
- *     <dd>:55B:/DE12345678901234567890</dd>
- * </dl>
- * <p>
- * 55D -> Model for receiver's correspondent with option D in Text Block (Block 04).
- *
- * <dl>
- *     <dt>format:</dt>
- *     <dd>(Party Identifier)</dd>
- *     <dd>4*(Details)</dd>
- *
- *     <dt>example:</dt>
- *     <dd>:55D:FINANZBANK AG</dd>
- *     <dd>EISENSTADT</dd>
+ *     <dd>:51A:ABNANL2A</dd>
  * </dl>
  *
- * @see <a href="https://www2.swift.com/knowledgecentre/publications/usgf_20230720/2.0?topic=idx_fld_tag_55A.htm">
- * Field 55A</a>
- * @see <a href="https://www2.swift.com/knowledgecentre/publications/usgf_20230720/2.0?topic=idx_fld_tag_55B.htm">
- * Field 55B</a>
- * @see <a href="https://www2.swift.com/knowledgecentre/publications/usgf_20230720/2.0?topic=idx_fld_tag_55D.htm">
- * Field 55D</a>
+ * @see <a href="https://www2.swift.com/knowledgecentre/publications/usgf_20230720/2.0?topic=idx_fld_tag_51A.htm">
+ * Field 51A</a>
  */
-public class Field55 extends PartyIdentifier {
+public class Field51 extends PartyIdentifier {
 
-    public static final String OPTION_A_TAG = "55A";
-    public static final String OPTION_B_TAG = "55B";
-    public static final String OPTION_D_TAG = "55D";
+    public static final String OPTION_A_TAG = "51A";
 
     /**
      * List of options with current implementation.
      */
-    private static final List<Character> OPTIONS = Arrays.asList(
-            ConnectorConstants.OPTION_A, ConnectorConstants.OPTION_B, ConnectorConstants.OPTION_D);
+    private static final List<Character> OPTIONS = Arrays.asList(ConnectorConstants.OPTION_A);
 
     /**
      * Constructor to initialize all attributes.
@@ -91,29 +61,30 @@ public class Field55 extends PartyIdentifier {
      * @param location String with character set x
      * @param details String array in character set x
      */
-    public Field55(char option, String partyIdentifier, String identifierCode, String location, List<String> details) {
+    public Field51(char option, String partyIdentifier, String identifierCode, String location, List<String> details) {
         super(option, partyIdentifier, identifierCode, location, details);
     }
 
     /**
-     * Method to parse and get Field55 object.
-     * Current implementations -> Option A, B and D
+     * Method to parse and get Field51 object.
+     * Current implementations -> Option A
      *
-     * @param field55String String containing value of 55 field in Text Block
-     * @param option single character option of the field55String
+     * @param field51String String containing value of 51 field in Text Block
+     * @param option single character option of the field51String
      * @return An instance of this model.
      * @throws MTMessageParsingException if the value is invalid
      */
-    public static Field55 parse(String field55String, char option) throws MTMessageParsingException {
+    public static Field51 parse(String field51String, char option) throws MTMessageParsingException {
 
         if (!OPTIONS.contains(option)) {
             throw new MTMessageParsingException(String.format(
-                    MTParserConstants.INVALID_OPTION_FOR_FIELD, option, ConnectorConstants.FIELD_55));
+                    MTParserConstants.INVALID_OPTION_FOR_FIELD, option, ConnectorConstants.FIELD_51));
         }
 
-        Matcher field55Matcher = MTParserConstants.PARTY_IDENTIFIER_REGEX_PATTERN.matcher(field55String);
+        // Get matcher to the regex matching -> (Party Identifier)(Identifier Code)(Location)(Details)
+        Matcher field51Matcher = MTParserConstants.PARTY_IDENTIFIER_REGEX_PATTERN.matcher(field51String);
 
-        if (field55Matcher.matches()) {
+        if (field51Matcher.matches()) {
 
             // group 1 -> Party Identifier with line break
             // group 2 -> Party Identifier
@@ -121,11 +92,12 @@ public class Field55 extends PartyIdentifier {
             // group 11 -> Location
             // group 12 -> Details in format (Number)/(Name and Address)
             // group 14 -> Details in format (Name and Address)
-            return new Field55(option, field55Matcher.group(2), field55Matcher.group(8), field55Matcher.group(11),
-                    MTParserUtils.getDetailsAsList(field55Matcher));
+            return new Field51(option, field51Matcher.group(2), field51Matcher.group(8), field51Matcher.group(11),
+                    MTParserUtils.getDetailsAsList(field51Matcher));
+
         } else {
             throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
-                    MT103Constants.THIRD_REIMBURSEMENT_INSTITUTION, ConnectorConstants.TEXT_BLOCK));
+                    MT103Constants.SENDING_INSTITUTION, ConnectorConstants.TEXT_BLOCK));
         }
     }
 }

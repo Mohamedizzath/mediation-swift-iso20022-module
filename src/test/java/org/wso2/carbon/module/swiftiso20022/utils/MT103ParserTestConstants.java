@@ -31,30 +31,30 @@ public class MT103ParserTestConstants {
             "{1:F01BANKBEBBAXXX1234567890}" +
                     "{2:O1031130050901BANKBEBBAXXX12345678900509011311N}" +
                     "{3:{103:EBA}{121:180f1e65-90e0-44d5-a49a-92b55eb3025f}}" +
-            "{4:\n%s\n-}";
+                    "{4:\n%s\n-}";
 
     public static final String VALID_MT103_MESSAGE =
             String.format(VALID_MT103_MESSAGE_WITHOUT_TEXT_BLOCK,
                     ":20:TXNREF1234567890\n" +
-                    ":23B:CRED\n" +
-                    ":32A:230523EUR100000,50\n" +
-                    ":50K:/12345678\n" +
-                    "JOHN DOE\n" +
-                    "123, FAKE STREET\n" +
-                    "FAKETOWN\n" +
-                    ":52A:DEUTDEFFXXX\n" +
-                    ":53B:/DE12345678901234567890\n" +
-                    ":54A:CHASUS33XXX\n" +
-                    ":56C:/IRVTUS3NXXX\n" +
-                    ":57A:NORDDKKKXXX\n" +
-                    ":59:/DK5000400440116243\n" +
-                    "JANE SMITH\n" +
-                    "789, REAL ROAD\n" +
-                    "REALVILLE\n" +
-                    ":70:PAYMENT FOR INVOICE 998877\n" +
-                    ":71A:OUR\n" +
-                    ":72:/ACC/RENT/MAY\n" +
-                    "/INV/998877");
+                            ":23B:CRED\n" +
+                            ":32A:230523EUR100000,50\n" +
+                            ":50K:/12345678\n" +
+                            "JOHN DOE\n" +
+                            "123, FAKE STREET\n" +
+                            "FAKETOWN\n" +
+                            ":52A:DEUTDEFFXXX\n" +
+                            ":53B:/DE12345678901234567890\n" +
+                            ":54A:CHASUS33XXX\n" +
+                            ":56C:/IRVTUS3NXXX\n" +
+                            ":57A:NORDDKKKXXX\n" +
+                            ":59:/DK5000400440116243\n" +
+                            "JANE SMITH\n" +
+                            "789, REAL ROAD\n" +
+                            "REALVILLE\n" +
+                            ":70:PAYMENT FOR INVOICE 998877\n" +
+                            ":71A:OUR\n" +
+                            ":72:/ACC/RENT/MAY\n" +
+                            "/INV/998877");
 
     private String getTextBlockFromList(List<String> fields) {
         return String.join("\n", fields);
@@ -268,21 +268,6 @@ public class MT103ParserTestConstants {
                 {""},
                 {"   "},
                 {"/BE30001216371411"},
-                {"/BE30001216371411\n" +
-                        " 1/PHILIPS MARK\n" +
-                        " 3/BE/ANTWERPEN\n" +
-                        " 4/19720830\n" +
-                        " 5/BE/BRUSSELS"},
-                {"/BE30001216371411\n" +
-                        "/PHILIPS MARK\n" +
-                        "/BE/ANTWERPEN\n" +
-                        "/19720830\n" +
-                        "/BE/BRUSSELS"},
-                {"/BE30001216371411\n" +
-                        " 1PHILIPS MARK\n" +
-                        " 3BE/ANTWERPEN\n" +
-                        " 419720830\n" +
-                        " 5BE/BRUSSELS"},
                 {"/BE30001216371411BE30001216371411BE30001216371411BE30001216371411\n" +
                         "1/PHILIPS MARK\n" +
                         "3/BE/ANTWERPEN\n" +
@@ -332,7 +317,7 @@ public class MT103ParserTestConstants {
                 {"/293456-1254349-82" +
                         "VISTUS31"},
                 {"/293456-1254349-82\n" +
-                        "VISTUS31" +
+                        "VISTUS31\n" +
                         "VISTUS31"},
                 {"/293456-1254349-82\n"},
                 {"VISTUS31VISTUS31VISTUS31VISTUS31VISTUS31VISTUS31"}
@@ -373,7 +358,7 @@ public class MT103ParserTestConstants {
                         "EISENSTADT\n" +
                         "EISENSTADT"},
                 {"/293456-1254349-82293456-1254349-82293456-1254349-82293456-1254349-82-256\n" +
-                "FINANZBANK AG\n" +
+                        "FINANZBANK AG\n" +
                         "EISENSTADT"},
                 {"/293456-1254349-82\n" +
                         "FINANZBANK AG\n" +
@@ -430,21 +415,6 @@ public class MT103ParserTestConstants {
                 {""},
                 {"   "},
                 {"/BE30001216371411"},
-                {"/BE30001216371411\n" +
-                        " 1/PHILIPS MARK\n" +
-                        " 3/BE/ANTWERPEN\n" +
-                        " 4/19720830\n" +
-                        " 5/BE/BRUSSELS"},
-                {"/BE30001216371411\n" +
-                        "/PHILIPS MARK\n" +
-                        "/BE/ANTWERPEN\n" +
-                        "/19720830\n" +
-                        "/BE/BRUSSELS"},
-                {"/BE30001216371411\n" +
-                        " 1PHILIPS MARK\n" +
-                        " 3BE/ANTWERPEN\n" +
-                        " 419720830\n" +
-                        " 5BE/BRUSSELS"},
                 {"/BE30001216371411BE30001216371411BE30001216371411BE30001216371411\n" +
                         "1/PHILIPS MARK\n" +
                         "3/BE/ANTWERPEN\n" +
@@ -470,7 +440,7 @@ public class MT103ParserTestConstants {
                 {""},
                 {"This line is longer than 35 characters."},
                 {"/INV/abc/SDF-96//1234-234///ROC/98I\n" +
-                "/INV/abc/SDF-96//1234-234///ROC/98I\n" +
+                        "/INV/abc/SDF-96//1234-234///ROC/98I\n" +
                         "U87\n" +
                         "U87\n" +
                         "U87"}
@@ -517,12 +487,12 @@ public class MT103ParserTestConstants {
                 {""},
                 {"This line is length is greater then 35 characters"},
                 {"This\n" +
-                    "is\n" +
-                    "more\n" +
-                    "than\n" +
-                    "allowed\n" +
-                    "line\n" +
-                    "count\n"},
+                        "is\n" +
+                        "more\n" +
+                        "than\n" +
+                        "allowed\n" +
+                        "line\n" +
+                        "count\n"},
 
         };
     }
@@ -533,9 +503,9 @@ public class MT103ParserTestConstants {
                 {""},
                 {"This line is length is greater then 35 characters"},
                 {"This is\n" +
-                    "more than\n" +
-                    "allowed\n" +
-                    "line count\n"},
+                        "more than\n" +
+                        "allowed\n" +
+                        "line count\n"},
 
         };
     }

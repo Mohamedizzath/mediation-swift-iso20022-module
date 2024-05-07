@@ -23,6 +23,8 @@ import org.wso2.carbon.module.swiftiso20022.constants.MT103Constants;
 import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
 import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Matcher;
 
 /**
@@ -35,15 +37,38 @@ import java.util.regex.Matcher;
  * @see <a href="https://www2.swift.com/knowledgecentre/publications/usgf_20230720/2.0?topic=idx_fld_tag_33B.htm">
  * Field 33B</a>
  */
-public class Field33B {
+public class Field33 {
 
-    public static final String TAG = "33B";
+    public static final String OPTION_B_TAG = "33B";
+
+    /**
+     * List of options with current implementation.
+     */
+    private static final List<Character> OPTIONS = Arrays.asList(ConnectorConstants.OPTION_B);
+    public char option;
 
     // example: USD
     private String currency;
 
     // example: 1000,00
     private String amount;
+
+    /**
+     * Constructor to initialize all attributes.
+     *
+     * @param option Single character
+     * @param currency  String with 3 uppercase characters
+     * @param amount String in the SWIFT amount format
+     */
+    public Field33(char option, String currency, String amount) {
+        this.option = option;
+        this.currency = currency;
+        this.amount = amount;
+    }
+
+    public char getOption() {
+        return option;
+    }
 
     public String getCurrency() {
         return currency;
@@ -62,46 +87,29 @@ public class Field33B {
     }
 
     /**
-     * Method to set currency of the field and return the instance.
+     * Method to parse and get Field33 object.
+     * Current implementations -> Option B
      *
-     * @param currency Currency to be set.
-     * @return object itself
-     */
-    public Field33B withCurrency(String currency) {
-        setCurrency(currency);
-        return this;
-    }
-
-    /**
-     * Method to set amount of the field and return the instance.
-     *
-     * @param amount Amount to be set.
-     * @return object itself
-     */
-    public Field33B withAmount(String amount) {
-        setAmount(amount);
-        return this;
-    }
-
-    /**
-     * Method to parse and get Field33B object.
-     *
-     * @param field33BString String containing value of 33B field in Text Block
+     * @param field33String String containing value of 33 field in Text Block
+     * @param option single character option of the field33String
      * @return An instance of this model.
      * @throws MTMessageParsingException if the value is invalid
      */
-    public static Field33B parse(String field33BString) throws MTMessageParsingException {
+    public static Field33 parse(String field33String, char option) throws MTMessageParsingException {
+
+        if (!OPTIONS.contains(option)) {
+            throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_OPTION_FOR_FIELD, option,
+                    ConnectorConstants.FIELD_33));
+        }
 
         // Get matcher to the regex matching -> (Currency)(Amount)
-        Matcher field33BMatcher = MTParserConstants.FIELD_33B_REGEX_PATTERN.matcher(field33BString);
+        Matcher field33Matcher = MTParserConstants.FIELD_33_REGEX_PATTERN.matcher(field33String);
 
-        if (field33BMatcher.matches()) {
+        if (field33Matcher.matches()) {
 
             // group 1 -> Currency
             // group 2 -> Amount
-            return new Field33B()
-                    .withCurrency(field33BMatcher.group(1))
-                    .withAmount(field33BMatcher.group(2));
+            return new Field33(option, field33Matcher.group(1), field33Matcher.group(2));
         } else {
             throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
                     MT103Constants.INSTRUCTED_AMOUNT, ConnectorConstants.TEXT_BLOCK));

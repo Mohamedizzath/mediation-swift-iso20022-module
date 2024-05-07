@@ -23,6 +23,7 @@ import org.wso2.carbon.module.swiftiso20022.constants.MT103Constants;
 import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
 import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 
@@ -38,7 +39,32 @@ public class Field72 {
 
     public static final String TAG = "72";
 
+    /**
+     * List of options with current implementation.
+     */
+    private static final List<Character> OPTIONS = Arrays.asList(ConnectorConstants.NO_LETTER_OPTION);
+    private char option;
+
     private List<String> values;
+
+    /**
+     * Constructor to initialize all attributes.
+     *
+     * @param option single character which identify the option.
+     * @param values String array with each value is a separate line
+     */
+    public Field72(char option, List<String> values) {
+        this.option = option;
+        this.values = values;
+    }
+
+    public char getOption() {
+        return option;
+    }
+
+    public void setOption(char option) {
+        this.option = option;
+    }
 
     public List<String> getValues() {
         return values;
@@ -49,33 +75,28 @@ public class Field72 {
     }
 
     /**
-     * Method to set values of the field and return the instance.
-     *
-     * @param values Values to be set.
-     * @return object itself
-     */
-    public Field72 withValues(List<String> values) {
-        setValues(values);
-        return this;
-    }
-
-    /**
      * Method to parse and get Field72 object.
+     * Current implementations -> No_letter
      *
      * @param field72String String containing value of 72 field in Text Block
+     * @param option single character option of the field72String
      * @return An instance of this model.
      * @throws MTMessageParsingException if the value is invalid
      */
-    public static Field72 parse(String field72String) throws MTMessageParsingException {
+    public static Field72 parse(String field72String, char option) throws MTMessageParsingException {
+
+        if (!OPTIONS.contains(option)) {
+            throw new MTMessageParsingException(String.format(
+                    MTParserConstants.INVALID_OPTION_FOR_FIELD, option, ConnectorConstants.FIELD_72));
+        }
 
         Matcher field72Matcher = MTParserConstants.FIELD_72_REGEX_PATTERN.matcher(field72String);
 
         if (field72Matcher.matches()) {
 
-            return new Field72()
+            return new Field72(option,
                     // Values group -> "line1\nline2\n" -> ["line1", "line2"]
-                    .withValues(
-                            List.of(field72Matcher.group().split(MTParserConstants.LINE_BREAK_REGEX_PATTERN)));
+                    List.of(field72Matcher.group().split(MTParserConstants.LINE_BREAK_REGEX_PATTERN)));
         } else {
             throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
                     MT103Constants.SENDER_TO_RECEIVER_INFORMATION, ConnectorConstants.TEXT_BLOCK));

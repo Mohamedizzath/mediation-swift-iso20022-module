@@ -1,15 +1,14 @@
 package org.wso2.carbon.module.swiftiso20022.mt.models.blocks.text;
 
-import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field13C;
+import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field13;
 import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field20;
-import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field23B;
-import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field23E;
-import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field26T;
-import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field32A;
-import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field33B;
+import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field23;
+import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field26;
+import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field32;
+import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field33;
 import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field36;
 import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field50;
-import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field51A;
+import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field51;
 import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field52;
 import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field53;
 import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field54;
@@ -18,12 +17,9 @@ import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field56;
 import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field57;
 import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field59;
 import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field70;
-import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field71A;
-import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field71F;
-import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field71G;
+import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field71;
 import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field72;
-import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field77B;
-import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field77T;
+import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field77;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,15 +30,15 @@ import java.util.List;
 public class MT103TextBlock {
 
     private Field20 sendersReference;
-    private List<Field13C> timeIndication;
-    private Field23B bankOperationCode;
-    private List<Field23E> instructionCode;
-    private Field26T transactionTypeCode;
-    private Field32A value;
-    private Field33B instructedAmount;
+    private List<Field13> timeIndication;
+    private Field23 bankOperationCode;
+    private List<Field23> instructionCode;
+    private Field26 transactionTypeCode;
+    private Field32 value;
+    private Field33 instructedAmount;
     private Field36 exchangeRate;
     private Field50 orderingCustomer;
-    private Field51A sendingInstitution;
+    private Field51 sendingInstitution;
     private Field52 orderingInstitution;
     private Field53 sendersCorrespondent;
     private Field54 receiversCorrespondent;
@@ -51,12 +47,12 @@ public class MT103TextBlock {
     private Field57 accountWithInstitution;
     private Field59 beneficiaryCustomer;
     private Field70 remittanceInformation;
-    private Field71A detailsOfCharge;
-    private List<Field71F> sendersCharges;
-    private Field71G receiversCharges;
+    private Field71 detailsOfCharges;
+    private List<Field71> sendersCharges;
+    private Field71 receiversCharges;
     private Field72 senderToReceiverInformation;
-    private Field77B regulatoryReporting;
-    private Field77T envelopeContents;
+    private Field77 regulatoryReporting;
+    private Field77 envelopeContents;
 
     public Field20 getSendersReference() {
         return sendersReference;
@@ -66,20 +62,21 @@ public class MT103TextBlock {
         this.sendersReference = sendersReference;
     }
 
-    public List<Field13C> getTimeIndication() {
+    public List<Field13> getTimeIndication() {
         return timeIndication;
     }
 
-    public void setTimeIndication(List<Field13C> timeIndication) {
+    public void setTimeIndication(List<Field13> timeIndication) {
         this.timeIndication = timeIndication;
     }
 
     /**
      * Method to add new field13c object to timeIndication attribute.
+     * If the attribute is not initialized, new array will be added.
      *
-     * @param timeIndication Field13C object
+     * @param timeIndication Field13 object
      */
-    public void addTimeIndication(Field13C timeIndication) {
+    public void setTimeIndication(Field13 timeIndication) {
         if (this.timeIndication == null) {
             setTimeIndication(new ArrayList<>(List.of(timeIndication)));
         } else {
@@ -87,28 +84,28 @@ public class MT103TextBlock {
         }
     }
 
-    public Field23B getBankOperationCode() {
+    public Field23 getBankOperationCode() {
         return bankOperationCode;
     }
 
-    public void setBankOperationCode(Field23B bankOperationCode) {
+    public void setBankOperationCode(Field23 bankOperationCode) {
         this.bankOperationCode = bankOperationCode;
     }
 
-    public List<Field23E> getInstructionCode() {
+    public List<Field23> getInstructionCode() {
         return instructionCode;
     }
 
-    public void setInstructionCode(List<Field23E> instructionCode) {
+    public void setInstructionCode(List<Field23> instructionCode) {
         this.instructionCode = instructionCode;
     }
 
     /**
-     * Method to add new field23E object to instructionCode attribute.
+     * Method to add new field23 object to instructionCode attribute.
      *
-     * @param instructionCode Field23E object
+     * @param instructionCode Field23 object
      */
-    public void addInstructionCode(Field23E instructionCode) {
+    public void setInstructionCode(Field23 instructionCode) {
         if (this.instructionCode == null) {
             setInstructionCode(new ArrayList<>(List.of(instructionCode)));
         } else {
@@ -116,27 +113,27 @@ public class MT103TextBlock {
         }
     }
 
-    public Field26T getTransactionTypeCode() {
+    public Field26 getTransactionTypeCode() {
         return transactionTypeCode;
     }
 
-    public void setTransactionTypeCode(Field26T transactionTypeCode) {
+    public void setTransactionTypeCode(Field26 transactionTypeCode) {
         this.transactionTypeCode = transactionTypeCode;
     }
 
-    public Field32A getValue() {
+    public Field32 getValue() {
         return value;
     }
 
-    public void setValue(Field32A value) {
+    public void setValue(Field32 value) {
         this.value = value;
     }
 
-    public Field33B getInstructedAmount() {
+    public Field33 getInstructedAmount() {
         return instructedAmount;
     }
 
-    public void setInstructedAmount(Field33B instructedAmount) {
+    public void setInstructedAmount(Field33 instructedAmount) {
         this.instructedAmount = instructedAmount;
     }
 
@@ -156,11 +153,11 @@ public class MT103TextBlock {
         this.orderingCustomer = orderingCustomer;
     }
 
-    public Field51A getSendingInstitution() {
+    public Field51 getSendingInstitution() {
         return sendingInstitution;
     }
 
-    public void setSendingInstitution(Field51A sendingInstitution) {
+    public void setSendingInstitution(Field51 sendingInstitution) {
         this.sendingInstitution = sendingInstitution;
     }
 
@@ -229,28 +226,28 @@ public class MT103TextBlock {
         this.remittanceInformation = remittanceInformation;
     }
 
-    public Field71A getDetailsOfCharge() {
-        return detailsOfCharge;
+    public Field71 getDetailsOfCharges() {
+        return detailsOfCharges;
     }
 
-    public void setDetailsOfCharge(Field71A detailsOfCharge) {
-        this.detailsOfCharge = detailsOfCharge;
+    public void setDetailsOfCharges(Field71 detailsOfCharges) {
+        this.detailsOfCharges = detailsOfCharges;
     }
 
-    public List<Field71F> getSendersCharges() {
+    public List<Field71> getSendersCharges() {
         return sendersCharges;
     }
 
-    public void setSendersCharges(List<Field71F> sendersCharges) {
+    public void setSendersCharges(List<Field71> sendersCharges) {
         this.sendersCharges = sendersCharges;
     }
 
     /**
-     * Method to add new field71F object to sendersCharges attribute.
+     * Method to add new field71 object with option F to sendersCharges attribute.
      *
-     * @param sendersCharge Field71F object
+     * @param sendersCharge Field71 object
      */
-    public void addSendersCharges(Field71F sendersCharge) {
+    public void setSendersCharges(Field71 sendersCharge) {
         if (this.sendersCharges == null) {
             setSendersCharges(new ArrayList<>(List.of(sendersCharge)));
         } else {
@@ -258,11 +255,11 @@ public class MT103TextBlock {
         }
     }
 
-    public Field71G getReceiversCharges() {
+    public Field71 getReceiversCharges() {
         return receiversCharges;
     }
 
-    public void setReceiversCharges(Field71G receiversCharges) {
+    public void setReceiversCharges(Field71 receiversCharges) {
         this.receiversCharges = receiversCharges;
     }
 
@@ -275,19 +272,19 @@ public class MT103TextBlock {
         this.senderToReceiverInformation = senderToReceiverInformation;
     }
 
-    public Field77B getRegulatoryReporting() {
+    public Field77 getRegulatoryReporting() {
         return regulatoryReporting;
     }
 
-    public void setRegulatoryReporting(Field77B regulatoryReporting) {
+    public void setRegulatoryReporting(Field77 regulatoryReporting) {
         this.regulatoryReporting = regulatoryReporting;
     }
 
-    public Field77T getEnvelopeContents() {
+    public Field77 getEnvelopeContents() {
         return envelopeContents;
     }
 
-    public void setEnvelopeContents(Field77T envelopeContents) {
+    public void setEnvelopeContents(Field77 envelopeContents) {
         this.envelopeContents = envelopeContents;
     }
 }

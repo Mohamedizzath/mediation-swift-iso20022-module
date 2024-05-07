@@ -23,12 +23,11 @@ import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
 import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
 import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Utility class for MT message parsing.
@@ -161,26 +160,6 @@ public class MTParserUtils {
     }
 
     /**
-     * Method to match a regex pattern with passed string value.
-     * Only check one matching value.
-     *
-     * @param regexPattern Pattern object compiled with the regex pattern
-     * @param stringValue  String value to be matched
-     * @return An Optional of the matcher object or an empty matcher object if the string doesn't match the pattern
-     */
-    public static Optional<Matcher> getRegexMatcher(Pattern regexPattern, String stringValue) {
-
-        // Compiling the pattern
-        Matcher matcher = regexPattern.matcher(stringValue);
-
-        if (matcher.matches()) {
-            return Optional.of(matcher);
-        } else {
-            return Optional.empty();
-        }
-    }
-
-    /**
      * Method to separate text block fields and return a string list.
      *
      * @param textBlock Text Block string excluding "{4:" and "-}"
@@ -197,4 +176,26 @@ public class MTParserUtils {
                 .split(MTParserConstants.LINE_BREAK_WITH_COLON_REGEX_PATTERN));
     }
 
+    /**
+     * Method to extract details from the matcher with created with
+     * {@link MTParserConstants#PARTY_IDENTIFIER_REGEX_PATTERN}.
+     *
+     * @param partyIdentifierMatcher Matcher object created with party identifier regex.
+     * @return String array if details are present, otherwise null.
+     */
+    public static List<String> getDetailsAsList(Matcher partyIdentifierMatcher) {
+
+        // group 12 -> details in format (Number)/(Name and Address)
+        if (partyIdentifierMatcher.group(12) != null) {
+            // Details group -> "val1\nval2\n" -> ["val1", "val2"]
+            return Arrays.asList(partyIdentifierMatcher.group(12).split(MTParserConstants.LINE_BREAK_REGEX_PATTERN));
+        }
+        // group 14 -> details in format (Name and Address)
+        if (partyIdentifierMatcher.group(14) != null) {
+            // Details group -> "val1\nval2\n" -> ["val1", "val2"]
+            return Arrays.asList(partyIdentifierMatcher.group(14).split(MTParserConstants.LINE_BREAK_REGEX_PATTERN));
+        }
+
+        return null;
+    }
 }

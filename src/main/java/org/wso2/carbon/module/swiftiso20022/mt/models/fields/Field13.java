@@ -23,6 +23,8 @@ import org.wso2.carbon.module.swiftiso20022.constants.MT103Constants;
 import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
 import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Matcher;
 
 /**
@@ -35,9 +37,15 @@ import java.util.regex.Matcher;
  * @see <a href="https://www2.swift.com/knowledgecentre/publications/usgf_20230720/2.0?topic=idx_fld_tag_13C.htm">
  * Field 13C</a>
  */
-public class Field13C {
+public class Field13 {
 
-    public static final String TAG = "13C";
+    public static final String OPTION_C_TAG = "13C";
+
+    /**
+     * List of options with current implementation.
+     */
+    private static final List<Character> OPTIONS = Arrays.asList(ConnectorConstants.OPTION_C);
+    public char option;
 
     // example: CLSTIME
     private String code;
@@ -52,6 +60,27 @@ public class Field13C {
     // format: HHMM
     // example: 0100
     private String offset;
+
+    /**
+     * Constructor to initialize all attributes.
+     *
+     * @param option Single character
+     * @param code  String with uppercase letters
+     * @param time  String with four digits
+     * @param sign  Either "+" or "-"
+     * @param offset    String with four digits
+     */
+    public Field13(char option, String code, String time, String sign, String offset) {
+        this.option = option;
+        this.code = code;
+        this.time = time;
+        this.sign = sign;
+        this.offset = offset;
+    }
+
+    public char getOption() {
+        return option;
+    }
 
     public String getCode() {
         return code;
@@ -86,72 +115,32 @@ public class Field13C {
     }
 
     /**
-     * Method to set code of the field and return the instance.
+     * Method to parse and get Field13 object.
+     * Current implementation -> Option C
      *
-     * @param code Code to be set.
-     * @return object itself
-     */
-    public Field13C withCode(String code) {
-        setCode(code);
-        return this;
-    }
-
-    /**
-     * Method to set time of the field and return the instance.
-     *
-     * @param time Time to be set.
-     * @return object itself
-     */
-    public Field13C withTime(String time) {
-        setTime(time);
-        return this;
-    }
-
-    /**
-     * Method to set sign of the field and return the instance.
-     *
-     * @param sign Sign to be set.
-     * @return object itself
-     */
-    public Field13C withSign(String sign) {
-        setSign(sign);
-        return this;
-    }
-
-    /**
-     * Method to set offset of the field and return the instance.
-     *
-     * @param offset Offset to be set.
-     * @return object itself
-     */
-    public Field13C withOffset(String offset) {
-        setOffset(offset);
-        return this;
-    }
-
-    /**
-     * Method to parse and get Field13C object.
-     *
-     * @param field13CString String containing value of 13C field in Text Block
+     * @param field13String String containing value of 13 field in Text Block
+     * @param option single character option of the field13String
      * @return An instance of this model.
      * @throws MTMessageParsingException if the value is invalid
      */
-    public static Field13C parse(String field13CString) throws MTMessageParsingException {
+    public static Field13 parse(String field13String, char option) throws MTMessageParsingException {
+
+        if (!OPTIONS.contains(option)) {
+            throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_OPTION_FOR_FIELD, option,
+                    ConnectorConstants.FIELD_13));
+        }
 
         // Get matcher to the regex matching -> /(Code)/(Time)(Sign)(Offset)
-        Matcher field13CMatcher = MTParserConstants.FIELD_13C_REGEX_PATTERN.matcher(field13CString);
+        Matcher field13Matcher = MTParserConstants.FIELD_13_REGEX_PATTERN.matcher(field13String);
 
-        if (field13CMatcher.matches()) {
+        if (field13Matcher.matches()) {
 
             // group 1 -> Code
             // group 2 -> Time
             // group 3 -> Sign
             // group 4 -> Offset
-            return  new Field13C()
-                    .withCode(field13CMatcher.group(1))
-                    .withTime(field13CMatcher.group(2))
-                    .withSign(field13CMatcher.group(3))
-                    .withOffset(field13CMatcher.group(4));
+            return new Field13(option, field13Matcher.group(1),
+                    field13Matcher.group(2), field13Matcher.group(3), field13Matcher.group(4));
         } else {
             throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
                     MT103Constants.TIME_INDICATION, ConnectorConstants.TEXT_BLOCK));

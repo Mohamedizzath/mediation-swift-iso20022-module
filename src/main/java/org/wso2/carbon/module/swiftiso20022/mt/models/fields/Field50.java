@@ -19,16 +19,13 @@
 package org.wso2.carbon.module.swiftiso20022.mt.models.fields;
 
 import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
-import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants.MTFieldOption;
 import org.wso2.carbon.module.swiftiso20022.constants.MT103Constants;
 import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
 import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
 
-import java.util.HashMap;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * 50A -> Model for ordering customer with option A in Text Block (Block 04).
@@ -79,166 +76,73 @@ import java.util.regex.Pattern;
  * Field 50K</a>
  */
 
-public class Field50 {
+public class Field50 extends PartyIdentifier {
 
     public static final String OPTION_A_TAG = "50A";
     public static final String OPTION_F_TAG = "50F";
     public static final String OPTION_K_TAG = "50K";
-    private static final Map<String, Pattern> REGEX_PATTERN = new HashMap<>() {{
-       put(OPTION_A_TAG, MTParserConstants.FIELD_50A_REGEX_PATTERN);
-       put(OPTION_F_TAG, MTParserConstants.PARTY_IDENTIFIER_OPTION_F_REGEX_PATTERN);
-       put(OPTION_K_TAG, MTParserConstants.PARTY_IDENTIFIER_OPTION_K_REGEX_PATTERN);
-    }};
-    private final MTFieldOption option;
 
     /**
-     * Constructor to get the instance with the option.
-     *
-     * @param option Option from enum {@link MTFieldOption}
+     * List of options with current implementation.
      */
-    public Field50(MTFieldOption option) {
-        this.option = option;
-    }
-
-    // example: 293456-1254349-82
-    private String account;
-
-    // example: VISTUS31
-    private String identifierCode;
-
-    // example: NIDN/DE/121231234342
-    private String partyIdentifier;
-
-    // format: (number)/(name and address)
-    // example for 50F: 1/MANN GEORG
-    private List<String> details;
-
-    public MTFieldOption getOption() {
-        return option;
-    }
-
-    public String getAccount() {
-        return account;
-    }
-
-    public void setAccount(String account) {
-        this.account = account;
-    }
-
-    public String getIdentifierCode() {
-        return identifierCode;
-    }
-
-    public void setIdentifierCode(String identifierCode) {
-        this.identifierCode = identifierCode;
-    }
-
-    public String getPartyIdentifier() {
-        return partyIdentifier;
-    }
-
-    public void setPartyIdentifier(String partyIdentifier) {
-        this.partyIdentifier = partyIdentifier;
-    }
-
-    public List<String> getDetails() {
-        return details;
-    }
-
-    public void setDetails(List<String> details) {
-        this.details = details;
-    }
+    private static final List<Character> OPTIONS = Arrays.asList(
+            ConnectorConstants.OPTION_A, ConnectorConstants.OPTION_F, ConnectorConstants.OPTION_K);
 
     /**
-     * Method to set account of the field and return the instance.
+     * Constructor to get the instance with the option. Cannot use constructor of the super class because this is
+     * a special case.
      *
-     * @param account Account to be set.
-     * @return object itself
+     * @param option single character which identify the option.
+     * @param identifierCode    String specified in SWIFT party identifier format
+     * @param details String array in character set x
      */
-    public Field50 withAccount(String account) {
-        setAccount(account);
-        return this;
-    }
-
-    /**
-     * Method to set identifier code of the field and return the instance.
-     *
-     * @param identifierCode Identifier Code to be set.
-     * @return object itself
-     */
-    public Field50 withIdentifierCode(String identifierCode) {
+    public Field50(char option, String identifierCode, List<String> details) {
+        super(option);
         setIdentifierCode(identifierCode);
-        return this;
-    }
-
-    /**
-     * Method to set party identifier of the field and return the instance.
-     *
-     * @param partyIdentifier Party Identifier to be set.
-     * @return object itself
-     */
-    public Field50 withPartyIdentifier(String partyIdentifier) {
-        setPartyIdentifier(partyIdentifier);
-        return this;
-    }
-
-    /**
-     * Method to set details of the field and return the instance.
-     *
-     * @param details Details to be set.
-     * @return object itself
-     */
-    public Field50 withDetails(List<String> details) {
         setDetails(details);
-        return this;
     }
 
     /**
      * Method to parse and get Field50 object.
+     * Current implementations -> Option A,F and K
      *
      * @param field50String String containing value of 50 field in Text Block
-     * @param tag           Tag of the value, to identify the options
+     * @param option single character option of the field50String
      * @return An instance of this model.
      * @throws MTMessageParsingException if the value is invalid
      */
-    public static Field50 parse(String field50String, String tag) throws MTMessageParsingException {
+    public static Field50 parse(String field50String, char option) throws MTMessageParsingException {
 
-        Matcher field50Matcher = REGEX_PATTERN.get(tag).matcher(field50String);
+        if (!OPTIONS.contains(option)) {
+            throw new MTMessageParsingException(String.format(
+                    MTParserConstants.INVALID_OPTION_FOR_FIELD, option, ConnectorConstants.FIELD_50));
+        }
+
+        Matcher field50Matcher = MTParserConstants.FIELD_50_REGEX_PATTERN.matcher(field50String);
 
         if (field50Matcher.matches()) {
 
-            switch (tag) {
-                case OPTION_A_TAG:
-                    // group 1 -> /Account
-                    // group 2 -> Account
-                    // group 3 -> Identifier Code
-                    return new Field50(MTFieldOption.A)
-                            .withAccount(field50Matcher.group(2))
-                            .withIdentifierCode(field50Matcher.group(3));
-
-                case OPTION_F_TAG:
-                    // group 1 -> Party Identifier
-                    // group 2 -> details
-                    return new Field50(MTFieldOption.F)
-                            .withPartyIdentifier(field50Matcher.group(1))
-                            // Details group -> "val1\nval2\n" -> ["val1", "val2"]
-                            .withDetails(List.of(field50Matcher.group(2)
-                                    .split(MTParserConstants.LINE_BREAK_REGEX_PATTERN)));
-
-                case OPTION_K_TAG:
-                    // group 1 -> /Account
-                    // group 2 -> Account
-                    // group 3 -> details
-                    return new Field50(MTFieldOption.K)
-                            .withAccount(field50Matcher.group(2))
-                            // Details group -> "val1\nval2\n" -> ["val1", "val2"]
-                            .withDetails(List.of(field50Matcher.group(3)
-                                    .split(MTParserConstants.LINE_BREAK_REGEX_PATTERN)));
-
-                default:
-                    throw new MTMessageParsingException(String.format(
-                            MTParserConstants.INVALID_OPTION_FOR_FIELD, MT103Constants.ORDERING_CUSTOMER));
+            // group 1 -> Account or Party Identifier with line break
+            // group 2 -> Account or Party Identifier
+            // group 4 -> Identifier Code
+            // group 6 -> Details in format (Number)/(Name and Address)
+            // group 8 -> Details in format (Name and Address)
+            List<String> details = null;
+            if (field50Matcher.group(6) != null) {
+                details = Arrays.asList(field50Matcher.group(6).split(MTParserConstants.LINE_BREAK_REGEX_PATTERN));
+            } else if (field50Matcher.group(8) != null) {
+                details = Arrays.asList(field50Matcher.group(8).split(MTParserConstants.LINE_BREAK_REGEX_PATTERN));
             }
+
+            Field50 field50 = new Field50(option, field50Matcher.group(4), details);
+
+            if (option == ConnectorConstants.OPTION_F) {
+                field50.setPartyIdentifier(field50Matcher.group(2));
+            } else {
+                field50.setAccount(field50Matcher.group(2));
+            }
+
+            return field50;
         } else {
             throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
                     MT103Constants.ORDERING_CUSTOMER, ConnectorConstants.TEXT_BLOCK));

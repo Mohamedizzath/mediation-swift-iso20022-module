@@ -108,18 +108,18 @@ public class ConnectorConstants {
     public static final String DELAYED_MESSAGE = "Delayed Message";
     public static final String TEST_AND_TRAINING_MESSAGE = "Test And Training Message";
 
-    /**
-     * Includes the options available for a Text Block field.
-     */
-    public enum MTFieldOption {
-        NO_LETTER,
-        A,
-        B,
-        C,
-        D,
-        F,
-        K
-    }
+    // Options for MT field
+
+    public static final char NO_LETTER_OPTION = '0';
+    public static final char OPTION_A = 'A';
+    public static final char OPTION_B = 'B';
+    public static final char OPTION_C = 'C';
+    public static final char OPTION_D = 'D';
+    public static final char OPTION_E = 'E';
+    public static final char OPTION_F = 'F';
+    public static final char OPTION_G = 'G';
+    public static final char OPTION_K = 'K';
+    public static final char OPTION_T = 'T';
 
     // ISO 20022 Related Constants
     public static final String SOAP_PREFIX = "soapenv";
@@ -214,6 +214,28 @@ public class ConnectorConstants {
     public static final String ERROR_T52 = "T52";
     public static final String ERROR_T53 = "T53";
     public static final String ERROR_M50 = "M50";
+
+    // MT field constants
+    public static final String FIELD_13 = "Field 13";
+    public static final String FIELD_20 = "Field 20";
+    public static final String FIELD_23 = "Field 23";
+    public static final String FIELD_26 = "Field 26";
+    public static final String FIELD_32 = "Field 32";
+    public static final String FIELD_33 = "Field 33";
+    public static final String FIELD_36 = "Field 36";
+    public static final String FIELD_50 = "Field 50";
+    public static final String FIELD_51 = "Field 51";
+    public static final String FIELD_52 = "Field 52";
+    public static final String FIELD_53 = "Field 53";
+    public static final String FIELD_54 = "Field 54";
+    public static final String FIELD_55 = "Field 55";
+    public static final String FIELD_56 = "Field 56";
+    public static final String FIELD_57 = "Field 57";
+    public static final String FIELD_59 = "Field 59";
+    public static final String FIELD_70 = "Field 70";
+    public static final String FIELD_71 = "Field 71";
+    public static final String FIELD_72 = "Field 72";
+    public static final String FIELD_77 = "Field 77";
 
     // MT Parser Error codes
     public static final String ERROR_INCORRECT_BLOCKS_FORMAT = "Blocks are not in the correct format";

@@ -22,12 +22,11 @@ import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
 import org.wso2.carbon.module.swiftiso20022.constants.MT103Constants;
 import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
 import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
+import org.wso2.carbon.module.swiftiso20022.utils.MTParserUtils;
 
-import java.util.HashMap;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * 56A -> Model for account with institution with option A in Text Block (Block 04).
@@ -40,7 +39,7 @@ import java.util.regex.Pattern;
  *     <dt>example:</dt>
  *     <dd>:57A:IRVTUS3N</dd>
  * </dl>
- *
+ * <p>
  * 57B -> Model for account with institution with option B in Text Block (Block 04).
  *
  * <dl>
@@ -51,7 +50,7 @@ import java.util.regex.Pattern;
  *     <dt>example:</dt>
  *     <dd>:55B:/DE12345678901234567890</dd>
  * </dl>
- *
+ * <p>
  * 57C -> Model for intermediary institution with option C in Text Block (Block 04).
  *
  * <dl>
@@ -61,7 +60,7 @@ import java.util.regex.Pattern;
  *     <dt>example:</dt>
  *     <dd>/293456-1254349-82</dd>
  * </dl>
- *
+ * <p>
  * 57D -> Model for intermediary institution with option D in Text Block (Block 04).
  *
  * <dl>
@@ -83,165 +82,83 @@ import java.util.regex.Pattern;
  * @see <a href="https://www2.swift.com/knowledgecentre/publications/usgf_20230720/2.0?topic=idx_fld_tag_57D.htm">
  * Field 57D</a>
  */
-public class Field57 {
+public class Field57 extends PartyIdentifier {
 
     public static final String OPTION_A_TAG = "57A";
     public static final String OPTION_B_TAG = "57B";
     public static final String OPTION_C_TAG = "57C";
     public static final String OPTION_D_TAG = "57D";
-    private static final Map<String, Pattern> REGEX_PATTERN = new HashMap<>() {{
-        put(OPTION_A_TAG, MTParserConstants.PARTY_IDENTIFIER_OPTION_A_REGEX_PATTERN);
-        put(OPTION_B_TAG, MTParserConstants.PARTY_IDENTIFIER_OPTION_B_REGEX_PATTERN);
-        put(OPTION_C_TAG, MTParserConstants.PARTY_IDENTIFIER_OPTION_C_REGEX_PATTERN);
-        put(OPTION_D_TAG, MTParserConstants.PARTY_IDENTIFIER_OPTION_D_REGEX_PATTERN);
-    }};
 
     /**
-     * Constructor to get the instance with the option.
-     *
-     * @param option Option from enum {@link ConnectorConstants.MTFieldOption}
+     * List of options with current implementation.
      */
-    private final ConnectorConstants.MTFieldOption option;
-    private String partyIdentifier;
-    private String identifierCode;
-    private String location;
-    private List<String> details;
+    private static final List<Character> OPTIONS = Arrays.asList(
+            ConnectorConstants.OPTION_A, ConnectorConstants.OPTION_B,
+            ConnectorConstants.OPTION_C, ConnectorConstants.OPTION_D);
 
-    public Field57(ConnectorConstants.MTFieldOption option) {
-        this.option = option;
-    }
-
-    public ConnectorConstants.MTFieldOption getOption() {
-        return option;
-    }
-
-    public String getPartyIdentifier() {
-        return partyIdentifier;
-    }
-
-    public void setPartyIdentifier(String partyIdentifier) {
-        this.partyIdentifier = partyIdentifier;
-    }
-
-    public String getIdentifierCode() {
-        return identifierCode;
-    }
-
-    public void setIdentifierCode(String identifierCode) {
-        this.identifierCode = identifierCode;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
-    public List<String> getDetails() {
-        return details;
-    }
-
-    public void setDetails(List<String> details) {
-        this.details = details;
+    /**
+     * Constructor to initialize all attributes.
+     *
+     * @param option single character which identify the option.
+     * @param partyIdentifier String specifying account no
+     * @param identifierCode String specified in SWIFT party identifier format
+     * @param location String with character set x
+     * @param details String array in character set x
+     */
+    public Field57(char option, String partyIdentifier, String identifierCode, String location, List<String> details) {
+        super(option, partyIdentifier, identifierCode, location, details);
     }
 
     /**
-     * Method to set party identifier of the field and return the instance.
+     * Constructor specifically for the option C.
      *
-     * @param partyIdentifier Party Identifier to be set.
-     * @return object itself
+     * @param option single character which identify the option.
+     * @param partyIdentifier String specifying account no
      */
-    public Field57 withPartyIdentifier(String partyIdentifier) {
+    public Field57(char option, String partyIdentifier) {
+        super(option);
         setPartyIdentifier(partyIdentifier);
-        return this;
-    }
-
-    /**
-     * Method to set identifier code of the field and return the instance.
-     *
-     * @param identifierCode Identifier Code to be set.
-     * @return object itself
-     */
-    public Field57 withIdentifierCode(String identifierCode) {
-        setIdentifierCode(identifierCode);
-        return this;
-    }
-
-    /**
-     * Method to set details of the field and return the instance.
-     *
-     * @param details Details to be set.
-     * @return object itself
-     */
-    public Field57 withDetails(List<String> details) {
-        setDetails(details);
-        return this;
-    }
-
-    /**
-     * Method to set location of the field and return the instance.
-     *
-     * @param location Location to be set.
-     * @return object itself
-     */
-    public Field57 withLocation(String location) {
-        setLocation(location);
-        return this;
     }
 
     /**
      * Method to parse and get Field57 object.
+     * Current implementations -> Option A, B, C and D
      *
      * @param field57String String containing value of 57 field in Text Block
+     * @param option        single character option of the field57String
      * @return An instance of this model.
      * @throws MTMessageParsingException if the value is invalid
      */
-    public static Field57 parse(String field57String, String tag) throws MTMessageParsingException {
+    public static Field57 parse(String field57String, char option) throws MTMessageParsingException {
 
-        Matcher field57Matcher = REGEX_PATTERN.get(tag).matcher(field57String);
+        if (!OPTIONS.contains(option)) {
+            throw new MTMessageParsingException(String.format(
+                    MTParserConstants.INVALID_OPTION_FOR_FIELD, option, ConnectorConstants.FIELD_57));
+        }
+
+        Matcher field57Matcher = MTParserConstants.PARTY_IDENTIFIER_REGEX_PATTERN.matcher(field57String);
 
         if (field57Matcher.matches()) {
 
-            switch (tag) {
-                case OPTION_A_TAG:
-                    // group 1 -> /Party Identifier
-                    // group 2 -> Party Identifier
-                    // group 3 -> Identifier Code
-                    return new Field57(ConnectorConstants.MTFieldOption.A)
-                            .withPartyIdentifier(field57Matcher.group(2))
-                            .withIdentifierCode(field57Matcher.group(3));
+            // group 1 -> Party Identifier with line break
+            // group 2 -> Party Identifier
+            // group 8 -> Identifier Code
+            // group 11 -> Location
+            // group 12 -> Details in format (Number)/(Name and Address)
+            // group 14 -> Details in format (Name and Address)
 
-                case OPTION_B_TAG:
-                    // group 1 -> /Party Identifier
-                    // group 2 -> Party Identifier
-                    // group 3 -> Location
-                    return new Field57(ConnectorConstants.MTFieldOption.B)
-                            .withPartyIdentifier(field57Matcher.group(2))
-                            .withLocation(field57Matcher.group(3));
-
-                case OPTION_C_TAG:
-                    // group 0 -> /Party Identifier
-                    // group 1 -> Party Identifier
-                    return new Field57(ConnectorConstants.MTFieldOption.C)
-                            .withPartyIdentifier(field57Matcher.group(1));
-
-                case OPTION_D_TAG:
-                    // group 1 -> /Party Identifier
-                    // group 2 -> Party Identifier
-                    // group 3 -> details
-                    return new Field57(ConnectorConstants.MTFieldOption.D)
-                            .withPartyIdentifier(field57Matcher.group(2))
-                            // Details group -> "val1\nval2\n" -> ["val1", "val2"]
-                            .withDetails(List.of(field57Matcher.group(3)
-                                    .split(MTParserConstants.LINE_BREAK_REGEX_PATTERN)));
-
-                default:
-                    throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_OPTION_FOR_FIELD,
-                            MT103Constants.ACCOUNT_WITH_INSTITUTION));
+            if (option == ConnectorConstants.OPTION_C) {
+                // This is a special case where only one field is present, it should match with group 6 and only it.
+                if (field57Matcher.group(6) != null) {
+                    return new Field57(option, field57Matcher.group(6));
+                } else {
+                    throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
+                            MT103Constants.ACCOUNT_WITH_INSTITUTION, ConnectorConstants.TEXT_BLOCK));
+                }
             }
 
+            return new Field57(option, field57Matcher.group(2), field57Matcher.group(8), field57Matcher.group(11),
+                    MTParserUtils.getDetailsAsList(field57Matcher));
         } else {
             throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
                     MT103Constants.ACCOUNT_WITH_INSTITUTION, ConnectorConstants.TEXT_BLOCK));

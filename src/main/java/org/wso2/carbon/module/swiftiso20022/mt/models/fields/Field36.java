@@ -23,6 +23,8 @@ import org.wso2.carbon.module.swiftiso20022.constants.MT103Constants;
 import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
 import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Matcher;
 
 /**
@@ -35,10 +37,31 @@ import java.util.regex.Matcher;
  */
 public class Field36 {
 
-    public static final String TAG = "36";
+    public static final String NO_LETTER_OPTION_TAG = "36";
+
+    /**
+     * List of options with current implementation.
+     */
+    private static final List<Character> OPTIONS = Arrays.asList(ConnectorConstants.NO_LETTER_OPTION);
+    public char option;
 
     // example: 0,9236
     private String value;
+
+    /**
+     * Constructor to initialize all attributes.
+     *
+     * @param option Single character
+     * @param value String specifying rate with comma at decimal point
+     */
+    public Field36(char option, String value) {
+        this.option = option;
+        this.value = value;
+    }
+
+    public char getOption() {
+        return option;
+    }
 
     public String getValue() {
         return value;
@@ -49,31 +72,26 @@ public class Field36 {
     }
 
     /**
-     * Method to set value of the field and return the instance.
-     *
-     * @param value Value to be set.
-     * @return object itself
-     */
-    public Field36 withValue(String value) {
-        setValue(value);
-        return this;
-    }
-
-    /**
      * Method to parse and get Field36 object.
+     * Current implementations -> No_letter
      *
      * @param field36String String containing value of 36 field in Text Block
+     * @param option single character option of the field26String
      * @return An instance of this model.
      * @throws MTMessageParsingException if the value is invalid
      */
-    public static Field36 parse(String field36String) throws MTMessageParsingException {
+    public static Field36 parse(String field36String, char option) throws MTMessageParsingException {
+
+        if (!OPTIONS.contains(option)) {
+            throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_OPTION_FOR_FIELD, option,
+                    ConnectorConstants.FIELD_36));
+        }
 
         Matcher field26Matcher = MTParserConstants.FIELD_36_REGEX_PATTERN.matcher(field36String);
 
         if (field26Matcher.matches()) {
 
-            return new Field36()
-                    .withValue(field26Matcher.group());
+            return new Field36(option, field26Matcher.group());
         } else {
             throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
                     MT103Constants.EXCHANGE_RATE, ConnectorConstants.TEXT_BLOCK));
