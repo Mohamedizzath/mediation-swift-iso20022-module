@@ -47,7 +47,7 @@ public class MT940ToISOTransformer extends AbstractConnector {
             String message = PayloadHelper.getTextPayload(messageContext).trim();
 
             if (StringUtils.isBlank(message)) {
-                throw new MTMessageParsingException(String.format(ConnectorConstants.ERROR_PARSING_MT_MESSAGE, "940"));
+                throw new MTMessageParsingException(ConnectorConstants.ERROR_EMPTY_MT940_MSG);
             }
 
             MT940Message mt940Message = MT940Parser.parse(message);

@@ -18,6 +18,7 @@
  -->
 <template xmlns="http://ws.apache.org/ns/synapse" name="mt940ToISO">
     <sequence>
+            <class name="org.wso2.carbon.module.swiftiso20022.MT940FormatValidator" />
             <class name="org.wso2.carbon.module.swiftiso20022.MT940ToISOTransformer"/>
             <payloadFactory media-type="xml" template-type="freemarker">
                 <format>
