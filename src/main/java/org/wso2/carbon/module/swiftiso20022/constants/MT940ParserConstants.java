@@ -46,6 +46,10 @@ public class MT940ParserConstants {
             "^([a-zA-Z0-9/\\-?:().,'+ ]{1,16})$");
     public static final String FIELD_61_REFS_DIVIDER = "//";
 
+    public static final String FIELD_86_NO_CODE = "#NO-CODE#";
+    public static final String FIELD_86_END_TO_END_IDENTIFICATION = "EREF";
+    public static final String FIELD_86_INSTRUCTION_ID = "IREF";
+    public static final String FIELD_86_PAYMENT_INFO_ID = "PREF";
     public static final Pattern FIELD_86_REGEX_PATTERN = Pattern.compile(
             "^([a-zA-Z0-9/\\-?:().,'+ ]{1,65}" +
                     "(\\R[a-zA-Z0-9/\\-?:().,'+ ]{1,64}){0,5})$");
