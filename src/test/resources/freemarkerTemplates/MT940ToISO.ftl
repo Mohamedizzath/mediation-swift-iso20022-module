@@ -27,8 +27,7 @@
 <Document xmlns="urn:iso:std:iso:20022:tech:xsd:camt.053.001.11">
     <BkToCstmrStmt>
         <GrpHdr>
-            <MsgId>235549650</MsgId><#if payload.applicationHeaderBlock?has_content>
-			<CreDt><@getDateTime payload.applicationHeaderBlock.messageInputReference[0..5] payload.applicationHeaderBlock.inputTime /></CreDt></#if><#-- Application header: Input Time OR Application header: Time in MIR -->
+			<#if payload.applicationHeaderBlock?has_content><CreDt><@getDateTime payload.applicationHeaderBlock.messageInputReference[0..5] payload.applicationHeaderBlock.inputTime /></CreDt></#if><#-- Application header: Input Time OR Application header: Time in MIR -->
             <#if payload.textBlock.statementSequenceNumber.statementNumber?has_content>
             	<MsgPgntn>
             		<PgNb>${payload.textBlock.statementSequenceNumber.statementNumber}</PgNb><#-- Tag 28C: Statement number / [Sequence Number] -->
