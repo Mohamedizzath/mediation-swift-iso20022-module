@@ -29,33 +29,24 @@ public class MT940ParserConstants {
     }
 
     public static final Pattern FIELD_20_REGEX_PATTERN = Pattern.compile(
-            String.format("^(%s{1,16})$", MTParserConstants.CHARACTER_SET_X));
+            "^([a-zA-Z0-9/\\-?:().,'+ ]{1,16})$");
     public static final Pattern FIELD_21_REGEX_PATTERN = Pattern.compile(
-            String.format("^(%s{1,16})$", MTParserConstants.CHARACTER_SET_X));
+            "^([a-zA-Z0-9/\\-?:().,'+ ]{1,16})$");
     public static final Pattern FIELD_25_REGEX_PATTERN = Pattern.compile(
-            String.format("^(%s{1,35})(\\R(%s{6}%s{2}(%s{3})?))?$", MTParserConstants.CHARACTER_SET_X,
-                    MTParserConstants.CHARACTER_SET_A, MTParserConstants.CHARACTER_SET_C,
-                    MTParserConstants.CHARACTER_SET_C));
+            "^([a-zA-Z0-9/\\-?:().,'+ ]{1,35})(\\R([A-Z]{6}[A-Z0-9]{2}([A-Z0-9]{3})?))?$");
     public static final Pattern FIELD_28_REGEX_PATTERN = Pattern.compile("^(\\d{1,5})(/(\\d{1,5}))?$");
-    public static final Pattern MT940_BALANCE_REGEX = Pattern.compile(String.format(
-            "^(D|C)(%s)(%s)(%s)$", MTParserConstants.YYMMDD_DATE_REGEX, MTParserConstants.CURRENCY_REGEX,
-            MTParserConstants.AMOUNT_REGEX));
-    public static final Pattern FIELD_61_REGEX_PATTERN = Pattern.compile(String.format(
-            "^(%s)(%s)?(C|D|RC|RD)(%s)?([\\d,]{1,15})(%s)(%s{3})(%s{1,34})(\\R(%s{1,34}))?$",
-            MTParserConstants.YYMMDD_DATE_REGEX, MTParserConstants.HHMM_TIME_REGEX, MTParserConstants.CHARACTER_SET_A,
-            MTParserConstants.CHARACTER_SET_A, MTParserConstants.CHARACTER_SET_C, MTParserConstants.CHARACTER_SET_X,
-            MTParserConstants.CHARACTER_SET_X));
+    public static final Pattern MT940_BALANCE_REGEX = Pattern.compile(
+            "^(D|C)([0-9]{6})([A-Z]{3})([\\d,]{1,15})$");
+    public static final Pattern FIELD_61_REGEX_PATTERN = Pattern.compile("^(\\d{6})(\\d{4})?(C|D|RC|RD)([A-Z])?" +
+            "([\\d,]{1,15})([A-Z])([A-Z0-9]{3})([a-zA-Z0-9/\\-?:().,'+ ]{1,34})" +
+            "(\\R([a-zA-Z0-9/\\-?:().,'+ ]{1,34}))?$");
 
-    public static final Pattern FIELD_61_REFTOACCOWNER_REGEX = Pattern.compile(String.format(
-            "^(%s{1,16})$", MTParserConstants.CHARACTER_SET_X));
-    public static final Pattern FIELD_61_REFTOACCSERVICEINSTITUTION_REGEX = Pattern.compile(String.format(
-            "^(%s{1,16})$", MTParserConstants.CHARACTER_SET_X));
+    public static final Pattern FIELD_61_REFTOACCOWNER_REGEX = Pattern.compile("^([a-zA-Z0-9/\\-?:().,'+ ]{1,16})$");
+    public static final Pattern FIELD_61_REFTOACCSERVICEINSTITUTION_REGEX = Pattern.compile(
+            "^([a-zA-Z0-9/\\-?:().,'+ ]{1,16})$");
     public static final String FIELD_61_REFS_DIVIDER = "//";
 
-    public static final String FIELD_86_NO_CODE = "#ADDITIONAL-INFO#";
-    public static final String FIELD_86_END_TO_END_IDENTIFICATION = "EREF";
-    public static final String FIELD_86_INSTRUCTION_ID = "IREF";
-    public static final String FIELD_86_PAYMENT_INFO_ID = "PREF";
-    public static final Pattern FIELD_86_REGEX_PATTERN = Pattern.compile(String.format(
-            "^(%s{1,65}(\\R%s{1,64}){0,5})$", MTParserConstants.CHARACTER_SET_X, MTParserConstants.CHARACTER_SET_X));
+    public static final Pattern FIELD_86_REGEX_PATTERN = Pattern.compile(
+            "^([a-zA-Z0-9/\\-?:().,'+ ]{1,65}" +
+                    "(\\R[a-zA-Z0-9/\\-?:().,'+ ]{1,64}){0,5})$");
 }
