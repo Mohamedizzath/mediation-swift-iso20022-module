@@ -20,9 +20,11 @@ package org.wso2.carbon.module.swiftiso20022.utils;
 
 import org.apache.commons.lang3.StringUtils;
 import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
+import org.wso2.carbon.module.swiftiso20022.constants.MT940ParserConstants;
 import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
 import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -177,6 +179,20 @@ public class MTParserUtils {
         return List.of(textBlock.trim().split("\\R:"));
     }
 
+    /**
+     * Method for getting Field86 codes supported in MT940.
+     * @return          List of codes
+     */
+    public static List<String> getMT940SupportedField86Codes() {
+        List<String> supportedCodes = new ArrayList<>();
+
+        supportedCodes.add(MT940ParserConstants.FIELD_86_END_TO_END_IDENTIFICATION);
+        supportedCodes.add(MT940ParserConstants.FIELD_86_PAYMENT_INFO_ID);
+        supportedCodes.add(MT940ParserConstants.FIELD_86_INSTRUCTION_ID);
+
+        return supportedCodes;
+    }
+  
     /**
      * Method for converting amount text from MT format to ISO format.
      * @param amountText        MT amount as text
