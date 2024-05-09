@@ -117,7 +117,7 @@ public class Field23 {
 
         if (!OPTIONS.contains(option)) {
             throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_OPTION_FOR_FIELD, option,
-                    "Field 23"));
+                    ConnectorConstants.FIELD_23));
         }
 
         Matcher field23Matcher = MTParserConstants.FIELD_23_REGEX_PATTERN.matcher(field23String);

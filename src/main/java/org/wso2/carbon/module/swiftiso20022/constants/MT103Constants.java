@@ -143,6 +143,11 @@ public class MT103Constants {
     public static final String BLOCK05_POSSIBLE_DUPLICATE_MESSAGE_KEY = "possibleDuplicateMessage";
     public static final String BLOCK05_SYSTEM_ORIGINATED_MESSAGE_KEY = "systemOriginatedMessage";
 
+    // Constants used in MT103ToJson transformer amount replacement
+    public static final String TEXT_BLOCK_KEY = "textBlock";
+    public static final String AMOUNT_KEY = "amount";
+    public static final String OPTION_KEY = "option";
+
     // MT103 field length related constants
     public static final int SENDERS_REFERENCE_LENGTH = 16;
     public static final int TIME_INDICATION_LENGTH = 19;
