@@ -33,6 +33,7 @@ import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field65;
 import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field86;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -49,7 +50,7 @@ public class MT940ParserTestConstants {
 
         if (stmtParams.isEmpty()) {
             stmtLines = ":61:2310011001RCD10,00ACHPGSGWGDNCTAHQM8\n" +
-                        ":86:EREF/GSGWGDNCTAHQM8/PREF/RP/GS/CTFILERP0002/CTBA0003\n";
+                        ":86:EREF/GSGWGDNCTAHQM8/PREF/RPGSCTFILERP0002CTBA0003\n";
         }
 
         return "\n" + (params.getOrDefault("Field20", ":20:258158850\n"))
@@ -62,7 +63,7 @@ public class MT940ParserTestConstants {
                 + (params.getOrDefault("Field64", ":64:C231002USD334432401,27\n"))
                 + (params.getOrDefault("Field65", ":65:C231002USD334432401,27\n"))
                 + (params.getOrDefault("Field86",
-                ":86:EREF/GSGWGDNCTAHQM8/PREF/RP/GS/CTFILERP0002/CTBA0003")) + "\n";
+                ":86:EREF/GSGWGDNCTAHQM8/PREF/RPGSCTFILERP0002CTBA0003")) + "\n";
     }
 
     // Params contains all the field except Field60 and Field60 related Field86.
@@ -254,7 +255,23 @@ public class MT940ParserTestConstants {
             if (statement.containsKey("Field86")) {
                 Field86 field86 = new Field86();
                 field86.setOption(MTParserConstants.FIELD_OPTION_NO_LETTER);
-                field86.setValue(statement.get("Field86"));
+
+                List<Map<String, String>> field8Values = new ArrayList<>();
+
+                String[] lines = statement.get("Field86").split("\\R");
+
+                for (String line : lines) {
+                    Map<String, String> elementsList = new HashMap<>();
+                    String[] elements = line.split("//");
+
+                    for (int i = 0; i < elements.length; i++) {
+                        elementsList.put(elements[i], elements[++i]);
+                    }
+
+                    field8Values.add(elementsList);
+                }
+
+                field86.setValue(field8Values);
 
                 statementsSet.add(Map.of("Field61", field61, "Field86", field86));
             } else {
@@ -427,7 +444,23 @@ public class MT940ParserTestConstants {
         if (params.containsKey("Field86")) {
             Field86 field86 = new Field86();
             field86.setOption(MTParserConstants.FIELD_OPTION_NO_LETTER);
-            field86.setValue(params.get("Field86"));
+
+            List<Map<String, String>> field8Values = new ArrayList<>();
+
+            String[] lines = params.get("Field86").split("\\R");
+
+            for (String line : lines) {
+                Map<String, String> elementsList = new HashMap<>();
+                String[] elements = line.split("//");
+
+                for (int i = 0; i < elements.length; i++) {
+                    elementsList.put(elements[i], elements[++i]);
+                }
+
+                field8Values.add(elementsList);
+            }
+
+            field86.setValue(field8Values);
 
             textBlock.setInfoToAccountOwner(field86);
         }
@@ -448,7 +481,7 @@ public class MT940ParserTestConstants {
                         "Field64", ":64:C231002USD334432401,27\n",
                         "Field65", ":65:C231002USD334432401,27\n"),
                         List.of(":61:2310011001RCD10,00ACHPGSGWGDNCTAHQM8\n",
-                            ":86:EREF/GSGWGDNCTAHQM8/PREF/RP/GS/CTFILERP0002/CTBA0003\n",
+                            ":86:EREF/GSGWGDNCTAHQM8/PREF/RPGSCTFILERP0002CTBA0003\n",
                             ":61:2310011001DD10,00ACHPNONREF\n",
                             ":61:2310011001CD10,00ASHP20230928LTERMID2//ADDITIONAL INFO\nADDITIONAL INFO\n")),
                     getMT940TextBlock(Map.ofEntries(Map.entry("Field20", "258158850"),
@@ -462,13 +495,13 @@ public class MT940ParserTestConstants {
                         Map.entry("Field64Currency", "USD"), Map.entry("Field64Amount", "334432401,27"),
                         Map.entry("Field65DCMark", "C"), Map.entry("Field65Date", "231002"),
                         Map.entry("Field65Currency", "USD"), Map.entry("Field65Amount", "334432401,27"),
-                        Map.entry("Field86", "EREF/GSGWGDNCTAHQM8/PREF/RP/GS/CTFILERP0002/CTBA0003")),
+                        Map.entry("Field86", "EREF//GSGWGDNCTAHQM8//PREF//RPGSCTFILERP0002CTBA0003")),
                         List.of(Map.of("Field61ValueDate", "231001",
                         "Field61EntryDate", "1001", "Field61DCMark", "RC",
                         "Field61FundsCode", "D", "Field61Amount", "10,00",
                         "Field61TransactionType", "A", "Field61IdentificationCode", "CHP",
                         "Field61RefToAccountOwner", "GSGWGDNCTAHQM8",
-                        "Field86", "EREF/GSGWGDNCTAHQM8/PREF/RP/GS/CTFILERP0002/CTBA0003"),
+                        "Field86", "EREF//GSGWGDNCTAHQM8//PREF//RPGSCTFILERP0002CTBA0003"),
                         Map.of("Field61ValueDate", "231001", "Field61EntryDate", "1001",
                         "Field61DCMark", "D", "Field61FundsCode", "D", "Field61Amount", "10,00",
                         "Field61TransactionType", "A", "Field61IdentificationCode", "CHP",
@@ -882,29 +915,37 @@ public class MT940ParserTestConstants {
     Object[][] parseValidStatementLineInfoAccountOwner() {
         return new Object[][]{
                 {getMT940TextBlockText(Map.of(), List.of(":61:2310011001RCD10,00ACHPGSGWGDNCTAHQM8\n",
-                        ":86:EREF/GSGWGDNCTAHQM8/PREF/RP/GS/CTFILERP0002/CTBA0003\n")),
+                        ":86:EREF/GSGWGDNCTAHQM8/PREF/RPGSCTFILERP0002CTBA0003\n",
+                        ":61:2310011001RCD10,00ACHPGSGWGDNCTAHQM8\n",
+                        ":86:IREF/GSGWGDNCTAHQM8/NONREF/RPGSCTFILERP0002CTBA0003\n")),
                         getMT940TextBlock(Map.of(), List.of(Map.of("Field61ValueDate", "231001",
                             "Field61EntryDate", "1001", "Field61DCMark", "RC",
                             "Field61FundsCode", "D", "Field61Amount", "10,00",
                             "Field61TransactionType", "A", "Field61IdentificationCode", "CHP",
                             "Field61RefToAccountOwner", "GSGWGDNCTAHQM8", "Field86",
-                            "EREF/GSGWGDNCTAHQM8/PREF/RP/GS/CTFILERP0002/CTBA0003")))},
+                            "EREF//GSGWGDNCTAHQM8//PREF//RPGSCTFILERP0002CTBA0003\n"),
+                    Map.of("Field61ValueDate", "231001",
+                            "Field61EntryDate", "1001", "Field61DCMark", "RC",
+                            "Field61FundsCode", "D", "Field61Amount", "10,00",
+                            "Field61TransactionType", "A", "Field61IdentificationCode", "CHP",
+                            "Field61RefToAccountOwner", "GSGWGDNCTAHQM8", "Field86",
+                            "IREF//GSGWGDNCTAHQM8//#ADDITIONAL-INFO#//RPGSCTFILERP0002CTBA0003")))},
                 {getMT940TextBlockText(Map.of(), List.of(":61:2310011001RCD10,00ACHPGSGWGDNCTAHQM8\n",
-                        ":86:EREF/GSGWGDNCTAHQM8/PREF/RP/GS/CTFILERP0002/CTBA0003CTBA000CTA00\n" +
-                                "EREF/GSGWGDNCTAHQM8/PREF/RP/GS/CTFILERP0002/CTBA0003CTBA000CTA00\n" +
-                                "EREF/GSGWGDNCTAHQM8/PREF/RP/GS/CTFILERP0002/CTBA0003CTBA000CTA00\n" +
-                                "EREF/GSGWGDNCTAHQM8/PREF/RP/GS/CTFILERP0002/CTBA0003CTBA000CTA00\n" +
-                                "EREF/GSGWGDNCTAHQM8/PREF/RP/GS/CTFILERP0002/CTBA0003CTBA000CTA00\n")),
+                        ":86:EREF/GSGWGDNCTAHQM8/PREF/RPGSCTFILERP0002CTBA0003CTBA000CTA00\n" +
+                                "EREF/GSGWGDNCTAHQM8/PREF/RPGSCTFILERP0002CTBA0003CTBA000CTA00\n" +
+                                "EREF/GSGWGDNCTAHQM8/PREF/RPGSCTFILERP0002CTBA0003CTBA000CTA00\n" +
+                                "EREF/GSGWGDNCTAHQM8/PREF/RPGSCTFILERP0002CTBA0003CTBA000CTA00\n" +
+                                "EREF/GSGWGDNCTAHQM8/PREF/RPGSCTFILERP0002CTBA0003CTBA000CTA00\n")),
                         getMT940TextBlock(Map.of(), List.of(Map.of("Field61ValueDate", "231001",
                                 "Field61EntryDate", "1001", "Field61DCMark", "RC",
                                 "Field61FundsCode", "D", "Field61Amount", "10,00",
                                 "Field61TransactionType", "A", "Field61IdentificationCode", "CHP",
                                 "Field61RefToAccountOwner", "GSGWGDNCTAHQM8", "Field86",
-                                "EREF/GSGWGDNCTAHQM8/PREF/RP/GS/CTFILERP0002/CTBA0003CTBA000CTA00\n" +
-                                    "EREF/GSGWGDNCTAHQM8/PREF/RP/GS/CTFILERP0002/CTBA0003CTBA000CTA00\n" +
-                                    "EREF/GSGWGDNCTAHQM8/PREF/RP/GS/CTFILERP0002/CTBA0003CTBA000CTA00\n" +
-                                    "EREF/GSGWGDNCTAHQM8/PREF/RP/GS/CTFILERP0002/CTBA0003CTBA000CTA00\n" +
-                                    "EREF/GSGWGDNCTAHQM8/PREF/RP/GS/CTFILERP0002/CTBA0003CTBA000CTA00")))},
+                                "EREF//GSGWGDNCTAHQM8//PREF//RPGSCTFILERP0002CTBA0003CTBA000CTA00\n" +
+                                    "EREF//GSGWGDNCTAHQM8//PREF//RPGSCTFILERP0002CTBA0003CTBA000CTA00\n" +
+                                    "EREF//GSGWGDNCTAHQM8//PREF//RPGSCTFILERP0002CTBA0003CTBA000CTA00\n" +
+                                    "EREF//GSGWGDNCTAHQM8//PREF//RPGSCTFILERP0002CTBA0003CTBA000CTA00\n" +
+                                    "EREF//GSGWGDNCTAHQM8//PREF//RPGSCTFILERP0002CTBA0003CTBA000CTA00")))},
         };
     }
 
@@ -913,6 +954,10 @@ public class MT940ParserTestConstants {
         return new Object[][]{
                 { getMT940TextBlockText(Map.of(), List.of(":61:2310011001RCD10,00ACHPGSGWGDNCTAHQM8\n",
                         ":86:\n")) },
+                { getMT940TextBlockText(Map.of(), List.of(":61:2310011001RCD10,00ACHPGSGWGDNCTAHQM8\n",
+                        ":86:EREF\n")) },
+                { getMT940TextBlockText(Map.of(), List.of(":61:2310011001RCD10,00ACHPGSGWGDNCTAHQM8\n",
+                        ":86:EREF/GSGWGDNCTAHQM8/EREF/GSGWGDNCTAHQM8\n")) },
                 { getMT940TextBlockText(Map.of(), List.of(":61:2310011001RCD10,00ACHPGSGWGDNCTAHQM8\n",
                         ":86:ADDITIONAL INFO ADDITIONAL INFO ADDITIONAL INFO ADDITIONAL INFO ADDITIONAL " +
                         "INFO ADDITIONAL INFO ADDITIONAL INFO ADDITIONAL INFO ADDITIONAL INFO ADDITIONAL INFO " +
@@ -1086,22 +1131,22 @@ public class MT940ParserTestConstants {
     Object[][] parseValidInfoToAccOwner() {
         return new Object[][]{
                 { getMT940TextBlockText(Map.of("Field86", ":86:ADDITIONAL INFO\n"), List.of()),
-                        getMT940TextBlock(Map.of("Field86", "ADDITIONAL INFO"), List.of())},
+                        getMT940TextBlock(Map.of("Field86", "#ADDITIONAL-INFO#//ADDITIONAL INFO"), List.of())},
                 { getMT940TextBlockText(Map.of("Field86",
-                                ":86:ADDITIONAL INFO ADDITIONAL INFO ADDITIONAL INFO ADDITIONAL INFO \n" +
-                                        "ADDITIONAL INFO ADDITIONAL INFO ADDITIONAL INFO ADDITIONAL INFO \n" +
-                                        "ADDITIONAL INFO ADDITIONAL INFO ADDITIONAL INFO ADDITIONAL INFO \n" +
-                                        "ADDITIONAL INFO ADDITIONAL INFO ADDITIONAL INFO ADDITIONAL INFO \n" +
-                                        "ADDITIONAL INFO ADDITIONAL INFO ADDITIONAL INFO ADDITIONAL INFO \n" +
-                                        "ADDITIONAL INFO ADDITIONAL INFO ADDITIONAL INFO ADDITIONAL INFO  \n")
+                    ":86:ADDITIONAL INFO ADDITIONAL INFO ADDITIONAL INFO ADDITIONAL INFO \n" +
+                            "ADDITIONAL INFO ADDITIONAL INFO ADDITIONAL INFO ADDITIONAL INFO \n" +
+                            "ADDITIONAL INFO ADDITIONAL INFO ADDITIONAL INFO ADDITIONAL INFO \n" +
+                            "ADDITIONAL INFO ADDITIONAL INFO ADDITIONAL INFO ADDITIONAL INFO \n" +
+                            "ADDITIONAL INFO ADDITIONAL INFO ADDITIONAL INFO ADDITIONAL INFO \n" +
+                            "ADDITIONAL INFO ADDITIONAL INFO ADDITIONAL INFO ADDITIONAL INFO  \n")
                         , List.of()),
                         getMT940TextBlock(Map.of("Field86",
-                                "ADDITIONAL INFO ADDITIONAL INFO ADDITIONAL INFO ADDITIONAL INFO \n" +
-                                "ADDITIONAL INFO ADDITIONAL INFO ADDITIONAL INFO ADDITIONAL INFO \n" +
-                                "ADDITIONAL INFO ADDITIONAL INFO ADDITIONAL INFO ADDITIONAL INFO \n" +
-                                "ADDITIONAL INFO ADDITIONAL INFO ADDITIONAL INFO ADDITIONAL INFO \n" +
-                                "ADDITIONAL INFO ADDITIONAL INFO ADDITIONAL INFO ADDITIONAL INFO \n" +
-                                "ADDITIONAL INFO ADDITIONAL INFO ADDITIONAL INFO ADDITIONAL INFO"), List.of())}
+                    "#ADDITIONAL-INFO#//ADDITIONAL INFO ADDITIONAL INFO ADDITIONAL INFO ADDITIONAL INFO \n" +
+                    "#ADDITIONAL-INFO#//ADDITIONAL INFO ADDITIONAL INFO ADDITIONAL INFO ADDITIONAL INFO \n" +
+                    "#ADDITIONAL-INFO#//ADDITIONAL INFO ADDITIONAL INFO ADDITIONAL INFO ADDITIONAL INFO \n" +
+                    "#ADDITIONAL-INFO#//ADDITIONAL INFO ADDITIONAL INFO ADDITIONAL INFO ADDITIONAL INFO \n" +
+                    "#ADDITIONAL-INFO#//ADDITIONAL INFO ADDITIONAL INFO ADDITIONAL INFO ADDITIONAL INFO \n" +
+                    "#ADDITIONAL-INFO#//ADDITIONAL INFO ADDITIONAL INFO ADDITIONAL INFO ADDITIONAL INFO"), List.of())}
         };
     }
 

@@ -46,7 +46,7 @@ public class MT940ParserConstants {
             "^([a-zA-Z0-9/\\-?:().,'+ ]{1,16})$");
     public static final String FIELD_61_REFS_DIVIDER = "//";
 
-    public static final String FIELD_86_NO_CODE = "#NO-CODE#";
+    public static final String FIELD_86_NO_CODE = "#ADDITIONAL-INFO#";
     public static final String FIELD_86_END_TO_END_IDENTIFICATION = "EREF";
     public static final String FIELD_86_INSTRUCTION_ID = "IREF";
     public static final String FIELD_86_PAYMENT_INFO_ID = "PREF";

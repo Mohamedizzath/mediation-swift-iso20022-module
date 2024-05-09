@@ -180,7 +180,7 @@ public class MTParserUtils {
     }
 
     /**
-     * Method for getting Field86 codes supported in MT940
+     * Method for getting Field86 codes supported in MT940.
      * @return          List of codes
      */
     public static List<String> getMT940SupportedField86Codes() {

@@ -106,16 +106,17 @@ public class Field86 {
                         if (supportedCodes.contains(elements[i])) {
                             if (i + 1 == elements.length) {
                                 // Code without value
-                                throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_FORMAT,
-                                        Field86.TAG));
+                                throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_FORMAT
+                                        , Field86.TAG));
                             } else if (field86Line.containsKey(elements[i])) {
                                 // Duplicated code
-                                throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_FORMAT,
-                                        Field86.TAG));
+                                throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_FORMAT
+                                        , Field86.TAG));
                             } else {
-                                field86Line.put(elements[i], elements[i++]);
+                                field86Line.put(elements[i], elements[++i]);
                             }
                         } else if (field86Line.containsKey(MT940ParserConstants.FIELD_86_NO_CODE)) {
+                            // Append to additional information
                             field86Line.put(MT940ParserConstants.FIELD_86_NO_CODE,
                                     field86Line.get(MT940ParserConstants.FIELD_86_NO_CODE) + "/" + elements[i]);
                         } else {
