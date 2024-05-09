@@ -103,20 +103,23 @@ public class Field86 {
                     String[] elements = line.split("/"); // Separate the values using /
 
                     for (int i = 0; i < elements.length; i++) {
-                        if (i + 1 == elements.length) {
-                            field86Line.put(MT940ParserConstants.FIELD_86_NO_CODE, elements[i]);
-                        } else if (supportedCodes.contains(elements[i])) {
-                            if (field86Line.containsKey(elements[i])) {
+                        if (supportedCodes.contains(elements[i])) {
+                            if (i + 1 == elements.length) {
+                                // Code without value
+                                throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_FORMAT,
+                                        Field86.TAG));
+                            } else if (field86Line.containsKey(elements[i])) {
                                 // Duplicated code
                                 throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_FORMAT,
                                         Field86.TAG));
+                            } else {
+                                field86Line.put(elements[i], elements[i++]);
                             }
-
-                            field86Line.put(elements[i], elements[i++]);
+                        } else if (field86Line.containsKey(MT940ParserConstants.FIELD_86_NO_CODE)) {
+                            field86Line.put(MT940ParserConstants.FIELD_86_NO_CODE,
+                                    field86Line.get(MT940ParserConstants.FIELD_86_NO_CODE) + "/" + elements[i]);
                         } else {
-                            // Unsupported code
-                            throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_FORMAT,
-                                    Field86.TAG));
+                            field86Line.put(MT940ParserConstants.FIELD_86_NO_CODE, elements[i]);
                         }
                     }
 
