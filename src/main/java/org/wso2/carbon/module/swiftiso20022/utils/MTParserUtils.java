@@ -176,4 +176,16 @@ public class MTParserUtils {
         // Remove the final new line character
         return List.of(textBlock.trim().split("\\R:"));
     }
+
+    /**
+     * Method for converting amount text from MT format to ISO format.
+     * @param amountText        MT amount as text
+     * @return                  Converted ISO amount string
+     */
+    public static Double convertMTAmountToISOAmount(String amountText) {
+        amountText = amountText.replaceAll(",", ".");
+        amountText = amountText.endsWith(".") ? amountText + "00" : amountText;
+
+        return Double.parseDouble(amountText);
+    }
 }
