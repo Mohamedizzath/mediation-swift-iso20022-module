@@ -24,6 +24,7 @@ import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException
 import org.wso2.carbon.module.swiftiso20022.utils.MTParserUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -45,7 +46,7 @@ public class Field86 {
     private char option;
 
     // Example - EREF/GSGWGDNCTAHQM8/PREF/RP/GS/CTFILERP0002/CTBA0003
-    private List<List<Map<String, String>>> value;
+    private List<Map<String, String>> value;
 
     public char getOption() {
         return option;
@@ -55,11 +56,11 @@ public class Field86 {
         this.option = option;
     }
 
-    public List<List<Map<String, String>>> getValue() {
+    public List<Map<String, String>> getValue() {
         return value;
     }
 
-    public void setValue(List<List<Map<String, String>>> value) {
+    public void setValue(List<Map<String, String>> value) {
         this.value = value;
     }
 
@@ -73,7 +74,7 @@ public class Field86 {
      * @param option              Option of the Field86
      * @param value       String which contains value of Field86
      */
-    public Field86(char option, List<List<Map<String, String>>> value) {
+    public Field86(char option, List<Map<String, String>> value) {
         this.value = value;
         this.option = option;
     }
@@ -90,24 +91,32 @@ public class Field86 {
             Matcher field86Matcher = MT940ParserConstants.FIELD_86_REGEX_PATTERN.matcher(field86String);
 
             if (field86Matcher.matches()) {
-                List<List<Map<String, String>>> field86values = new ArrayList<>();
+                List<Map<String, String>> field86values = new ArrayList<>();
                 String[] lines = field86Matcher.group(1).split("\\R"); // Splitting field86 by lines
 
                 // Supported Field86 Codes
                 List<String> supportedCodes = MTParserUtils.getMT940SupportedField86Codes();
 
                 for (String line : lines) {
-                    List<Map<String, String>> field86Line = new ArrayList<>();
+                    Map<String, String> field86Line = new HashMap<>();
 
                     String[] elements = line.split("/"); // Separate the values using /
 
                     for (int i = 0; i < elements.length; i++) {
                         if (i + 1 == elements.length) {
-                            field86Line.add(Map.of(MT940ParserConstants.FIELD_86_NO_CODE, elements[i]));
+                            field86Line.put(MT940ParserConstants.FIELD_86_NO_CODE, elements[i]);
                         } else if (supportedCodes.contains(elements[i])) {
-                            field86Line.add(Map.of(elements[i], elements[i++]));
+                            if (field86Line.containsKey(elements[i])) {
+                                // Duplicated code
+                                throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_FORMAT,
+                                        Field86.TAG));
+                            }
+
+                            field86Line.put(elements[i], elements[i++]);
                         } else {
-                            field86Line.add(Map.of(elements[i], elements[i++]));
+                            // Unsupported code
+                            throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_FORMAT,
+                                    Field86.TAG));
                         }
                     }
 
