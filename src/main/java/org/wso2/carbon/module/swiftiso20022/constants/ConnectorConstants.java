@@ -255,4 +255,7 @@ public class ConnectorConstants {
     public static final String ERROR_MISSING_OPENING_BALANCE = "Missing Opening Balance in ISO20022.camt.053 message";
     public static final String ERROR_MISSING_CLOSING_BALANCE = "Missing Closing Balance in ISO20022.camt.053 message";
 
+    public static final String ERROR_PARSING_MT_MESSAGE = "mt_%s_parsing_failed";
+    public static final String ERROR_EMPTY_MT940_MSG = "MT940 message is empty";
+
 }
