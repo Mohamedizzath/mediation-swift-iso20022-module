@@ -23,7 +23,12 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
 import org.wso2.carbon.module.swiftiso20022.mt.models.blocks.text.MT940TextBlock;
+import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field86;
 import org.wso2.carbon.module.swiftiso20022.utils.MT940ParserTestConstants;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Test class for MT940Parser.
@@ -226,8 +231,20 @@ public class MT940ParserTests {
         int statementCount = parsedTextBlock.getStatementLines().size();
 
         for (int i = 0; i < statementCount; i++) {
-            Assert.assertTrue(new ReflectionEquals(textBlock.getStatementLines().get(i).get("Field86"))
-                    .matches(parsedTextBlock.getStatementLines().get(i).get("Field86")));
+            List<Map<String, String>> addInfos = ((Field86) parsedTextBlock.getStatementLines().get(i)
+                    .get("Field86")).getValue();
+            List<Map<String, String>> expectedAddInfos = ((Field86) textBlock.getStatementLines().get(i)
+                    .get("Field86")).getValue();
+
+            Assert.assertEquals(expectedAddInfos.size(), addInfos.size());
+
+            for (int j = 0; i < addInfos.size(); i++) {
+                Set<String> keys = addInfos.get(i).keySet();
+
+                for (String key : keys) {
+                    Assert.assertEquals(expectedAddInfos.get(j).get(key), addInfos.get(j).get(key));
+                }
+            }
         }
     }
 
