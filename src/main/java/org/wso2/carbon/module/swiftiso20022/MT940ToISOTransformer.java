@@ -19,7 +19,7 @@
 package org.wso2.carbon.module.swiftiso20022;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import org.apache.axis2.AxisFault;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
@@ -33,7 +33,7 @@ import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException
 import org.wso2.carbon.module.swiftiso20022.mt.models.messages.MT940Message;
 import org.wso2.carbon.module.swiftiso20022.mt.parsers.MT940Parser;
 import org.wso2.carbon.module.swiftiso20022.utils.ConnectorUtils;
-import org.wso2.carbon.module.swiftiso20022.utils.MT940GsonSerializer;
+import org.wso2.carbon.module.swiftiso20022.utils.MT940JSONParserUtils;
 
 /**
  * Transform MT940 to ISO20022.camt.053.
@@ -41,8 +41,7 @@ import org.wso2.carbon.module.swiftiso20022.utils.MT940GsonSerializer;
 public class MT940ToISOTransformer extends AbstractConnector {
     private static Log log = LogFactory.getLog(MT940ToISOTransformer.class);
 
-    private static final Gson gson = new GsonBuilder()
-            .registerTypeAdapter(MT940Message.class, new MT940GsonSerializer()).create();
+    private static final Gson gson = new Gson();
 
     @Override
     public void connect(MessageContext messageContext) throws ConnectException {
@@ -54,9 +53,15 @@ public class MT940ToISOTransformer extends AbstractConnector {
             }
 
             MT940Message mt940Message = MT940Parser.parse(message);
-            String json = gson.toJson(mt940Message);
+            JsonObject mt940JsonObject = (JsonObject) gson.toJsonTree(mt940Message);
 
-            ConnectorUtils.appendJsonResponseToMessageContext(messageContext, json);
+            MT940JSONParserUtils.updateJsonObjectToMT940(mt940JsonObject);
+            MT940JSONParserUtils.updateDatesFrMT940(mt940JsonObject);
+            MT940JSONParserUtils.addBICToMT940Message(mt940JsonObject);
+
+            String mt940Json = mt940JsonObject.toString();
+
+            ConnectorUtils.appendJsonResponseToMessageContext(messageContext, mt940JsonObject.toString());
         } catch (AxisFault | MTMessageParsingException e) {
             log.error(e.getMessage(), e);
             ConnectorUtils.appendErrorToMessageContext(messageContext,

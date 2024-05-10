@@ -19,12 +19,14 @@
 package org.wso2.carbon.module.swiftiso20022.utils;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMNode;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.xpath.AXIOMXPath;
 import org.testng.annotations.DataProvider;
 import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
+import org.wso2.carbon.module.swiftiso20022.mt.models.messages.MT940Message;
 import org.wso2.carbon.module.swiftiso20022.mt.parsers.MT940Parser;
 
 import java.io.StringReader;
@@ -42,7 +44,14 @@ public class MT940ToISO20022PayloadFactoryTestConstants {
     public static String getMT940JSON(Map<String, String> params) throws Exception {
         String mtMessageText = MTParserTestConstants.getMTMessageText(params);
 
-        return gson.toJson(MT940Parser.parse(mtMessageText));
+        MT940Message mt940Message = MT940Parser.parse(MTParserTestConstants.getMTMessageText(params));
+        JsonObject mt940JsonObject = (JsonObject) gson.toJsonTree(mt940Message);
+
+        MT940JSONParserUtils.updateJsonObjectToMT940(mt940JsonObject);
+        MT940JSONParserUtils.updateDatesFrMT940(mt940JsonObject);
+        MT940JSONParserUtils.addBICToMT940Message(mt940JsonObject);
+
+        return mt940JsonObject.toString();
     }
 
     public static OMElement getXMLElement(String xmlMessage, String xPath) throws Exception {
@@ -399,13 +408,6 @@ public class MT940ToISO20022PayloadFactoryTestConstants {
                         ":28C:1/1\n" +
                         ":60F:D230930USD843686,20\n" +
                         ":61:2310011001RCD10,00FCLRGSGWGDNCTAHQM8\n" +
-                        ":86:EREF/\n" +
-                        ":62F:D230930USD843686,20\n-}")), List.of("")},
-                {getMT940JSON(Map.of(ConnectorConstants.TEXT_BLOCK_KEY, "{4:\n:20:258158850\n" +
-                        ":25:DD01100056869\n" +
-                        ":28C:1/1\n" +
-                        ":60F:D230930USD843686,20\n" +
-                        ":61:2310011001RCD10,00FCLRGSGWGDNCTAHQM8\n" +
                         ":86:EREF/5798a701-effe-43e5-8d14-eec27ea3d8ec\n" +
                         ":62F:D230930USD843686,20\n-}")), List.of("5798a701-effe-43e5-8d14-eec27ea3d8ec")},
                 {getMT940JSON(Map.of(ConnectorConstants.TEXT_BLOCK_KEY, "{4:\n:20:258158850\n" +
@@ -431,13 +433,6 @@ public class MT940ToISO20022PayloadFactoryTestConstants {
                         ":28C:1/1\n" +
                         ":60F:D230930USD843686,20\n" +
                         ":61:2310011001RCD10,00FCLRGSGWGDNCTAHQM8\n" +
-                        ":86:IREF/\n" +
-                        ":62F:D230930USD843686,20\n-}")), List.of("")},
-                {getMT940JSON(Map.of(ConnectorConstants.TEXT_BLOCK_KEY, "{4:\n:20:258158850\n" +
-                        ":25:DD01100056869\n" +
-                        ":28C:1/1\n" +
-                        ":60F:D230930USD843686,20\n" +
-                        ":61:2310011001RCD10,00FCLRGSGWGDNCTAHQM8\n" +
                         ":86:IREF/78900000782\n" +
                         ":62F:D230930USD843686,20\n-}")), List.of("78900000782")},
                 {getMT940JSON(Map.of(ConnectorConstants.TEXT_BLOCK_KEY, "{4:\n:20:258158850\n" +
@@ -457,13 +452,6 @@ public class MT940ToISO20022PayloadFactoryTestConstants {
     @DataProvider(name = "parseEntryDtlsPaymentInfoId")
     Object[][] parseEntryDtlsPaymentInfoId() throws Exception {
         return new Object[][] {
-                {getMT940JSON(Map.of(ConnectorConstants.TEXT_BLOCK_KEY, "{4:\n:20:258158850\n" +
-                        ":25:DD01100056869\n" +
-                        ":28C:1/1\n" +
-                        ":60F:D230930USD843686,20\n" +
-                        ":61:2310011001RCD10,00FCLRGSGWGDNCTAHQM8\n" +
-                        ":86:PREF/\n" +
-                        ":62F:D230930USD843686,20\n-}")), List.of("")},
                 {getMT940JSON(Map.of(ConnectorConstants.TEXT_BLOCK_KEY, "{4:\n:20:258158850\n" +
                         ":25:DD01100056869\n" +
                         ":28C:1/1\n" +

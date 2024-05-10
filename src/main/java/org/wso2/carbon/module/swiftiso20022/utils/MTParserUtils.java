@@ -24,7 +24,9 @@ import org.wso2.carbon.module.swiftiso20022.constants.MT940ParserConstants;
 import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
 import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -203,5 +205,44 @@ public class MTParserUtils {
         amountText = amountText.endsWith(".") ? amountText + "00" : amountText;
 
         return Double.parseDouble(amountText);
+    }
+
+    /**
+     * Method for converting YYYMMDD date and HHMM time into fully standard format.
+     * @param date         Date in YYMMDD format
+     * @param time         Time in HHMM format
+     * @return             Fully constructed date
+     */
+    public static String convertFullDateToDt(String date, String time) {
+        return "20" + date.substring(0, 2) + "-" + date.substring(2, 4) + "-" + date.substring(4, 6) + "T" +
+                time.substring(0, 2) + ":" + time.substring(2, 4) + ":00Z";
+    }
+
+    /**
+     * Method for converting YYMMDD date into YYYY-MM-DD.
+     * @param date        Date in YYMMDD format
+     * @return            Converted date in YYYY-MM-DD
+     */
+    public static String convertDateToDt(String date) {
+        return "20" + date.substring(0, 2) + "-" + date.substring(2, 4) + "-" + date.substring(4, 6);
+    }
+
+    /**
+     * Method for converting MMDD date using current system year.
+     * @param date          Date in MMDD format
+     * @return              Converted date in YYYY-MM-DD format
+     */
+    public static String convertDateToDtUsingCurrYear(String date) {
+        SimpleDateFormat yearFormatter = new SimpleDateFormat("yyyy");
+        return yearFormatter.format(new Date()) + "-" + date.substring(0, 2) + "-" + date.substring(2, 4);
+    }
+
+    /**
+     * Method for converting LT address into BIC number.
+     * @param ltAddress      LT address as string
+     * @return
+     */
+    public static String convertLTAddressToBIC(String ltAddress) {
+        return ltAddress.substring(0, 8) + ltAddress.substring(9);
     }
 }

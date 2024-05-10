@@ -1,13 +1,10 @@
-<#-- Macros --><#macro ltToBIC lTAddress><#if lTAddress?length == 12 >${lTAddress[0..7] + lTAddress[9..11]}<#else>${lTAddress}</#if></#macro>
-<#macro getDateTime date time><#assign fullDate="20" + date[0..1] + "-" + date[2..3] + "-" + date[4..5] + "T" /><#assign fullTime=time[0..1] + ":" + time[2..3] + ":00Z">${fullDate + fullTime}</#macro>
-<#macro getDtFromDate date>${"20" + date[0..1] + "-" + date[2..3] + "-" + date[4..5]}</#macro><#macro getCurrencyAmt amt><#if amt?replace (",", ".")?ends_with(".")>${amt?replace (",", ".") + "00"}<#else>${amt?replace (",", ".")}</#if></#macro>
 <BizMsgEnvlp>
 <AppHdr xmlns="urn:iso:std:iso:20022:tech:xsd:head.001.001.03">
 	<#if payload.applicationHeaderBlock.messageInputReference?has_content>
 	<Fr>
 		<FIId>
 			<FinInstnId>
-				<BICFI><@ltToBIC payload.applicationHeaderBlock.messageInputReference[6..17]/></BICFI><#-- Application header: MIR LT identifier -->
+				<BICFI>${payload.FromBIC}</BICFI><#-- Application header: MIR LT identifier -->
 			</FinInstnId>
 		</FIId>
 	</Fr>
@@ -15,19 +12,19 @@
 	<To>
 		<FIId>
 			<FinInstnId>
-				<BICFI><@ltToBIC payload.basicHeaderBlock.logicalTerminalAddress/></BICFI><#-- Basic header: LT identifier -->
+				<BICFI>${payload.ToBIC}</BICFI><#-- Basic header: LT identifier -->
 			</FinInstnId>
 		</FIId>
 	</To>
 	<MsgDefIdr>camt.053.001.11</MsgDefIdr>
 	<#if payload.applicationHeaderBlock?has_content>
-	<CreDt><@getDateTime payload.applicationHeaderBlock.messageInputReference[0..5] payload.applicationHeaderBlock.inputTime /></CreDt><#-- Application header: Input Time OR Application header: Time in MIR -->
+	<CreDt>${payload.applicationHeaderBlock.createdDt}</CreDt><#-- Application header: Input Time OR Application header: Time in MIR -->
 	</#if>
 </AppHdr>
 <Document xmlns="urn:iso:std:iso:20022:tech:xsd:camt.053.001.11">
     <BkToCstmrStmt>
         <GrpHdr>
-			<#if payload.applicationHeaderBlock?has_content><CreDt><@getDateTime payload.applicationHeaderBlock.messageInputReference[0..5] payload.applicationHeaderBlock.inputTime /></CreDt></#if><#-- Application header: Input Time OR Application header: Time in MIR -->
+			<#if payload.applicationHeaderBlock?has_content><CreDt>${payload.applicationHeaderBlock.createdDt}</CreDt></#if><#-- Application header: Input Time OR Application header: Time in MIR -->
             <#if payload.textBlock.statementSequenceNumber.statementNumber?has_content>
             	<MsgPgntn>
             		<PgNb>${payload.textBlock.statementSequenceNumber.statementNumber}</PgNb><#-- Tag 28C: Statement number / [Sequence Number] -->
@@ -57,7 +54,7 @@
                 </#if>
                 <Svcr>
                     <FinInstnId>
-                        <BICFI><@ltToBIC payload.basicHeaderBlock.logicalTerminalAddress/></BICFI><#-- Basic header: LT identifier -->
+                        <BICFI>${payload.ToBIC}</BICFI><#-- Basic header: LT identifier -->
                     </FinInstnId>
                 </Svcr>
             </Acct>
@@ -67,10 +64,10 @@
                         <Cd>OPBD</Cd><#-- Tag 60: Opening balance -->
                     </CdOrPrtry>
                 </Tp>
-                <Amt Ccy="${payload.textBlock.openingBal.currency}"><@getCurrencyAmt payload.textBlock.openingBal.amount/></Amt><#-- Tag 60/Opening Balance: Currency and Amount -->
+                <Amt Ccy="${payload.textBlock.openingBal.currency}">${payload.textBlock.openingBal.amount?string("##0.00")}</Amt><#-- Tag 60/Opening Balance: Currency and Amount -->
                 <CdtDbtInd><#if payload.textBlock.openingBal.dcMark == "C">CRDT<#else>DBIT</#if></CdtDbtInd><#-- Tag 60/Closing Balance: D/C Mark -->
                 <Dt>
-                	<Dt><@getDtFromDate payload.textBlock.openingBal.date/></Dt><#-- Tag 60/Opening Balance: Date -->
+                	<Dt>${payload.textBlock.openingBal.dateDt}</Dt><#-- Tag 60/Opening Balance: Date -->
                 </Dt>
             </Bal>
             <Bal>
@@ -79,10 +76,10 @@
                         <Cd>CLBD</Cd><#-- Tag 62: Closing balance -->
                     </CdOrPrtry>
                 </Tp>
-                <Amt Ccy="${payload.textBlock.closingBal.currency}"><@getCurrencyAmt payload.textBlock.closingBal.amount/></Amt><#-- Tag 62/Closing Balance: Currency and Amount -->
+                <Amt Ccy="${payload.textBlock.closingBal.currency}">${payload.textBlock.closingBal.amount?string("##0.00")}</Amt><#-- Tag 62/Closing Balance: Currency and Amount -->
                 <CdtDbtInd><#if payload.textBlock.closingBal.dcMark == "C">CRDT<#else>DBIT</#if></CdtDbtInd><#-- Tag 62/Closing Balance: D/C Mark -->
                 <Dt>
-                	<Dt><@getDtFromDate payload.textBlock.closingBal.date/></Dt><#-- Tag 62/Closing Balance: Date -->
+                	<Dt>${payload.textBlock.closingBal.dateDt}</Dt><#-- Tag 62/Closing Balance: Date -->
                 </Dt>
             </Bal>
             <#if payload.textBlock.closingAvlBalance?has_content>
@@ -92,10 +89,10 @@
                         <Cd>CLAV</Cd><#-- Tag 64: Closing available balance -->
                     </CdOrPrtry>
                 </Tp>
-                <Amt Ccy="${payload.textBlock.closingAvlBalance.currency}"><@getCurrencyAmt payload.textBlock.closingAvlBalance.amount/></Amt><#-- Tag 64/Closing available balance: Currency and Amount -->
+                <Amt Ccy="${payload.textBlock.closingAvlBalance.currency}">${payload.textBlock.closingAvlBalance.amount?string("##0.00")}</Amt><#-- Tag 64/Closing available balance: Currency and Amount -->
                 <CdtDbtInd><#if payload.textBlock.closingAvlBalance.dcMark == "C">CRDT<#else>DBIT</#if></CdtDbtInd><#-- Tag 64/Closing available balance: D/C Mark -->
                 <Dt>
-                    <Dt><@getDtFromDate payload.textBlock.closingAvlBalance.date/></Dt><#-- Tag 64/Closing available balance: Date -->
+                    <Dt>${payload.textBlock.closingAvlBalance.dateDt}</Dt><#-- Tag 64/Closing available balance: Date -->
                 </Dt>
             </Bal>
             </#if>
@@ -106,10 +103,10 @@
                         <Cd>FWAV</Cd><#-- Tag 65: Forward available balance -->
                     </CdOrPrtry>
                 </Tp>
-                <Amt Ccy="${payload.textBlock.forwardAvlBalance.currency}"><@getCurrencyAmt payload.textBlock.forwardAvlBalance.amount/></Amt><#-- Tag 65/Forward available balance: Currency and Amount -->
+                <Amt Ccy="${payload.textBlock.forwardAvlBalance.currency}">${payload.textBlock.forwardAvlBalance.amount?string("##0.00")}</Amt><#-- Tag 65/Forward available balance: Currency and Amount -->
                 <CdtDbtInd><#if payload.textBlock.forwardAvlBalance.dcMark == "C">CRDT<#else>DBIT</#if></CdtDbtInd><#-- Tag 65/Forward available balance: D/C Mark -->
                 <Dt>
-                    <Dt><@getDtFromDate payload.textBlock.forwardAvlBalance.date/></Dt><#-- Tag 65/Forward available balance: Date -->
+                    <Dt>${payload.textBlock.forwardAvlBalance.dateDt}</Dt><#-- Tag 65/Forward available balance: Date -->
                 </Dt>
             </Bal>
             </#if>
@@ -122,9 +119,9 @@
             	</#if>
             	<#list statements as statement>
             		<#if statement.Field61.dcMark == "C" || statement.Field61.dcMark == "RC">
-            			<#assign creditCount = creditCount + 1 /><#assign creditAmount = creditAmount + statement.Field61.amount?replace(",", ".")?number />
+            			<#assign creditCount = creditCount + 1 /><#assign creditAmount = creditAmount + statement.Field61.amount?number />
             		<#else>
-            			<#assign debitCount = debitCount + 1 /><#assign debitAmount = debitAmount + statement.Field61.amount?replace(",", ".")?number />
+            			<#assign debitCount = debitCount + 1 /><#assign debitAmount = debitAmount + statement.Field61.amount?number />
             		</#if>
             	</#list>
             	<TtlNtries>
@@ -157,16 +154,16 @@
             </#if>
             <#list entries as entry>
             <Ntry>
-                <Amt><@getCurrencyAmt entry.Field61.amount/></Amt><#-- Tag 61: Amount -->
+                <Amt>${entry.Field61.amount?string("##0.00")}</Amt><#-- Tag 61: Amount -->
                 <CdtDbtInd><#if entry.Field61.dcMark == "C" || entry.Field61.dcMark == "RC">CRDT<#else>DBIT</#if></CdtDbtInd><#-- Tag 61: D/C Mark -->
                 <RvslInd><#if entry.Field61.dcMark == "RC" || entry.Field61.dcMark == "RD">true<#else>false</#if></RvslInd><#-- Tag 61: D/C Mark -->
-              	<#if entry.Field61.entryDate?has_content>
+              	<#if entry.Field61.entryDateDt?has_content>
                 <BookgDt>
-                    <Dt>${.now?string('yyyy') + "-" + entry.Field61.entryDate[0..1] + "-" + entry.Field61.entryDate[2..3]}</Dt><#-- Tag 61: Entry Date with Current System year -->
+                    <Dt>${entry.Field61.entryDateDt}</Dt><#-- Tag 61: Entry Date with Current System year -->
                 </BookgDt>
                 </#if>
                 <ValDt>
-                    <Dt><@getDtFromDate entry.Field61.valueDate/></Dt><#-- Tag 61: Value Date -->
+                    <Dt>${entry.Field61.valueDateDt}</Dt><#-- Tag 61: Value Date -->
                 </ValDt>
                 <#if entry.Field61.refToAccountServicingInstitution?has_content>
                 <AcctSvcrRef>${entry.Field61.refToAccountServicingInstitution}</AcctSvcrRef>
@@ -178,25 +175,21 @@
 				</BkTxCd>
 				<#if entry.Field86?has_content>
 				<NtryDtls>
-				<#assign txDtls=entry.Field86.value?split("\\R") />
-				<#list txDtls as txDtl>
+				<#list entry.Field86.value as txDtl>
 					<#assign txDtlsStr="" />
 					<#assign additionalInfo="" />
-					<#assign details=txDtl?split("/") /><#assign detailsCount=details?size - 1 />
-					<#list 0..detailsCount as i>
-						<#if details[i] == "EREF">
-							<#assign txDtlsStr = txDtlsStr + "<EndToEndId>" + details[i + 1] + "</EndToEndId>" />
-							<#assign i = i + 1>
-						<#elseif details[i] == "IREF">
-							<#assign txDtlsStr = txDtlsStr + "<InstrId>" + details[i + 1] + "</InstrId>" />
-							<#assign i = i + 1>
-						<#elseif details[i] == "PREF">
-							<#assign txDtlsStr = txDtlsStr + "<PmtInfId>" + details[i + 1] + "</PmtInfId>" />
-							<#assign i = i + 1>
-						<#else>
-							<#assign additionalInfo = details[i] />
+						<#if txDtl["EREF"]?has_content>
+							<#assign txDtlsStr = txDtlsStr + "<EndToEndId>" + txDtl["EREF"] + "</EndToEndId>" />
 						</#if>
-					</#list>
+						<#if txDtl["IREF"]?has_content>
+							<#assign txDtlsStr = txDtlsStr + "<InstrId>" + txDtl["IREF"] + "</InstrId>" />
+						</#if>
+						<#if txDtl["PREF"]?has_content>
+							<#assign txDtlsStr = txDtlsStr + "<PmtInfId>" + txDtl["PREF"] + "</PmtInfId>" />
+						</#if>
+						<#if txDtl["#ADDITIONAL-INFO#"]?has_content>
+							<#assign additionalInfo = txDtl["#ADDITIONAL-INFO#"] />
+						</#if>
 					<#if txDtlsStr != "">
 						<TxDtls>
 							<Refs>
@@ -213,7 +206,40 @@
             </Ntry>
             </#list>
             <#if payload.textBlock.infoToAccountOwner?has_content>
-            <AddtlStmtInf>${payload.textBlock.infoToAccountOwner.value}</AddtlStmtInf>
+       		<#assign infoToAccoutOwn = "" />
+            <#list payload.textBlock.infoToAccountOwner.value as line>
+            	<#assign infoStr="" />
+				<#if line["EREF"]?has_content>
+					<#if infoStr == "">
+						<#assign infoStr = "EREF/" + line["EREF"] />
+					<#else>
+						<#assign infoStr = infoStr + "/EREF/" + line["EREF"] />
+					</#if>
+				</#if>
+				<#if line["IREF"]?has_content>
+					<#if infoStr == "">
+						<#assign infoStr = "IREF/" + line["IREF"] />
+					<#else>
+						<#assign infoStr = infoStr + "/IREF/" + line["IREF"] />
+					</#if>
+				</#if>
+				<#if line["PREF"]?has_content>
+					<#if infoStr == "">
+						<#assign infoStr = "PREF/" + line["PREF"] />
+					<#else>
+						<#assign infoStr = infoStr + "/PREF/" + line["PREF"] />
+					</#if>
+				</#if>
+				<#if line["#ADDITIONAL-INFO#"]?has_content>
+					<#if infoStr == "">
+						<#assign infoStr = line["#ADDITIONAL-INFO#"] />
+					<#else>
+						<#assign infoStr = infoStr + "/" + line["#ADDITIONAL-INFO#"] />
+					</#if>
+				</#if>
+				<#if infoToAccoutOwn == ""><#assign infoToAccoutOwn = infoToAccoutOwn + infoStr/><#else><#assign infoToAccoutOwn = infoToAccoutOwn + "/" + infoStr/></#if>
+            </#list>
+            <AddtlStmtInf>${infoToAccoutOwn}</AddtlStmtInf>
             </#if>
         </Stmt>
     </BkToCstmrStmt>
