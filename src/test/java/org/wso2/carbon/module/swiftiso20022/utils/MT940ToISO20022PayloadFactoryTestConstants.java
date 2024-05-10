@@ -42,8 +42,6 @@ import java.util.stream.Collectors;
 public class MT940ToISO20022PayloadFactoryTestConstants {
     private static final Gson gson = new Gson();
     public static String getMT940JSON(Map<String, String> params) throws Exception {
-        String mtMessageText = MTParserTestConstants.getMTMessageText(params);
-
         MT940Message mt940Message = MT940Parser.parse(MTParserTestConstants.getMTMessageText(params));
         JsonObject mt940JsonObject = (JsonObject) gson.toJsonTree(mt940Message);
 

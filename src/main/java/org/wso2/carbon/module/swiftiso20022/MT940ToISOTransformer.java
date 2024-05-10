@@ -59,7 +59,6 @@ public class MT940ToISOTransformer extends AbstractConnector {
             MT940JSONParserUtils.updateDatesFrMT940(mt940JsonObject);
             MT940JSONParserUtils.addBICToMT940Message(mt940JsonObject);
 
-            String mt940Json = mt940JsonObject.toString();
 
             ConnectorUtils.appendJsonResponseToMessageContext(messageContext, mt940JsonObject.toString());
         } catch (AxisFault | MTMessageParsingException e) {
