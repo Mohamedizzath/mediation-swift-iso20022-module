@@ -18,6 +18,7 @@
 
 package org.wso2.carbon.module.swiftiso20022.mt.parsers;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
@@ -82,8 +83,11 @@ public class MT103Parser {
         }
 
         MT103Message mt103MessageModel = new MT103Message();
-        // TODO: add comment
+
+        // This method parse and set Header blocks and the Trailer block, logic is common to all MT messages.
         MTParser.parse(blocks, mt103MessageModel);
+
+        // Text block is message specific implementation.
         mt103MessageModel.setTextBlock(parseTextBlock(blocks.get(ConnectorConstants.TEXT_BLOCK_KEY)));
         return mt103MessageModel;
     }
@@ -114,7 +118,7 @@ public class MT103Parser {
 
         for (String field : fields) {
 
-            // Matchers format -> (tag):(value)
+            // Matchers format -> (tag)(option):(value)
             Matcher tagNValue = MTParserConstants.TAG_AND_VALUE_REGEX_PATTERN_TEXT_BLOCK.matcher(field);
 
             // After splitting, there can be only 2 elements else invalid tag and value format
@@ -125,103 +129,98 @@ public class MT103Parser {
                 throw new MTMessageParsingException(errorMessage);
             }
 
-            String tag = tagNValue.group(1);
-            char option = tag.length() > 2 ? tag.charAt(2) : ConnectorConstants.NO_LETTER_OPTION;
-
             // group 1 -> tag
+            String tag = tagNValue.group(1);
+
+            // group 2 -> option
+            char option = StringUtils.isNotBlank(tagNValue.group(2)) ?
+                    tagNValue.group(2).charAt(0) : ConnectorConstants.NO_LETTER_OPTION;
+
             // group 2 -> value
-            switch (tagNValue.group(1)) {
-                case Field13.OPTION_C_TAG:
+            switch (tag) {
+                case Field13.TAG:
                     // This field is repetitive and every occurrence is parsed separately and added to the model
-                    mt103TextBlock.setTimeIndication(Field13.parse(tagNValue.group(2), option));
+                    mt103TextBlock.setTimeIndication(Field13.parse(tagNValue.group(3), option));
                     break;
-                case Field20.NO_LETTER_OPTION_TAG:
-                    mt103TextBlock.setSendersReference(Field20.parse(tagNValue.group(2), option));
+                case Field20.TAG:
+                    mt103TextBlock.setSendersReference(Field20.parse(tagNValue.group(3), option));
                     break;
-                case Field23.OPTION_B_TAG:
-                    mt103TextBlock.setBankOperationCode(Field23.parse(tagNValue.group(2), option));
+                case Field23.TAG:
+                    Field23 field23 = Field23.parse(tagNValue.group(3), option);
+
+                    if (option == ConnectorConstants.OPTION_B) {
+                        mt103TextBlock.setBankOperationCode(field23);
+                    } else {
+                        // This field is repetitive and every occurrence is parsed separately and added to the model
+                        mt103TextBlock.setInstructionCode(field23);
+                    }
                     break;
-                case Field23.OPTION_E_TAG:
-                    // This field is repetitive and every occurrence is parsed separately and added to the model
-                    mt103TextBlock.setInstructionCode(Field23.parse(tagNValue.group(2), option));
+                case Field26.TAG:
+                    mt103TextBlock.setTransactionTypeCode(Field26.parse(tagNValue.group(3), option));
                     break;
-                case Field26.OPTION_T_TAG:
-                    mt103TextBlock.setTransactionTypeCode(Field26.parse(tagNValue.group(2), option));
+                case Field32.TAG:
+                    mt103TextBlock.setValue(Field32.parse(tagNValue.group(3), option));
                     break;
-                case Field32.OPTION_A_TAG:
-                    mt103TextBlock.setValue(Field32.parse(tagNValue.group(2), option));
+                case Field33.TAG:
+                    mt103TextBlock.setInstructedAmount(Field33.parse(tagNValue.group(3), option));
                     break;
-                case Field33.OPTION_B_TAG:
-                    mt103TextBlock.setInstructedAmount(Field33.parse(tagNValue.group(2), option));
+                case Field36.TAG:
+                    mt103TextBlock.setExchangeRate(Field36.parse(tagNValue.group(3), option));
                     break;
-                case Field36.NO_LETTER_OPTION_TAG:
-                    mt103TextBlock.setExchangeRate(Field36.parse(tagNValue.group(2), option));
+                case Field50.TAG:
+                    mt103TextBlock.setOrderingCustomer(Field50.parse(tagNValue.group(3), option));
                     break;
-                case Field50.OPTION_A_TAG:
-                case Field50.OPTION_F_TAG:
-                case Field50.OPTION_K_TAG:
-                    mt103TextBlock.setOrderingCustomer(Field50.parse(tagNValue.group(2), option));
+                case Field51.TAG:
+                    mt103TextBlock.setSendingInstitution(Field51.parse(tagNValue.group(3), option));
                     break;
-                case Field51.OPTION_A_TAG:
-                    mt103TextBlock.setSendingInstitution(Field51.parse(tagNValue.group(2), option));
+                case Field52.TAG:
+                    mt103TextBlock.setOrderingInstitution(Field52.parse(tagNValue.group(3), option));
                     break;
-                case Field52.OPTION_A_TAG:
-                case Field52.OPTION_D_TAG:
-                    mt103TextBlock.setOrderingInstitution(Field52.parse(tagNValue.group(2), option));
+                case Field53.TAG:
+                    mt103TextBlock.setSendersCorrespondent(Field53.parse(tagNValue.group(3), option));
                     break;
-                case Field53.OPTION_A_TAG:
-                case Field53.OPTION_B_TAG:
-                case Field53.OPTION_D_TAG:
-                    mt103TextBlock.setSendersCorrespondent(Field53.parse(tagNValue.group(2), option));
+                case Field54.TAG:
+                    mt103TextBlock.setReceiversCorrespondent(Field54.parse(tagNValue.group(3), option));
                     break;
-                case Field54.OPTION_A_TAG:
-                case Field54.OPTION_B_TAG:
-                case Field54.OPTION_D_TAG:
-                    mt103TextBlock.setReceiversCorrespondent(Field54.parse(tagNValue.group(2), option));
+                case Field55.TAG:
+                    mt103TextBlock.setThirdReimbursementInstitution(Field55.parse(tagNValue.group(3), option));
                     break;
-                case Field55.OPTION_A_TAG:
-                case Field55.OPTION_B_TAG:
-                case Field55.OPTION_D_TAG:
-                    mt103TextBlock.setThirdReimbursementInstitution(
-                            Field55.parse(tagNValue.group(2), option));
+                case Field56.TAG:
+                    mt103TextBlock.setIntermediaryInstitution(Field56.parse(tagNValue.group(3), option));
                     break;
-                case Field56.OPTION_A_TAG:
-                case Field56.OPTION_C_TAG:
-                case Field56.OPTION_D_TAG:
-                    mt103TextBlock.setIntermediaryInstitution(Field56.parse(tagNValue.group(2), option));
+                case Field57.TAG:
+                    mt103TextBlock.setAccountWithInstitution(Field57.parse(tagNValue.group(3), option));
                     break;
-                case Field57.OPTION_A_TAG:
-                case Field57.OPTION_B_TAG:
-                case Field57.OPTION_C_TAG:
-                case Field57.OPTION_D_TAG:
-                    mt103TextBlock.setAccountWithInstitution(Field57.parse(tagNValue.group(2), option));
+                case Field59.TAG:
+                    mt103TextBlock.setBeneficiaryCustomer(Field59.parse(tagNValue.group(3), option));
                     break;
-                case Field59.NO_LETTER_OPTION_TAG:
-                case Field59.OPTION_A_TAG:
-                case Field59.OPTION_F_TAG:
-                    mt103TextBlock.setBeneficiaryCustomer(Field59.parse(tagNValue.group(2), option));
+                case Field70.TAG:
+                    mt103TextBlock.setRemittanceInformation(Field70.parse(tagNValue.group(3), option));
                     break;
-                case Field70.NO_LETTER_OPTION_TAG:
-                    mt103TextBlock.setRemittanceInformation(Field70.parse(tagNValue.group(2), option));
-                    break;
-                case Field71.OPTION_A_TAG:
-                    mt103TextBlock.setDetailsOfCharges(Field71.parse(tagNValue.group(2), option));
-                    break;
-                case Field71.OPTION_F_TAG:
-                    // This field is repetitive and every occurrence is parsed separately and added to the model
-                    mt103TextBlock.setSendersCharges(Field71.parse(tagNValue.group(2), option));
-                    break;
-                case Field71.OPTION_G_TAG:
-                    mt103TextBlock.setReceiversCharges(Field71.parse(tagNValue.group(2), option));
+                case Field71.TAG:
+                    Field71 field71 = Field71.parse(tagNValue.group(3), option);
+
+                    if (option == ConnectorConstants.OPTION_A) {
+                        mt103TextBlock.setDetailsOfCharges(field71);
+                    } else if (option == ConnectorConstants.OPTION_F) {
+                        // This field is repetitive and every occurrence is parsed separately and added to the model
+                        mt103TextBlock.setSendersCharges(field71);
+                    } else {
+                        mt103TextBlock.setReceiversCharges(field71);
+                        break;
+                    }
                     break;
                 case Field72.TAG:
-                    mt103TextBlock.setSenderToReceiverInformation(Field72.parse(tagNValue.group(2), option));
+                    mt103TextBlock.setSenderToReceiverInformation(Field72.parse(tagNValue.group(3), option));
                     break;
-                case Field77.OPTION_B_TAG:
-                    mt103TextBlock.setRegulatoryReporting(Field77.parse(tagNValue.group(2), option));
-                    break;
-                case Field77.OPTION_T_TAG:
-                    mt103TextBlock.setEnvelopeContents(Field77.parse(tagNValue.group(2), option));
+                case Field77.TAG:
+                    Field77 field77 = Field77.parse(tagNValue.group(3), option);
+
+                    if (option == ConnectorConstants.OPTION_B) {
+                        mt103TextBlock.setRegulatoryReporting(field77);
+                    } else {
+                        mt103TextBlock.setEnvelopeContents(field77);
+                    }
                     break;
                 default:
                     throw new MTMessageParsingException(

@@ -45,7 +45,7 @@ import java.util.regex.Matcher;
  */
 public class Field51 extends PartyIdentifier {
 
-    public static final String OPTION_A_TAG = "51A";
+    public static final String TAG = "51";
 
     /**
      * List of options with current implementation.

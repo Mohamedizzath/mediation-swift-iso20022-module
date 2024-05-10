@@ -140,6 +140,6 @@ public class MT103BlockFormatValidatorTests {
                 Map.of(ConnectorConstants.TEXT_BLOCK_KEY, "\n:23B:CRED\n:95:TXNREF1234567890\n"));
 
         Assert.assertTrue(validationResult.isNotValid());
-        Assert.assertEquals("95 field is not allowed in Text Block", validationResult.getErrorMessage());
+        Assert.assertEquals("Field 95 is not allowed in Text Block", validationResult.getErrorMessage());
     }
 }

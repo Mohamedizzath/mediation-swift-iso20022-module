@@ -44,7 +44,7 @@ import java.util.regex.Matcher;
  */
 public class Field70 {
 
-    public static final String NO_LETTER_OPTION_TAG = "70";
+    public static final String TAG = "70";
 
     /**
      * List of options with current implementation.

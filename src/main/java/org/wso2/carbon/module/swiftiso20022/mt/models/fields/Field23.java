@@ -47,8 +47,7 @@ import java.util.regex.Matcher;
  */
 public class Field23 {
 
-    public static final String OPTION_B_TAG = "23B";
-    public static final String OPTION_E_TAG = "23E";
+    public static final String TAG = "23";
 
     /**
      * List of options with current implementation.

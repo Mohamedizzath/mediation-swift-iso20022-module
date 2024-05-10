@@ -37,7 +37,7 @@ import java.util.regex.Matcher;
  */
 public class Field26 {
 
-    public static final String OPTION_T_TAG = "26T";
+    public static final String TAG = "26";
 
     /**
      * List of options with current implementation.

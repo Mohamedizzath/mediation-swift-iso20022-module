@@ -109,7 +109,7 @@ public class MTParserConstants {
 
     // Text Block Regex Patterns
     public static final Pattern TAG_AND_VALUE_REGEX_PATTERN_TEXT_BLOCK =
-            Pattern.compile("^(\\d{2}[A-Z]?):(.*)$", Pattern.DOTALL);
+            Pattern.compile("^(\\d{2})([A-Z]?):(.*)$", Pattern.DOTALL);
     public static final Pattern FIELD_13_REGEX_PATTERN = Pattern.compile(
             String.format("^/(%s{1,8})/(%s)([+-])(%s)$", CHARACTER_SET_A, HHMM_TIME_REGEX, HHMM_TIME_REGEX));
     public static final Pattern FIELD_20_REGEX_PATTERN = Pattern.compile(String.format("^%s{1,16}$", CHARACTER_SET_X));

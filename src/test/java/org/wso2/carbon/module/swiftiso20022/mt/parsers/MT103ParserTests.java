@@ -22,8 +22,6 @@ import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
-import org.wso2.carbon.module.swiftiso20022.constants.MT103Constants;
-import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
 import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
 import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field13;
 import org.wso2.carbon.module.swiftiso20022.mt.models.fields.Field20;
@@ -232,16 +230,16 @@ public class MT103ParserTests {
         Assert.assertNull(field50A.getPartyIdentifier());
     }
 
-    @Test(dataProvider = "invalidField50ADataProvider", dataProviderClass = MT103ParserTestConstants.class,
-            expectedExceptions = MTMessageParsingException.class,
-            expectedExceptionsMessageRegExp = "Ordering Customer in Text Block is in invalid format")
-    public void testInvalidField50AValue(String field50AString) throws Exception {
+    @Test(dataProvider = "invalidField50ADataProvider", dataProviderClass = MT103ParserTestConstants.class)
+    public void testInvalidField50AValue(String field50AString) {
 
-        Field50 field50A = Field50.parse(field50AString, ConnectorConstants.OPTION_A);
+        try {
+            Field50 field50A = Field50.parse(field50AString, ConnectorConstants.OPTION_A);
 
-        if (field50A.getIdentifierCode() == null || field50A.getDetails() != null || field50A.getLocation() != null) {
-            throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
-                    MT103Constants.ORDERING_CUSTOMER, ConnectorConstants.TEXT_BLOCK));
+            Assert.assertTrue(field50A.getIdentifierCode() == null || field50A.getDetails() != null
+                    || field50A.getLocation() != null);
+        } catch (MTMessageParsingException e) {
+            Assert.assertEquals("Ordering Customer in Text Block is in invalid format", e.getMessage());
         }
     }
 
@@ -261,17 +259,16 @@ public class MT103ParserTests {
         Assert.assertNull(field50F.getIdentifierCode());
     }
 
-    @Test(dataProvider = "invalidField50FDataProvider", dataProviderClass = MT103ParserTestConstants.class,
-            expectedExceptions = MTMessageParsingException.class,
-            expectedExceptionsMessageRegExp = "Ordering Customer in Text Block is in invalid format")
-    public void testInvalidField50FValue(String field50FString) throws Exception {
+    @Test(dataProvider = "invalidField50FDataProvider", dataProviderClass = MT103ParserTestConstants.class)
+    public void testInvalidField50FValue(String field50FString) {
 
-        Field50 field50F = Field50.parse(field50FString, ConnectorConstants.OPTION_F);
+        try {
+            Field50 field50F = Field50.parse(field50FString, ConnectorConstants.OPTION_F);
 
-        if (field50F.getPartyIdentifier() == null || field50F.getDetails() == null
-                || field50F.getLocation() != null || field50F.getAccount() != null) {
-            throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
-                    MT103Constants.ORDERING_CUSTOMER, ConnectorConstants.TEXT_BLOCK));
+            Assert.assertTrue(field50F.getPartyIdentifier() == null || field50F.getDetails() == null
+                    || field50F.getLocation() != null || field50F.getAccount() != null);
+        } catch (MTMessageParsingException e) {
+            Assert.assertEquals("Ordering Customer in Text Block is in invalid format", e.getMessage());
         }
     }
 
@@ -306,16 +303,16 @@ public class MT103ParserTests {
         Assert.assertNull(field50K.getIdentifierCode());
     }
 
-    @Test(dataProvider = "invalidField50KDataProvider", dataProviderClass = MT103ParserTestConstants.class,
-            expectedExceptions = MTMessageParsingException.class,
-            expectedExceptionsMessageRegExp = "Ordering Customer in Text Block is in invalid format")
-    public void testInvalidField50KValue(String field50KString) throws Exception {
+    @Test(dataProvider = "invalidField50KDataProvider", dataProviderClass = MT103ParserTestConstants.class)
+    public void testInvalidField50KValue(String field50KString) {
 
-        Field50 field50K = Field50.parse(field50KString, ConnectorConstants.OPTION_K);
+        try {
+            Field50 field50K = Field50.parse(field50KString, ConnectorConstants.OPTION_K);
 
-        if (field50K.getDetails() == null || field50K.getLocation() != null || field50K.getPartyIdentifier() != null) {
-            throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
-                    MT103Constants.ORDERING_CUSTOMER, ConnectorConstants.TEXT_BLOCK));
+            Assert.assertTrue(field50K.getDetails() == null || field50K.getLocation() != null
+                    || field50K.getPartyIdentifier() != null);
+        } catch (MTMessageParsingException e) {
+            Assert.assertEquals("Ordering Customer in Text Block is in invalid format", e.getMessage());
         }
     }
 
@@ -338,16 +335,16 @@ public class MT103ParserTests {
         Assert.assertNull(field51A.getPartyIdentifier());
     }
 
-    @Test(dataProvider = "invalidPartyIdentifierOptADataProvider", dataProviderClass = MT103ParserTestConstants.class,
-            expectedExceptions = MTMessageParsingException.class,
-            expectedExceptionsMessageRegExp = "Sending Institution in Text Block is in invalid format")
-    public void testInvalidField51AValue(String field51AString) throws Exception {
+    @Test(dataProvider = "invalidPartyIdentifierOptADataProvider", dataProviderClass = MT103ParserTestConstants.class)
+    public void testInvalidField51AValue(String field51AString) {
 
-        Field51 field51A = Field51.parse(field51AString, ConnectorConstants.OPTION_A);
+        try {
+            Field51 field51A = Field51.parse(field51AString, ConnectorConstants.OPTION_A);
 
-        if (field51A.getIdentifierCode() == null || field51A.getDetails() != null || field51A.getLocation() != null) {
-            throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
-                    MT103Constants.SENDING_INSTITUTION, ConnectorConstants.TEXT_BLOCK));
+            Assert.assertTrue(field51A.getIdentifierCode() == null || field51A.getDetails() != null
+                    || field51A.getLocation() != null);
+        } catch (MTMessageParsingException e) {
+            Assert.assertEquals("Sending Institution in Text Block is in invalid format", e.getMessage());
         }
     }
 
@@ -373,16 +370,16 @@ public class MT103ParserTests {
         Assert.assertNull(field52A.getDetails());
     }
 
-    @Test(dataProvider = "invalidPartyIdentifierOptADataProvider", dataProviderClass = MT103ParserTestConstants.class,
-            expectedExceptions = MTMessageParsingException.class,
-            expectedExceptionsMessageRegExp = "Ordering Institution in Text Block is in invalid format")
-    public void testInvalidField52AValue(String field52AString) throws Exception {
+    @Test(dataProvider = "invalidPartyIdentifierOptADataProvider", dataProviderClass = MT103ParserTestConstants.class)
+    public void testInvalidField52AValue(String field52AString) {
 
-        Field52 field52A = Field52.parse(field52AString, ConnectorConstants.OPTION_A);
+        try {
+            Field52 field52A = Field52.parse(field52AString, ConnectorConstants.OPTION_A);
 
-        if (field52A.getIdentifierCode() == null || field52A.getDetails() != null || field52A.getLocation() != null) {
-            throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
-                    MT103Constants.ORDERING_INSTITUTION, ConnectorConstants.TEXT_BLOCK));
+            Assert.assertTrue(field52A.getIdentifierCode() == null || field52A.getDetails() != null
+                    || field52A.getLocation() != null);
+        } catch (MTMessageParsingException e) {
+            Assert.assertEquals("Ordering Institution in Text Block is in invalid format", e.getMessage());
         }
     }
 
@@ -411,16 +408,16 @@ public class MT103ParserTests {
         Assert.assertNull(field52D.getIdentifierCode());
     }
 
-    @Test(dataProvider = "invalidPartyIdentifierOptDDataProvider", dataProviderClass = MT103ParserTestConstants.class,
-            expectedExceptions = MTMessageParsingException.class,
-            expectedExceptionsMessageRegExp = "Ordering Institution in Text Block is in invalid format")
-    public void testInvalidField52DValue(String field52DString) throws Exception {
+    @Test(dataProvider = "invalidPartyIdentifierOptDDataProvider", dataProviderClass = MT103ParserTestConstants.class)
+    public void testInvalidField52DValue(String field52DString)  {
 
-        Field52 field52D = Field52.parse(field52DString, ConnectorConstants.OPTION_D);
+        try {
+            Field52 field52D = Field52.parse(field52DString, ConnectorConstants.OPTION_D);
 
-        if (field52D.getDetails() == null || field52D.getAccount() != null || field52D.getLocation() != null) {
-            throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
-                    MT103Constants.ORDERING_INSTITUTION, ConnectorConstants.TEXT_BLOCK));
+            Assert.assertTrue(field52D.getDetails() == null || field52D.getAccount() != null
+                    || field52D.getLocation() != null);
+        } catch (MTMessageParsingException e) {
+            Assert.assertEquals("Ordering Institution in Text Block is in invalid format", e.getMessage());
         }
     }
 
@@ -449,16 +446,16 @@ public class MT103ParserTests {
         Assert.assertNull(field53A.getLocation());
     }
 
-    @Test(dataProvider = "invalidPartyIdentifierOptADataProvider", dataProviderClass = MT103ParserTestConstants.class,
-            expectedExceptions = MTMessageParsingException.class,
-            expectedExceptionsMessageRegExp = "Sender's Correspondent in Text Block is in invalid format")
-    public void testInvalidField53AValue(String field53AString) throws Exception {
+    @Test(dataProvider = "invalidPartyIdentifierOptADataProvider", dataProviderClass = MT103ParserTestConstants.class)
+    public void testInvalidField53AValue(String field53AString) {
 
-        Field53 field53A = Field53.parse(field53AString, ConnectorConstants.OPTION_A);
+        try {
+            Field53 field53A = Field53.parse(field53AString, ConnectorConstants.OPTION_A);
 
-        if (field53A.getIdentifierCode() == null || field53A.getDetails() != null || field53A.getLocation() != null) {
-            throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
-                    MT103Constants.SENDERS_CORRESPONDENT, ConnectorConstants.TEXT_BLOCK));
+            Assert.assertTrue(field53A.getIdentifierCode() == null || field53A.getDetails() != null
+                    || field53A.getLocation() != null);
+        } catch (MTMessageParsingException e) {
+            Assert.assertEquals("Sender's Correspondent in Text Block is in invalid format", e.getMessage());
         }
     }
 
@@ -487,16 +484,16 @@ public class MT103ParserTests {
         Assert.assertNull(field53B.getDetails());
     }
 
-    @Test(dataProvider = "invalidPartyIdentifierOptBDataProvider", dataProviderClass = MT103ParserTestConstants.class,
-            expectedExceptions = MTMessageParsingException.class,
-            expectedExceptionsMessageRegExp = "Sender's Correspondent in Text Block is in invalid format")
-    public void testInvalidField53BValue(String field53BString) throws Exception {
+    @Test(dataProvider = "invalidPartyIdentifierOptBDataProvider", dataProviderClass = MT103ParserTestConstants.class)
+    public void testInvalidField53BValue(String field53BString) {
 
-        Field53 field53B = Field53.parse(field53BString, ConnectorConstants.OPTION_B);
+        try {
+            Field53 field53B = Field53.parse(field53BString, ConnectorConstants.OPTION_B);
 
-        if (field53B.getIdentifierCode() != null || field53B.getDetails() != null || field53B.getAccount() != null) {
-            throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
-                    MT103Constants.SENDERS_CORRESPONDENT, ConnectorConstants.TEXT_BLOCK));
+            Assert.assertTrue(field53B.getIdentifierCode() != null || field53B.getDetails() != null
+                    || field53B.getAccount() != null);
+        } catch (MTMessageParsingException e) {
+            Assert.assertEquals("Sender's Correspondent in Text Block is in invalid format", e.getMessage());
         }
     }
 
@@ -527,16 +524,16 @@ public class MT103ParserTests {
         Assert.assertNull(field53D.getLocation());
     }
 
-    @Test(dataProvider = "invalidPartyIdentifierOptDDataProvider", dataProviderClass = MT103ParserTestConstants.class,
-            expectedExceptions = MTMessageParsingException.class,
-            expectedExceptionsMessageRegExp = "Sender's Correspondent in Text Block is in invalid format")
-    public void testInvalidField53DValue(String field53DString) throws Exception {
+    @Test(dataProvider = "invalidPartyIdentifierOptDDataProvider", dataProviderClass = MT103ParserTestConstants.class)
+    public void testInvalidField53DValue(String field53DString) {
 
-        Field53 field53D = Field53.parse(field53DString, ConnectorConstants.OPTION_D);
+        try {
+            Field53 field53D = Field53.parse(field53DString, ConnectorConstants.OPTION_D);
 
-        if (field53D.getDetails() == null || field53D.getAccount() != null || field53D.getLocation() != null) {
-            throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
-                    MT103Constants.SENDERS_CORRESPONDENT, ConnectorConstants.TEXT_BLOCK));
+            Assert.assertTrue(field53D.getDetails() == null || field53D.getAccount() != null
+                    || field53D.getLocation() != null);
+        } catch (MTMessageParsingException e) {
+            Assert.assertEquals("Sender's Correspondent in Text Block is in invalid format", e.getMessage());
         }
     }
 
@@ -565,16 +562,16 @@ public class MT103ParserTests {
         Assert.assertNull(field54A.getLocation());
     }
 
-    @Test(dataProvider = "invalidPartyIdentifierOptADataProvider", dataProviderClass = MT103ParserTestConstants.class,
-            expectedExceptions = MTMessageParsingException.class,
-            expectedExceptionsMessageRegExp = "Receiver's Correspondent in Text Block is in invalid format")
-    public void testInvalidField54AValue(String field54AString) throws Exception {
+    @Test(dataProvider = "invalidPartyIdentifierOptADataProvider", dataProviderClass = MT103ParserTestConstants.class)
+    public void testInvalidField54AValue(String field54AString) {
 
-        Field54 field54A = Field54.parse(field54AString, ConnectorConstants.OPTION_A);
+        try {
+            Field54 field54A = Field54.parse(field54AString, ConnectorConstants.OPTION_A);
 
-        if (field54A.getIdentifierCode() == null || field54A.getDetails() != null || field54A.getLocation() != null) {
-            throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
-                    MT103Constants.RECEIVERS_CORRESPONDENT, ConnectorConstants.TEXT_BLOCK));
+            Assert.assertTrue(field54A.getIdentifierCode() == null || field54A.getDetails() != null
+                    || field54A.getLocation() != null);
+        } catch (MTMessageParsingException e) {
+            Assert.assertEquals("Receiver's Correspondent in Text Block is in invalid format", e.getMessage());
         }
     }
 
@@ -603,16 +600,16 @@ public class MT103ParserTests {
         Assert.assertNull(field54B.getDetails());
     }
 
-    @Test(dataProvider = "invalidPartyIdentifierOptBDataProvider", dataProviderClass = MT103ParserTestConstants.class,
-            expectedExceptions = MTMessageParsingException.class,
-            expectedExceptionsMessageRegExp = "Receiver's Correspondent in Text Block is in invalid format")
-    public void testInvalidField54BValue(String field54BString) throws Exception {
+    @Test(dataProvider = "invalidPartyIdentifierOptBDataProvider", dataProviderClass = MT103ParserTestConstants.class)
+    public void testInvalidField54BValue(String field54BString) {
 
-        Field54 field54B = Field54.parse(field54BString, ConnectorConstants.OPTION_B);
+        try {
+            Field54 field54B = Field54.parse(field54BString, ConnectorConstants.OPTION_B);
 
-        if (field54B.getIdentifierCode() != null || field54B.getDetails() != null || field54B.getAccount() != null) {
-            throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
-                    MT103Constants.RECEIVERS_CORRESPONDENT, ConnectorConstants.TEXT_BLOCK));
+            Assert.assertTrue(field54B.getIdentifierCode() != null || field54B.getDetails() != null
+                    || field54B.getAccount() != null);
+        } catch (MTMessageParsingException e) {
+            Assert.assertEquals("Receiver's Correspondent in Text Block is in invalid format", e.getMessage());
         }
     }
 
@@ -643,16 +640,16 @@ public class MT103ParserTests {
         Assert.assertNull(field54D.getLocation());
     }
 
-    @Test(dataProvider = "invalidPartyIdentifierOptDDataProvider", dataProviderClass = MT103ParserTestConstants.class,
-            expectedExceptions = MTMessageParsingException.class,
-            expectedExceptionsMessageRegExp = "Receiver's Correspondent in Text Block is in invalid format")
-    public void testInvalidField54DValue(String field54DString) throws Exception {
+    @Test(dataProvider = "invalidPartyIdentifierOptDDataProvider", dataProviderClass = MT103ParserTestConstants.class)
+    public void testInvalidField54DValue(String field54DString) {
 
-        Field54 field54D = Field54.parse(field54DString, ConnectorConstants.OPTION_D);
+        try {
+            Field54 field54D = Field54.parse(field54DString, ConnectorConstants.OPTION_D);
 
-        if (field54D.getDetails() == null || field54D.getAccount() != null || field54D.getLocation() != null) {
-            throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
-                    MT103Constants.RECEIVERS_CORRESPONDENT, ConnectorConstants.TEXT_BLOCK));
+            Assert.assertTrue(field54D.getDetails() == null || field54D.getAccount() != null
+                    || field54D.getLocation() != null);
+        } catch (MTMessageParsingException e) {
+            Assert.assertEquals("Receiver's Correspondent in Text Block is in invalid format", e.getMessage());
         }
     }
 
@@ -681,16 +678,17 @@ public class MT103ParserTests {
         Assert.assertNull(field55A.getLocation());
     }
 
-    @Test(dataProvider = "invalidPartyIdentifierOptADataProvider", dataProviderClass = MT103ParserTestConstants.class,
-            expectedExceptions = MTMessageParsingException.class,
-            expectedExceptionsMessageRegExp = "Third Reimbursement Institution in Text Block is in invalid format")
-    public void testInvalidField55AValue(String field55AString) throws Exception {
+    @Test(dataProvider = "invalidPartyIdentifierOptADataProvider", dataProviderClass = MT103ParserTestConstants.class)
+    public void testInvalidField55AValue(String field55AString) {
 
-        Field55 field55A = Field55.parse(field55AString, ConnectorConstants.OPTION_A);
+        try {
+            Field55 field55A = Field55.parse(field55AString, ConnectorConstants.OPTION_A);
 
-        if (field55A.getIdentifierCode() == null || field55A.getDetails() != null || field55A.getLocation() != null) {
-            throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
-                    MT103Constants.THIRD_REIMBURSEMENT_INSTITUTION, ConnectorConstants.TEXT_BLOCK));
+            Assert.assertTrue(field55A.getIdentifierCode() == null || field55A.getDetails() != null
+                    || field55A.getLocation() != null);
+        } catch (MTMessageParsingException e) {
+            Assert.assertEquals(
+                    "Third Reimbursement Institution in Text Block is in invalid format", e.getMessage());
         }
     }
 
@@ -719,16 +717,17 @@ public class MT103ParserTests {
         Assert.assertNull(field55B.getDetails());
     }
 
-    @Test(dataProvider = "invalidPartyIdentifierOptBDataProvider", dataProviderClass = MT103ParserTestConstants.class,
-            expectedExceptions = MTMessageParsingException.class,
-            expectedExceptionsMessageRegExp = "Third Reimbursement Institution in Text Block is in invalid format")
-    public void testInvalidField55BValue(String field55BString) throws Exception {
+    @Test(dataProvider = "invalidPartyIdentifierOptBDataProvider", dataProviderClass = MT103ParserTestConstants.class)
+    public void testInvalidField55BValue(String field55BString) {
 
-        Field55 field55B = Field55.parse(field55BString, ConnectorConstants.OPTION_B);
+        try {
+            Field55 field55B = Field55.parse(field55BString, ConnectorConstants.OPTION_B);
 
-        if (field55B.getIdentifierCode() != null || field55B.getDetails() != null || field55B.getAccount() != null) {
-            throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
-                    MT103Constants.THIRD_REIMBURSEMENT_INSTITUTION, ConnectorConstants.TEXT_BLOCK));
+            Assert.assertTrue(field55B.getIdentifierCode() != null || field55B.getDetails() != null
+                    || field55B.getAccount() != null);
+        } catch (MTMessageParsingException e) {
+            Assert.assertEquals(
+                    "Third Reimbursement Institution in Text Block is in invalid format", e.getMessage());
         }
     }
 
@@ -759,16 +758,17 @@ public class MT103ParserTests {
         Assert.assertNull(field55D.getLocation());
     }
 
-    @Test(dataProvider = "invalidPartyIdentifierOptDDataProvider", dataProviderClass = MT103ParserTestConstants.class,
-            expectedExceptions = MTMessageParsingException.class,
-            expectedExceptionsMessageRegExp = "Third Reimbursement Institution in Text Block is in invalid format")
-    public void testInvalidField55DValue(String field55DString) throws Exception {
+    @Test(dataProvider = "invalidPartyIdentifierOptDDataProvider", dataProviderClass = MT103ParserTestConstants.class)
+    public void testInvalidField55DValue(String field55DString) {
 
-        Field55 field55D = Field55.parse(field55DString, ConnectorConstants.OPTION_D);
+        try {
+            Field55 field55D = Field55.parse(field55DString, ConnectorConstants.OPTION_D);
 
-        if (field55D.getDetails() == null || field55D.getAccount() != null || field55D.getLocation() != null) {
-            throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
-                    MT103Constants.THIRD_REIMBURSEMENT_INSTITUTION, ConnectorConstants.TEXT_BLOCK));
+            Assert.assertTrue(field55D.getDetails() == null || field55D.getAccount() != null
+                    || field55D.getLocation() != null);
+        } catch (MTMessageParsingException e) {
+            Assert.assertEquals(
+                    "Third Reimbursement Institution in Text Block is in invalid format", e.getMessage());
         }
     }
 
@@ -795,16 +795,16 @@ public class MT103ParserTests {
         Assert.assertNull(field56A.getDetails());
     }
 
-    @Test(dataProvider = "invalidPartyIdentifierOptADataProvider", dataProviderClass = MT103ParserTestConstants.class,
-            expectedExceptions = MTMessageParsingException.class,
-            expectedExceptionsMessageRegExp = "Intermediary Institution in Text Block is in invalid format")
-    public void testInvalidField56AValue(String field56AString) throws Exception {
+    @Test(dataProvider = "invalidPartyIdentifierOptADataProvider", dataProviderClass = MT103ParserTestConstants.class)
+    public void testInvalidField56AValue(String field56AString) {
 
-        Field56 field56A = Field56.parse(field56AString, ConnectorConstants.OPTION_A);
+        try {
+            Field56 field56A = Field56.parse(field56AString, ConnectorConstants.OPTION_A);
 
-        if (field56A.getIdentifierCode() == null || field56A.getDetails() != null || field56A.getLocation() != null) {
-            throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
-                    MT103Constants.INTERMEDIARY_INSTITUTION, ConnectorConstants.TEXT_BLOCK));
+            Assert.assertTrue(field56A.getIdentifierCode() == null || field56A.getDetails() != null
+                    || field56A.getLocation() != null);
+        } catch (MTMessageParsingException e) {
+            Assert.assertEquals("Intermediary Institution in Text Block is in invalid format", e.getMessage());
         }
     }
 
@@ -852,16 +852,16 @@ public class MT103ParserTests {
         Assert.assertNull(field56D.getIdentifierCode());
     }
 
-    @Test(dataProvider = "invalidPartyIdentifierOptDDataProvider", dataProviderClass = MT103ParserTestConstants.class,
-            expectedExceptions = MTMessageParsingException.class,
-            expectedExceptionsMessageRegExp = "Intermediary Institution in Text Block is in invalid format")
-    public void testInvalidField56DValue(String field56DString) throws Exception {
+    @Test(dataProvider = "invalidPartyIdentifierOptDDataProvider", dataProviderClass = MT103ParserTestConstants.class)
+    public void testInvalidField56DValue(String field56DString) {
 
-        Field56 field56D = Field56.parse(field56DString, ConnectorConstants.OPTION_D);
+        try {
+            Field56 field56D = Field56.parse(field56DString, ConnectorConstants.OPTION_D);
 
-        if (field56D.getDetails() == null || field56D.getAccount() != null || field56D.getLocation() != null) {
-            throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
-                    MT103Constants.INTERMEDIARY_INSTITUTION, ConnectorConstants.TEXT_BLOCK));
+            Assert.assertTrue(field56D.getDetails() == null || field56D.getAccount() != null
+                    || field56D.getLocation() != null);
+        } catch (MTMessageParsingException e) {
+            Assert.assertEquals("Intermediary Institution in Text Block is in invalid format", e.getMessage());
         }
     }
 
@@ -890,16 +890,16 @@ public class MT103ParserTests {
         Assert.assertNull(field57A.getLocation());
     }
 
-    @Test(dataProvider = "invalidPartyIdentifierOptADataProvider", dataProviderClass = MT103ParserTestConstants.class,
-            expectedExceptions = MTMessageParsingException.class,
-            expectedExceptionsMessageRegExp = "Account With Institution in Text Block is in invalid format")
-    public void testInvalidField57AValue(String field57AString) throws Exception {
+    @Test(dataProvider = "invalidPartyIdentifierOptADataProvider", dataProviderClass = MT103ParserTestConstants.class)
+    public void testInvalidField57AValue(String field57AString) {
 
-        Field57 field57A = Field57.parse(field57AString, ConnectorConstants.OPTION_A);
+        try {
+            Field57 field57A = Field57.parse(field57AString, ConnectorConstants.OPTION_A);
 
-        if (field57A.getIdentifierCode() == null || field57A.getDetails() != null || field57A.getLocation() != null) {
-            throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
-                    MT103Constants.ACCOUNT_WITH_INSTITUTION, ConnectorConstants.TEXT_BLOCK));
+            Assert.assertTrue(field57A.getIdentifierCode() == null || field57A.getDetails() != null
+                    || field57A.getLocation() != null);
+        } catch (MTMessageParsingException e) {
+            Assert.assertEquals("Account With Institution in Text Block is in invalid format", e.getMessage());
         }
     }
 
@@ -928,16 +928,16 @@ public class MT103ParserTests {
         Assert.assertNull(field57B.getDetails());
     }
 
-    @Test(dataProvider = "invalidPartyIdentifierOptBDataProvider", dataProviderClass = MT103ParserTestConstants.class,
-            expectedExceptions = MTMessageParsingException.class,
-            expectedExceptionsMessageRegExp = "Account With Institution in Text Block is in invalid format")
-    public void testInvalidField57BValue(String field57BString) throws Exception {
+    @Test(dataProvider = "invalidPartyIdentifierOptBDataProvider", dataProviderClass = MT103ParserTestConstants.class)
+    public void testInvalidField57BValue(String field57BString) {
 
-        Field57 field57B = Field57.parse(field57BString, ConnectorConstants.OPTION_B);
+        try {
+            Field57 field57B = Field57.parse(field57BString, ConnectorConstants.OPTION_B);
 
-        if (field57B.getIdentifierCode() != null || field57B.getDetails() != null || field57B.getAccount() != null) {
-            throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
-                    MT103Constants.ACCOUNT_WITH_INSTITUTION, ConnectorConstants.TEXT_BLOCK));
+            Assert.assertTrue(field57B.getIdentifierCode() != null || field57B.getDetails() != null
+                    || field57B.getAccount() != null);
+        } catch (MTMessageParsingException e) {
+            Assert.assertEquals("Account With Institution in Text Block is in invalid format", e.getMessage());
         }
     }
 
@@ -988,16 +988,16 @@ public class MT103ParserTests {
         Assert.assertNull(field57D.getLocation());
     }
 
-    @Test(dataProvider = "invalidPartyIdentifierOptDDataProvider", dataProviderClass = MT103ParserTestConstants.class,
-            expectedExceptions = MTMessageParsingException.class,
-            expectedExceptionsMessageRegExp = "Account With Institution in Text Block is in invalid format")
-    public void testInvalidField57DValue(String field57DString) throws Exception {
+    @Test(dataProvider = "invalidPartyIdentifierOptDDataProvider", dataProviderClass = MT103ParserTestConstants.class)
+    public void testInvalidField57DValue(String field57DString) {
 
-        Field57 field57D = Field57.parse(field57DString, ConnectorConstants.OPTION_D);
+        try {
+            Field57 field57D = Field57.parse(field57DString, ConnectorConstants.OPTION_D);
 
-        if (field57D.getDetails() == null || field57D.getAccount() != null || field57D.getLocation() != null) {
-            throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
-                    MT103Constants.ACCOUNT_WITH_INSTITUTION, ConnectorConstants.TEXT_BLOCK));
+            Assert.assertTrue(field57D.getDetails() == null || field57D.getAccount() != null
+                    || field57D.getLocation() != null);
+        } catch (MTMessageParsingException e) {
+            Assert.assertEquals("Account With Institution in Text Block is in invalid format", e.getMessage());
         }
     }
 
@@ -1028,17 +1028,16 @@ public class MT103ParserTests {
         Assert.assertNull(field59.getIdentifierCode());
     }
 
-    @Test(dataProvider = "invalidField59DataProvider", dataProviderClass = MT103ParserTestConstants.class,
-            expectedExceptions = MTMessageParsingException.class,
-            expectedExceptionsMessageRegExp = "Beneficiary Customer in Text Block is in invalid format")
-    public void testInvalidField59Value(String field59String) throws Exception {
+    @Test(dataProvider = "invalidField59DataProvider", dataProviderClass = MT103ParserTestConstants.class)
+    public void testInvalidField59Value(String field59String) {
 
-        Field59 field59 = Field59.parse(field59String, ConnectorConstants.NO_LETTER_OPTION);
+        try {
+            Field59 field59 = Field59.parse(field59String, ConnectorConstants.NO_LETTER_OPTION);
 
-        if (field59.getDetails() == null || field59.getIdentifierCode() != null
-                || field59.getPartyIdentifier() != null || field59.getLocation() != null) {
-            throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
-                    MT103Constants.BENEFICIARY_CUSTOMER, ConnectorConstants.TEXT_BLOCK));
+            Assert.assertTrue(field59.getDetails() == null || field59.getIdentifierCode() != null
+                    || field59.getPartyIdentifier() != null || field59.getLocation() != null);
+        } catch (MTMessageParsingException e) {
+            Assert.assertEquals("Beneficiary Customer in Text Block is in invalid format", e.getMessage());
         }
     }
 
@@ -1064,16 +1063,16 @@ public class MT103ParserTests {
         Assert.assertNull(field59A.getDetails());
     }
 
-    @Test(dataProvider = "invalidField59ADataProvider", dataProviderClass = MT103ParserTestConstants.class,
-            expectedExceptions = MTMessageParsingException.class,
-            expectedExceptionsMessageRegExp = "Beneficiary Customer in Text Block is in invalid format")
-    public void testInvalidField59AValue(String field59AString) throws Exception {
+    @Test(dataProvider = "invalidField59ADataProvider", dataProviderClass = MT103ParserTestConstants.class)
+    public void testInvalidField59AValue(String field59AString) {
 
-        Field59 field59A = Field59.parse(field59AString, ConnectorConstants.OPTION_A);
+        try {
+            Field59 field59A = Field59.parse(field59AString, ConnectorConstants.OPTION_A);
 
-        if (field59A.getIdentifierCode() == null || field59A.getDetails() != null || field59A.getLocation() != null) {
-            throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
-                    MT103Constants.BENEFICIARY_CUSTOMER, ConnectorConstants.TEXT_BLOCK));
+            Assert.assertTrue(field59A.getIdentifierCode() == null || field59A.getDetails() != null
+                    || field59A.getLocation() != null);
+        } catch (MTMessageParsingException e) {
+            Assert.assertEquals("Beneficiary Customer in Text Block is in invalid format", e.getMessage());
         }
     }
 
@@ -1092,17 +1091,16 @@ public class MT103ParserTests {
         Assert.assertNull(field59F.getIdentifierCode());
     }
 
-    @Test(dataProvider = "invalidField59FDataProvider", dataProviderClass = MT103ParserTestConstants.class,
-            expectedExceptions = MTMessageParsingException.class,
-            expectedExceptionsMessageRegExp = "Beneficiary Customer in Text Block is in invalid format")
-    public void testInvalidField59FValue(String field59FString) throws Exception {
+    @Test(dataProvider = "invalidField59FDataProvider", dataProviderClass = MT103ParserTestConstants.class)
+    public void testInvalidField59FValue(String field59FString) {
 
-        Field59 field59F = Field59.parse(field59FString, ConnectorConstants.OPTION_F);
+        try {
+            Field59 field59F = Field59.parse(field59FString, ConnectorConstants.OPTION_F);
 
-        if (field59F.getAccount() == null || field59F.getDetails() == null
-                || field59F.getIdentifierCode() != null || field59F.getLocation() != null) {
-            throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
-                    MT103Constants.BENEFICIARY_CUSTOMER, ConnectorConstants.TEXT_BLOCK));
+            Assert.assertTrue(field59F.getAccount() == null || field59F.getDetails() == null
+                    || field59F.getIdentifierCode() != null || field59F.getLocation() != null);
+        } catch (MTMessageParsingException e) {
+            Assert.assertEquals("Beneficiary Customer in Text Block is in invalid format", e.getMessage());
         }
     }
 
@@ -1134,16 +1132,16 @@ public class MT103ParserTests {
         Assert.assertNull(field71A.getAmount());
     }
 
-    @Test(dataProvider = "invalidField71ADataProvider", dataProviderClass = MT103ParserTestConstants.class,
-            expectedExceptions = MTMessageParsingException.class,
-            expectedExceptionsMessageRegExp = "Details of Charges in Text Block is in invalid format")
-    public void testInvalidField71AValue(String field71AString) throws Exception {
+    @Test(dataProvider = "invalidField71ADataProvider", dataProviderClass = MT103ParserTestConstants.class)
+    public void testInvalidField71AValue(String field71AString) {
 
-        Field71 field71A = Field71.parse(field71AString, ConnectorConstants.OPTION_A);
+        try {
+            Field71 field71A = Field71.parse(field71AString, ConnectorConstants.OPTION_A);
 
-        if (field71A.getCode() == null || field71A.getCurrency() != null || field71A.getAmount() != null) {
-            throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
-                    MT103Constants.DETAILS_OF_CHARGES, ConnectorConstants.TEXT_BLOCK));
+            Assert.assertTrue(field71A.getCode() == null || field71A.getCurrency() != null
+                    || field71A.getAmount() != null);
+        } catch (MTMessageParsingException e) {
+            Assert.assertEquals("Details of Charges in Text Block is in invalid format", e.getMessage());
         }
     }
 
@@ -1158,16 +1156,16 @@ public class MT103ParserTests {
         Assert.assertNull(field71F.getCode());
     }
 
-    @Test(dataProvider = "invalidField71FDataProvider", dataProviderClass = MT103ParserTestConstants.class,
-            expectedExceptions = MTMessageParsingException.class,
-            expectedExceptionsMessageRegExp = "Sender's Charges in Text Block is in invalid format")
-    public void testInvalidField71FValue(String field71FString) throws Exception {
+    @Test(dataProvider = "invalidField71FDataProvider", dataProviderClass = MT103ParserTestConstants.class)
+    public void testInvalidField71FValue(String field71FString) {
 
-        Field71 field71F = Field71.parse(field71FString, ConnectorConstants.OPTION_F);
+        try {
+            Field71 field71F = Field71.parse(field71FString, ConnectorConstants.OPTION_F);
 
-        if (field71F.getCode() != null || field71F.getCurrency() == null || field71F.getAmount() == null) {
-            throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
-                    MT103Constants.SENDERS_CHARGES, ConnectorConstants.TEXT_BLOCK));
+            Assert.assertTrue(field71F.getCode() != null || field71F.getCurrency() == null
+                    || field71F.getAmount() == null);
+        } catch (MTMessageParsingException e) {
+            Assert.assertEquals("Sender's Charges in Text Block is in invalid format", e.getMessage());
         }
     }
 
@@ -1182,16 +1180,16 @@ public class MT103ParserTests {
         Assert.assertNull(field71G.getCode());
     }
 
-    @Test(dataProvider = "invalidField71GDataProvider", dataProviderClass = MT103ParserTestConstants.class,
-            expectedExceptions = MTMessageParsingException.class,
-            expectedExceptionsMessageRegExp = "Receiver's Charges in Text Block is in invalid format")
-    public void testInvalidField71GValue(String field71GString) throws Exception {
+    @Test(dataProvider = "invalidField71GDataProvider", dataProviderClass = MT103ParserTestConstants.class)
+    public void testInvalidField71GValue(String field71GString) {
 
-        Field71 field71G = Field71.parse(field71GString, ConnectorConstants.OPTION_G);
+        try {
+            Field71 field71G = Field71.parse(field71GString, ConnectorConstants.OPTION_G);
 
-        if (field71G.getCode() != null || field71G.getCurrency() == null || field71G.getAmount() == null) {
-            throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
-                    MT103Constants.RECEIVERS_CHARGES, ConnectorConstants.TEXT_BLOCK));
+            Assert.assertTrue(field71G.getCode() != null || field71G.getCurrency() == null
+                    || field71G.getAmount() == null);
+        } catch (MTMessageParsingException e) {
+            Assert.assertEquals("Receiver's Charges in Text Block is in invalid format", e.getMessage());
         }
     }
 
@@ -1221,16 +1219,15 @@ public class MT103ParserTests {
         Assert.assertEquals(List.of("/ORDERRES/BE//MEILAAN 1, 9000 GENT", "//INS/ABNANL2A"), field77B.getLines());
     }
 
-    @Test(dataProvider = "invalidField77BDataProvider", dataProviderClass = MT103ParserTestConstants.class,
-            expectedExceptions = MTMessageParsingException.class,
-            expectedExceptionsMessageRegExp = "Regulatory Reporting in Text Block is in invalid format")
-    public void testInvalidField77BValue(String field77BString) throws Exception {
+    @Test(dataProvider = "invalidField77BDataProvider", dataProviderClass = MT103ParserTestConstants.class)
+    public void testInvalidField77BValue(String field77BString) {
 
-        Field77 field77B = Field77.parse(field77BString, ConnectorConstants.OPTION_B);
+        try {
+            Field77 field77B = Field77.parse(field77BString, ConnectorConstants.OPTION_B);
 
-        if (field77B.getLines() == null || field77B.getValue() != null) {
-            throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
-                    MT103Constants.REGULATORY_REPORTING, ConnectorConstants.TEXT_BLOCK));
+            Assert.assertTrue(field77B.getLines() == null || field77B.getValue() != null);
+        } catch (MTMessageParsingException e) {
+            Assert.assertEquals("Regulatory Reporting in Text Block is in invalid format", e.getMessage());
         }
     }
 
@@ -1243,16 +1240,15 @@ public class MT103ParserTests {
         Assert.assertEquals("/UEDI/UNH+123A5+FINPAY:D:98A:UN'DOC+ ...", field77T.getValue());
     }
 
-    @Test(dataProvider = "invalidField77TDataProvider", dataProviderClass = MT103ParserTestConstants.class,
-            expectedExceptions = MTMessageParsingException.class,
-            expectedExceptionsMessageRegExp = "Envelope Contents in Text Block is in invalid format")
-    public void testInvalidField77TValue(String field77TString) throws Exception {
+    @Test(dataProvider = "invalidField77TDataProvider", dataProviderClass = MT103ParserTestConstants.class)
+    public void testInvalidField77TValue(String field77TString) {
 
-        Field77 field77T = Field77.parse(field77TString, ConnectorConstants.OPTION_T);
+        try {
+            Field77 field77T = Field77.parse(field77TString, ConnectorConstants.OPTION_T);
 
-        if (field77T.getLines() != null || field77T.getValue() == null) {
-            throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
-                    MT103Constants.ENVELOPE_CONTENTS, ConnectorConstants.TEXT_BLOCK));
+            Assert.assertTrue(field77T.getLines() != null || field77T.getValue() == null);
+        } catch (MTMessageParsingException e) {
+            Assert.assertEquals("Envelope Contents in Text Block is in invalid format", e.getMessage());
         }
     }
 }

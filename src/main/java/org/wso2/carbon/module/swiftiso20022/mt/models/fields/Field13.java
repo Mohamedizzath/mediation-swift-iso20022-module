@@ -39,7 +39,7 @@ import java.util.regex.Matcher;
  */
 public class Field13 {
 
-    public static final String OPTION_C_TAG = "13C";
+    public static final String TAG = "13";
 
     /**
      * List of options with current implementation.

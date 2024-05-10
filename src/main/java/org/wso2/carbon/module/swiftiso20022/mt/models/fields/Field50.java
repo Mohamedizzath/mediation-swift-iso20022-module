@@ -78,9 +78,7 @@ import java.util.regex.Matcher;
 
 public class Field50 extends PartyIdentifier {
 
-    public static final String OPTION_A_TAG = "50A";
-    public static final String OPTION_F_TAG = "50F";
-    public static final String OPTION_K_TAG = "50K";
+    public static final String TAG = "50";
 
     /**
      * List of options with current implementation.

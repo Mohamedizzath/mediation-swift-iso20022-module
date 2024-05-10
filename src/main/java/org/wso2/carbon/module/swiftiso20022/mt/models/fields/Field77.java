@@ -56,8 +56,7 @@ import java.util.regex.Matcher;
  */
 public class Field77 {
 
-    public static final String OPTION_B_TAG = "77B";
-    public static final String OPTION_T_TAG = "77T";
+    public static final String TAG = "77";
     private static final List<Character> OPTIONS = Arrays.asList(
             ConnectorConstants.OPTION_B, ConnectorConstants.OPTION_T);
     private static final Map<Character, String> FIELD_NAME = Map.of(

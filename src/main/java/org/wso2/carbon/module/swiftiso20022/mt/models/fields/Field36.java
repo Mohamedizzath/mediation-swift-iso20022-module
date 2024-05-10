@@ -37,7 +37,7 @@ import java.util.regex.Matcher;
  */
 public class Field36 {
 
-    public static final String NO_LETTER_OPTION_TAG = "36";
+    public static final String TAG = "36";
 
     /**
      * List of options with current implementation.

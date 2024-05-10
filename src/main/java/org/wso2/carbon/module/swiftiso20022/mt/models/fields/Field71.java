@@ -54,9 +54,7 @@ import java.util.regex.Matcher;
  */
 public class Field71 {
 
-    public static final String OPTION_A_TAG = "71A";
-    public static final String OPTION_F_TAG = "71F";
-    public static final String OPTION_G_TAG = "71G";
+    public static final String TAG = "71";
 
     /**
      * List of options with current implementation.

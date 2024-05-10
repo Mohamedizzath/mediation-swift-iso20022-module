@@ -185,7 +185,7 @@ public class ConnectorConstants {
     public static final String ERROR_INVALID_FIELD_AND_VALUE = "\"%s\" in %s is invalid";
     public static final String ERROR_FIELD_REPEATED = "Field %s in %s cannot repeat";
     public static final String ERROR_FIELD_INVALID_IN_BLOCK = "Value of field %s in %s is invalid";
-    public static final String ERROR_FIELD_NOT_ALLOWED_IN_BLOCK = "%s field is not allowed in %s";
+    public static final String ERROR_FIELD_NOT_ALLOWED_IN_BLOCK = "Field %s is not allowed in %s";
     public static final String ILLEGAL_OCCURRENCE_OF_FIELD_111 =
             "Illegal occurrence of Service Type Identifier";
     public static final String ERROR_FIELD_NOT_ALLOWED_IN_TEXT_BLOCK =

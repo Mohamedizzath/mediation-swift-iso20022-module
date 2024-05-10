@@ -39,7 +39,7 @@ import java.util.regex.Matcher;
  */
 public class Field32 {
 
-    public static final String OPTION_A_TAG = "32A";
+    public static final String TAG = "32";
 
     /**
      * List of options with current implementation.

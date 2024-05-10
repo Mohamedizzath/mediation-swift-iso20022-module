@@ -20,9 +20,7 @@ package org.wso2.carbon.module.swiftiso20022;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
 import org.apache.axis2.AxisFault;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
@@ -37,6 +35,7 @@ import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException
 import org.wso2.carbon.module.swiftiso20022.mt.models.messages.MT103Message;
 import org.wso2.carbon.module.swiftiso20022.mt.parsers.MT103Parser;
 import org.wso2.carbon.module.swiftiso20022.utils.ConnectorUtils;
+import org.wso2.carbon.module.swiftiso20022.utils.JsonTransformationUtils;
 
 /**
  * Class to map MT103 text message to {@link MT103Message} and set the model to message context after validating.
@@ -45,6 +44,7 @@ public class MT103ToJsonTransformer extends AbstractConnector {
 
     private static final Log log = LogFactory.getLog(MT103ToJsonTransformer.class);
     private static final Gson gson = new Gson();
+
     @Override
     public void connect(MessageContext messageContext) throws ConnectException {
         log.debug("Executing MT103ToJsonTransformer to transform MT103 text message to JSON");
@@ -65,7 +65,7 @@ public class MT103ToJsonTransformer extends AbstractConnector {
             // Current implementation doesn't validate values
             // and doesn't enforce format on fields with multiple options
 
-            String jsonString = transformJsonString(gson.toJsonTree(mt103Message).getAsJsonObject());
+            String jsonString = transformJsonObject(gson.toJsonTree(mt103Message).getAsJsonObject());
 
             ConnectorUtils.appendJsonResponseToMessageContext(messageContext, jsonString);
 
@@ -82,13 +82,21 @@ public class MT103ToJsonTransformer extends AbstractConnector {
         }
     }
 
-    private static String transformJsonString(JsonObject mt103Message) {
+    /**
+     * Method to transform JSON object of {@link MT103Message}.
+     * Replace amount strings as number.
+     * Remove no letter option.
+     *
+     * @param mt103Message JSON conversion of {@link MT103Message} using Gson.
+     * @return Transformed JSON object as a String.
+     */
+    private static String transformJsonObject(JsonObject mt103Message) {
 
         JsonObject textBlock = mt103Message.getAsJsonObject(MT103Constants.TEXT_BLOCK_KEY);
 
         replaceAmountAsNumber(textBlock);
 
-        removeNoLetterOption(textBlock);
+        JsonTransformationUtils.removeNoLetterOption(textBlock);
 
         mt103Message.add(MT103Constants.TEXT_BLOCK_KEY, textBlock);
 
@@ -105,31 +113,20 @@ public class MT103ToJsonTransformer extends AbstractConnector {
         // TODO: remove if condition after implementing validator
         // Replace amount in value field
         if (textBlock.has(MT103Constants.VALUE_KEY)) {
-            JsonObject value = textBlock.getAsJsonObject(MT103Constants.VALUE_KEY);
-
-            value.add(MT103Constants.AMOUNT_KEY, getAmountAsNumber(value.get(MT103Constants.AMOUNT_KEY).getAsString()));
-
-            textBlock.add(MT103Constants.VALUE_KEY, value);
+            JsonTransformationUtils.replaceAmountAsNumber(
+                    textBlock.getAsJsonObject(MT103Constants.VALUE_KEY), MT103Constants.AMOUNT_KEY);
         }
 
         // Replace amount in instructed amount field
         if (textBlock.has(MT103Constants.INSTRUCTED_AMOUNT_KEY)) {
-            JsonObject instructedAmount = textBlock.getAsJsonObject(MT103Constants.INSTRUCTED_AMOUNT_KEY);
-
-            instructedAmount.add(MT103Constants.AMOUNT_KEY,
-                    getAmountAsNumber(instructedAmount.get(MT103Constants.AMOUNT_KEY).getAsString()));
-
-            textBlock.add(MT103Constants.INSTRUCTED_AMOUNT_KEY, instructedAmount);
+            JsonTransformationUtils.replaceAmountAsNumber(
+                    textBlock.getAsJsonObject(MT103Constants.INSTRUCTED_AMOUNT_KEY), MT103Constants.AMOUNT_KEY);
         }
 
         // Replace the exchange rate
         if (textBlock.has(MT103Constants.EXCHANGE_RATE_KEY)) {
-            JsonObject exchangeRate = textBlock.getAsJsonObject(MT103Constants.EXCHANGE_RATE_KEY);
-
-            exchangeRate.add(MT103Constants.VALUE_KEY,
-                    getAmountAsNumber(exchangeRate.get(MT103Constants.VALUE_KEY).getAsString()));
-
-            textBlock.add(MT103Constants.EXCHANGE_RATE_KEY, exchangeRate);
+            JsonTransformationUtils.replaceAmountAsNumber(
+                    textBlock.getAsJsonObject(MT103Constants.EXCHANGE_RATE_KEY), MT103Constants.VALUE_KEY);
         }
 
         // Replace amount in all occurrences of sender's charges field
@@ -137,56 +134,16 @@ public class MT103ToJsonTransformer extends AbstractConnector {
             JsonArray sendersCharges = textBlock.getAsJsonArray(MT103Constants.SENDERS_CHARGES_KEY);
 
             sendersCharges.forEach(sendersCharge -> {
-                JsonObject jsonObject = sendersCharge.getAsJsonObject();
-
-                jsonObject.add(MT103Constants.AMOUNT_KEY,
-                        getAmountAsNumber(jsonObject.get(MT103Constants.AMOUNT_KEY).getAsString()));
+                JsonTransformationUtils.replaceAmountAsNumber(
+                        sendersCharge.getAsJsonObject(), MT103Constants.AMOUNT_KEY);
             });
         }
 
         // Replace amount in receiver's charges field
         if (textBlock.has(MT103Constants.RECEIVERS_CHARGES_KEY)) {
-            JsonObject receiversCharges = textBlock.getAsJsonObject(MT103Constants.RECEIVERS_CHARGES_KEY);
-
-            receiversCharges.add(MT103Constants.AMOUNT_KEY,
-                    getAmountAsNumber(receiversCharges.get(MT103Constants.AMOUNT_KEY).getAsString()));
-
-            textBlock.add(MT103Constants.RECEIVERS_CHARGES_KEY, receiversCharges);
+            JsonTransformationUtils.replaceAmountAsNumber(
+                    textBlock.getAsJsonObject(MT103Constants.RECEIVERS_CHARGES_KEY), MT103Constants.AMOUNT_KEY);
         }
     }
 
-    /**
-     * Method to convert amount string to a number and get amount as a JsonPrimitive.
-     *
-     * @param amount String in the format "100,00".
-     * @return  A {@link JsonPrimitive} with transformed amount as the value.
-     */
-    private static JsonPrimitive getAmountAsNumber(String amount) {
-
-        return new JsonPrimitive(Double.parseDouble(amount.replace(",", ".")));
-    }
-
-    /**
-     * Method to remove No_letter option from the JSON object.
-     *
-     * @param textBlock A {@link JsonPrimitive} with transformed amount as the value.
-     */
-    private static void removeNoLetterOption(JsonObject textBlock) {
-
-        for (String key : textBlock.keySet()) {
-
-            // Since field can either be a JsonObject or JsonArray
-            JsonElement jsonElement = textBlock.get(key);
-
-            if (jsonElement instanceof JsonObject) {
-                JsonObject field = jsonElement.getAsJsonObject();
-                char option = field.get(MT103Constants.OPTION_KEY).getAsCharacter();
-
-                if (option == ConnectorConstants.NO_LETTER_OPTION) {
-                    field.remove(MT103Constants.OPTION_KEY);
-                    textBlock.add(key, field);
-                }
-            }
-        }
-    }
 }
