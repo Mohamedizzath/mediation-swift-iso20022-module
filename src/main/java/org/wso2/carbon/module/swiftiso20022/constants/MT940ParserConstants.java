@@ -41,8 +41,8 @@ public class MT940ParserConstants {
             "^(D|C)(%s)(%s)(%s)$", MTParserConstants.YYMMDD_DATE_REGEX, MTParserConstants.CURRENCY_REGEX,
             MTParserConstants.AMOUNT_REGEX));
     public static final Pattern FIELD_61_REGEX_PATTERN = Pattern.compile(String.format(
-            "^(%s)(%s)?(C|D|RC|RD)(%s)?([\\d,]{1,15})(%s)(%s{3})(%s{1,34})(\\R(%s{1,34}))?$",
-            MTParserConstants.YYMMDD_DATE_REGEX, MTParserConstants.HHMM_TIME_REGEX, MTParserConstants.CHARACTER_SET_A,
+            "^(%s)(%s)?(C|D|RC|RD)(%s)?((?!0+,0*$)(?=[\\d,]{2,15}[A-Z])\\d+,\\d*)(%s)(%s{3})(%s{1,34})(\\R(%s{1,34}))?$"
+            , MTParserConstants.YYMMDD_DATE_REGEX, MTParserConstants.HHMM_TIME_REGEX, MTParserConstants.CHARACTER_SET_A,
             MTParserConstants.CHARACTER_SET_A, MTParserConstants.CHARACTER_SET_C, MTParserConstants.CHARACTER_SET_X,
             MTParserConstants.CHARACTER_SET_X));
 
