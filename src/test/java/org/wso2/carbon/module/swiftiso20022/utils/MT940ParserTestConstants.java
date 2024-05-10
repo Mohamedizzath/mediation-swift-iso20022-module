@@ -782,11 +782,11 @@ public class MT940ParserTestConstants {
                         "Field61RefToAccountOwner", "GSGWGDNCTAHQM8",
                         "Field61RefToAccountServicingInstitution", "ADDITIONAL INFO",
                         "Field61SupplementaryDetails", "EREF/GSGWGDNCTAHQM8")))},
-                {getMT940TextBlockText(Map.of(), List.of(":61:2310011001RCD1ACHPGSGWGDNCTAHQM8" +
+                {getMT940TextBlockText(Map.of(), List.of(":61:2310011001RCD1,ACHPGSGWGDNCTAHQM8" +
                         "//ADDITIONAL INFO\nEREF/GSGWGDNCTAHQM8\n")),
                         getMT940TextBlock(Map.of(), List.of(Map.of("Field61ValueDate", "231001",
                         "Field61EntryDate", "1001", "Field61DCMark", "RC",
-                        "Field61FundsCode", "D", "Field61Amount", "1",
+                        "Field61FundsCode", "D", "Field61Amount", "1,",
                         "Field61TransactionType", "A", "Field61IdentificationCode", "CHP",
                         "Field61RefToAccountOwner", "GSGWGDNCTAHQM8",
                         "Field61RefToAccountServicingInstitution", "ADDITIONAL INFO",
