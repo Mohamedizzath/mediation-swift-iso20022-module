@@ -93,7 +93,6 @@ public class Field72 {
         Matcher field72Matcher = MTParserConstants.FIELD_72_REGEX_PATTERN.matcher(field72String);
 
         if (field72Matcher.matches()) {
-
             return new Field72(option,
                     // Values group -> "line1\nline2\n" -> ["line1", "line2"]
                     Arrays.asList(field72Matcher.group().split(MTParserConstants.LINE_BREAK_REGEX_PATTERN)));

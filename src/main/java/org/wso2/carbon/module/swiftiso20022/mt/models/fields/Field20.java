@@ -86,7 +86,6 @@ public class Field20 {
         Matcher field20Matcher = MTParserConstants.FIELD_20_REGEX_PATTERN.matcher(field20String);
 
         if (field20Matcher.matches()) {
-
             return new Field20(option, field20Matcher.group());
         } else {
             throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,

@@ -119,7 +119,6 @@ public class Field50 extends PartyIdentifier {
         Matcher field50Matcher = MTParserConstants.FIELD_50_REGEX_PATTERN.matcher(field50String);
 
         if (field50Matcher.matches()) {
-
             // group 1 -> Account or Party Identifier with line break
             // group 2 -> Account or Party Identifier
             // group 4 -> Identifier Code

@@ -137,7 +137,6 @@ public class Field71 {
         Matcher field71Matcher = MTParserConstants.FIELD_71_REGEX_PATTERN.matcher(field71String);
 
         if (field71Matcher.matches()) {
-
             // group 1 -> Code
             // group 2 -> (Currency)(Amount)
             // group 3 -> Currency

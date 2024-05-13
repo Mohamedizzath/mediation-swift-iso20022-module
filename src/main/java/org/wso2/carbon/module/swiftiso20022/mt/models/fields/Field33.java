@@ -106,7 +106,6 @@ public class Field33 {
         Matcher field33Matcher = MTParserConstants.FIELD_33_REGEX_PATTERN.matcher(field33String);
 
         if (field33Matcher.matches()) {
-
             // group 1 -> Currency
             // group 2 -> Amount
             return new Field33(option, field33Matcher.group(1), field33Matcher.group(2));

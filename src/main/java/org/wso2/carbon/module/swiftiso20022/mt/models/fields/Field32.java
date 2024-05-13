@@ -120,7 +120,6 @@ public class Field32 {
         Matcher field32Matcher = MTParserConstants.FIELD_32_REGEX_PATTERN.matcher(field32String);
 
         if (field32Matcher.matches()) {
-
             // group 1 -> Date
             // group 2 -> Currency
             // group 3 -> Amount

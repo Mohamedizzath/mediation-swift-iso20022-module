@@ -86,7 +86,6 @@ public class Field26 {
         Matcher field26Matcher = MTParserConstants.FIELD_26_REGEX_PATTERN.matcher(field26TString);
 
         if (field26Matcher.matches()) {
-
             return new Field26(option, field26Matcher.group());
         } else {
             throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,

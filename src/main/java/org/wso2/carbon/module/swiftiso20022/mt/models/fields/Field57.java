@@ -136,7 +136,6 @@ public class Field57 extends PartyIdentifier {
         Matcher field57Matcher = MTParserConstants.PARTY_IDENTIFIER_REGEX_PATTERN.matcher(field57String);
 
         if (field57Matcher.matches()) {
-
             // group 1 -> Party Identifier with line break
             // group 2 -> Party Identifier
             // group 8 -> Identifier Code
@@ -144,8 +143,8 @@ public class Field57 extends PartyIdentifier {
             // group 12 -> Details in format (Number)/(Name and Address)
             // group 14 -> Details in format (Name and Address)
 
+            // This is a special case where only one field is present, it should match with group 6 and only it.
             if (option == ConnectorConstants.OPTION_C) {
-                // This is a special case where only one field is present, it should match with group 6 and only it.
                 if (field57Matcher.group(6) != null) {
                     return new Field57(option, field57Matcher.group(6));
                 } else {

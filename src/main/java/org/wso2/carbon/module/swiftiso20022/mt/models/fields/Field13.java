@@ -134,7 +134,6 @@ public class Field13 {
         Matcher field13Matcher = MTParserConstants.FIELD_13_REGEX_PATTERN.matcher(field13String);
 
         if (field13Matcher.matches()) {
-
             // group 1 -> Code
             // group 2 -> Time
             // group 3 -> Sign

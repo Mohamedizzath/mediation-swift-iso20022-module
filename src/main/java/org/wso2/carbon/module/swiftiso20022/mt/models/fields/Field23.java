@@ -122,12 +122,10 @@ public class Field23 {
         Matcher field23Matcher = MTParserConstants.FIELD_23_REGEX_PATTERN.matcher(field23String);
 
         if (field23Matcher.matches()) {
-
             // group 1 -> Code
             // group 2 -> /Additional Information
             // group 3 -> Additional Information
             return new Field23(option, field23Matcher.group(1), field23Matcher.group(3));
-
         } else {
             throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
                     FIELD_NAME.get(option), ConnectorConstants.TEXT_BLOCK));

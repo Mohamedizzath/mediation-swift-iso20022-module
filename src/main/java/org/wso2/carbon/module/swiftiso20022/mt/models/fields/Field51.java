@@ -85,7 +85,6 @@ public class Field51 extends PartyIdentifier {
         Matcher field51Matcher = MTParserConstants.PARTY_IDENTIFIER_REGEX_PATTERN.matcher(field51String);
 
         if (field51Matcher.matches()) {
-
             // group 1 -> Party Identifier with line break
             // group 2 -> Party Identifier
             // group 8 -> Identifier Code
@@ -94,7 +93,6 @@ public class Field51 extends PartyIdentifier {
             // group 14 -> Details in format (Name and Address)
             return new Field51(option, field51Matcher.group(2), field51Matcher.group(8), field51Matcher.group(11),
                     MTParserUtils.getDetailsAsList(field51Matcher));
-
         } else {
             throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
                     MT103Constants.SENDING_INSTITUTION, ConnectorConstants.TEXT_BLOCK));

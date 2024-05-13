@@ -85,7 +85,7 @@ public class Field70 {
      * Current implementations -> No_letter
      *
      * @param field70String String containing value of 70 field in Text Block
-     * @param option single character option of the field70String
+     * @param option        single character option of the field70String
      * @return An instance of this model.
      * @throws MTMessageParsingException if the value is invalid
      */
@@ -99,10 +99,9 @@ public class Field70 {
         Matcher field70Matcher = MTParserConstants.FIELD_70_REGEX_PATTERN.matcher(field70String);
 
         if (field70Matcher.matches()) {
-
             return new Field70(option,
                     // Values group -> "line1\nline2\n" -> ["line1", "line2"]
-                    List.of(field70Matcher.group().split(MTParserConstants.LINE_BREAK_REGEX_PATTERN)));
+                    Arrays.asList(field70Matcher.group().split(MTParserConstants.LINE_BREAK_REGEX_PATTERN)));
         } else {
             throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
                     MT103Constants.REMITTANCE_INFORMATION, ConnectorConstants.TEXT_BLOCK));
