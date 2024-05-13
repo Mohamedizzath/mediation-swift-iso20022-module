@@ -138,6 +138,12 @@ public class MT940FormatValidator extends AbstractConnector {
             if (line.startsWith(OPEN_BRACKET) || line.startsWith(DASH) || line.length() < 3) {
                 continue;
             }
+
+            // Removing &xsd; from text payload which added automatically to message context payload
+            if (line.endsWith("&#xd;")) {
+                line = line.substring(0, line.length() - 5);
+            }
+
             switch (line.substring(0, 3)) {
                 case MT940Constants.MT940_TRANSACTION_REF :
                     fields.put(MT940Constants.DN_TRANSACTION_REF, line);

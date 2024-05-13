@@ -60,8 +60,18 @@ public class MTParserConstants {
     public static final String INVALID_BASIC_HEADER = "Basic header block is not in the correct format";
     public static final String EMPTY_MT_MESSAGE_BLOCKS = "Basic header block is not present in MT message";
     public static final String INVALID_APPLICATION_HEADER = "Application header block is not in the correct format";
+
     public static final String FIELD_DLM_TAG = "DLM";
     public static final String FIELD_TNG_TAG = "TNG";
+
+    // Character Sets
+    public static final String CHARACTER_SET_A = "[A-Z]";
+    public static final String CHARACTER_SET_C = "[\\dA-Z]";
+    public static final String CHARACTER_SET_X = "[\\da-zA-Z/\\-?:().,'+ ]";
+    public static final String AMOUNT_REGEX = "(?!0+,0*$)(?=[\\d,]{2,15}$)\\d+,\\d*";
+    public static final String YYMMDD_DATE_REGEX = "\\d{6}";
+    public static final String HHMM_TIME_REGEX = "\\d{4}";
+    public static final String CURRENCY_REGEX = "[A-Z]{3}";
 
     // Regex patterns for MT parser and utils
 
@@ -148,4 +158,27 @@ public class MTParserConstants {
     public static final String INVALID_FIELD_IN_BLOCK_MESSAGE = "%s in %s is in invalid format";
     public static final String INVALID_OPTION_FOR_FIELD = "Option %s for %s in Text Block is invalid";
 
+    public static final String INVALID_TEXT_BLOCK = "Text block is not in the correct format";
+    public static final Pattern TEXT_BLOCK_FIELD_REGEX = Pattern.compile("^(\\d{2}[A-Z]?):(.*)$", Pattern.DOTALL);
+    public static final String INVALID_FIELD_FORMAT = "%s field not in the correct format";
+    public static final String INVALID_FIELD_OPTION = "Invalid %s option for field %s";
+
+    // Field options
+    public static final char FIELD_OPTION_NO_LETTER = '0';
+    public static final char FIELD_OPTION_C = 'C';
+    public static final char FIELD_OPTION_F = 'F';
+    public static final char FIELD_OPTION_M = 'M';
+    public static final char FIELD_OPTION_P = 'P';
+
+    // MT parsing JSON keys
+    public static final String BASIC_HEADER_JSON_KEY = "basicHeaderBlock";
+    public static final String APPLICATION_HEADER_JSON_KEY = "applicationHeaderBlock";
+    public static final String TEXT_BLOCK_JSON_KEY = "textBlock";
+    public static final String OPTION_JSON_KEY = "option";
+    public static final String AMOUNT_JSON_KEY = "amount";
+    public static final String DATE_JSON_KEY = "date";
+    public static final String DATE_DT_JSON_KEY = "dateDt";
+    public static final String LOGICAL_TERMINAL_ADDRESS_JSON_KEY = "logicalTerminalAddress";
+    public static final String TO_BIC_JSON_KEY = "ToBIC";
+    public static final String FROM_BIC_JSON_KEY = "FromBIC";
 }

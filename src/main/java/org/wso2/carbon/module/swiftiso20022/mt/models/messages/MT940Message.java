@@ -18,9 +18,19 @@
 
 package org.wso2.carbon.module.swiftiso20022.mt.models.messages;
 
+import org.wso2.carbon.module.swiftiso20022.mt.models.blocks.text.MT940TextBlock;
+
 /**
  * MT940 model class which represents MT940 message.
  */
 public class MT940Message extends MTMessage {
+    private MT940TextBlock textBlock;
 
+    public MT940TextBlock getTextBlock() {
+        return textBlock;
+    }
+
+    public void setTextBlock(MT940TextBlock textBlock) {
+        this.textBlock = textBlock;
+    }
 }
