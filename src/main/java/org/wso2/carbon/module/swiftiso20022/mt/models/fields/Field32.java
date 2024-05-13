@@ -19,7 +19,6 @@
 package org.wso2.carbon.module.swiftiso20022.mt.models.fields;
 
 import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
-import org.wso2.carbon.module.swiftiso20022.constants.MT103Constants;
 import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
 import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
 
@@ -60,10 +59,10 @@ public class Field32 {
     /**
      * Constructor to initialize all attributes.
      *
-     * @param option Single character
-     * @param date  String with 6 digits
-     * @param currency  String with 3 uppercase characters
-     * @param amount String in the SWIFT amount format
+     * @param option   Single character
+     * @param date     String with 6 digits
+     * @param currency String with 3 uppercase characters
+     * @param amount   String in the SWIFT amount format
      */
     public Field32(char option, String date, String currency, String amount) {
         this.option = option;
@@ -104,12 +103,12 @@ public class Field32 {
      * Method to parse and get Field32 object.
      * Current Implementations -> Option A
      *
+     * @param option        single character option of the field32String
      * @param field32String String containing value of 32 field in Text Block
-     * @param option single character option of the field32String
      * @return An instance of this model.
      * @throws MTMessageParsingException if the value is invalid
      */
-    public static Field32 parse(String field32String, char option) throws MTMessageParsingException {
+    public static Field32 parse(char option, String field32String) throws MTMessageParsingException {
 
         if (!OPTIONS.contains(option)) {
             throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_OPTION_FOR_FIELD, option,
@@ -126,7 +125,8 @@ public class Field32 {
             return new Field32(option, field32Matcher.group(1), field32Matcher.group(2), field32Matcher.group(3));
         } else {
             throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
-                    MT103Constants.VALUE, ConnectorConstants.TEXT_BLOCK));
+                    ConnectorConstants.FIELD_32 + (option == ConnectorConstants.NO_LETTER_OPTION ? "" : option),
+                    ConnectorConstants.TEXT_BLOCK));
         }
     }
 }

@@ -140,13 +140,13 @@ public class MT103Parser {
             switch (tag) {
                 case Field13.TAG:
                     // This field is repetitive and every occurrence is parsed separately and added to the model
-                    mt103TextBlock.setTimeIndication(Field13.parse(tagNValue.group(3), option));
+                    mt103TextBlock.setTimeIndication(Field13.parse(option, tagNValue.group(3)));
                     break;
                 case Field20.TAG:
-                    mt103TextBlock.setSendersReference(Field20.parse(tagNValue.group(3), option));
+                    mt103TextBlock.setSendersReference(Field20.parse(option, tagNValue.group(3)));
                     break;
                 case Field23.TAG:
-                    Field23 field23 = Field23.parse(tagNValue.group(3), option);
+                    Field23 field23 = Field23.parse(option, tagNValue.group(3));
 
                     if (option == ConnectorConstants.OPTION_B) {
                         mt103TextBlock.setBankOperationCode(field23);
@@ -156,49 +156,49 @@ public class MT103Parser {
                     }
                     break;
                 case Field26.TAG:
-                    mt103TextBlock.setTransactionTypeCode(Field26.parse(tagNValue.group(3), option));
+                    mt103TextBlock.setTransactionTypeCode(Field26.parse(option, tagNValue.group(3)));
                     break;
                 case Field32.TAG:
-                    mt103TextBlock.setValue(Field32.parse(tagNValue.group(3), option));
+                    mt103TextBlock.setValue(Field32.parse(option, tagNValue.group(3)));
                     break;
                 case Field33.TAG:
-                    mt103TextBlock.setInstructedAmount(Field33.parse(tagNValue.group(3), option));
+                    mt103TextBlock.setInstructedAmount(Field33.parse(option, tagNValue.group(3)));
                     break;
                 case Field36.TAG:
-                    mt103TextBlock.setExchangeRate(Field36.parse(tagNValue.group(3), option));
+                    mt103TextBlock.setExchangeRate(Field36.parse(option, tagNValue.group(3)));
                     break;
                 case Field50.TAG:
-                    mt103TextBlock.setOrderingCustomer(Field50.parse(tagNValue.group(3), option));
+                    mt103TextBlock.setOrderingCustomer(Field50.parse(option, tagNValue.group(3)));
                     break;
                 case Field51.TAG:
-                    mt103TextBlock.setSendingInstitution(Field51.parse(tagNValue.group(3), option));
+                    mt103TextBlock.setSendingInstitution(Field51.parse(option, tagNValue.group(3)));
                     break;
                 case Field52.TAG:
-                    mt103TextBlock.setOrderingInstitution(Field52.parse(tagNValue.group(3), option));
+                    mt103TextBlock.setOrderingInstitution(Field52.parse(option, tagNValue.group(3)));
                     break;
                 case Field53.TAG:
-                    mt103TextBlock.setSendersCorrespondent(Field53.parse(tagNValue.group(3), option));
+                    mt103TextBlock.setSendersCorrespondent(Field53.parse(option, tagNValue.group(3)));
                     break;
                 case Field54.TAG:
-                    mt103TextBlock.setReceiversCorrespondent(Field54.parse(tagNValue.group(3), option));
+                    mt103TextBlock.setReceiversCorrespondent(Field54.parse(option, tagNValue.group(3)));
                     break;
                 case Field55.TAG:
-                    mt103TextBlock.setThirdReimbursementInstitution(Field55.parse(tagNValue.group(3), option));
+                    mt103TextBlock.setThirdReimbursementInstitution(Field55.parse(option, tagNValue.group(3)));
                     break;
                 case Field56.TAG:
-                    mt103TextBlock.setIntermediaryInstitution(Field56.parse(tagNValue.group(3), option));
+                    mt103TextBlock.setIntermediaryInstitution(Field56.parse(option, tagNValue.group(3)));
                     break;
                 case Field57.TAG:
-                    mt103TextBlock.setAccountWithInstitution(Field57.parse(tagNValue.group(3), option));
+                    mt103TextBlock.setAccountWithInstitution(Field57.parse(option, tagNValue.group(3)));
                     break;
                 case Field59.TAG:
-                    mt103TextBlock.setBeneficiaryCustomer(Field59.parse(tagNValue.group(3), option));
+                    mt103TextBlock.setBeneficiaryCustomer(Field59.parse(option, tagNValue.group(3)));
                     break;
                 case Field70.TAG:
-                    mt103TextBlock.setRemittanceInformation(Field70.parse(tagNValue.group(3), option));
+                    mt103TextBlock.setRemittanceInformation(Field70.parse(option, tagNValue.group(3)));
                     break;
                 case Field71.TAG:
-                    Field71 field71 = Field71.parse(tagNValue.group(3), option);
+                    Field71 field71 = Field71.parse(option, tagNValue.group(3));
 
                     if (option == ConnectorConstants.OPTION_A) {
                         mt103TextBlock.setDetailsOfCharges(field71);
@@ -211,10 +211,10 @@ public class MT103Parser {
                     }
                     break;
                 case Field72.TAG:
-                    mt103TextBlock.setSenderToReceiverInformation(Field72.parse(tagNValue.group(3), option));
+                    mt103TextBlock.setSenderToReceiverInformation(Field72.parse(option, tagNValue.group(3)));
                     break;
                 case Field77.TAG:
-                    Field77 field77 = Field77.parse(tagNValue.group(3), option);
+                    Field77 field77 = Field77.parse(option, tagNValue.group(3));
 
                     if (option == ConnectorConstants.OPTION_B) {
                         mt103TextBlock.setRegulatoryReporting(field77);

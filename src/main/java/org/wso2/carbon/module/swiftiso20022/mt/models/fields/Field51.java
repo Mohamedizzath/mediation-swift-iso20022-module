@@ -19,7 +19,6 @@
 package org.wso2.carbon.module.swiftiso20022.mt.models.fields;
 
 import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
-import org.wso2.carbon.module.swiftiso20022.constants.MT103Constants;
 import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
 import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
 import org.wso2.carbon.module.swiftiso20022.utils.MTParserUtils;
@@ -69,12 +68,12 @@ public class Field51 extends PartyIdentifier {
      * Method to parse and get Field51 object.
      * Current implementations -> Option A
      *
-     * @param field51String String containing value of 51 field in Text Block
      * @param option single character option of the field51String
+     * @param field51String String containing value of 51 field in Text Block
      * @return An instance of this model.
      * @throws MTMessageParsingException if the value is invalid
      */
-    public static Field51 parse(String field51String, char option) throws MTMessageParsingException {
+    public static Field51 parse(char option, String field51String) throws MTMessageParsingException {
 
         if (!OPTIONS.contains(option)) {
             throw new MTMessageParsingException(String.format(
@@ -95,7 +94,8 @@ public class Field51 extends PartyIdentifier {
                     MTParserUtils.getDetailsAsList(field51Matcher));
         } else {
             throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
-                    MT103Constants.SENDING_INSTITUTION, ConnectorConstants.TEXT_BLOCK));
+                    ConnectorConstants.FIELD_51 + (option == ConnectorConstants.NO_LETTER_OPTION ? "" : option),
+                    ConnectorConstants.TEXT_BLOCK));
         }
     }
 }

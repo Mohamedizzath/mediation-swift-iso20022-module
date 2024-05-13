@@ -19,7 +19,6 @@
 package org.wso2.carbon.module.swiftiso20022.mt.models.fields;
 
 import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
-import org.wso2.carbon.module.swiftiso20022.constants.MT103Constants;
 import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
 import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
 
@@ -78,12 +77,12 @@ public class Field72 {
      * Method to parse and get Field72 object.
      * Current implementations -> No_letter
      *
-     * @param field72String String containing value of 72 field in Text Block
      * @param option single character option of the field72String
+     * @param field72String String containing value of 72 field in Text Block
      * @return An instance of this model.
      * @throws MTMessageParsingException if the value is invalid
      */
-    public static Field72 parse(String field72String, char option) throws MTMessageParsingException {
+    public static Field72 parse(char option, String field72String) throws MTMessageParsingException {
 
         if (!OPTIONS.contains(option)) {
             throw new MTMessageParsingException(String.format(
@@ -98,7 +97,8 @@ public class Field72 {
                     Arrays.asList(field72Matcher.group().split(MTParserConstants.LINE_BREAK_REGEX_PATTERN)));
         } else {
             throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
-                    MT103Constants.SENDER_TO_RECEIVER_INFORMATION, ConnectorConstants.TEXT_BLOCK));
+                    ConnectorConstants.FIELD_72 + (option == ConnectorConstants.NO_LETTER_OPTION ? "" : option),
+                    ConnectorConstants.TEXT_BLOCK));
         }
     }
 }

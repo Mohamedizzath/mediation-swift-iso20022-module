@@ -64,15 +64,6 @@ public class MTParserConstants {
     public static final String FIELD_DLM_TAG = "DLM";
     public static final String FIELD_TNG_TAG = "TNG";
 
-    // Character Sets
-    public static final String CHARACTER_SET_A = "[A-Z]";
-    public static final String CHARACTER_SET_C = "[\\dA-Z]";
-    public static final String CHARACTER_SET_X = "[\\da-zA-Z/\\-?:().,'+ ]";
-    public static final String AMOUNT_REGEX = "(?!0+,0*$)(?=[\\d,]{2,15}$)\\d+,\\d*";
-    public static final String YYMMDD_DATE_REGEX = "\\d{6}";
-    public static final String HHMM_TIME_REGEX = "\\d{4}";
-    public static final String CURRENCY_REGEX = "[A-Z]{3}";
-
     // Regex patterns for MT parser and utils
 
     public static final String LINE_BREAK_REGEX_PATTERN = "\\R";

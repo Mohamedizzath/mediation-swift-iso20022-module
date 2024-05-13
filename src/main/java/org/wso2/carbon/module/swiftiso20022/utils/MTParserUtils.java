@@ -26,8 +26,8 @@ import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

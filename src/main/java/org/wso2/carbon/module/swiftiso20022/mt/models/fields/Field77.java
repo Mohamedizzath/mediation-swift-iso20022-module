@@ -19,13 +19,11 @@
 package org.wso2.carbon.module.swiftiso20022.mt.models.fields;
 
 import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
-import org.wso2.carbon.module.swiftiso20022.constants.MT103Constants;
 import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
 import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Matcher;
 
 /**
@@ -59,10 +57,6 @@ public class Field77 {
     public static final String TAG = "77";
     private static final List<Character> OPTIONS = Arrays.asList(
             ConnectorConstants.OPTION_B, ConnectorConstants.OPTION_T);
-    private static final Map<Character, String> FIELD_NAME = Map.of(
-            ConnectorConstants.OPTION_B, MT103Constants.REGULATORY_REPORTING,
-            ConnectorConstants.OPTION_T, MT103Constants.ENVELOPE_CONTENTS
-    );
     private char option;
     private List<String> lines;
     private String value;
@@ -108,12 +102,12 @@ public class Field77 {
      * Method to parse and get Field77 object.
      * Current implementations -> Option B and T
      *
-     * @param field77String String containing value of 77 field in Text Block
      * @param option single character option of the field77String
+     * @param field77String String containing value of 77 field in Text Block
      * @return An instance of this model.
      * @throws MTMessageParsingException if the value is invalid
      */
-    public static Field77 parse(String field77String, char option) throws MTMessageParsingException {
+    public static Field77 parse(char option, String field77String) throws MTMessageParsingException {
 
         if (!OPTIONS.contains(option)) {
             throw new MTMessageParsingException(String.format(
@@ -130,7 +124,8 @@ public class Field77 {
             return new Field77(option, lines, field77Matcher.group(3));
         } else {
             throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
-                    FIELD_NAME.get(option), ConnectorConstants.TEXT_BLOCK));
+                    ConnectorConstants.FIELD_77 + (option == ConnectorConstants.NO_LETTER_OPTION ? "" : option),
+                    ConnectorConstants.TEXT_BLOCK));
         }
     }
 }

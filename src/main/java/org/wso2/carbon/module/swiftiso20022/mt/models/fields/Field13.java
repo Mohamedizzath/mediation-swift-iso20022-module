@@ -19,7 +19,6 @@
 package org.wso2.carbon.module.swiftiso20022.mt.models.fields;
 
 import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
-import org.wso2.carbon.module.swiftiso20022.constants.MT103Constants;
 import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
 import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
 
@@ -118,12 +117,12 @@ public class Field13 {
      * Method to parse and get Field13 object.
      * Current implementation -> Option C
      *
-     * @param field13String String containing value of 13 field in Text Block
      * @param option single character option of the field13String
+     * @param field13String String containing value of 13 field in Text Block
      * @return An instance of this model.
      * @throws MTMessageParsingException if the value is invalid
      */
-    public static Field13 parse(String field13String, char option) throws MTMessageParsingException {
+    public static Field13 parse(char option, String field13String) throws MTMessageParsingException {
 
         if (!OPTIONS.contains(option)) {
             throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_OPTION_FOR_FIELD, option,
@@ -142,7 +141,8 @@ public class Field13 {
                     field13Matcher.group(2), field13Matcher.group(3), field13Matcher.group(4));
         } else {
             throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
-                    MT103Constants.TIME_INDICATION, ConnectorConstants.TEXT_BLOCK));
+                    ConnectorConstants.FIELD_13 + (option == ConnectorConstants.NO_LETTER_OPTION ? "" : option),
+                    ConnectorConstants.TEXT_BLOCK));
         }
     }
 }

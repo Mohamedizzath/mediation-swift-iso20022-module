@@ -19,7 +19,6 @@
 package org.wso2.carbon.module.swiftiso20022.mt.models.fields;
 
 import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
-import org.wso2.carbon.module.swiftiso20022.constants.MT103Constants;
 import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
 import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
 import org.wso2.carbon.module.swiftiso20022.utils.MTParserUtils;
@@ -107,12 +106,12 @@ public class Field56 extends PartyIdentifier {
      * Method to parse and get Field56 object.
      * Current implementations -> Option A, C and D
      *
-     * @param field56String String containing value of 56A field in Text Block
      * @param option single character option of the field56String
+     * @param field56String String containing value of 56A field in Text Block
      * @return An instance of this model.
      * @throws MTMessageParsingException if the value is invalid
      */
-    public static Field56 parse(String field56String, char option) throws MTMessageParsingException {
+    public static Field56 parse(char option, String field56String) throws MTMessageParsingException {
 
         if (!OPTIONS.contains(option)) {
             throw new MTMessageParsingException(String.format(
@@ -135,7 +134,8 @@ public class Field56 extends PartyIdentifier {
                     return new Field56(option, field56Matcher.group(6));
                 } else {
                     throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
-                            MT103Constants.INTERMEDIARY_INSTITUTION, ConnectorConstants.TEXT_BLOCK));
+                            ConnectorConstants.FIELD_56 + (option == ConnectorConstants.NO_LETTER_OPTION ? "" : option),
+                            ConnectorConstants.TEXT_BLOCK));
                 }
             }
 
@@ -143,7 +143,8 @@ public class Field56 extends PartyIdentifier {
                     MTParserUtils.getDetailsAsList(field56Matcher));
         } else {
             throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
-                    MT103Constants.INTERMEDIARY_INSTITUTION, ConnectorConstants.TEXT_BLOCK));
+                    ConnectorConstants.FIELD_56 + (option == ConnectorConstants.NO_LETTER_OPTION ? "" : option),
+                    ConnectorConstants.TEXT_BLOCK));
         }
     }
 }
