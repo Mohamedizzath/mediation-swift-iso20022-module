@@ -84,7 +84,8 @@ public class MTBlockFormatValidator {
             return validationResult;
         }
 
-        return new ValidationResult(true);
+        // if valid, return default object ( isValid = true )
+        return new ValidationResult();
     }
 
     /**
@@ -99,11 +100,12 @@ public class MTBlockFormatValidator {
     private static ValidationResult validateUserHeaderBlock(String userHeaderBlock) {
 
         if (userHeaderBlock == null) {
-            return new ValidationResult(true);
+            // if userHeaderBlock is null, it is not present in the message, return default object ( isValid = true )
+            return new ValidationResult();
         }
 
         if (!Pattern.matches(USER_HEADER_BLOCK_FORMAT_REGEX, userHeaderBlock)) {
-            return new ValidationResult(
+            return new ValidationResult(null,
                     String.format(ConnectorConstants.ERROR_BLOCK_INVALID_FORMAT, ConnectorConstants.USER_HEADER_BLOCK));
         }
 
@@ -120,19 +122,20 @@ public class MTBlockFormatValidator {
 
             // condition to check field 111 appearing before 121
             if (Field111.TAG.equals(tag) && !matchedTags.contains(Field121.TAG)) {
-                return new ValidationResult(ConnectorConstants.ILLEGAL_OCCURRENCE_OF_FIELD_111);
+                return new ValidationResult(null, ConnectorConstants.ILLEGAL_OCCURRENCE_OF_FIELD_111);
             }
 
             // condition to check field repetition
             if (matchedTags.contains(tag)) {
-                return new ValidationResult(String.format(
+                return new ValidationResult(null, String.format(
                         ConnectorConstants.ERROR_FIELD_REPEATED, tag, ConnectorConstants.USER_HEADER_BLOCK));
             } else {
                 matchedTags.add(tag);
             }
         }
 
-        return new ValidationResult(true);
+        // if valid, return default object ( isValid = true )
+        return new ValidationResult();
     }
 
     /**
@@ -145,11 +148,12 @@ public class MTBlockFormatValidator {
     private static ValidationResult validateTrailerBlock(String trailerBlock) {
 
         if (trailerBlock == null) {
-            return new ValidationResult(true);
+            // if trailerBlock is null, it is not present in the message, return default object ( isValid = true )
+            return new ValidationResult();
         }
 
         if (!Pattern.matches(TRAILER_BLOCK_FORMAT_REGEX, trailerBlock)) {
-            return new ValidationResult(
+            return new ValidationResult(null,
                     String.format(ConnectorConstants.ERROR_BLOCK_INVALID_FORMAT, ConnectorConstants.TRAILER_BLOCK));
         }
 
@@ -166,13 +170,14 @@ public class MTBlockFormatValidator {
 
             // condition to check field repetition
             if (matchedTags.contains(tag)) {
-                return new ValidationResult(String.format(
-                        ConnectorConstants.ERROR_FIELD_REPEATED, tag, ConnectorConstants.TRAILER_BLOCK));
+                return new ValidationResult(null,
+                        String.format(ConnectorConstants.ERROR_FIELD_REPEATED, tag, ConnectorConstants.TRAILER_BLOCK));
             } else {
                 matchedTags.add(tag);
             }
         }
 
-        return new ValidationResult(true);
+        // if valid, return default object ( isValid = true )
+        return new ValidationResult();
     }
 }

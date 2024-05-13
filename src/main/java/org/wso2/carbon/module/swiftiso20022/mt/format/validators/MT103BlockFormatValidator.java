@@ -38,7 +38,7 @@ public class MT103BlockFormatValidator {
 
     /**
      * This regex captures global match in the format ->
-     *                          one or more of (line break:tag:value) line break.
+     * one or more of (line break:tag:value) line break.
      * tag -> 2 digits and optional uppercase letter
      * value -> contains all characters until next line break followed by a colon is found, if the next line starts
      * with a colon and not follows tag value format it will not be matched
@@ -100,7 +100,8 @@ public class MT103BlockFormatValidator {
             return validationResult;
         }
 
-        return new ValidationResult(true);
+        // if valid, return default object ( isValid = true )
+        return new ValidationResult();
     }
 
     /**
@@ -114,12 +115,12 @@ public class MT103BlockFormatValidator {
     private static ValidationResult validateTextBlockFormat(String textBlock) {
 
         if (textBlock == null) {
-            return new ValidationResult(String.format(
+            return new ValidationResult(null, String.format(
                     ConnectorConstants.ERROR_MANDATORY_BLOCK_EMPTY, ConnectorConstants.TEXT_BLOCK));
         }
 
         if (!Pattern.matches(TEXT_BLOCK_FORMAT_REGEX, textBlock)) {
-            return new ValidationResult(
+            return new ValidationResult(null,
                     String.format(ConnectorConstants.ERROR_BLOCK_INVALID_FORMAT, ConnectorConstants.TEXT_BLOCK));
         }
 
@@ -142,7 +143,7 @@ public class MT103BlockFormatValidator {
 
 
             if (matchingIndex == -1) {
-                return new ValidationResult(String.format(
+                return new ValidationResult(null, String.format(
                         ConnectorConstants.ERROR_FIELD_NOT_ALLOWED_IN_BLOCK, tag, ConnectorConstants.TEXT_BLOCK));
             }
 
@@ -151,20 +152,20 @@ public class MT103BlockFormatValidator {
 
                 // check if tag is allowed to be repeated
                 if (!FIELDS_WITH_REPETITIONS_ALLOWED.contains(tag)) {
-                    return new ValidationResult(
-                            String.format(ConnectorConstants.ERROR_FIELD_REPEATED,
-                                    ALLOWED_FIELDS.get(matchingIndex), ConnectorConstants.TEXT_BLOCK));
+                    return new ValidationResult(null, String.format(ConnectorConstants.ERROR_FIELD_REPEATED,
+                            ALLOWED_FIELDS.get(matchingIndex), ConnectorConstants.TEXT_BLOCK));
                 }
 
                 // check if the order is wrong
             } else if (matchingIndex < previousIndex) {
-                return new ValidationResult(
+                return new ValidationResult(null,
                         String.format(ConnectorConstants.ERROR_FIELD_ORDER, tag, ConnectorConstants.TEXT_BLOCK));
             } else {
                 previousIndex = matchingIndex;
             }
         }
 
-        return new ValidationResult(true);
+        // if valid, return default object ( isValid = true )
+        return new ValidationResult();
     }
 }
