@@ -46,7 +46,7 @@ public class MT940ToISO20022PayloadFactoryTestConstants {
         JsonObject mt940JsonObject = (JsonObject) gson.toJsonTree(mt940Message);
 
         MT940JSONParserUtils.updateJsonObjectToMT940(mt940JsonObject);
-        MT940JSONParserUtils.updateDatesFrMT940(mt940JsonObject);
+        MT940JSONParserUtils.updateDatesFromMT940(mt940JsonObject);
         MT940JSONParserUtils.addBICToMT940Message(mt940JsonObject);
 
         return mt940JsonObject.toString();

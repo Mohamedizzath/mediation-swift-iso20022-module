@@ -20,6 +20,7 @@ package org.wso2.carbon.module.swiftiso20022.utils;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import org.wso2.carbon.module.swiftiso20022.constants.MT940ParserConstants;
 import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
 
 /**
@@ -31,43 +32,52 @@ public class MT940JSONParserUtils {
      * @param mt940JsonObj          MT940 message as JSON Tree
      */
     public static void updateJsonObjectToMT940(JsonObject mt940JsonObj) {
-        JsonObject textBlock = mt940JsonObj.getAsJsonObject("textBlock");
+        JsonObject textBlock = mt940JsonObj.getAsJsonObject(MTParserConstants.TEXT_BLOCK_JSON_KEY);
         // Remove NO LETTER OPTIONS
-        textBlock.getAsJsonObject("transactionReferenceNumber").remove("option");
+        textBlock.getAsJsonObject(MT940ParserConstants.TRANSACTION_REFERENCE_NUMBER_JSON_KEY)
+                .remove(MTParserConstants.OPTION_JSON_KEY);
 
-        if (textBlock.has("relatedReference") &&
-                textBlock.getAsJsonObject("relatedReference").get("option").getAsCharacter() ==
-                        MTParserConstants.FIELD_OPTION_NO_LETTER) {
-            textBlock.getAsJsonObject("relatedReference").remove("option");
+        if (textBlock.has(MT940ParserConstants.RELATED_REFERENCE_NUMBER_JSON_KEY) &&
+                textBlock.getAsJsonObject(MT940ParserConstants.RELATED_REFERENCE_NUMBER_JSON_KEY)
+                .get(MTParserConstants.OPTION_JSON_KEY).getAsCharacter() == MTParserConstants.FIELD_OPTION_NO_LETTER) {
+            textBlock.getAsJsonObject(MT940ParserConstants.RELATED_REFERENCE_NUMBER_JSON_KEY)
+                    .remove(MTParserConstants.OPTION_JSON_KEY);
         }
 
-        if (textBlock.getAsJsonObject("accountIdentification").get("option").getAsCharacter() ==
-                MTParserConstants.FIELD_OPTION_NO_LETTER) {
-            textBlock.getAsJsonObject("accountIdentification").remove("option");
+        if (textBlock.getAsJsonObject(MT940ParserConstants.ACCOUNT_IDENTIFICATION_JSON_KEY)
+                .get(MTParserConstants.OPTION_JSON_KEY).getAsCharacter() == MTParserConstants.FIELD_OPTION_NO_LETTER) {
+            textBlock.getAsJsonObject(MT940ParserConstants.ACCOUNT_IDENTIFICATION_JSON_KEY)
+                    .remove(MTParserConstants.OPTION_JSON_KEY);
         }
 
-        if (textBlock.has("statementLines")) {
-            for (JsonElement statement : textBlock.getAsJsonArray("statementLines")) {
-                if (statement.getAsJsonObject().has("Field86") && statement.getAsJsonObject()
-                        .getAsJsonObject("Field86").get("option").getAsCharacter() ==
-                        MTParserConstants.FIELD_OPTION_NO_LETTER) {
+        if (textBlock.has(MT940ParserConstants.STATEMENT_LINES_JSON_KEY)) {
+            for (JsonElement statement : textBlock.getAsJsonArray(MT940ParserConstants.STATEMENT_LINES_JSON_KEY)) {
+                if (statement.getAsJsonObject().has(MT940ParserConstants.FIELD_86_JSON_KEY) &&
+                    statement.getAsJsonObject().getAsJsonObject(MT940ParserConstants.FIELD_86_JSON_KEY)
+                    .get(MTParserConstants.OPTION_JSON_KEY).getAsCharacter() ==
+                            MTParserConstants.FIELD_OPTION_NO_LETTER) {
 
-                    statement.getAsJsonObject().getAsJsonObject("Field86").remove("option");
+                    statement.getAsJsonObject().getAsJsonObject(MT940ParserConstants.FIELD_86_JSON_KEY)
+                            .remove(MTParserConstants.OPTION_JSON_KEY);
                 }
 
                 // Update the Field61 amount
                 Double transactionAmt = MTParserUtils.convertMTAmountToISOAmount(
-                        statement.getAsJsonObject().getAsJsonObject("Field61").get("amount").getAsString());
+                        statement.getAsJsonObject().getAsJsonObject(MT940ParserConstants.FIELD_61_JSON_KEY)
+                                .get(MTParserConstants.AMOUNT_JSON_KEY).getAsString());
 
-                statement.getAsJsonObject().getAsJsonObject("Field61").remove("amount");
-                statement.getAsJsonObject().getAsJsonObject("Field61").addProperty("amount", transactionAmt);
+                statement.getAsJsonObject().getAsJsonObject(MT940ParserConstants.FIELD_61_JSON_KEY)
+                        .remove(MTParserConstants.AMOUNT_JSON_KEY);
+                statement.getAsJsonObject().getAsJsonObject(MT940ParserConstants.FIELD_61_JSON_KEY)
+                        .addProperty(MTParserConstants.AMOUNT_JSON_KEY, transactionAmt);
             }
         }
 
-        if (textBlock.has("infoToAccountOwner") &&
-                textBlock.getAsJsonObject("infoToAccountOwner").get("option").getAsCharacter() ==
-                MTParserConstants.FIELD_OPTION_NO_LETTER) {
-            textBlock.getAsJsonObject("infoToAccountOwner").remove("option");
+        if (textBlock.has(MT940ParserConstants.INFO_TO_ACCOUNT_OWNER) &&
+                textBlock.getAsJsonObject(MT940ParserConstants.INFO_TO_ACCOUNT_OWNER)
+                .get(MTParserConstants.OPTION_JSON_KEY).getAsCharacter() == MTParserConstants.FIELD_OPTION_NO_LETTER) {
+            textBlock.getAsJsonObject(MT940ParserConstants.INFO_TO_ACCOUNT_OWNER)
+                    .remove(MTParserConstants.OPTION_JSON_KEY);
         }
 
         // Update the balance amounts
@@ -78,10 +88,10 @@ public class MT940JSONParserUtils {
             }
 
             Double balanceAmt = MTParserUtils.convertMTAmountToISOAmount(
-                    textBlock.getAsJsonObject(balanceType).get("amount").getAsString());
+                    textBlock.getAsJsonObject(balanceType).get(MTParserConstants.AMOUNT_JSON_KEY).getAsString());
 
-            textBlock.getAsJsonObject(balanceType).remove("amount");
-            textBlock.getAsJsonObject(balanceType).addProperty("amount", balanceAmt);
+            textBlock.getAsJsonObject(balanceType).remove(MTParserConstants.AMOUNT_JSON_KEY);
+            textBlock.getAsJsonObject(balanceType).addProperty(MTParserConstants.AMOUNT_JSON_KEY, balanceAmt);
         }
     }
 
@@ -89,20 +99,20 @@ public class MT940JSONParserUtils {
      * Update the dates in the MT940 for processing freemarker template to MT940 to ISO convert.
      * @param mt940JsonObj         JSON object tree for MT940 message
      */
-    public static void updateDatesFrMT940(JsonObject mt940JsonObj) {
-        if (mt940JsonObj.has("applicationHeaderBlock")) {
-            String inputTime = mt940JsonObj.getAsJsonObject("applicationHeaderBlock")
-                    .get("inputTime").getAsString();
-            String inputDate = mt940JsonObj.getAsJsonObject("applicationHeaderBlock")
-                    .get("messageInputReference").getAsString().substring(0, 6);
+    public static void updateDatesFromMT940(JsonObject mt940JsonObj) {
+        if (mt940JsonObj.has(MTParserConstants.APPLICATION_HEADER_JSON_KEY)) {
+            String inputTime = mt940JsonObj.getAsJsonObject(MTParserConstants.APPLICATION_HEADER_JSON_KEY)
+                    .get(MT940ParserConstants.INPUT_TIME_JSON_KEY).getAsString();
+            String inputDate = mt940JsonObj.getAsJsonObject(MTParserConstants.APPLICATION_HEADER_JSON_KEY)
+                    .get(MT940ParserConstants.MESSAGE_INPUT_REFERENCE_JSON_KEY).getAsString().substring(0, 6);
 
             String createdDt = MTParserUtils.convertFullDateToDt(inputDate, inputTime);
 
-            mt940JsonObj.getAsJsonObject("applicationHeaderBlock")
-                    .addProperty("createdDt", createdDt);
+            mt940JsonObj.getAsJsonObject(MTParserConstants.APPLICATION_HEADER_JSON_KEY)
+                    .addProperty(MT940ParserConstants.CREATE_DATE_DT_JSON_KEY, createdDt);
         }
 
-        JsonObject textBlock = mt940JsonObj.getAsJsonObject("textBlock");
+        JsonObject textBlock = mt940JsonObj.getAsJsonObject(MTParserConstants.TEXT_BLOCK_JSON_KEY);
 
         // Update the balance dates
         String[] balanceTypes = new String[] { "openingBal", "closingBal", "closingAvlBalance", "forwardAvlBalance" };
@@ -112,26 +122,31 @@ public class MT940JSONParserUtils {
             }
 
             String balanceDate = MTParserUtils.convertDateToDt(
-                    textBlock.getAsJsonObject(balanceType).get("date").getAsString());
+                    textBlock.getAsJsonObject(balanceType).get(MTParserConstants.DATE_JSON_KEY).getAsString());
 
-            textBlock.getAsJsonObject(balanceType).addProperty("dateDt", balanceDate);
+            textBlock.getAsJsonObject(balanceType).addProperty(MTParserConstants.DATE_DT_JSON_KEY, balanceDate);
         }
 
-        if (textBlock.has("statementLines")) {
-            for (JsonElement statement : textBlock.getAsJsonArray("statementLines")) {
+        if (textBlock.has(MT940ParserConstants.STATEMENT_LINES_JSON_KEY)) {
+            for (JsonElement statement : textBlock.getAsJsonArray(MT940ParserConstants.STATEMENT_LINES_JSON_KEY)) {
                 // Update the value date and entry date
 
                 String valueDateDt = MTParserUtils.convertDateToDt(
-                        statement.getAsJsonObject().getAsJsonObject("Field61").get("valueDate").getAsString());
+                        statement.getAsJsonObject().getAsJsonObject(MT940ParserConstants.FIELD_61_JSON_KEY)
+                                .get(MT940ParserConstants.VALUE_DATE_JSON_KEY).getAsString());
 
-                if (statement.getAsJsonObject().getAsJsonObject("Field61").has("entryDate")) {
+                if (statement.getAsJsonObject().getAsJsonObject(MT940ParserConstants.FIELD_61_JSON_KEY)
+                        .has(MT940ParserConstants.ENTRY_DATE_JSON_KEY)) {
                     String entryDateDt = MTParserUtils.convertDateToDtUsingCurrYear(
-                            statement.getAsJsonObject().getAsJsonObject("Field61").get("entryDate").getAsString());
+                            statement.getAsJsonObject().getAsJsonObject(MT940ParserConstants.FIELD_61_JSON_KEY)
+                            .get(MT940ParserConstants.ENTRY_DATE_JSON_KEY).getAsString());
 
-                    statement.getAsJsonObject().getAsJsonObject("Field61").addProperty("entryDateDt", entryDateDt);
+                    statement.getAsJsonObject().getAsJsonObject(MT940ParserConstants.FIELD_61_JSON_KEY)
+                            .addProperty(MT940ParserConstants.ENTRY_DATE_DT_JSON_KEY, entryDateDt);
                 }
 
-                statement.getAsJsonObject().getAsJsonObject("Field61").addProperty("valueDateDt", valueDateDt);
+                statement.getAsJsonObject().getAsJsonObject(MT940ParserConstants.FIELD_61_JSON_KEY)
+                        .addProperty(MT940ParserConstants.VALUE_DATE_DT_JSON_KEY, valueDateDt);
             }
         }
     }
@@ -141,17 +156,18 @@ public class MT940JSONParserUtils {
      * @param mt940JsonObj         JSON object tree for MT940 message
      */
     public static void addBICToMT940Message(JsonObject mt940JsonObj) {
-        String toBicNumber = MTParserUtils.convertLTAddressToBIC(mt940JsonObj.getAsJsonObject("basicHeaderBlock")
-                .get("logicalTerminalAddress").getAsString());
+        String toBicNumber = MTParserUtils.convertLTAddressToBIC(mt940JsonObj
+                .getAsJsonObject(MTParserConstants.BASIC_HEADER_JSON_KEY)
+                .get(MTParserConstants.LOGICAL_TERMINAL_ADDRESS_JSON_KEY).getAsString());
 
-        mt940JsonObj.addProperty("ToBIC", toBicNumber);
+        mt940JsonObj.addProperty(MTParserConstants.TO_BIC_JSON_KEY, toBicNumber);
 
-        if (mt940JsonObj.has("applicationHeaderBlock")) {
+        if (mt940JsonObj.has(MTParserConstants.APPLICATION_HEADER_JSON_KEY)) {
             String fromBicNumber = MTParserUtils.convertLTAddressToBIC(mt940JsonObj
-                    .getAsJsonObject("applicationHeaderBlock").get("messageInputReference")
-                    .getAsString().substring(6, 18));
+                    .getAsJsonObject(MTParserConstants.APPLICATION_HEADER_JSON_KEY)
+                    .get(MT940ParserConstants.MESSAGE_INPUT_REFERENCE_JSON_KEY).getAsString().substring(6, 18));
 
-            mt940JsonObj.addProperty("FromBIC", fromBicNumber);
+            mt940JsonObj.addProperty(MTParserConstants.FROM_BIC_JSON_KEY, fromBicNumber);
         }
     }
 }

@@ -98,4 +98,16 @@ public class MTParserConstants {
     public static final char FIELD_OPTION_F = 'F';
     public static final char FIELD_OPTION_M = 'M';
     public static final char FIELD_OPTION_P = 'P';
+
+    // MT parsing JSON keys
+    public static final String BASIC_HEADER_JSON_KEY = "basicHeaderBlock";
+    public static final String APPLICATION_HEADER_JSON_KEY = "applicationHeaderBlock";
+    public static final String TEXT_BLOCK_JSON_KEY = "textBlock";
+    public static final String OPTION_JSON_KEY = "option";
+    public static final String AMOUNT_JSON_KEY = "amount";
+    public static final String DATE_JSON_KEY = "date";
+    public static final String DATE_DT_JSON_KEY = "dateDt";
+    public static final String LOGICAL_TERMINAL_ADDRESS_JSON_KEY = "logicalTerminalAddress";
+    public static final String TO_BIC_JSON_KEY = "ToBIC";
+    public static final String FROM_BIC_JSON_KEY = "FromBIC";
 }

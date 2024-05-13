@@ -139,6 +139,7 @@ public class MT940FormatValidator extends AbstractConnector {
                 continue;
             }
 
+            // Removing &xsd; from text payload which added automatically to message context payload
             if (line.endsWith("&#xd;")) {
                 line = line.substring(0, line.length() - 5);
             }

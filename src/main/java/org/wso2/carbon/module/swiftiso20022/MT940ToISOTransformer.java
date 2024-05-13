@@ -56,7 +56,7 @@ public class MT940ToISOTransformer extends AbstractConnector {
             JsonObject mt940JsonObject = (JsonObject) gson.toJsonTree(mt940Message);
 
             MT940JSONParserUtils.updateJsonObjectToMT940(mt940JsonObject);
-            MT940JSONParserUtils.updateDatesFrMT940(mt940JsonObject);
+            MT940JSONParserUtils.updateDatesFromMT940(mt940JsonObject);
             MT940JSONParserUtils.addBICToMT940Message(mt940JsonObject);
 
 

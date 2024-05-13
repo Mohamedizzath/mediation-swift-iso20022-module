@@ -79,7 +79,7 @@ public class MT940ToJSONTransformerTests {
         JsonObject mt940JsonObj = (JsonObject) gson.toJsonTree(mt940Message);
 
         MT940JSONParserUtils.updateJsonObjectToMT940(mt940JsonObj);
-        MT940JSONParserUtils.updateDatesFrMT940(mt940JsonObj);
+        MT940JSONParserUtils.updateDatesFromMT940(mt940JsonObj);
 
         Assert.assertEquals(mt940JsonObj.getAsJsonObject("textBlock")
                 .getAsJsonObject("openingBal").get("dateDt").getAsString(), expectedDt);
@@ -111,7 +111,7 @@ public class MT940ToJSONTransformerTests {
         JsonObject mt940JsonObj = (JsonObject) gson.toJsonTree(mt940Message);
 
         MT940JSONParserUtils.updateJsonObjectToMT940(mt940JsonObj);
-        MT940JSONParserUtils.updateDatesFrMT940(mt940JsonObj);
+        MT940JSONParserUtils.updateDatesFromMT940(mt940JsonObj);
 
         // Asserting Field86 in statement lines
         int statementCount = 0;
@@ -127,7 +127,7 @@ public class MT940ToJSONTransformerTests {
         JsonObject mt940JsonObj = (JsonObject) gson.toJsonTree(mt940Message);
 
         MT940JSONParserUtils.updateJsonObjectToMT940(mt940JsonObj);
-        MT940JSONParserUtils.updateDatesFrMT940(mt940JsonObj);
+        MT940JSONParserUtils.updateDatesFromMT940(mt940JsonObj);
 
         // Asserting Field86 in statement lines
         int statementCount = 0;
@@ -143,7 +143,7 @@ public class MT940ToJSONTransformerTests {
         JsonObject mt940JsonObj = (JsonObject) gson.toJsonTree(mt940Message);
 
         MT940JSONParserUtils.updateJsonObjectToMT940(mt940JsonObj);
-        MT940JSONParserUtils.updateDatesFrMT940(mt940JsonObj);
+        MT940JSONParserUtils.updateDatesFromMT940(mt940JsonObj);
         MT940JSONParserUtils.addBICToMT940Message(mt940JsonObj);
 
         Assert.assertEquals(mt940JsonObj.get("FromBIC").getAsString(), frBICNumber);
@@ -154,7 +154,7 @@ public class MT940ToJSONTransformerTests {
         JsonObject mt940JsonObj = (JsonObject) gson.toJsonTree(mt940Message);
 
         MT940JSONParserUtils.updateJsonObjectToMT940(mt940JsonObj);
-        MT940JSONParserUtils.updateDatesFrMT940(mt940JsonObj);
+        MT940JSONParserUtils.updateDatesFromMT940(mt940JsonObj);
         MT940JSONParserUtils.addBICToMT940Message(mt940JsonObj);
 
         Assert.assertEquals(mt940JsonObj.get("ToBIC").getAsString(), frBICNumber);

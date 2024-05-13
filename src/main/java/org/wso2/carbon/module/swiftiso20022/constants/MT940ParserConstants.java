@@ -58,4 +58,20 @@ public class MT940ParserConstants {
     public static final String FIELD_86_PAYMENT_INFO_ID = "PREF";
     public static final Pattern FIELD_86_REGEX_PATTERN = Pattern.compile(String.format(
             "^(%s{1,65}(\\R%s{1,64}){0,5})$", MTParserConstants.CHARACTER_SET_X, MTParserConstants.CHARACTER_SET_X));
+
+    // MT parsing JSON Keys
+    public static final String TRANSACTION_REFERENCE_NUMBER_JSON_KEY = "transactionReferenceNumber";
+    public static final String RELATED_REFERENCE_NUMBER_JSON_KEY = "relatedReference";
+    public static final String ACCOUNT_IDENTIFICATION_JSON_KEY = "accountIdentification";
+    public static final String STATEMENT_LINES_JSON_KEY = "statementLines";
+    public static final String FIELD_61_JSON_KEY = "Field61";
+    public static final String FIELD_86_JSON_KEY = "Field86";
+    public static final String INFO_TO_ACCOUNT_OWNER = "infoToAccountOwner";
+    public static final String INPUT_TIME_JSON_KEY = "inputTime";
+    public static final String MESSAGE_INPUT_REFERENCE_JSON_KEY = "messageInputReference";
+    public static final String CREATE_DATE_DT_JSON_KEY = "createdDt";
+    public static final String ENTRY_DATE_JSON_KEY = "entryDate";
+    public static final String ENTRY_DATE_DT_JSON_KEY = "entryDateDt";
+    public static final String VALUE_DATE_DT_JSON_KEY = "valueDateDt";
+    public static final String VALUE_DATE_JSON_KEY = "valueDate";
 }
