@@ -20,12 +20,18 @@ package org.wso2.carbon.module.swiftiso20022.utils;
 
 import org.apache.commons.lang3.StringUtils;
 import org.wso2.carbon.module.swiftiso20022.constants.ConnectorConstants;
+import org.wso2.carbon.module.swiftiso20022.constants.MT940ParserConstants;
 import org.wso2.carbon.module.swiftiso20022.constants.MTParserConstants;
 import org.wso2.carbon.module.swiftiso20022.exceptions.MTMessageParsingException;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Utility class for MT message parsing.
@@ -153,4 +159,90 @@ public class MTParserUtils {
         return fields;
     }
 
+  /**
+     * Method for parsing fields in text block.
+     * @param textBlock                     Text block as string to break into fields
+     * @return                              Parsed field as a list of String
+     * @throws MTMessageParsingException
+     */
+    public static List<String> getTextBlockFields(String textBlock) throws MTMessageParsingException {
+        // Match whether text block starting with newline and : (Should have at least one tag)
+        Pattern textStartPattern = Pattern.compile("^\\R:(.+)", Pattern.DOTALL);
+        Matcher textStartMatcher = textStartPattern.matcher(textBlock);
+
+        if (textStartMatcher.matches()) {
+            // Remove the starting new line character and : from the text block
+            textBlock = textStartMatcher.group(1);
+        } else {
+            throw new MTMessageParsingException("Text block not in the correct format");
+        }
+
+        // Remove the final new line character
+        return List.of(textBlock.trim().split("\\R:"));
+    }
+
+    /**
+     * Method for getting Field86 codes supported in MT940.
+     * @return          List of codes
+     */
+    public static List<String> getMT940SupportedField86Codes() {
+        List<String> supportedCodes = new ArrayList<>();
+
+        supportedCodes.add(MT940ParserConstants.FIELD_86_END_TO_END_IDENTIFICATION);
+        supportedCodes.add(MT940ParserConstants.FIELD_86_PAYMENT_INFO_ID);
+        supportedCodes.add(MT940ParserConstants.FIELD_86_INSTRUCTION_ID);
+
+        return supportedCodes;
+    }
+
+    /**
+     * Method for converting amount text from MT format to ISO format.
+     * @param amountText        MT amount as text
+     * @return                  Converted ISO amount string
+     */
+    public static Double convertMTAmountToISOAmount(String amountText) {
+        amountText = amountText.replaceAll(",", ".");
+        amountText = amountText.endsWith(".") ? amountText + "00" : amountText;
+
+        return Double.parseDouble(amountText);
+    }
+
+    /**
+     * Method for converting YYYMMDD date and HHMM time into fully standard format.
+     * @param date         Date in YYMMDD format
+     * @param time         Time in HHMM format
+     * @return             Fully constructed date
+     */
+    public static String convertFullDateToDt(String date, String time) {
+        return "20" + date.substring(0, 2) + "-" + date.substring(2, 4) + "-" + date.substring(4, 6) + "T" +
+                time.substring(0, 2) + ":" + time.substring(2, 4) + ":00Z";
+    }
+
+    /**
+     * Method for converting YYMMDD date into YYYY-MM-DD.
+     * @param date        Date in YYMMDD format
+     * @return            Converted date in YYYY-MM-DD
+     */
+    public static String convertDateToDt(String date) {
+        return "20" + date.substring(0, 2) + "-" + date.substring(2, 4) + "-" + date.substring(4, 6);
+    }
+
+    /**
+     * Method for converting MMDD date using current system year.
+     * @param date          Date in MMDD format
+     * @return              Converted date in YYYY-MM-DD format
+     */
+    public static String convertDateToDtUsingCurrYear(String date) {
+        SimpleDateFormat yearFormatter = new SimpleDateFormat("yyyy");
+        return yearFormatter.format(new Date()) + "-" + date.substring(0, 2) + "-" + date.substring(2, 4);
+    }
+
+    /**
+     * Method for converting LT address into BIC number.
+     * @param ltAddress      LT address as string
+     * @return
+     */
+    public static String convertLTAddressToBIC(String ltAddress) {
+        return ltAddress.substring(0, 8) + ltAddress.substring(9);
+    }
 }
