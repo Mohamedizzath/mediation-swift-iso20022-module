@@ -27,33 +27,33 @@ import java.util.List;
 import java.util.regex.Matcher;
 
 /**
- * Model for references in Text Block (Block 04).
+ * Model for transaction type code in Text Block (Block 04).
  * <p>
- * example: :20:Ref254
+ * example: :26T:K90
  *
- * @see <a href="https://www2.swift.com/knowledgecentre/publications/usgf_20230720/2.0?topic=idx_fld_tag_20.htm">
- * Field 20</a>
+ * @see <a href="https://www2.swift.com/knowledgecentre/publications/usgf_20230720/2.0?topic=idx_fld_tag_26T.htm">
+ * Field 26T</a>
  */
-public class Field20 {
+public class Field26 {
 
-    public static final String TAG = "20";
+    public static final String TAG = "26";
 
     /**
      * List of options with current implementation.
      */
-    private static final List<Character> OPTIONS = Arrays.asList(ConnectorConstants.NO_LETTER_OPTION);
+    private static final List<Character> OPTIONS = Arrays.asList(ConnectorConstants.OPTION_T);
     public char option;
 
-    // example: Ref254
+    // example: K90
     private String value;
 
     /**
      * Constructor to initialize all attributes.
      *
      * @param option Single character
-     * @param value String with characters from set x.
+     * @param value String with three uppercase characters and digits
      */
-    public Field20(char option, String value) {
+    public Field26(char option, String value) {
         this.option = option;
         this.value = value;
     }
@@ -67,28 +67,28 @@ public class Field20 {
     }
 
     /**
-     * Method to parse and get Field20 object.
-     * Current implementation -> No_letter
+     * Method to parse and get Field26 object.
+     * Current Implementations -> Option T
      *
-     * @param option single character option of the field20String
-     * @param field20String String containing value of 20 field in Text Block
+     * @param option single character option of the field26String
+     * @param field26TString String containing value of 26 field in Text Block
      * @return An instance of this model.
      * @throws MTMessageParsingException if the value is invalid
      */
-    public static Field20 parse(char option, String field20String) throws MTMessageParsingException {
+    public static Field26 parse(char option, String field26TString) throws MTMessageParsingException {
 
         if (!OPTIONS.contains(option)) {
             throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_OPTION_FOR_FIELD, option,
-                    ConnectorConstants.FIELD_20));
+                    ConnectorConstants.FIELD_26));
         }
 
-        Matcher field20Matcher = MTParserConstants.FIELD_20_REGEX_PATTERN.matcher(field20String);
+        Matcher field26Matcher = MTParserConstants.FIELD_26_REGEX_PATTERN.matcher(field26TString);
 
-        if (field20Matcher.matches()) {
-            return new Field20(option, field20Matcher.group());
+        if (field26Matcher.matches()) {
+            return new Field26(option, field26Matcher.group());
         } else {
             throw new MTMessageParsingException(String.format(MTParserConstants.INVALID_FIELD_IN_BLOCK_MESSAGE,
-                    ConnectorConstants.FIELD_20 + (option == ConnectorConstants.NO_LETTER_OPTION ? "" : option),
+                    ConnectorConstants.FIELD_26 + (option == ConnectorConstants.NO_LETTER_OPTION ? "" : option),
                     ConnectorConstants.TEXT_BLOCK));
         }
     }

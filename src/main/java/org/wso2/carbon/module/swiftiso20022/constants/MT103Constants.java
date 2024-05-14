@@ -27,6 +27,7 @@ public class MT103Constants {
         // Private constructor to prevent instantiation
     }
 
+    public static final String MT103 = "MT103";
     public static final String MT103_APPLICATION_ID = "F";
     public static final String MT103_SERVICE_ID = "01";
     public static final String MT103_MESSAGE_TYPE = "103";
@@ -141,6 +142,11 @@ public class MT103Constants {
     public static final String BLOCK05_MESSAGE_REFERENCE_KEY = "messageReference";
     public static final String BLOCK05_POSSIBLE_DUPLICATE_MESSAGE_KEY = "possibleDuplicateMessage";
     public static final String BLOCK05_SYSTEM_ORIGINATED_MESSAGE_KEY = "systemOriginatedMessage";
+
+    // Constants used in MT103ToJson transformer amount replacement
+    public static final String TEXT_BLOCK_KEY = "textBlock";
+    public static final String AMOUNT_KEY = "amount";
+    public static final String OPTION_KEY = "option";
 
     // MT103 field length related constants
     public static final int SENDERS_REFERENCE_LENGTH = 16;

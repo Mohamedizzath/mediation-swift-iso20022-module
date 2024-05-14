@@ -33,6 +33,10 @@
             <class name="org.wso2.carbon.module.swiftiso20022.mt.parsers.MT940ParserTests" />
             <class name="org.wso2.carbon.module.swiftiso20022.payloadfactory.MT940ToISO20022PayloadFactoryTests" />
             <class name="org.wso2.carbon.module.swiftiso20022.MT940ToJSONTransformerTests" />
+            <class name="org.wso2.carbon.module.swiftiso20022.mt.parsers.MT103ParserTests" />
+            <class name="org.wso2.carbon.module.swiftiso20022.mt.format.validators.MTBlockFormatValidatorTests"/>
+            <class name="org.wso2.carbon.module.swiftiso20022.mt.format.validators.MT103BlockFormatValidatorTests"/>
+            <class name="org.wso2.carbon.module.swiftiso20022.MT103ToJsonTransformerTests"/>
         </classes>
     </test>
 </suite>

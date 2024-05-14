@@ -25,6 +25,7 @@
         <dependency component="jsonToMT103"/>
         <dependency component="mt940ToISO"/>
         <dependency component="mt940ToJSON"/>
+        <dependency component="mt103ToJson"/>
         <description>WSO2 SWIFT ISO 20022 Mediation library</description>
     </component>
     <type>module</type>

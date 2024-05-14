@@ -76,9 +76,7 @@ public class MT940ParserTestConstants {
         MT940TextBlock textBlock = new MT940TextBlock();
 
         if (params.containsKey("Field20")) {
-            Field20 field20 = new Field20();
-            field20.setOption(MTParserConstants.FIELD_OPTION_NO_LETTER);
-            field20.setValue(params.get("Field20"));
+            Field20 field20 = new Field20(MTParserConstants.FIELD_OPTION_NO_LETTER, params.get("Field20"));
 
             textBlock.setTransactionReferenceNumber(field20);
         }

@@ -70,14 +70,14 @@ public class MT940ParserTests {
     }
 
     @Test(expectedExceptions = MTMessageParsingException.class,
-            expectedExceptionsMessageRegExp = "20 field not in the correct format",
+            expectedExceptionsMessageRegExp = "Field 20 in Text Block is in invalid format",
             dataProvider = "invalidTransactionReferenceNumber", dataProviderClass = MT940ParserTestConstants.class)
     public void testInvalidTransRefNumberScenario(String textBlockStr) throws Exception {
         MT940TextBlock parsedTextBlock = MT940TextBlock.parse(textBlockStr);
     }
 
     @Test(expectedExceptions = MTMessageParsingException.class,
-            expectedExceptionsMessageRegExp = "Invalid [A-Z] option for field 20",
+            expectedExceptionsMessageRegExp = "Option [A-Z] for Field 20 in Text Block is invalid",
             dataProvider = "invalidTransactionReferenceNumberOpt", dataProviderClass = MT940ParserTestConstants.class)
     public void testInvalidTransRefNumberOptScenario(String textBlockStr) throws Exception {
         MT940TextBlock parsedTextBlock = MT940TextBlock.parse(textBlockStr);
